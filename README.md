@@ -1,6 +1,6 @@
 # client
 
-> My ace Nuxt.js project
+> Scan & Go project
 
 ## Build Setup
 
