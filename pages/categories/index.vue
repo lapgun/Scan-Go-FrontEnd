@@ -27,7 +27,7 @@
           <td>{{task.createdAt}}</td>
           <td>{{task.updatedAt}}</td>
           <td>
-            <b-button @click="$router.push('/task/details/'+task.id)">Details</b-button>
+            <b-button @click="$router.push('/categories/details/'+task.id)">Details</b-button>
             <b-button class="btn btn-info" @click="$router.push('/categories/edit/'+task.id)">Update</b-button>
             <b-button class="btn btn-info" variant="danger" @click="delTasks(task.id)">Delete</b-button>
           </td>

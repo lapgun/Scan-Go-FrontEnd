@@ -35,7 +35,6 @@
 </template>
 <script>
 export default {
-   middleware:'authenticated',
   mounted: function() {
     this.getTasks();
   },
@@ -48,7 +47,7 @@ export default {
   methods: {
       getTasks :function(){
                 let self = this
-                this.$axios.get('/users/'+this.$route.params.id)
+                this.$axios.get('/categories/'+this.$route.params.id)
                     .then(function (res) {
                       console.log(res);
                         self.tasks = res.data.data
@@ -56,7 +55,7 @@ export default {
             },
       delTasks: function(id) {
       let self = this;
-      this.$axios.delete("/users/" + id).then(function(res) {
+      this.$axios.delete("/categories/" + id).then(function(res) {
         self.getTasks();
       });
     }

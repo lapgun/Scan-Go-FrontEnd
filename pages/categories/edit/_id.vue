@@ -1,12 +1,13 @@
 <template>
   <div class="create-form">
-    <input v-model="form.name" type="text" class="form-control" placeholder="Enter your cat name" />
-    <input
-      v-model="form.cat_parent"
-      type="number"
-      class="form-control"
-      placeholder="Enter your cat parent"
-    />
+    <b-button variant="success" @click="$router.push('/task')">User</b-button>
+    <b-button variant="success" @click="$router.push('/blog')">Blog</b-button>
+    
+    <br /><br /><br />
+    Name:
+    <input v-model="form.name" type="text" class="form-control" placeholder="Enter your cat name " />
+    Select category's parent in the select form below :
+    <b-form-select v-model="form.cat_parent" :options="options"></b-form-select>
     <br />
     <label>
       <button class="btn btn-info" @click="handleSubmit">Submit</button>
@@ -17,16 +18,30 @@
 export default {
   mounted: function() {
     this.getDetail();
+    this.getCategories();
   },
   data: function() {
     return {
       form: {
         name: "",
         cat_parent: ""
-      }
+      },
+      options: [{ value: 0, text: "This is parent category " }]
     };
   },
   methods: {
+    getCategories: function() {
+      let self = this;
+      this.$axios.get("/categories/cat_parent").then(function(res) {
+        let data = res.data.data.rows;
+        data.forEach(value => {
+          self.options.push({
+            value: value.id,
+            text: value.name
+          });
+        });
+      });
+    },
     getDetail: function() {
       let self = this;
 
