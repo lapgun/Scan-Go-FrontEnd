@@ -20,4 +20,5 @@ export const actions = {
     }
     commit('setToken', token)
   }
-}
+
+};

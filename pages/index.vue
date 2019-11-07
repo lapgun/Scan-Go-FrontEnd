@@ -1,34 +1,59 @@
 <template>
-    <div>
-         <div class="mb-1 navbar navbar-expand-lg navbar-dark orange lighten-1">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"
-            aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home
-            <span class="sr-only">(current)</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Features</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Pricing</a>
-        </li>
-      </ul>
-      <ul class="navbar-nav ml-auto nav-flex-icons">
-        <li class="nav-item avatar">
-          <a class="nav-link p-0" href="#">
-            <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-5.jpg" class="rounded-circle z-depth-0"
-                 alt="avatar image" height="35">
-          </a>
-        </li>
-      </ul>
-    </div>
+  <div>
+    <b-navbar toggleable="lg" type="dark" variant="info">
+      <b-navbar-brand href="#">NavBar</b-navbar-brand>
+
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav>
+          <b-nav-item href="#">Link</b-nav-item>
+          <b-nav-item href="#" disabled>Disabled</b-nav-item>
+        </b-navbar-nav>
+
+        <!-- Right aligned nav items -->
+        <b-navbar-nav class="ml-auto">
+          <b-nav-form>
+            <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
+            <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
+          </b-nav-form>
+          <b-nav-item-dropdown v-if="user">
+            <!-- Using 'button-content' slot -->
+            <template v-slot:button-content >
+              <em>{{user.name}}</em>
+            </template>
+            <b-dropdown-item @click="$router.push('user/detail')">Profile</b-dropdown-item>
+            <b-dropdown-item href="#" @click="handelSigOut">Sign Out</b-dropdown-item>
+          </b-nav-item-dropdown>
+          <b-nav-item @click="$router.push('user/login')" v-else>Login</b-nav-item>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
   </div>
-    </div>
+
+<!--  end header-->
+
 </template>
+
+<script>
+    const Cookie = process.client ? require("js-cookie") : undefined;
+    export default {
+
+        computed:{
+            user(){
+                return this.$store.state.user
+            }
+        },
+        methods :{
+            handelSigOut(){
+                    Cookie.remove("token");
+                    this.$store.commit("setToken", null);
+                    this.$store.commit("setUser",null);
+
+            }
+        }
+    }
+</script>
+
+<style>
+
+</style>

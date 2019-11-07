@@ -39,7 +39,7 @@ render: {
   plugins: [
     '~/plugins/axios'
   ],
- 
+
   /*
   ** Nuxt.js dev-modules
   */
