@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button variant="success" href="/categories">Home</b-button>
+    <b-button variant="success" href="/admins/home">Home</b-button>
     <br />
     <br />
     <input v-model="search" type="text" class="form-control" placeholder="Enter search key" />

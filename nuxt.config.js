@@ -12,7 +12,7 @@ export default {
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
     ]
   },
   /*
@@ -22,13 +22,22 @@ export default {
   /*
   ** Global CSS
   */
-  css: [
-  ],
+ css: [
+  '~/assets/css/style.css',
+  '~/assets/css/bootstrap.min.css'
+],
+render: {
+  bundleRenderer: {
+    shouldPreload: (file, type) => {
+      return ['script', 'style', 'font'].includes(type)
+    }
+  }
+},
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
-    
+    '~/plugins/axios'
   ],
  
   /*

@@ -22,7 +22,11 @@ export default {
     methods : {
         handleCreate: function(){
             let self = this
-            this.$axios.post('/admins', this.form)
+            this.$axios.post('/admins', this.form, {
+                headers : {
+                    token : this.$store.state.token
+                }
+            })
             .then(function(res){
                 console.log(res)
                 self.$router.push('/admins')

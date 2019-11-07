@@ -3,13 +3,13 @@
         <b-button @click="$router.push('/admins/create')" variant="info">Create</b-button>
         <input type="search" placeholder="Search start.." v-model="search">
         <b-button @click="handleSearch" variant="info">Search</b-button>
+        <b-button @click="$router.push('/admins/login')">Login</b-button>
         <table>
             <thead>
                 <tr>
                     <th>STT</th>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Password</th>
                     <th>Role</th>
                 </tr>
             </thead>
@@ -18,7 +18,6 @@
                     <td>{{index+1}}</td>
                     <td>{{admin.name}}</td>
                     <td>{{admin.email}}</td>
-                    <td>{{admin.password}}</td>
                     <td>{{admin.role == '1' ? 'admin' : 'user'}}</td>
                     <td>
                         <b-button @click="$router.push('/admins/detail/'+admin.id)">Detail</b-button>
