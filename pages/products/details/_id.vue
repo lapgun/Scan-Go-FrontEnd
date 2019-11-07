@@ -1,11 +1,11 @@
 <template>
   <div>
-     <b-button variant="success" @click="$router.push('/products/create')">Create new task</b-button>
+    <b-button variant="success" @click="$router.push('/products/create')">Create new task</b-button>
     <table class="table table-bordered">
       <thead>
         <tr>
           <th>Number</th>
-          <th> Name</th>
+          <th>Name</th>
           <th>categories</th>
           <th>picture</th>
           <th>price</th>
@@ -40,26 +40,23 @@ export default {
   },
   data: function() {
     return {
-      tasks: [],
-      
+      tasks: []
     };
   },
   methods: {
-      getTasks :function(){
-                let self = this
-                this.$axios.get('/products/'+this.$route.params.id)
-                    .then(function (res) {
-                      console.log(res);
-                        self.tasks = res.data.data
-                    })
-            },
-      delTasks: function(id) {
+    getTasks: function() {
+      let self = this;
+      this.$axios.get("/products/" + this.$route.params.id).then(function(res) {
+        console.log(res);
+        self.tasks = res.data.data;
+      });
+    },
+    delTasks: function(id) {
       let self = this;
       this.$axios.delete("/products/" + id).then(function(res) {
         self.getTasks();
       });
     }
-   
   }
 };
 </script>
