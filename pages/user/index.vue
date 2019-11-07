@@ -1,28 +1,28 @@
 <template>
   <div>
-    <input type="text" v-model="search" @keyup.enter="getUsers" >
+    <input type="text" v-model="search" @keyup.enter="getUsers" />
 
     <table class="table table-bordered">
       <thead>
-      <tr>
-        <th>id</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Address</th>
-      </tr>
+        <tr>
+          <th>id</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Address</th>
+        </tr>
       </thead>
       <tbody>
-      <tr v-for="(user,index) in users" >
-        <td>{{index ++}}</td>
-        <td>{{user.name}}</td>
-        <td>{{user.email}}</td>
-        <td>{{user.address}}</td>
+        <tr v-for="(user,index) in users">
+          <td>{{index ++}}</td>
+          <td>{{user.name}}</td>
+          <td>{{user.email}}</td>
+          <td>{{user.address}}</td>
 
-        <td>
-          <button class="btn btn-danger" @click="handelDelete(user.id)">Delete</button>
-          <button class="btn btn-secondary" @click="$router.push('/user/detail/'+user.id)">Detail</button>
-        </td>
-      </tr>
+          <td>
+            <button class="btn btn-danger" @click="handelDelete(user.id)">Delete</button>
+            <button class="btn btn-secondary" @click="$router.push('/user/detail/'+user.id)">Detail</button>
+          </td>
+        </tr>
       </tbody>
     </table>
     <b-pagination
@@ -37,47 +37,55 @@
 
 
 <script>
-    export default {
-        mounted(){
-            this.getUsers()
-        },
-        data() {
-            return{
-                users : {},
-                search:'',
-                pagination : {
-                    currentPage : 1,
-                    perPage: 4
-                }
-            }
-        },
-        methods : {
-            getUsers: function () {
-                let self = this;
-                this.$axios.get('http://127.0.0.1:4000/users?search='+this.search + '&currentPage='+this.pagination.currentPage +'&perPage=' + this.pagination.perPage)
-                    .then(function (res) {
-                        console.log(res);
-                        self.users = res.data.data;
-                        self.pagination = res.data.pagination
-                    });
-                self.search = ''
-            },
-            handelDelete(id){
-                let self = this;
-                this.$axios.delete('http://127.0.0.1:4000/users/'+id)
-                    .then(function (res) {
-                        self.getUsers();
-                    })
-            },
-            handelChangePage(page){
-                this.pagination.currentPage = page;
-                this.getUsers()
-            }
-        }
+export default {
+  mounted() {
+    this.getUsers();
+  },
+  data() {
+    return {
+      users: {},
+      search: "",
+      pagination: {
+        currentPage: 1,
+        perPage: 4
+      }
+    };
+  },
+  methods: {
+    getUsers: function() {
+      let self = this;
+      this.$axios
+        .get(
+          "http://127.0.0.1:4000/users?search=" +
+            this.search +
+            "&currentPage=" +
+            this.pagination.currentPage +
+            "&perPage=" +
+            this.pagination.perPage
+        )
+        .then(function(res) {
+          console.log(res);
+          self.users = res.data.data;
+          self.pagination = res.data.pagination;
+        });
+      self.search = "";
+    },
+    handelDelete(id) {
+      let self = this;
+      this.$axios
+        .delete("http://127.0.0.1:4000/users/" + id)
+        .then(function(res) {
+          self.getUsers();
+        });
+    },
+    handelChangePage(page) {
+      this.pagination.currentPage = page;
+      this.getUsers();
     }
+  }
+};
 </script>
 
 <style scoped>
-
 </style>
 
