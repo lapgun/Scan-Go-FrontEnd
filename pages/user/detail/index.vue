@@ -8,29 +8,27 @@
             <div class="row" v-if="user">
               <div class="col-12 col-md-8">
                 <div class="form-group row">
-                  <label for="name"
+                  <label
                          class="col-md-4 col-form-label text-md-left">Name</label>
-                  <label class="col-md-4 col-form-label text-md-left">: {{user.name}}</label>
+                  <label class="col-md-4 col-form-label text-md-left">: {{userDetail.name}}</label>
                 </div>
                 <div class="form-group row">
-                  <label for="email"
+                  <label
                          class="col-md-4 col-form-label text-md-left">Email</label>
-                  <label class="col-md-8 col-form-label text-md-left">: {{user.email}}</label>
+                  <label class="col-md-8 col-form-label text-md-left">: {{userDetail.email}}</label>
                 </div>
                 <div class="form-group row">
-                  <label for="dob"
+                  <label
                          class="col-md-4 col-form-label text-md-left">Address</label>
-                  <label class="col-md-4 col-form-label text-md-left">: {{user.address}}</label>
+                  <label class="col-md-4 col-form-label text-md-left">: {{userDetail.address}}</label>
                 </div>
                 <div class="form-group row">
-                  <label for="update"
+                  <label
                          class="col-md-4 col-form-label text-md-right"></label>
                   <div class="col-md-6">
-                    <a >
-                      <button type="button" class="btn btn-primary" @click="$router.push('/user/edit')">
-                        Edit Profile
-                      </button>
-                    </a>
+                    <span >
+                      <button type="button" class="btn btn-primary" @click="$router.push('/user/edit')">Edit Profile</button>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -42,11 +40,18 @@
   </div>
 </template>
 <script>
+    import _ from 'lodash'
     export default {
         computed:{
             user(){
-                return this.$store.state.user
+                return _.cloneDeep(this.$store.state.user)
             }
+        },
+        data(){
+            return{
+                userDetail : _.cloneDeep(this.$store.state.user)
+            }
+
         },
     }
 </script>
