@@ -3,7 +3,10 @@
     <div class="row justify-content-center">
       <div class="col-md-8">
         <div class="card">
-          <div class="card-header text-md-center" style="font-size: 20px;font-weight: bold">Thông tin người dùng</div>
+          <div
+            class="card-header text-md-center"
+            style="font-size: 20px;font-weight: bold"
+          >Thông tin người dùng</div>
           <div class="card-body" style="font-style: italic">
             <div class="row" v-if="user">
               <div class="col-12 col-md-8">
@@ -52,10 +55,12 @@
                 userDetail : _.cloneDeep(this.$store.state.user)
             }
 
-        },
-    }
+        }
+
+    };
+
+
 </script>
 
 <style scoped>
-
 </style>

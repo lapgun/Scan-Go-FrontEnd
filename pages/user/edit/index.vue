@@ -3,11 +3,15 @@
     <div class="row justify-content-center">
       <div class="col-md-8">
         <div class="card">
-          <div class="card-header text-md-center" style="font-size: 20px;font-weight: bold">Chỉnh Sửa thông tin</div>
+          <div
+            class="card-header text-md-center"
+            style="font-size: 20px;font-weight: bold"
+          >Chỉnh Sửa thông tin</div>
           <div class="card-body" style="font-style: italic">
             <div class="row" v-if="user">
               <div class="col-12 col-md-8">
                 <div class="form-group row">
+<<<<<<< HEAD
                   <label
                          class="col-md-4 col-form-label text-md-left">Tên Người Dùng :</label>
                   <b-input class="col-md-8 col-form-label text-md-left" v-model="userDetail.name"></b-input>
@@ -21,22 +25,33 @@
                   <label
                          class="col-md-4 col-form-label text-md-left">Nơi Sinh Sống :</label>
                   <b-input class="col-md-8 col-form-label text-md-left" v-model="userDetail.address"></b-input>
+=======
+                  <label class="col-md-4 col-form-label text-md-left">Tên Người Dùng :</label>
+                  <b-input class="col-md-8 col-form-label text-md-left" v-model="user.name"></b-input>
                 </div>
                 <div class="form-group row">
-                  <label
-                         class="col-md-4 col-form-label text-md-right"></label>
+                  <label class="col-md-4 col-form-label text-md-left">Địa chỉ Email :</label>
+                  <b-input class="col-md-8 col-form-label text-md-left" v-model="user.email"></b-input>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-4 col-form-label text-md-left">Nơi Sinh Sống :</label>
+                  <b-input class="col-md-8 col-form-label text-md-left" v-model="user.address"></b-input>
+>>>>>>> 6cb763eaf3edd18ec651719ed43ae95b057a0ac9
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-4 col-form-label text-md-right"></label>
                   <div class="col-md-3">
                     <a>
-                      <button type="button" class="btn btn-primary" @click="handelSubmit">
-                        Update
-                      </button>
+                      <button type="button" class="btn btn-primary" @click="handelSubmit">Update</button>
                     </a>
                   </div>
                   <div class="col-md-3">
                     <a>
-                      <button type="button" class="btn btn-dark" @click="$router.push('/user/detail')">
-                        Back
-                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-dark"
+                        @click="$router.push('/user/detail')"
+                      >Back</button>
                     </a>
                   </div>
                 </div>
@@ -47,10 +62,10 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
+<<<<<<< HEAD
     const Cookie = process.client ? require('js-cookie') : undefined;
     import _ from 'lodash'
     export default {
@@ -77,12 +92,39 @@
                 this.userDetail ='';
             }
         }
+=======
+export default {
+  computed: {
+    user() {
+      return this.$store.state.user;
     }
+  },
+  // data(){
+  //     return{
+  //         form :{
+  //             name :'',
+  //             email : '',
+  //             address :''
+  //         }
+  //     }
+
+  // },
+  methods: {
+    handelSubmit() {
+      let self = this;
+      this.$axios
+        .put("/users/edit" + this.user.id, this.user)
+        .then(function(res) {
+          self.$router.push("/user/detail");
+        });
+>>>>>>> 6cb763eaf3edd18ec651719ed43ae95b057a0ac9
+    }
+  }
+};
 </script>
 
 <style scoped>
-  /*#back {*/
-  /*  margin-right: 150px;*/
-  /*}*/
-
+/*#back {*/
+/*  margin-right: 150px;*/
+/*}*/
 </style>

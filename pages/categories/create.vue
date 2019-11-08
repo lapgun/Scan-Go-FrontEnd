@@ -22,9 +22,7 @@ export default {
         name: "",
         cat_parent: ""
       },
-      options: [ 
-        {value: 0, text: "This is parent category "} 
-        ]
+      options: [{ value: 0, text: "This is parent category " }]
     };
   },
   methods: {
@@ -39,7 +37,7 @@ export default {
           });
         });
       });
-      console.log(self.options)
+      console.log(self.options);
     },
     handleSubmit: function() {
       let self = this;
