@@ -2,10 +2,16 @@
   <div class="create-form">
     <b-button variant="success" @click="$router.push('/task')">User</b-button>
     <b-button variant="success" @click="$router.push('/blog')">Blog</b-button>
-    
-    <br /><br /><br />
-    Name:
-    <input v-model="form.name" type="text" class="form-control" placeholder="Enter your cat name " />
+
+    <br />
+    <br />
+    <br />Name:
+    <input
+      v-model="form.name"
+      type="text"
+      class="form-control"
+      placeholder="Enter your cat name "
+    />
     Select category's parent in the select form below :
     <b-form-select v-model="form.cat_parent" :options="options"></b-form-select>
     <br />

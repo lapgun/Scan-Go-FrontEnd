@@ -1,87 +1,101 @@
 <template>
-  <div id="app">
-    <form style="margin-left:600px; width:1000px" method="post" action>
-      <b-row>
-        <b-col cols="8">
-          <div class="login-panel panel panel-default">
-            <div class="panel-heading">Register</div>
-            <div class="panel-body">
-              Username
-              <div class="form-group">
-                <input
-                  class="form-control"
-                  required
-                  placeholder="Please enter your name...."
-                  v-model="form.name"
-                  type="text"
-                />
-              </div>Email
-              <div class="form-group">
-                <input
-                  class="form-control"
-                  placeholder="Please enter your email...."
-                  v-model="form.email"
-                  type="email"
-                  name="email"
-                />
-              </div>Password
-              <div class="form-group">
-                <input
-                  class="form-control"
-                  required
-                  placeholder="Password"
-                  v-model="form.password"
-                  type="password"
-                />
-              </div>Type your password agian
-              <div class="form-group">
-                <input
-                  class="form-control"
-                  required
-                  placeholder="Password"
-                  v-model="form.password1"
-                  type="password"
-                />
-              </div>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" value="1" />Are you an admin ?
-                </label>
-              </div>
-              <b-button variant="info" @click="handleCreate">Register</b-button>
-            </div>
-          </div>
-        </b-col>
-      </b-row>
-    </form>
+
+  <div>
+    <div>
+      <b-form @submit.prevent="handleCreate">
+        <b-form-group label="Your Name:" :class="{ 'form-group--error': $v.form.name.$error }">
+          <b-form-input v-model.trim="$v.form.name.$model" placeholder="Enter name"></b-form-input>
+          <div class="error" v-if="!$v.form.name.required">Name is required</div>
+          <div
+            class="error"
+            v-if="!$v.form.name.minLength"
+          >Name must have at least {{$v.form.name.$params.minLength.min}} letters.</div>
+        </b-form-group>
+
+        <b-form-group label="Your email:" :class="{ 'form-group--error': $v.form.email.$error }">
+          <b-form-input v-model.trim="$v.form.email.$model" placeholder="Enter your email"></b-form-input>
+          <div class="error" v-if="!$v.form.email.required">Email is required</div>
+          <div
+            class="error"
+            v-if="!$v.form.email.minLength"
+          >Name must have at least {{$v.form.email.$params.minLength.min}} letters.</div>
+        </b-form-group>
+
+        <b-form-group
+          label="Your Password:"
+          :class="{ 'form-group--error': $v.form.password.$error }"
+        >
+          <b-form-input
+            type="password"
+            v-model.trim="$v.form.password.$model"
+            placeholder="Enter your password"
+          ></b-form-input>
+          <div class="error" v-if="!$v.form.password.required">password is required</div>
+          <div
+            class="error"
+            v-if="!$v.form.password.minLength"
+          >password must have at least {{$v.form.password.$params.minLength.min}} letters.</div>
+        </b-form-group>
+
+        <b-form-group label="Retype your password again:">
+          <b-form-input
+            type="password"
+            v-model="repassword"
+            placeholder="Retype your password again"
+          ></b-form-input>
+        </b-form-group>
+
+        <b-button type="submit" variant="primary">Submit</b-button>
+      </b-form>
+    </div>
   </div>
 </template>
 <script>
+import { required, minLength } from "vuelidate/lib/validators";
 export default {
   data: function() {
     return {
       form: {
         name: "",
-        password: "",
-        password1: "",
+
         email: "",
-        role: false
-      }
+        password: ""
+      },
+      repassword: ""
     };
   },
+  validations: {
+    form: {
+      name: {
+        required,
+        minLength: minLength(4)
+      },
+      email: {
+        required,
+        minLength: minLength(4)
+      },
+      password: {
+        required,
+        minLength: minLength(4)
+      }
+    }
+  },
+
   methods: {
     handleCreate: function() {
       let self = this;
-      this.$axios
-        .post("/admins", this.form, {
-          headers: {
-            token: this.$store.state.token
-          }
-        })
-        .then(function(res) {
-          console.log(res);
-          self.$router.push("/admins/home");
-        });
+      if (this.$v.$invalid) {
+        alert("failled");
+      } else {
+        if (this.repassword == this.form.password) {
+          this.$axios.post("/admins", this.form).then(function(res) {
+            console.log(res);
+            self.$router.push("/admins");
+          });
+        } else {
+          alert("Repassword is not correct");
+        }
+      }
     }
   }
 };

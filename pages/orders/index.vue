@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
     <div>
         <b-button @click="$router.push('/orders/create')" variant="info">Create</b-button>
         <input type="search" placeholder="Search start.." v-model="search">
@@ -35,53 +36,98 @@
             @change="handleChangePage"
         ></b-pagination>
     </div>
+=======
+  <div>
+    <b-button @click="$router.push('/orders/create')" variant="info">Create</b-button>
+    <input type="search" placeholder="Search start.." v-model="search" />
+    <b-button @click="handleSearch" variant="info">Search</b-button>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Customer_id</th>
+          <th>Order_status</th>
+          <th>Total_price</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(order , index) in orders" :key="index">
+          <td>{{index+1}}</td>
+          <td>{{order.customerId}}</td>
+          <td>{{order.order_status}}</td>
+          <td>{{order.total_price}}</td>
+          <td>
+            <b-button @click="$router.push('/orders/detail/'+order.id)">Detail</b-button>
+            <b-button @click="$router.push('/orders/edit/'+order.id)" variant="success">Edit</b-button>
+            <b-button @click="handleDelete(order.id)" variant="danger">Delete</b-button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <b-pagination
+      v-model="pagination.currentPage"
+      :total-rows="pagination.total"
+      :per-page="pagination.perPage"
+      aria-controls="my-table"
+      @change="handleChangePage"
+    ></b-pagination>
+  </div>
+>>>>>>> 4f2e0f0d636819b7aa1a052db06d025c81f5f6c7
 </template>
 <script>
 export default {
-    mounted : function(){
-        this.getOrders()
+  mounted: function() {
+    this.getOrders();
+  },
+  data: function() {
+    return {
+      orders: {
+        index: "",
+        customerId: "",
+        order_status: "",
+        total_price: ""
+      },
+      search: "",
+      totalResult: 0,
+      pagination: {
+        currentPage: 1,
+        perPage: 10
+      }
+    };
+  },
+  methods: {
+    getOrders: function() {
+      let self = this;
+      this.$axios
+        .get(
+          "/orders?search=" +
+            this.search +
+            "&currentPage=" +
+            this.pagination.currentPage +
+            "&perPage=" +
+            this.pagination.perPage
+        )
+        .then(function(res) {
+          console.log(res);
+          self.orders = res.data.data;
+          self.pagination = res.data.pagination;
+        });
     },
-    data : function(){
-        return {
-            orders : {
-                 index : '',
-                 customerId :'',
-                 order_status: '',
-                 total_price:''
-            },
-            search :'',
-            totalResult : 0,
-            pagination: {
-                currentPage : 1,
-                perPage: 10,
-            }
-        }
+    handleDelete: function(id) {
+      let self = this;
+      this.$axios.delete("/orders/" + id).then(function(res) {
+        console.log(res);
+        self.getOrders();
+      });
     },
-    methods : {
-        getOrders : function(){
-            let self = this
-            this.$axios.get('/orders?search='+this.search+'&currentPage='+this.pagination.currentPage+'&perPage='+this.pagination.perPage)
-            .then(function(res){
-                console.log(res)
-                self.orders = res.data.data
-                self.pagination = res.data.pagination
-            })
-        },
-         handleDelete: function(id){
-            let self = this
-            this.$axios.delete('/orders/'+id)
-            .then(function(res){
-                console.log(res)
-                self.getOrders()
-            })
-        },
-        handleSearch : function(){
-            this.getOrders()
-        },
-         handleChangePage: function(page){
-            this.pagination.currentPage = page
-            this.getOrders()
-        }
+    handleSearch: function() {
+      this.getOrders();
+    },
+    handleChangePage: function(page) {
+      this.pagination.currentPage = page;
+      this.getOrders();
     }
-}
+  }
+};
 </script>

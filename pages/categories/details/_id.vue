@@ -3,7 +3,7 @@
     <b-button variant="success" @click="$router.push('/task')">User</b-button>
     <b-button variant="success" @click="$router.push('/blog')">Blog</b-button>
     <b-button variant="success" @click="$router.push('/task/login')">Login</b-button>
-     <b-button variant="success" @click="$router.push('/task/create')">Create new task</b-button>
+    <b-button variant="success" @click="$router.push('/task/create')">Create new task</b-button>
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -40,26 +40,25 @@ export default {
   },
   data: function() {
     return {
-      tasks: [],
-      
+      tasks: []
     };
   },
   methods: {
-      getTasks :function(){
-                let self = this
-                this.$axios.get('/categories/'+this.$route.params.id)
-                    .then(function (res) {
-                      console.log(res);
-                        self.tasks = res.data.data
-                    })
-            },
-      delTasks: function(id) {
+    getTasks: function() {
+      let self = this;
+      this.$axios
+        .get("/categories/" + this.$route.params.id)
+        .then(function(res) {
+          console.log(res);
+          self.tasks = res.data.data;
+        });
+    },
+    delTasks: function(id) {
       let self = this;
       this.$axios.delete("/categories/" + id).then(function(res) {
         self.getTasks();
       });
     }
-   
   }
 };
 </script>

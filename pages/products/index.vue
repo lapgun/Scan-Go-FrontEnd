@@ -26,7 +26,7 @@
       </thead>
       <tbody>
         <tr v-for="(task,index) in tasks" :key="index">
-          <td >{{index+1}}//{{task.id}}</td>
+          <td>{{index+1}}//{{task.id}}</td>
           <td>{{task.name}}</td>
           <td>{{task.categoriesId}}</td>
           <td>{{task.picture}}</td>

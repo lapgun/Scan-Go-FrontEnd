@@ -18,7 +18,7 @@
           </b-nav-form>
           <b-nav-item-dropdown v-if="user">
             <!-- Using 'button-content' slot -->
-            <template v-slot:button-content >
+            <template v-slot:button-content>
               <em>{{user.name}}</em>
             </template>
             <b-dropdown-item @click="$router.push('user/detail')">Profile</b-dropdown-item>
@@ -30,30 +30,26 @@
     </b-navbar>
   </div>
 
-<!--  end header-->
-
+  <!--  end header-->
 </template>
 
 <script>
-    const Cookie = process.client ? require("js-cookie") : undefined;
-    export default {
-
-        computed:{
-            user(){
-                return this.$store.state.user
-            }
-        },
-        methods :{
-            handelSigOut(){
-                    Cookie.remove("token");
-                    this.$store.commit("setToken", null);
-                    this.$store.commit("setUser",null);
-
-            }
-        }
+const Cookie = process.client ? require("js-cookie") : undefined;
+export default {
+  computed: {
+    user() {
+      return this.$store.state.user;
     }
+  },
+  methods: {
+    handelSigOut() {
+      Cookie.remove("token");
+      this.$store.commit("setToken", null);
+      this.$store.commit("setUser", null);
+    }
+  }
+};
 </script>
 
 <style>
-
 </style>
