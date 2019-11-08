@@ -13,13 +13,9 @@
       placeholder="Enter your product's name "
     />
     Select product's category in the select form below :
-    <b-form-select v-model="form.categoriesId" :options="options"></b-form-select>
-    <input
-      v-model="form.picture"
-      type="text"
-      class="form-control"
-      placeholder="Enter your product picture"
-    />
+    <b-form-select v-model="form.categoriesId" ></b-form-select>
+    <input type="file" id="file" ref="picture" v-on:change="handleFileUpload()"/>
+
     <input
       v-model="form.price"
       type="text"
@@ -52,9 +48,9 @@
 </template>
 <script>
     export default {
-        mounted: function () {
-            this.getCatProduct();
-        },
+        // mounted: function () {
+        //     this.getCatProduct();
+        // },
         data: function () {
             return {
                 form: {
@@ -66,28 +62,41 @@
                     detail: "",
                     order_time: ""
                 },
-                options: [{value: 0, text: "This is parent category "}]
+                // options: [{value: 0, text: "This is parent category "}]
             };
         },
         methods: {
-            getCatProduct: function () {
-                let self = this;
-                this.$axios.get("/categories/cat_product").then(function (res) {
-                    let data = res.data.data.rows;
-                    data.forEach(value => {
-                        self.options.push({
-                            value: value.id,
-                            text: value.name
-                        });
-                    });
-                });
-                console.log(self.options);
-            },
+            // getCatProduct: function () {
+            //     let self = this;
+            //     this.$axios.get("/categories/cat_product").then(function (res) {
+            //         let data = res.data.data.rows;
+            //         data.forEach(value => {
+            //             self.options.push({
+            //                 value: value.id,
+            //                 text: value.name
+            //             });
+            //         });
+            //     });
+            //     console.log(self.options);
+            // },
             handleSubmit: function () {
+                let formData = new FormData();
+
+                formData.append('picture', this.form.picture);
                 let self = this;
-                this.$axios.post("/products", this.form).then(function (res) {
-                    self.$router.push("/products");
-                });
+                this.$axios.post("/products/create",formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
+                    .then(function (res) {
+                        console.log('kjjkj',res);
+                        self.$router.push("/products");
+                    });
+            },
+            handleFileUpload() {
+                this.form.picture = this.$refs.picture.files[0];
+
             }
         }
     };
