@@ -38,10 +38,8 @@
       </b-collapse>
     </b-navbar>
   </div>
-
   <!--  end header-->
 </template>
-
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
@@ -55,7 +53,6 @@ export default {
       Cookie.remove("token");
       this.$store.commit("setToken", null);
       this.$store.commit("setUser", null);
-
     }
   }
 };

@@ -65,7 +65,7 @@
 </template>
 
 <script>
-<<<<<<< HEAD
+
     const Cookie = process.client ? require('js-cookie') : undefined;
     import _ from 'lodash'
     export default {
@@ -92,35 +92,9 @@
                 this.userDetail ='';
             }
         }
-=======
-export default {
-  computed: {
-    user() {
-      return this.$store.state.user;
     }
-  },
-  // data(){
-  //     return{
-  //         form :{
-  //             name :'',
-  //             email : '',
-  //             address :''
-  //         }
-  //     }
 
-  // },
-  methods: {
-    handelSubmit() {
-      let self = this;
-      this.$axios
-        .put("/users/edit" + this.user.id, this.user)
-        .then(function(res) {
-          self.$router.push("/user/detail");
-        });
->>>>>>> 6cb763eaf3edd18ec651719ed43ae95b057a0ac9
-    }
-  }
-};
+
 </script>
 
 <style scoped>
