@@ -1,6 +1,6 @@
 <template>
     <div>
-        <table>
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>STT</th>
@@ -18,7 +18,7 @@
                 </tr>
             </tbody>
         </table>
-        <b-button variant="info" @click="$router.push('/admins')">Oder_details</b-button>
+        <b-button variant="info" @click="$router.push('/admins/home')">Home</b-button>
     </div>
 </template>
 <script>

@@ -3,7 +3,7 @@
         <b-button @click="$router.push('/order_details/create')" variant="info">Create</b-button>
         <input type="search" placeholder="Search start.." v-model="search">
         <b-button @click="handleSearch" variant="info">Search</b-button>
-        <table>
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>STT</th>

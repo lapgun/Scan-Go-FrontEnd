@@ -71,7 +71,7 @@
         methods: {
             handelSubmit() {
                 let self = this;
-                this.$axios.put('http://127.0.0.1:4000/users/edit' + this.user.id + this.user)
+                this.$axios.put('/users/edit' + this.user.id + this.user)
                     .then(function (res) {
                         self.$router.push('/user/detail');
                     })
