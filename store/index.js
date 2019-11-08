@@ -1,33 +1,24 @@
-const cookieparser = process.server ? require('cookieparser') : undefined
+const cookieparser = process.server ? require('cookieparser') : undefined ;
+  
 export const state = () => {
   return {
-    globalText: 'No thing',
-    token: '',
-    user : {}
+    token: null
   }
-};
+}
 export const mutations = {
-  setToken(state, token) {
+  setToken (state, token) {
     state.token = token
-  },
-  setUser(state,user){
-    state.user = user
   }
-};
+}
 export const actions = {
-  nuxtServerInit({commit}, {req}) {
-    let token = null;
-    let user = null;
+  nuxtServerInit ({ commit }, { req }) {
+    let token = null
     if (req.headers.cookie) {
-      const parsed = cookieparser.parse(req.headers.cookie);
-      token = parsed.token;
-      commit('setToken',token)
+      const parsed = cookieparser.parse(req.headers.cookie)
+      console.log(parsed)
+      token = parsed.token
     }
-    if (req.headers.cookie){
-      const parsed =cookieparser.parse(req.headers.cookie);
-      user = parsed.user;
-      commit('setUser', user)
-    }
-
+    commit('setToken', token)
   }
+
 };

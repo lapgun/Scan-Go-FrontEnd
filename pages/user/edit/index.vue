@@ -64,6 +64,30 @@ export default {
   //         }
   //     }
 
+        // computed: {
+        //     user() {
+        //         return this.$store.state.user
+        //     }
+        // },
+        // // data(){
+        // //     return{
+        // //         user :{
+        // //             name :'',
+        // //             email : '',
+        // //             address :''
+        // //         }
+        // //     }
+        // //
+        // // },
+        // methods: {
+        //     handelSubmit() {
+        //         let self = this;
+        //         this.$axios.put('/users/edit' + this.user.id + this.user)
+        //             .then(function (res) {
+        //                 self.$router.push('/user/detail');
+        //             })
+        //     }
+        // }
   // },
   methods: {
     handelSubmit() {

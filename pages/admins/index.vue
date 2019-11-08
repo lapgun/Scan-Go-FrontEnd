@@ -1,4 +1,42 @@
 <template>
+
+    <!-- <div>
+        <b-button @click="$router.push('/admins/create')" variant="info">Create</b-button>
+        <input type="search" placeholder="Search start.." v-model="search">
+        <b-button @click="handleSearch" variant="info">Search</b-button>
+        <b-button @click="$router.push('/admins/login')">Login</b-button>
+        <table>
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(admin , index) in admins" :key="index">
+                    <td>{{index+1}}</td>
+                    <td>{{admin.name}}</td>
+                    <td>{{admin.email}}</td>
+                    <td>{{admin.role == '1' ? 'admin' : 'user'}}</td>
+                    <td>
+                        <b-button @click="$router.push('/admins/detail/'+admin.id)">Detail</b-button>
+                        <b-button @click="$router.push('/admins/edit/'+admin.id)" variant="success">Edit</b-button>
+                        <b-button @click="handleDelete(admin.id)" variant="danger">Delete</b-button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <b-pagination
+            v-model="pagination.currentPage"
+            :total-rows="pagination.total"
+            :per-page="pagination.perPage"
+            aria-controls="my-table"
+            @change="handleChangePage"
+        ></b-pagination>
+    </div> -->
+
   <div>
     <b-button @click="$router.push('/admins/create')" variant="info">Create</b-button>
     <input type="search" placeholder="Search start.." v-model="search" />
