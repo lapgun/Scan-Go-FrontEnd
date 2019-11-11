@@ -12,12 +12,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(user,index) in users">
+        <tr v-for="(user , index) in users">
           <td>{{index ++}}</td>
           <td>{{user.name}}</td>
           <td>{{user.email}}</td>
           <td>{{user.address}}</td>
-
           <td>
             <button class="btn btn-danger" @click="handelDelete(user.id)">Delete</button>
             <button class="btn btn-secondary" @click="$router.push('/user/detail/'+user.id)">Detail</button>
@@ -56,7 +55,7 @@ export default {
       let self = this;
       this.$axios
         .get(
-          "http://127.0.0.1:4000/users?search=" +
+          "/users?search=" +
             this.search +
             "&currentPage=" +
             this.pagination.currentPage +
@@ -73,7 +72,7 @@ export default {
     handelDelete(id) {
       let self = this;
       this.$axios
-        .delete("http://127.0.0.1:4000/users/" + id)
+        .delete("/users/" + id)
         .then(function(res) {
           self.getUsers();
         });
