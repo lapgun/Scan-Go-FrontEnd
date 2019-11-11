@@ -1,42 +1,5 @@
 <template>
-<<<<<<< HEAD
-    <div>
-        <b-button @click="$router.push('/orders/create')" variant="info">Create</b-button>
-        <input type="search" placeholder="Search start.." v-model="search">
-        <b-button @click="handleSearch" variant="info">Search</b-button>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>STT</th>
-                    <th>Customer_id</th>
-                    <th>Order_status</th>
-                    <th>Total_price</th>
-                    <th>Action</th> 
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(order , index) in orders" :key="index">
-                    <td>{{index+1}}</td>
-                    <td>{{order.customerId}}</td>
-                    <td>{{order.order_status}}</td>
-                    <td>{{order.total_price}}</td>
-                    <td>
-                        <b-button @click="$router.push('/orders/detail/'+order.id)">Detail</b-button>
-                        <b-button @click="$router.push('/orders/edit/'+order.id)" variant="success">Edit</b-button>
-                        <b-button @click="handleDelete(order.id)" variant="danger">Delete</b-button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <b-pagination
-            v-model="pagination.currentPage"
-            :total-rows="pagination.total"
-            :per-page="pagination.perPage"
-            aria-controls="my-table"
-            @change="handleChangePage"
-        ></b-pagination>
-    </div>
-=======
+
   <div>
     <b-button @click="$router.push('/orders/create')" variant="info">Create</b-button>
     <input type="search" placeholder="Search start.." v-model="search" />
@@ -73,7 +36,6 @@
       @change="handleChangePage"
     ></b-pagination>
   </div>
->>>>>>> 4f2e0f0d636819b7aa1a052db06d025c81f5f6c7
 </template>
 <script>
 export default {
