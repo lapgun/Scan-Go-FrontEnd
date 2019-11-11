@@ -82,6 +82,12 @@
             handleSubmit: function () {
                 let formData = new FormData();
 
+                formData.append('name', this.form.name);
+                formData.append('categoriesId', this.form.categoriesId);
+                formData.append('price', this.form.price);
+                formData.append('description', this.form.description);
+                formData.append('detail', this.form.detail);
+                formData.append('order_price', this.form.order_price);
                 formData.append('picture', this.form.picture);
                 let self = this;
                 this.$axios.post("/products/create",formData, {
