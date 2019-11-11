@@ -11,7 +11,7 @@
             <div class="row" v-if="user">
               <div class="col-12 col-md-8">
                 <div class="form-group row">
-<<<<<<< HEAD
+
                   <label
                          class="col-md-4 col-form-label text-md-left">Tên Người Dùng :</label>
                   <b-input class="col-md-8 col-form-label text-md-left" v-model="userDetail.name"></b-input>
@@ -25,18 +25,6 @@
                   <label
                          class="col-md-4 col-form-label text-md-left">Nơi Sinh Sống :</label>
                   <b-input class="col-md-8 col-form-label text-md-left" v-model="userDetail.address"></b-input>
-=======
-                  <label class="col-md-4 col-form-label text-md-left">Tên Người Dùng :</label>
-                  <b-input class="col-md-8 col-form-label text-md-left" v-model="user.name"></b-input>
-                </div>
-                <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-md-left">Địa chỉ Email :</label>
-                  <b-input class="col-md-8 col-form-label text-md-left" v-model="user.email"></b-input>
-                </div>
-                <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-md-left">Nơi Sinh Sống :</label>
-                  <b-input class="col-md-8 col-form-label text-md-left" v-model="user.address"></b-input>
->>>>>>> 6cb763eaf3edd18ec651719ed43ae95b057a0ac9
                 </div>
                 <div class="form-group row">
                   <label class="col-md-4 col-form-label text-md-right"></label>
