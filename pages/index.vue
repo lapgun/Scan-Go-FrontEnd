@@ -17,10 +17,10 @@
             <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
           </b-nav-form>
           <b-nav-item-dropdown v-if="user">
-            <!-- Using 'button-content' slot -->
+            <!-- Using 'button-content' slot
             <template v-slot:button-content>
               <em>{{user.name}}</em>
-            </template>
+            </template>-->
             <b-dropdown-item @click="$router.push('user/detail')">Profile</b-dropdown-item>
             <b-dropdown-item href="#" @click="handelSigOut">Sign Out</b-dropdown-item>
           </b-nav-item-dropdown>
@@ -28,6 +28,7 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
+    <h1>Hello</h1>
   </div>
 
   <!--  end header-->
@@ -51,5 +52,6 @@ export default {
 };
 </script>
 
-<style>
-</style>
+
+
+
