@@ -1,5 +1,4 @@
 <template>
-  <!--  header -->
   <div>
     <b-navbar toggleable="lg" type="dark" variant="info">
       <b-navbar-brand href="#">Home</b-navbar-brand>
@@ -59,5 +58,4 @@ export default {
 </script>
 <style>
 </style>
-
 

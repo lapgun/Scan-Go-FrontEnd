@@ -2,7 +2,6 @@
   <div>
     <b-button variant="success" @click="$router.push('/products/create')">Create new task</b-button>
     <table class="table table-bordered">
-      <thead>
       <tr>
         <th>Number</th>
         <th>Name</th>
@@ -13,23 +12,19 @@
         <th>detail</th>
         <th>order_time</th>
       </tr>
-      </thead>
-      <tbody>
       <tr>
         <td>{{tasks.id}}</td>
         <td>{{tasks.name}}</td>
         <td>{{tasks.categoriesId}}</td>
-                  <td>{{tasks.picture}}</td>
+        <td><img :src="tasks.picture" ></td>
         <td>{{tasks.price}}</td>
         <td>{{tasks.description}}</td>
         <td>{{tasks.detail}}</td>
         <td>{{tasks.order_time}}</td>
         <td>
-          <b-button class="btn btn-info" @click="$router.push('/products/edit/'+task.id)">Update</b-button>
-          <b-button class="btn btn-info" variant="danger" @click="delTasks(task.id)">Delete</b-button>
+          <b-button class="btn btn-dark" @click="$router.push('/products')">Back</b-button>
         </td>
       </tr>
-      </tbody>
     </table>
   </div>
 </template>
@@ -61,3 +56,9 @@
         }
     };
 </script>
+<style>
+  img {
+    width: 50px;
+    height: 50px;
+  }
+</style>

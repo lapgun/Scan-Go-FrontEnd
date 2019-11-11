@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button variant="success" href="/products">Home</b-button>
+    <b-button variant="success" @click="$router.push('/admins/home')">Home</b-button>
     <br />
     <br />
     <input v-model="search" type="text" class="form-control" placeholder="Enter search key" />
@@ -29,7 +29,7 @@
           <td>{{index+1}}//{{task.id}}</td>
           <td>{{task.name}}</td>
           <td>{{task.categoriesId}}</td>
-          <td>{{task.picture}}</td>
+          <td><img :src="task.picture" ></td>
           <td>{{task.price}}</td>
           <td>
             <b-button v-b-toggle="'1'" class="m-1">Show</b-button>
@@ -70,7 +70,6 @@ export default {
     getTasks: function() {
       let self = this;
       this.$axios.get("/products").then(function(res) {
-        console.log(res);
         self.tasks = res.data.data;
       });
     },
@@ -84,3 +83,9 @@ export default {
   }
 };
 </script>
+<style>
+  img {
+    width: 50px;
+    height: 50px;
+  }
+</style>

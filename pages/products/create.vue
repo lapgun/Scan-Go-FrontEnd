@@ -1,12 +1,6 @@
 
 <template>
   <div class="create-form">
-    <b-button variant="success" @click="$router.push('/task')">User</b-button>
-    <b-button variant="success" @click="$router.push('/blog')">Blog</b-button>
-    <b-button variant="success" @click="$router.push('/task/login')">Login</b-button>
-    <br />
-    <br />
-    <br />Name:
     <input
       v-model="form.name"
       type="text"
@@ -17,7 +11,7 @@
       v-model="form.categoriesId"
       type="text"
       class="form-control"
-      placeholder="Enter your product's categories ";
+      placeholder="Enter your product's categories "
     />
     <input type="file" id="file" ref="picture" v-on:change="handleFileUpload()"/>
     <input
@@ -67,7 +61,6 @@
             };
         },
         methods: {
-
             handleSubmit() {
                 let formData = new FormData();
                 // formData.append('form',this.form);
@@ -86,7 +79,6 @@
                         }
                     })
                     .then(function(res) {
-                        console.log(res)
                         self.$router.push("/products");
                     });
             },

@@ -20,6 +20,7 @@
     </table>
     <b-button variant="info" @click="$router.push('/orders')">Oder_products</b-button>
   </div>
+
 </template>
 <script>
 export default {

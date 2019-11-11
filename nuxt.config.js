@@ -14,6 +14,7 @@ export default {
         content: process.env.npm_package_description || ""
       }
     ],
+
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
   },
   /*
@@ -21,15 +22,19 @@ export default {
    */
   loading: { color: "#fff" },
   /*
+
    ** Global CSS
    */
   css: [],
   /*
    ** Plugins to load before mounting the App
    */
+
   plugins: [
-    "~/plugins/axios"
+    "~/plugins/axios",
+    "~/plugins/v-validate"
   ],
+
 
   /*
    ** Nuxt.js dev-modules

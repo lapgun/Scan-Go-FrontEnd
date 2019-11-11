@@ -1,5 +1,5 @@
 <template>
-  <div>
+    <div>
     <b-button @click="$router.push('/order_statuses/create')" variant="info">Create</b-button>
     <input type="search" placeholder="Search start.." v-model="search" />
     <b-button @click="handleSearch" variant="info">Search</b-button>

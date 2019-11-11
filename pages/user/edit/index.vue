@@ -54,6 +54,7 @@
 
 <script>
 
+
     const Cookie = process.client ? require('js-cookie') : undefined;
     import _ from 'lodash'
     export default {
@@ -80,13 +81,11 @@
                 this.userDetail ='';
             }
         }
-    }
 
+    }
 
 </script>
 
 <style scoped>
-/*#back {*/
-/*  margin-right: 150px;*/
-/*}*/
+
 </style>
