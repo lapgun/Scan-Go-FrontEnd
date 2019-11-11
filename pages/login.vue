@@ -37,9 +37,7 @@
         </b-col>
       </b-row>
     </div>
-   token : {{this.$store.state.token}}
   </div>
-  
 </template>
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
