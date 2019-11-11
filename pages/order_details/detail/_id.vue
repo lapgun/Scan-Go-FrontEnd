@@ -1,23 +1,4 @@
 <template>
-    <!-- <div>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>STT</th>
-                    <th>Order_id</th>
-                    <th>Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{order_details.id}}</td>
-                    <td>{{order_details.orderId}}</td>
-                    <td>{{order_details.price}}</td>
-                </tr>
-            </tbody>
-        </table>
-        <b-button variant="info" @click="$router.push('/order_details')">Oder_details</b-button>
-    </div> -->
   <div>
     <table class="table table-bordered">
       <thead>

@@ -5,7 +5,7 @@ export default function ({ $axios, store, redirect  }) {
       } else {
         config.headers.common['token'] = ''
       }
-    })
+    });
     $axios.onError(error => {
        if(error.response.status === 403) {
          redirect('/err/403')
