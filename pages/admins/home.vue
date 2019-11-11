@@ -48,7 +48,7 @@
 				<li><a @click="$router.push('/user')"> Users</a></li>
 			</ul>
 		</div>
-		<h1>Hello : {{admin_id}}</h1>
+		<h1>Hello everybody : {{admin_id}}</h1>
 	</div>
 	
 </template>

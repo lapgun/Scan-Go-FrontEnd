@@ -1,12 +1,10 @@
 <template>
-
   <div>
-    <table>
+    <table class="table table-bordered">
       <thead>
         <tr>
           <th>STT</th>
           <th>Name</th>
-          <th>Password</th>
           <th>Email</th>
           <th>Role</th>
         </tr>
@@ -15,7 +13,6 @@
         <tr>
           <td>{{admins.id}}</td>
           <td>{{admins.name}}</td>
-          <td>{{admins.password}}</td>
           <td>{{admins.email}}</td>
           <td>{{admins.role == 1 ? 'admin' : 'user'}}</td>
         </tr>
@@ -34,7 +31,6 @@ export default {
       admins: {
         id: "",
         name: "",
-        password: "",
         email: "",
         role: false
       }

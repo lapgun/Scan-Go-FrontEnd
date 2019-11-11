@@ -1,7 +1,7 @@
 <template>
   <div>
     <input type="string" v-model="form.name" placeholder="Name .." />
-    <input type="password" v-model="form.email" placeholder="Password..." />
+    <input type="password" v-model="form.password" placeholder="Password..." />
     <input type="email" v-model="form.email" placeholder="Email .." />
     <input type="checkbox" v-model="form.role" value="1" />
     <b-button @click="handleCreate" variant="info">Update</b-button>

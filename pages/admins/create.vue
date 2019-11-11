@@ -90,7 +90,7 @@ export default {
         if (this.repassword == this.form.password) {
           this.$axios.post("/admins", this.form).then(function(res) {
             console.log(res);
-            self.$router.push("/admins");
+            self.$router.push("/admins/home");
           });
         } else {
           alert("Repassword is not correct");

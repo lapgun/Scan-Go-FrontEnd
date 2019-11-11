@@ -56,7 +56,7 @@ export default {
       let self = this;
       this.$axios
         .get(
-          "http://127.0.0.1:4000/users?search=" +
+          "/users?search=" +
             this.search +
             "&currentPage=" +
             this.pagination.currentPage +

@@ -42,11 +42,7 @@ export default {
     methods : {
         handleLogin : function(id){
             let self = this
-            this.$axios.post('/admins/login',this.admins,{
-                headers : {
-                    token : this.$store.state.token
-                }
-            })
+            this.$axios.post('/admins/login',this.admins)
             .then(function(res){
                 console.log(res)
                 self.$store.commit('setToken', res.data.token)
