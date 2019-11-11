@@ -1,5 +1,4 @@
 <template>
-
   <div>
     <div>
       <b-form @submit.prevent="handleCreate">
@@ -57,7 +56,6 @@ export default {
     return {
       form: {
         name: "",
-
         email: "",
         password: ""
       },

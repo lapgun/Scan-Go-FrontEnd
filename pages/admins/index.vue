@@ -81,7 +81,6 @@ export default {
     handleDelete: function(id) {
       let self = this;
       this.$axios.delete("/admins/" + id).then(function(res) {
-        console.log(res);
         self.getAdmins();
       });
     },
