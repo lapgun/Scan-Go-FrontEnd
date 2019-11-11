@@ -25,7 +25,7 @@
             <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
           </b-nav-form>
           <b-nav-item-dropdown v-if="user">
-            <!-- Using 'button-content' slot -->
+            Using 'button-content' slot
             <template v-slot:button-content>
               <em>{{user.name}}</em>
             </template>
@@ -36,6 +36,7 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
+    <h1>Hello</h1>
   </div>
   <!--  end header-->
 </template>
@@ -56,6 +57,7 @@ export default {
   }
 };
 </script>
-<style>
-</style>
+
+
+
 
