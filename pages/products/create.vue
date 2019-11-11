@@ -7,13 +7,9 @@
       class="form-control"
       placeholder="Enter your product's name "
     />
-    <input
-      v-model="form.categoriesId"
-      type="text"
-      class="form-control"
-      placeholder="Enter your product's categories "
-    />
-    <input type="file" id="file" ref="picture" v-on:change="handleFileUpload()"/>
+    Select product's category in the select form below :
+    <b-form-select v-model="form.categoriesId" :options="options"></b-form-select>
+    <input type="file" id="file" ref="picture" v-on:change="handleFileUpload()" />
     <input
       v-model="form.price"
       type="text"
@@ -45,46 +41,62 @@
   </div>
 </template>
 <script>
-    export default {
-        data: function() {
-            return {
-                form: {
-                    name: "",
-                    categoriesId: "",
-                    picture: "",
-                    price: "",
-                    description: "",
-                    detail: "",
-                    order_time: ""
-                },
-
-            };
-        },
-        methods: {
-            handleSubmit() {
-                let formData = new FormData();
-                // formData.append('form',this.form);
-                formData.append('picture', this.picture);
-                formData.append('name', this.form.name);
-                formData.append('price', this.form.price);
-                formData.append('description', this.form.description);
-                formData.append('detail', this.form.detail);
-                formData.append('order_time', this.form.order_time);
-
-                let self = this;
-                this.$axios
-                    .post("/products/create" , formData , {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        }
-                    })
-                    .then(function(res) {
-                        self.$router.push("/products");
-                    });
-            },
-            handleFileUpload(){
-                this.picture = this.$refs.picture.files[0];
-            }
-        }
+export default {
+   mounted: function() {
+    this.getCatProduct();
+  },
+  data: function() {
+    return {
+      form: {
+        name: "",
+        categoriesId: "",
+        picture: "",
+        price: "",
+        description: "",
+        detail: "",
+        order_time: ""
+      },
+      options: [{ value: 0, text: "This is parent category " }]
     };
+  },
+  methods: {
+    getCatProduct: function() {
+      let self = this;
+      this.$axios.get("/categories/cat_product").then(function(res) {
+        let data = res.data.data.rows;
+        data.forEach(value => {
+          self.options.push({
+            value: value.id,
+            text: value.name
+          });
+        });
+      });
+      console.log(self.options);
+    },
+    handleSubmit() {
+      let formData = new FormData();
+      // formData.append('form',this.form);
+      formData.append("picture", this.picture);
+      formData.append("name", this.form.name);
+      formData.append("price", this.form.price);
+      formData.append("description", this.form.description);
+      formData.append("detail", this.form.detail);
+      formData.append("order_time", this.form.order_time);
+
+      let self = this;
+      this.$axios
+        .post("/products/create", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        })
+        .then(function(res) {
+          self.$router.push("/products");
+        });
+    },
+    handleFileUpload() {
+      this.picture = this.$refs.picture.files[0];
+    }
+  }
+};
 </script>
