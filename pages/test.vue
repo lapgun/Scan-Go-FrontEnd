@@ -1,50 +1,67 @@
 <template>
-  <form @submit.prevent="submit">
-    <div class="form-group" :class="{ 'form-group--error': $v.name.$error }">
-      <label class="form__label">Name</label>
-      <input class="form__input" v-model.trim="$v.name.$model" />
-    </div>
-    <div class="error" v-if="!$v.name.required">Name is required</div>
-    <div
-      class="error"
-      v-if="!$v.name.minLength"
-    >Name must have at least {{$v.name.$params.minLength.min}} letters.</div>
-    <button class="button" type="submit" :disabled="submitStatus === 'PENDING'">Submit!</button>
-    <p class="typo__p" v-if="submitStatus === 'OK'">Thanks for your submission!</p>
-    <p class="typo__p" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p>
-    <p class="typo__p" v-if="submitStatus === 'PENDING'">Sending...</p>
-  </form>
+  <div>
+    <b-navbar toggleable="lg" type="dark" variant="info">
+      <b-navbar-brand href="#">Home</b-navbar-brand>
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav>
+          <b-nav-item-dropdown href="#">
+            <template v-slot:button-content>
+              <em>Categories</em>
+            </template>
+            <b-dropdown-item>Thực Phẩm</b-dropdown-item>
+          </b-nav-item-dropdown>
+          <b-nav-item href="#" disabled>Disabled</b-nav-item>
+        </b-navbar-nav>
+        <!-- Right aligned nav items -->
+        <b-navbar-nav class="ml-auto">
+          <b-nav-form>
+            <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
+            <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
+          </b-nav-form>
+          <!-- <b-nav-item-dropdown v-if="user">
+            Using 'button-content' slot
+            <template v-slot:button-content>
+              <em>{{$store.state.user.name}}</em>
+            </template>
+            <b-dropdown-item @click="$router.push('user/detail')">Profile</b-dropdown-item>
+            <b-dropdown-item href="#" @click="handelSigOut">Sign Out</b-dropdown-item>
+          </b-nav-item-dropdown>
+          <b-nav-item @click="$router.push('/login')" v-else>
+            <i class="fa fa-lock"></i>Login
+          </b-nav-item> -->
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
+    <h1>Hello :{{}}</h1>
+  </div>
+  <!--  end header-->
 </template>
 <script>
-import { required, minLength } from "vuelidate/lib/validators";
-
+const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
-  data() {
-    return {
-      name: "",
-      age: 0,
-      submitStatus: null
-    };
-  },
-  validations: {
-    name: {
-      required,
-      minLength: minLength(4)
-    }
-  },
+  middleware: "notAuthenticated",
+  // mounted: function() {
+  //   this.getUsers();
+  // },
+  // data: function() {
+  //   return {
+  //     user_id: ""
+  //   };
+  // },
   methods: {
-    submit() {
-      console.log("submit!");
-      this.$v.$touch();
-      if (this.$v.$invalid) {
-        this.submitStatus = "ERROR";
-      } else {
-        // do your submit logic here
-        this.submitStatus = "PENDING";
-        setTimeout(() => {
-          this.submitStatus = "OK";
-        }, 500);
-      }
+    // getUsers: function() {
+    //   let self = this;
+    //   this.$axios.get("/users").then(function(res) {
+    //     console.log(res);
+    //     self.user_id = res.data.decoded.user_id;
+    //     self.users = res.data.data;
+    //   });
+    // },
+    handelSigOut() {
+      Cookie.remove("token");
+      this.$store.commit("setToken", null);
+      this.$router.push("/login");
     }
   }
 };

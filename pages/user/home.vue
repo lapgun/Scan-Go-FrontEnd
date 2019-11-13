@@ -10,10 +10,10 @@
 					<a class="navbar-brand" href="#"><span>Scan & Go</span>Admin</a>
 					<li>
 						<ul class="nav menu" style="color:#30a5ff">
-							<li class="active"><a @click="$router.push('/admins/home')"> Home</a></li>
-							<li><a @click="$router.push('/admins/detail/'+admin_id)">Admin</a></li>
-							<li><a @click="$router.push('/admins/edit/'+admin_id)">Profile</a></li>
-							<li><a @click="$router.push('/admins/create')">Register</a></li>
+							<li class="active"><a @click="$router.push('/user/home')"> Home</a></li>
+							<li><a @click="$router.push('/user/detail/'+user_id)">Admin</a></li>
+							<li><a @click="$router.push('/user/edit/'+user_id)">Profile</a></li>
+							<li><a @click="$router.push('/user/register')">Register</a></li>
 							<li><a @click="handleLogout"> Logout</a></li>
 						</ul>
 					</li>
@@ -38,45 +38,44 @@
 				</div>
 			</form>
 			<ul class="nav menu" style="display:block">
-				<li class="active"><a @click="$router.push('/admins/home')"> Home</a></li>
+				<li class="active"><a @click="$router.push('/user/home')"> Home</a></li>
 				<li><a @click="$router.push('/categories')">Categories</a></li>
 				<li><a @click="$router.push('/products')"> Products</a></li>
 				<li><a @click="$router.push('/orders')"> Orders</a></li>
-				<li><a @click="$router.push('/order_details')"> Order_details</a></li>
-				<li><a @click="$router.push('/order_products')"> Order_products</a></li>
-				<li><a @click="$router.push('/order_statuses')"> Order_statuses</a></li>
 				<li><a @click="$router.push('/user')"> Users</a></li>
 			</ul>
 		</div>
-		<h1>Hello everybody : {{admin_id}}</h1>
+		<h1>Hello : {{user_id}}</h1>
 	</div>
 	
 </template>
 <script>
+
 const Cookie = process.client ? require('js-cookie') : undefined
 export default {
+	middleware: 'authenticated',
 	mounted : function(){
-        this.getAdmins()
+        this.getUsers()
     },
     data : function(){
         return {
-			admin_id: ""
+			user_id: "",
 		}
 	},
 	methods :{
-		getAdmins : function(){
+		getUsers : function(){
             let self = this
-            this.$axios.get('/admins')
+            this.$axios.get('/users')
             .then(function(res){
 				console.log(res)
-				self.admin_id =res.data.decoded.admin_id 
-                self.admins = res.data.data
+				self.user_id =res.data.decoded.user_id 
+                self.users = res.data.data
             })
         },
 		handleLogout : function(){
 			Cookie.remove("token");
       		this.$store.commit("setToken", null);
-      		this.$router.push("/admins/login");
+      		this.$router.push('/login');
 		}
 	}
 }

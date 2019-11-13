@@ -43,23 +43,30 @@
   </div>
 </template>
 <script>
-    import _ from 'lodash'
-    export default {
-        computed:{
-            user(){
-                return _.cloneDeep(this.$store.state.user)
-            }
-        },
-        data(){
-            return{
-                userDetail : _.cloneDeep(this.$store.state.user)
-            }
-
+  export default {
+    mounted : function(){
+      this.getUsers()
+    },
+    data : function(){
+      return {
+        users :{
+          id : '',
+          email :'',
+          address : ''
         }
-
-    };
-
-
+      }
+    },
+    methods : {
+      getUsers : function(){
+        let self = this
+        this.$axios.get('/users'/+this.$route.params.id)
+        .then(function(res){
+          console.log(res)
+          self.users = res.data.data
+        })
+      }
+    }
+  }
 </script>
 
 <style scoped>

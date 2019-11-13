@@ -20,16 +20,16 @@
           <li>
             <ul class="nav menu" style="color:#30a5ff">
               <li class="active">
-                <a @click="$router.push('/admins/home')">Home</a>
+                <a @click="$router.push('/user/home')">Home</a>
               </li>
               <li>
-                <a @click="$router.push('/admins/detail/'+admin_id)">Admin</a>
+                <a @click="$router.push('/user/detail/'+user_id)">Admin</a>
               </li>
               <li>
-                <a @click="$router.push('/admins/edit/'+admin_id)">Profile</a>
+                <a @click="$router.push('/user/edit/'+user_id)">Profile</a>
               </li>
               <li>
-                <a @click="$router.push('/admins/create')">Register</a>
+                <a @click="$router.push('/user/register')">Register</a>
               </li>
               <li>
                 <a @click="handleLogout">Logout</a>
@@ -57,14 +57,20 @@
         <div class="divider"></div>
         <form role="search">
           <div class="form-group">
-            <input type="text" class="form-control" placeholder="Search" />
+            <input
+              type="text"
+              @change="handleSearch"
+              v-model="search"
+              class="form-control"
+              placeholder="Search"
+            />
           </div>
         </form>
         <ul class="nav menu" style="display:block">
-          <li class="active">
-            <a @click="$router.push('/admins/home')">Home</a>
-          </li>
           <li>
+            <a @click="$router.push('/user/home')">Home</a>
+          </li>
+          <li class="active">
             <a @click="$router.push('/categories')">Categories</a>
           </li>
           <li>
@@ -74,24 +80,11 @@
             <a @click="$router.push('/orders')">Orders</a>
           </li>
           <li>
-            <a @click="$router.push('/order_details')">Order_details</a>
-          </li>
-          <li>
-            <a @click="$router.push('/order_products')">Order_products</a>
-          </li>
-          <li>
-            <a @click="$router.push('/order_statuses')">Order_statuses</a>
-          </li>
-          <li>
             <a @click="$router.push('/user')">Users</a>
           </li>
         </ul>
       </div>
       <div class="col-sm-8 col-lg-10 sidebar">
-        <input v-model="search" type="text" class="form-control" placeholder="Enter search key" />
-        <button @click="getTasks">Search</button>
-        <br />
-        <br />
         <b-button variant="success" @click="$router.push('/categories/create')">Create new task</b-button>
         <table id="my-table" class="table table-bordered">
           <thead>
@@ -127,31 +120,50 @@
   </div>
 </template>
 <script>
+const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
   mounted: function() {
     this.getTasks();
+    this.getAdmins();
   },
   data: function() {
     return {
       tasks: [],
-      search: ""
+      search: "",
+      user_id: "",
+      users : [],
     };
   },
 
   methods: {
     getTasks: function() {
       let self = this;
-      this.$axios.get("/categories").then(function(res) {
+      this.$axios.get("/categories?search=" + this.search).then(function(res) {
         console.log(res);
-        self.tasks = res.data.data;
+        self.tasks = res.data.data.rows;
       });
     },
-
+    handleSearch: function() {
+      this.getTasks();
+    },
     delTasks: function(id) {
       let self = this;
       this.$axios.delete("/categories/" + id).then(function(res) {
         self.getTasks();
       });
+    },
+    getAdmins: function() {
+      let self = this;
+      this.$axios.get("/users").then(function(res) {
+        console.log(res);
+        self.user_id = res.data.decoded.user_id;
+        self.users = res.data.data;
+      });
+    },
+    handleLogout: function() {
+      Cookie.remove("token");
+      this.$store.commit("setToken", null);
+      this.$router.push("/login");
     }
   }
 };
