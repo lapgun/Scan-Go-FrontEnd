@@ -34,7 +34,7 @@
 </template>
 
 <script>
-const Cookie = process.client ? require("js-cookie") : undefined;
+const Cookies = process.client ? require("js-cookie") : undefined;
 export default {
   data() {
     return {
@@ -53,8 +53,9 @@ export default {
           console.log(res);
           self.$store.commit("setToken", res.data.token);
           self.$store.commit("setUser", res.data.data);
-          Cookie.set("setUser", res.data.data);
-          Cookie.set("setToken", res.data.token);
+          Cookies.set("setUser", res.data.data);
+          Cookies.set("setToken", res.data.token);
+
           self.$router.push("/");
         });
     }

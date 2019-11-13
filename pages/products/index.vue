@@ -1,12 +1,10 @@
 <template>
-  <div>
+  <div class="container">
     <b-button variant="success" @click="$router.push('/admins/home')">Home</b-button>
-    <br />
-    <br />
+    <div class="search">
     <input v-model="search" type="text" class="form-control" placeholder="Enter search key" />
-    <button @click="getTasks">Search</button>
-    <br />
-    <br />
+    <button class="btn btn-success" @click="getTasks" >Search</button>
+    </div>
     <b-button variant="success" @click="$router.push('/products/create')">Create new task</b-button>
     <table id="my-table" class="table table-bordered">
       <thead>
@@ -19,8 +17,6 @@
           <th>description</th>
           <th>detail</th>
           <th>order_time</th>
-          <th>Created_at</th>
-          <th>Updated_at</th>
           <th>Edit</th>
         </tr>
       </thead>
@@ -42,11 +38,9 @@
             </b-collapse>
           </td>
           <td>{{task.order_time}}</td>
-          <td>{{task.createdAt}}</td>
-          <td>{{task.updatedAt}}</td>
           <td>
             <b-button @click="$router.push('/products/details/'+task.id)">Details</b-button>
-            <b-button class="btn btn-info" @click="$router.push('/products/edit/'+task.id)">Update</b-button>
+            <b-button class="btn btn-info" @click="$router.push('/products/edit/'+task.id)">Edit</b-button>
             <b-button class="btn btn-info" variant="danger" @click="delTasks(task.id)">Delete</b-button>
           </td>
         </tr>
@@ -87,5 +81,13 @@ export default {
   img {
     width: 50px;
     height: 50px;
+  }
+  table{
+    margin-top:10px;
+  }
+  .search{
+    width: 50%;
+    display: flex;
+    margin: 10px 0px;
   }
 </style>
