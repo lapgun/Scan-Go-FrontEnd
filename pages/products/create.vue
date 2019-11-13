@@ -9,8 +9,7 @@
     />
     Select product's category in the select form below :
     <b-form-select v-model="form.categoriesId" :options="options"></b-form-select>
-        <input type="file" id="file" ref="picture" v-on:change="handleFileUpload()" />
-
+<!--    <input type="file" id="file" ref="picture" v-on:change="handleFileUpload()" />-->
     <upload_files></upload_files>
     <input
       v-model="form.price"
@@ -81,27 +80,23 @@
                 console.log(self.options);
             },
             handleSubmit() {
-                let formData = new FormData();
-                formData.append("picture", this.picture);
-                formData.append("name", this.form.name);
-                formData.append("price", this.form.price);
-                formData.append("description", this.form.description);
-                formData.append("detail", this.form.detail);
-                formData.append("order_time", this.form.order_time);
+                // let formData = new FormData();
+                // formData.append("picture", this.picture);
+                // formData.append("name", this.form.name);
+                // formData.append("price", this.form.price);
+                // formData.append("description", this.form.description);
+                // formData.append("detail", this.form.detail);
+                // formData.append("order_time", this.form.order_time);
                 let self = this;
                 this.$axios
-                    .post("/products/create", formData, {
-                        headers: {
-                            "Content-Type": "multipart/form-data"
-                        }
-                    })
+                    .post("/products/create")
                     .then(function (res) {
                         self.$router.push("/products");
                     });
             },
-            handleFileUpload() {
-                this.picture = this.$refs.picture.files[0];
-            }
+            // handleFileUpload() {
+            //     this.picture = this.$refs.picture.files[0];
+            // }
         }
     };
 </script>
