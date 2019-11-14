@@ -29,7 +29,7 @@
           </b-nav-item-dropdown>
           <b-nav-item @click="$router.push('/login')" v-else>
             <i class="fa fa-lock"></i>Login
-          </b-nav-item> -->
+          </b-nav-item>-->
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>

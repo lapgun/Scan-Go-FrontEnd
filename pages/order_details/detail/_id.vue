@@ -15,7 +15,7 @@
           <td>{{order_details.price}}</td>
         </tr>
       </tbody>
-    </table >
+    </table>
     <b-button variant="info" @click="$router.push('/order_details')">Oder_details</b-button>
   </div>
 </template>

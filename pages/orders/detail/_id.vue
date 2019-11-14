@@ -4,6 +4,7 @@
       <thead>
         <tr>
           <th>STT</th>
+          <th>Customer_id</th>
           <th>Name</th>
           <th>Quantity</th>
           <th>Order_status</th>
@@ -14,6 +15,7 @@
       <tbody>
         <tr>
           <td>{{orders.id}}</td>
+          <td>{{orders.customerId}}</td>
           <td>{{order_products.name}}</td>
           <td>{{order_products.quantity}}</td>
           <td>{{orders.order_status}}</td>

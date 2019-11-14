@@ -1,6 +1,6 @@
 <template>
-    <div>
-      <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+  <div>
+    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
           <button
@@ -40,8 +40,8 @@
       </div>
       <!-- /.container-fluid -->
     </nav>
-      <div>
-        <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar" style="margin-top:-30px">
+    <div>
+      <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar" style="margin-top:-30px">
         <div class="profile-sidebar">
           <div class="profile-userpic">
             <img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt />
@@ -87,41 +87,40 @@
       <div class="col-sm-9 col-lg-10 sidebar">
         <b-button @click="$router.push('/orders/create')" variant="info">Create</b-button>
         <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>STT</th>
-                    <th>Customer_id</th>
-                    <th>Order_status</th>
-                    <th>Total_price</th>
-                    <th>Action</th> 
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(order , index) in orders" :key="index">
-                    <td>{{index+1}}</td>
-                    <td>{{order.customerId}}</td>
-                    <td>{{order.order_status}}</td>
-                    <td>{{order.total_price}}</td>
-                    <td>
-                        <b-button @click="$router.push('/orders/detail/'+order.id)">Detail</b-button>
-                        <b-button @click="handleDelete(order.id)" variant="danger">Delete</b-button>
-                    </td>
-                </tr>
-            </tbody>
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Customer_id</th>
+              <th>Order_status</th>
+              <th>Total_price</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(order , index) in orders" :key="index">
+              <td>{{index+1}}</td>
+              <td>{{order.customerId}}</td>
+              <td>{{order.order_status}}</td>
+              <td>{{order.total_price}}</td>
+              <td>
+                <b-button @click="$router.push('/orders/detail/'+order.id)">Detail</b-button>
+                <b-button @click="handleDelete(order.id)" variant="danger">Delete</b-button>
+              </td>
+            </tr>
+          </tbody>
         </table>
         <b-pagination
-            v-model="pagination.currentPage"
-            :total-rows="pagination.total"
-            :per-page="pagination.perPage"
-            aria-controls="my-table"
-            @change="handleChangePage"
+          v-model="pagination.currentPage"
+          :total-rows="pagination.total"
+          :per-page="pagination.perPage"
+          aria-controls="my-table"
+          @change="handleChangePage"
         ></b-pagination>
       </div>
-      </div>
     </div>
+  </div>
 </template>
 <script>
-const Cookie = process.client ? require('js-cookie') : undefined
 export default {
   mounted: function() {
     this.getOrders();
@@ -142,7 +141,7 @@ export default {
         perPage: 10
       },
       user_id: "",
-      users : [],
+      users: []
     };
   },
   methods: {
