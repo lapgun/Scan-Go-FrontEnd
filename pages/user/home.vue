@@ -26,7 +26,7 @@
 					<img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt="">
 				</div>
 				<div class="profile-usertitle">
-					<div class="profile-usertitle-name">Admin</div>
+					<div class="profile-usertitle-name">{{user_name}}</div>
 					<div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
 				</div>
 				<div class="clear"></div>
@@ -45,7 +45,6 @@
 				<li><a @click="$router.push('/user')"> Users</a></li>
 			</ul>
 		</div>
-		<h1>Hello : {{user_id}}</h1>
 	</div>
 	
 </template>
@@ -60,6 +59,7 @@ export default {
     data : function(){
         return {
 			user_id: "",
+			user_name:''
 		}
 	},
 	methods :{
@@ -67,8 +67,9 @@ export default {
             let self = this
             this.$axios.get('/users')
             .then(function(res){
-				console.log(res)
+				console.log('sf',res)
 				self.user_id =res.data.decoded.user_id 
+				self.user_name = res.data.decoded.user_name
                 self.users = res.data.data
             })
         },

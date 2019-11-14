@@ -8,23 +8,22 @@
             style="font-size: 20px;font-weight: bold"
           >Chỉnh Sửa thông tin</div>
           <div class="card-body" style="font-style: italic">
-            <div class="row" v-if="user">
+            <div class="row">
               <div class="col-12 col-md-8">
                 <div class="form-group row">
-
-                  <label
-                         class="col-md-4 col-form-label text-md-left">Tên Người Dùng :</label>
-                  <b-input class="col-md-8 col-form-label text-md-left" v-model="userDetail.name"></b-input>
+                  <label class="col-md-4 col-form-label text-md-left">Tên Người Dùng :</label>
+                  <b-input class="col-md-8 col-form-label text-md-left" v-model="form.name"></b-input>
                 </div>
                 <div class="form-group row">
-                  <label
-                         class="col-md-4 col-form-label text-md-left">Địa chỉ Email :</label>
-                  <b-input class="col-md-8 col-form-label text-md-left" v-model="userDetail.email"></b-input>
+                  <label class="col-md-4 col-form-label text-md-left">Địa chỉ Email :</label>
+                  <b-input class="col-md-8 col-form-label text-md-left" v-model="form.email"></b-input>
                 </div>
                 <div class="form-group row">
-                  <label
-                         class="col-md-4 col-form-label text-md-left">Nơi Sinh Sống :</label>
-                  <b-input class="col-md-8 col-form-label text-md-left" v-model="userDetail.address"></b-input>
+                  <label class="col-md-4 col-form-label text-md-left">Nơi Sinh Sống :</label>
+                  <b-input
+                    class="col-md-8 col-form-label text-md-left"
+                    v-model="form.address"
+                  ></b-input>
                 </div>
                 <div class="form-group row">
                   <label class="col-md-4 col-form-label text-md-right"></label>
@@ -38,7 +37,7 @@
                       <button
                         type="button"
                         class="btn btn-dark"
-                        @click="$router.push('/user/detail')"
+                        @click="$router.push('/user/home')"
                       >Back</button>
                     </a>
                   </div>
@@ -53,39 +52,35 @@
 </template>
 
 <script>
-
-
-    const Cookie = process.client ? require('js-cookie') : undefined;
-    import _ from 'lodash'
-    export default {
-        computed: {
-            user() {
-                return _.cloneDeep(this.$store.state.user)
-            }
-        },
-        data(){
-            return{
-                userDetail : _.cloneDeep(this.$store.state.user)
-            }
-
-        },
-        methods: {
-            handelSubmit() {
-                let self = this;
-                this.$axios.put('http://127.0.0.1:4000/users/edit',this.userDetail)
-                    .then(function (res) {
-                        self.$store.commit('setUser', self.userDetail);
-                        Cookie.set('setUser',res.data.data);
-                        self.$router.push('/user');
-                    });
-                this.userDetail ='';
-            }
-        }
-
+const Cookie = process.client ? require("js-cookie") : undefined;
+import _ from "lodash";
+export default {
+  mounted : function(){
+    this.getUsers()
+  },
+  data() {
+    return {
+      form : []
+    };
+  },
+  methods: {
+    getUsers : function(){
+      let self = this;
+      this.$axios.get("/users/" + this.$route.params.id).then(function(res) {
+        console.log(res);
+        self.form = res.data.data;
+      });
+    },
+    handelSubmit : function() {
+      let self = this;
+      this.$axios.put("/users/" + this.form.id, this.form).then(function(res) {
+        console.log(res);
+        self.$router.push("/user/home");
+      });
     }
-
+  }
+};
 </script>
 
 <style scoped>
-
 </style>

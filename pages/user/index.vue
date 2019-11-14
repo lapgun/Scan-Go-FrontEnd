@@ -91,8 +91,8 @@
           <td>{{user.email}}</td>
           <td>{{user.address}}</td>
           <td>
-            <button class="btn btn-danger" @click="handelDelete(user_id)">Delete</button>
-            <button class="btn btn-secondary" @click="$router.push('/user/detail/'+user_id)">Detail</button>
+            <button class="btn btn-danger" @click="handelDelete(user.id)">Delete</button>
+            <button class="btn btn-secondary" @click="$router.push('/user/detail/'+user.id)">Detail</button>
           </td>
         </tr>
       </tbody>
@@ -102,6 +102,7 @@
   </div>
 </template>
 <script>
+const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
   middleware: 'authenticated',
   mounted() {
