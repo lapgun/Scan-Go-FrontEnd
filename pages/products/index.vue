@@ -52,11 +52,13 @@
 export default {
   mounted: function() {
     this.getTasks();
+    // this.getGallery();
   },
   data: function() {
     return {
       tasks: [],
-      search: ""
+      search: "",
+      // picture:''
     };
   },
 
@@ -67,6 +69,14 @@ export default {
         self.tasks = res.data.data;
       });
     },
+    // getGallery() {
+    //   let self = this;
+    //   this.$axios.get("/gallery/" + this.picture)
+    //           .then(function (res) {
+    //             // self.picture = res.data.data;
+    //             console.log("asdsa",res);
+    //           })
+    // },
 
     delTasks: function(id) {
       let self = this;
