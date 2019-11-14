@@ -23,10 +23,7 @@ export const actions = {
       const parsed = cookieparser.parse(req.headers.cookie);
       token = parsed.token;
       commit('setToken', token)
-    }
-    if (req.headers.cookie) {
-      const parsed = cookieparser.parse(req.headers.cookie);
-      token = parsed.user;
+      user = parsed.user;
       commit('setUser', user)
     }
   }

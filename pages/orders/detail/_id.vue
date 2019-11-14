@@ -1,25 +1,29 @@
 <template>
-    <div>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>STT</th>
-                    <th>Customer_id</th>
-                    <th>Order_status</th>
-                    <th>Total_price</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{orders.id}}</td>
-                     <td>{{orders.customerId}}</td>
-                    <td>{{orders.order_status}}</td>
-                    <td>{{orders.total_price}}</td>
-                </tr>
-            </tbody>
-        </table>
-        <b-button variant="info" @click="$router.push('/orders')">Oder_products</b-button>
-    </div>
+  <div>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Name</th>
+          <th>Quantity</th>
+          <th>Order_status</th>
+          <th>Order_price</th>
+          <th>Total_price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{orders.id}}</td>
+          <td>{{order_products.name}}</td>
+          <td>{{order_products.quantity}}</td>
+          <td>{{orders.order_status}}</td>
+          <td>{{order_products.order_price}}</td>
+          <td>{{orders.total_price}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <b-button variant="info" @click="$router.push('/orders')">Order</b-button>
+  </div>
 </template>
 <script>
 export default {
@@ -28,12 +32,8 @@ export default {
   },
   data: function() {
     return {
-      orders: {
-        id: "",
-        customer: "",
-        order_status: "",
-        total_price: ""
-      }
+      orders: [],
+      order_products: []
     };
   },
   methods: {
@@ -42,6 +42,8 @@ export default {
       this.$axios.get("/orders/" + this.$route.params.id).then(function(res) {
         console.log(res);
         self.orders = res.data;
+        self.order_products = res.data.order_products[0];
+        console.log(self.order_products);
       });
     }
   }
