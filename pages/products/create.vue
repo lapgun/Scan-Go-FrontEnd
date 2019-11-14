@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <h1>Thêm mới sản Phẩm</h1>
+     Name:
     <input
       v-model="form.name"
       type="text"
@@ -11,24 +12,28 @@
     <b-form-select v-model="form.categoriesId" :options="options"></b-form-select>
 <!--    <input type="file" id="file" ref="picture" v-on:change="handleFileUpload()" />-->
     <upload_files></upload_files>
+    Price:
     <input
       v-model="form.price"
       type="text"
       class="form-control"
       placeholder="Enter your product price"
     />
+    Description:
     <input
-      v-model="form.description"
+        v-model="form.description"
       type="text"
       class="form-control"
       placeholder="Enter your product description"
     />
+    Detail:
     <input
       v-model="form.detail"
       type="text"
       class="form-control"
       placeholder="Enter your product detail"
     />
+    Order time:
     <input
       v-model="form.order_time"
       type="text"
@@ -50,13 +55,14 @@
         },
         mounted: function () {
             this.getCatProduct();
+            this.getGallery();
         },
         data: function () {
             return {
                 form: {
                     name: "",
                     categoriesId: "",
-                    picture: "",
+                    picture: [],
                     price: "",
                     description: "",
                     detail: "",
@@ -77,26 +83,28 @@
                         });
                     });
                 });
-                console.log(self.options);
             },
             handleSubmit() {
-                // let formData = new FormData();
-                // formData.append("picture", this.picture);
-                // formData.append("name", this.form.name);
-                // formData.append("price", this.form.price);
-                // formData.append("description", this.form.description);
-                // formData.append("detail", this.form.detail);
-                // formData.append("order_time", this.form.order_time);
                 let self = this;
                 this.$axios
-                    .post("/products/create")
+                    .post("/products/create" + this.form)
                     .then(function (res) {
                         self.$router.push("/products");
                     });
             },
-            // handleFileUpload() {
-            //     this.picture = this.$refs.picture.files[0];
-            // }
+            getGallery(){
+                let self =this;
+                this.$axios.get("/gallery")
+                    .then(function (res) {
+                        self.picture = res.data.data;
+                        console.log(res);
+                    })
+            }
         }
     };
 </script>
+<style scoped>
+  div input {
+    padding-top: 10px;
+  }
+</style>
