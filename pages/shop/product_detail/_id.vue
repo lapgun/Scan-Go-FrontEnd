@@ -13,7 +13,7 @@
               <!--product-details-->
               <div class="col-sm-5">
                 <div class="view-product">
-                  <img src="images/product-details/1.jpg" alt />
+                  <img src="~assets/images/product-details/1.jpg" alt />
                   <h3>ZOOM</h3>
                 </div>
                 <div id="similar-product" class="carousel slide" data-ride="carousel">
@@ -21,35 +21,35 @@
                   <div class="carousel-inner">
                     <div class="item active">
                       <a href>
-                        <img src="images/product-details/similar1.jpg" alt />
+                        <img src="~assets/images/product-details/similar1.jpg" alt />
                       </a>
                       <a href>
-                        <img src="images/product-details/similar2.jpg" alt />
+                        <img src="~assets/images/product-details/similar2.jpg" alt />
                       </a>
                       <a href>
-                        <img src="images/product-details/similar3.jpg" alt />
-                      </a>
-                    </div>
-                    <div class="item">
-                      <a href>
-                        <img src="images/product-details/similar1.jpg" alt />
-                      </a>
-                      <a href>
-                        <img src="images/product-details/similar2.jpg" alt />
-                      </a>
-                      <a href>
-                        <img src="images/product-details/similar3.jpg" alt />
+                        <img src="~assets/images/product-details/similar3.jpg" alt />
                       </a>
                     </div>
                     <div class="item">
                       <a href>
-                        <img src="images/product-details/similar1.jpg" alt />
+                        <img src="~assets/images/product-details/similar1.jpg" alt />
                       </a>
                       <a href>
-                        <img src="images/product-details/similar2.jpg" alt />
+                        <img src="~assets/images/product-details/similar2.jpg" alt />
                       </a>
                       <a href>
-                        <img src="images/product-details/similar3.jpg" alt />
+                        <img src="~assets/images/product-details/similar3.jpg" alt />
+                      </a>
+                    </div>
+                    <div class="item">
+                      <a href>
+                        <img src="~assets/images/product-details/similar1.jpg" alt />
+                      </a>
+                      <a href>
+                        <img src="~assets/images/product-details/similar2.jpg" alt />
+                      </a>
+                      <a href>
+                        <img src="~assets/images/product-details/similar3.jpg" alt />
                       </a>
                     </div>
                   </div>
@@ -66,10 +66,10 @@
               <div class="col-sm-7">
                 <div class="product-information">
                   <!--/product-information-->
-                  <img src="images/product-details/new.jpg" class="newarrival" alt />
+                  <img src="~assets/images/product-details/new.jpg" class="newarrival" alt />
                   <h2>Anne Klein Sleeveless Colorblock Scuba</h2>
                   <p>Web ID: 1089772</p>
-                  <img src="images/product-details/rating.png" alt />
+                  <img src="~assets/images/product-details/rating.png" alt />
                   <span>
                     <span>US $59</span>
                     <label>Quantity:</label>
@@ -89,7 +89,11 @@
                     <b>Brand:</b> E-SHOPPER
                   </p>
                   <a href>
-                    <img src="images/product-details/share.png" class="share img-responsive" alt />
+                    <img
+                      src="~assets/images/product-details/share.png"
+                      class="share img-responsive"
+                      alt
+                    />
                   </a>
                 </div>
                 <!--/product-information-->
@@ -121,7 +125,7 @@
                     <div class="product-image-wrapper">
                       <div class="single-products">
                         <div class="productinfo text-center">
-                          <img src="images/home/gallery1.jpg" alt />
+                          <img src="~assets/images/home/gallery1.jpg" alt />
                           <h2>$56</h2>
                           <p>Easy Polo Black Edition</p>
                           <button type="button" class="btn btn-default add-to-cart">
@@ -135,7 +139,7 @@
                     <div class="product-image-wrapper">
                       <div class="single-products">
                         <div class="productinfo text-center">
-                          <img src="images/home/gallery2.jpg" alt />
+                          <img src="~assets/images/home/gallery2.jpg" alt />
                           <h2>$56</h2>
                           <p>Easy Polo Black Edition</p>
                           <button type="button" class="btn btn-default add-to-cart">
@@ -149,7 +153,7 @@
                     <div class="product-image-wrapper">
                       <div class="single-products">
                         <div class="productinfo text-center">
-                          <img src="images/home/gallery3.jpg" alt />
+                          <img src="~assets/images/home/gallery3.jpg" alt />
                           <h2>$56</h2>
                           <p>Easy Polo Black Edition</p>
                           <button type="button" class="btn btn-default add-to-cart">
@@ -163,7 +167,7 @@
                     <div class="product-image-wrapper">
                       <div class="single-products">
                         <div class="productinfo text-center">
-                          <img src="images/home/gallery4.jpg" alt />
+                          <img src="~assets/images/home/gallery4.jpg" alt />
                           <h2>$56</h2>
                           <p>Easy Polo Black Edition</p>
                           <button type="button" class="btn btn-default add-to-cart">
@@ -180,7 +184,7 @@
                     <div class="product-image-wrapper">
                       <div class="single-products">
                         <div class="productinfo text-center">
-                          <img src="images/home/gallery1.jpg" alt />
+                          <img src="~assets/images/home/gallery1.jpg" alt />
                           <h2>$56</h2>
                           <p>Easy Polo Black Edition</p>
                           <button type="button" class="btn btn-default add-to-cart">
@@ -194,7 +198,7 @@
                     <div class="product-image-wrapper">
                       <div class="single-products">
                         <div class="productinfo text-center">
-                          <img src="images/home/gallery3.jpg" alt />
+                          <img src="~assets/images/home/gallery3.jpg" alt />
                           <h2>$56</h2>
                           <p>Easy Polo Black Edition</p>
                           <button type="button" class="btn btn-default add-to-cart">
@@ -208,7 +212,7 @@
                     <div class="product-image-wrapper">
                       <div class="single-products">
                         <div class="productinfo text-center">
-                          <img src="images/home/gallery2.jpg" alt />
+                          <img src="~assets/images/home/gallery2.jpg" alt />
                           <h2>$56</h2>
                           <p>Easy Polo Black Edition</p>
                           <button type="button" class="btn btn-default add-to-cart">
@@ -222,7 +226,7 @@
                     <div class="product-image-wrapper">
                       <div class="single-products">
                         <div class="productinfo text-center">
-                          <img src="images/home/gallery4.jpg" alt />
+                          <img src="~assets/images/home/gallery4.jpg" alt />
                           <h2>$56</h2>
                           <p>Easy Polo Black Edition</p>
                           <button type="button" class="btn btn-default add-to-cart">
@@ -239,7 +243,7 @@
                     <div class="product-image-wrapper">
                       <div class="single-products">
                         <div class="productinfo text-center">
-                          <img src="images/home/gallery1.jpg" alt />
+                          <img src="~assets/images/home/gallery1.jpg" alt />
                           <h2>$56</h2>
                           <p>Easy Polo Black Edition</p>
                           <button type="button" class="btn btn-default add-to-cart">
@@ -253,7 +257,7 @@
                     <div class="product-image-wrapper">
                       <div class="single-products">
                         <div class="productinfo text-center">
-                          <img src="images/home/gallery2.jpg" alt />
+                          <img src="~assets/images/home/gallery2.jpg" alt />
                           <h2>$56</h2>
                           <p>Easy Polo Black Edition</p>
                           <button type="button" class="btn btn-default add-to-cart">
@@ -267,7 +271,7 @@
                     <div class="product-image-wrapper">
                       <div class="single-products">
                         <div class="productinfo text-center">
-                          <img src="images/home/gallery3.jpg" alt />
+                          <img src="~assets/images/home/gallery3.jpg" alt />
                           <h2>$56</h2>
                           <p>Easy Polo Black Edition</p>
                           <button type="button" class="btn btn-default add-to-cart">
@@ -281,7 +285,7 @@
                     <div class="product-image-wrapper">
                       <div class="single-products">
                         <div class="productinfo text-center">
-                          <img src="images/home/gallery4.jpg" alt />
+                          <img src="~assets/images/home/gallery4.jpg" alt />
                           <h2>$56</h2>
                           <p>Easy Polo Black Edition</p>
                           <button type="button" class="btn btn-default add-to-cart">
@@ -324,7 +328,7 @@
                       </span>
                       <textarea name></textarea>
                       <b>Rating:</b>
-                      <img src="images/product-details/rating.png" alt />
+                      <img src="~assets/images/product-details/rating.png" alt />
                       <button type="button" class="btn btn-default pull-right">Submit</button>
                     </form>
                   </div>
@@ -344,7 +348,7 @@
                       <div class="product-image-wrapper">
                         <div class="single-products">
                           <div class="productinfo text-center">
-                            <img src="images/home/recommend1.jpg" alt />
+                            <img src="~assets/images/home/recommend1.jpg" alt />
                             <h2>$56</h2>
                             <p>Easy Polo Black Edition</p>
                             <button type="button" class="btn btn-default add-to-cart">
@@ -358,7 +362,7 @@
                       <div class="product-image-wrapper">
                         <div class="single-products">
                           <div class="productinfo text-center">
-                            <img src="images/home/recommend2.jpg" alt />
+                            <img src="~assets/images/home/recommend2.jpg" alt />
                             <h2>$56</h2>
                             <p>Easy Polo Black Edition</p>
                             <button type="button" class="btn btn-default add-to-cart">
@@ -372,7 +376,7 @@
                       <div class="product-image-wrapper">
                         <div class="single-products">
                           <div class="productinfo text-center">
-                            <img src="images/home/recommend3.jpg" alt />
+                            <img src="~assets/images/home/recommend3.jpg" alt />
                             <h2>$56</h2>
                             <p>Easy Polo Black Edition</p>
                             <button type="button" class="btn btn-default add-to-cart">
@@ -388,7 +392,7 @@
                       <div class="product-image-wrapper">
                         <div class="single-products">
                           <div class="productinfo text-center">
-                            <img src="images/home/recommend1.jpg" alt />
+                            <img src="~assets/images/home/recommend1.jpg" alt />
                             <h2>$56</h2>
                             <p>Easy Polo Black Edition</p>
                             <button type="button" class="btn btn-default add-to-cart">
@@ -402,7 +406,7 @@
                       <div class="product-image-wrapper">
                         <div class="single-products">
                           <div class="productinfo text-center">
-                            <img src="images/home/recommend2.jpg" alt />
+                            <img src="~assets/images/home/recommend2.jpg" alt />
                             <h2>$56</h2>
                             <p>Easy Polo Black Edition</p>
                             <button type="button" class="btn btn-default add-to-cart">
@@ -416,7 +420,7 @@
                       <div class="product-image-wrapper">
                         <div class="single-products">
                           <div class="productinfo text-center">
-                            <img src="images/home/recommend3.jpg" alt />
+                            <img src="~assets/images/home/recommend3.jpg" alt />
                             <h2>$56</h2>
                             <p>Easy Polo Black Edition</p>
                             <button type="button" class="btn btn-default add-to-cart">
