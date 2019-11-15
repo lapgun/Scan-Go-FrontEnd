@@ -35,7 +35,7 @@
                   <div class="col-md-3">
                     <a>
                       <button
-                        type="button"
+                        type="button" style="margin-top:15px"
                         class="btn btn-dark"
                         @click="$router.push('/user/home')"
                       >Back</button>
@@ -75,7 +75,11 @@ export default {
       let self = this;
       this.$axios.put("/users/" + this.form.id, this.form).then(function(res) {
         console.log(res);
-        self.$router.push("/user/home");
+        if (res.data.data.role == true) {
+            self.$router.push("/user/home");
+          } else {
+            self.$router.push("/");
+          }
       });
     }
   }

@@ -105,9 +105,9 @@ export default {
         alert("failled");
       } else {
         if (this.repassword == this.form.password) {
-          this.$axios.post("/users", this.form).then(function(res) {
-            console.log(res);
-            self.$router.push("/user/home");
+          this.$axios.post("/register", this.form).then(function(res) {
+            console.log(res); 
+            self.$router.push("/login");
           });
         } else {
           alert("Repassword is not correct");
