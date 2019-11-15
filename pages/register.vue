@@ -12,46 +12,66 @@
             <h3 class="text-center text-info">Register</h3>
             <b-form @submit.prevent="handleCreate">
               <div class="form-group">
-                <b-form-group label="Your Name:" :class="{ 'form-group--error': $v.form.name.$error }">
+                <b-form-group
+                  label="Your Name:"
+                  :class="{ 'form-group--error': $v.form.name.$error }"
+                >
                   <b-form-input v-model.trim="$v.form.name.$model" placeholder="Enter name"></b-form-input>
                   <div class="error" v-if="!$v.form.name.required">Name is required</div>
-                  <div class="error" v-if="!$v.form.name.minLength">
-                    Name must have at least {{$v.form.name.$params.minLength.min}} letters.
-                  </div>
+                  <div
+                    class="error"
+                    v-if="!$v.form.name.minLength"
+                  >Name must have at least {{$v.form.name.$params.minLength.min}} letters.</div>
                 </b-form-group>
               </div>
               <div class="form-group">
-                <b-form-group label="Your email:" :class="{ 'form-group--error': $v.form.email.$error }">
+                <b-form-group
+                  label="Your email:"
+                  :class="{ 'form-group--error': $v.form.email.$error }"
+                >
                   <b-form-input v-model.trim="$v.form.email.$model" placeholder="Enter your email"></b-form-input>
                   <div class="error" v-if="!$v.form.email.required">Email is required</div>
-                  <div class="error" v-if="!$v.form.email.minLength">
-                    Name must have at least {{$v.form.email.$params.minLength.min}} letters.
-                  </div>
-                  <div class="error" v-if="!$v.form.email.email">Email is not available </div>
+                  <div
+                    class="error"
+                    v-if="!$v.form.email.minLength"
+                  >Name must have at least {{$v.form.email.$params.minLength.min}} letters.</div>
+                  <div class="error" v-if="!$v.form.email.email">Email is not available</div>
                 </b-form-group>
               </div>
               <div class="form-group">
-                <b-form-group label="Your Password:" :class="{ 'form-group--error': $v.form.password.$error }">
-                  <b-form-input type="password" v-model.trim="$v.form.password.$model" placeholder="Enter your password"></b-form-input>
+                <b-form-group
+                  label="Your Password:"
+                  :class="{ 'form-group--error': $v.form.password.$error }"
+                >
+                  <b-form-input
+                    type="password"
+                    v-model.trim="$v.form.password.$model"
+                    placeholder="Enter your password"
+                  ></b-form-input>
                   <div class="error" v-if="!$v.form.password.required">password is required</div>
-                  <div class="error" v-if="!$v.form.password.minLength">
-                    password must have at least {{$v.form.password.$params.minLength.min}} letters.
-                  </div>
+                  <div
+                    class="error"
+                    v-if="!$v.form.password.minLength"
+                  >password must have at least {{$v.form.password.$params.minLength.min}} letters.</div>
                 </b-form-group>
               </div>
               <div class="form-group">
-              <b-form-group label="Retype your password again:">
-                <b-form-input type="password" v-model="repassword" placeholder="Retype your password again"></b-form-input>
-              </b-form-group>
+                <b-form-group label="Retype your password again:">
+                  <b-form-input
+                    type="password"
+                    v-model="repassword"
+                    placeholder="Retype your password again"
+                  ></b-form-input>
+                </b-form-group>
               </div>
               <div class="form-group">
-              <b-form-group>
-                <div class="form-group">
-                  <label for="address" class="text-info">Address:</label>
-                  <br />
-                  <input type="text" v-model="form.address" id="address" class="form-control" />
-                </div>
-              </b-form-group>
+                <b-form-group>
+                  <div class="form-group">
+                    <label for="address" class="text-info">Address:</label>
+                    <br />
+                    <input type="text" v-model="form.address" id="address" class="form-control" />
+                  </div>
+                </b-form-group>
               </div>
               <b-form-group>
                 <input type="checkbox" v-model="form.role" value="1" /> Are you admin?
@@ -90,7 +110,7 @@ export default {
       email: {
         required,
         minLength: minLength(7),
-        email,
+        email
       },
       password: {
         required,

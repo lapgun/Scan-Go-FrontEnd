@@ -39,7 +39,7 @@
                   </span>
                 </label>
                 <input type="submit" class="btn btn-info btn-md" value="submit" />
-                <button class="btn btn-success" @click="$router.push('/user/register')">Register</button>
+                <button class="btn btn-success" @click="$router.push('/register')">Register</button>
               </div>
             </div>
           </div>
@@ -55,7 +55,6 @@ import { required, minLength, email } from "vuelidate/lib/validators";
 export default {
   mounted: function() {
     console.log("token", this.$store.state.token);
-    // this.getUsers();
   },
   data() {
     return {
@@ -87,15 +86,19 @@ export default {
         alert("failled");
       } else {
         this.$axios.post("/login", this.user).then(function(res) {
-          console.log(res);
-          console.log(res.data.data.role);
-          self.$store.commit("setToken", res.data.token);
-
-          Cookie.set("token", res.data.token);
-          if (res.data.data.role == true) {
-            self.$router.push("/user/home");
+          if (res.data.error) {
+            alert(res.data.message);
           } else {
-            self.$router.push("/");
+            alert(res.data.message);
+            console.log(res);
+            console.log(res.data.data.role);
+            self.$store.commit("setToken", res.data.token);
+            Cookie.set("token", res.data.token);
+            if (res.data.data.role == true) {
+              self.$router.push("/user/home");
+            } else {
+              self.$router.push("/");
+            }
           }
         });
       }

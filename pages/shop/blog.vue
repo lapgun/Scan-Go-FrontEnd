@@ -94,17 +94,15 @@
   </div>
 </template>
 <script>
-import shopHeader from '~/components/shopHeader.vue'
-import shopFooter from '~/components/shopFooter.vue'
-import shopNav from '~/components/shopNav.vue'
+import shopHeader from "~/components/shopHeader.vue";
+import shopFooter from "~/components/shopFooter.vue";
+import shopNav from "~/components/shopNav.vue";
 export default {
-  data : function(){
-    
-  },
+  data: function() {},
   components: {
-	shopHeader,
-	shopFooter,
-	shopNav
+    shopHeader,
+    shopFooter,
+    shopNav
   }
-}
+};
 </script>

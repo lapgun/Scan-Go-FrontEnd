@@ -89,7 +89,11 @@
                     <b>Brand:</b> E-SHOPPER
                   </p>
                   <a href>
-                    <img src="~assets/images/product-details/share.png" class="share img-responsive" alt />
+                    <img
+                      src="~assets/images/product-details/share.png"
+                      class="share img-responsive"
+                      alt
+                    />
                   </a>
                 </div>
                 <!--/product-information-->
