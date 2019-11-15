@@ -16,7 +16,9 @@
         <td>{{tasks.id}}</td>
         <td>{{tasks.name}}</td>
         <td>{{tasks.categoriesId}}</td>
-        <td><img></td>
+        <td>
+          <img :src="tasks.picture" />
+        </td>
         <td>{{tasks.price}}</td>
         <td>{{tasks.description}}</td>
         <td>{{tasks.detail}}</td>
@@ -56,11 +58,11 @@
                 });
             }
         }
-    };
+};
 </script>
 <style>
-  img {
-    width: 50px;
-    height: 50px;
-  }
+img {
+  width: 50px;
+  height: 50px;
+}
 </style>

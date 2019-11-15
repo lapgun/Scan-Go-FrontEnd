@@ -57,10 +57,8 @@
             return {
                 tasks: [],
                 search: "",
-
             };
         },
-
         methods: {
             getTasks: function () {
                 let self = this;

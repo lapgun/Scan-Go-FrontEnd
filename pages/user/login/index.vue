@@ -55,7 +55,6 @@ export default {
           self.$store.commit("setUser", res.data.data);
           Cookies.set("setUser", res.data.data);
           Cookies.set("setToken", res.data.token);
-
           self.$router.push("/");
         });
     }
