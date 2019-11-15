@@ -67,7 +67,7 @@
                     description: "",
                     detail: "",
                     order_time: "",
-                    // product_image_id: "",
+
                 },
                 options: [{value: 0, text: "This is parent category "}]
             };
@@ -93,7 +93,7 @@
                     });
             },
             imageUploaded(data = {}) {
-                this.form.picture = data.productImageInfo ? data.productImageInfo.id : null
+                this.form.picture = data.productImageInfo ? data.productImageInfo.id : null;
             },
 
         }
