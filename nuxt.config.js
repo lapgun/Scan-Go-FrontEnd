@@ -15,47 +15,60 @@ export default {
           }
       ],
 
-      link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
-      script: [{
-          src: [
-              "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js",
-              "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js",
-              "https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js",
-              "~/assets/js/bootstrap.min.js",
-              "~/assets/js/contact.js",
-              "~/assets/js/gmaps.js",
-              "~/assets/js/html5shiv.js",
-              "~/assets/js/jquery.js",
-              "~/assets/js/main.js",
-              "~/assets/js/price-range.js",
-              "~/assets/js/jquery.prettyPhoto.js",
-              "~/assets/js/jquery.scrollUp.min.js",
-          ]
-      }]
-  },
-  /*
-   ** Customize the progress-bar color
-   */
-  loading: { color: "#fff" },
-  /*
+        link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+        script: [{
+            src: [
+                "~/assets/js/bootstrap.min.js",
+                "~/assets/js/contact.js",
+                "~/assets/js/gmaps.js",
+                "~/assets/js/html5shiv.js",
+                "~/assets/js/jquery.js",
+                "~/assets/js/main.js",
+                "~/assets/js/price-range.js",
+                "~/assets/js/jquery.prettyPhoto.js",
+                "~/assets/js/jquery.scrollUp.min.js",
+            ]
+        },
+        {
+            src: "https://code.jquery.com/jquery-3.3.1.slim.min.js",
+            type: "text/javascript"
+          },
+          {
+            src:
+              "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js",
+            type: "text/javascript"
+          },
+          {
+            src:
+              "https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js",
+            type: "text/javascript"
+          }
+    ]
+    },
+    /*
+     ** Customize the progress-bar color
+     */
+    loading: { color: "#fff" },
+    /*
 
-   ** Global CSS
-   */
-  css: [
-      "~/assets/css/style.css",
-      "~/assets/css/bootstrap.min.css",
-      "~/assets/css/animate.css",
-      "~/assets/css/main.css",
-      "~/assets/css/price-range.css",
-      "~/assets/css/responsive.css",
-  ],
-  /*
-   ** Plugins to load before mounting the App
-   */
-  plugins: [
-      "~/plugins/axios",
-      "~/plugins/v-validate"
-  ],
+     ** Global CSS
+     */
+    css: [
+        "~/assets/css/style.css",
+        "~/assets/css/all.min.css",
+        "~/assets/css/bootstrap.min.css",
+        "~/assets/css/animate.css",
+        "~/assets/css/main.css",
+        "~/assets/css/price-range.css",
+        "~/assets/css/responsive.css",
+    ],
+    /*
+     ** Plugins to load before mounting the App
+     */
+    plugins: [
+        "~/plugins/axios",
+        "~/plugins/v-validate",
+    ],
 
 
   /*

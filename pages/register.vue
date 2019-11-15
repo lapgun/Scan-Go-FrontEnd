@@ -114,7 +114,7 @@ export default {
       },
       password: {
         required,
-        minLength: minLength(4)
+        minLength: minLength(7)
       }
     }
   },
@@ -122,17 +122,12 @@ export default {
     handleCreate() {
       let self = this;
       if (this.$v.$invalid) {
-        alert("Please check the form agian");
+        alert("failled");
       } else {
         if (this.repassword == this.form.password) {
           this.$axios.post("/register", this.form).then(function(res) {
-            console.log(res);
-            if (res.data.error) {
-              alert(res.data.message);
-            } else {
-              alert(res.data.message);
-              self.$router.push("/login");
-            }
+            console.log(res); 
+            self.$router.push("/login");
           });
         } else {
           alert("Repassword is not correct");

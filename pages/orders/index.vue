@@ -29,7 +29,7 @@
                 <a @click="$router.push('/user/edit/'+user_id)">Profile</a>
               </li>
               <li>
-                <a @click="$router.push('/user/register')">Register</a>
+                <a @click="$router.push('/register')">Register</a>
               </li>
               <li>
                 <a @click="handleLogout">Logout</a>
