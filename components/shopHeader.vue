@@ -7,8 +7,19 @@
 					<div class="col-sm-6">
 						<div class="contactinfo">
 							<ul class="nav nav-pills">
-								<li><a href="#"><i class="fa fa-phone"></i> +2 95 01 88 821</a></li>
-								<li><a href="#"><i class="fa fa-envelope"></i> info@domain.com</a></li>
+								<li><a href="#"> +2 95 01 88 821</a></li>
+								<li><a href="#"> info@domain.com</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="social-icons pull-right">
+							<ul style="margin-top:15px">
+								<li><a href="#"><i class="fab fa-facebook"></i></a></li>
+								<li><a href="#"><i class="fab fa-twitter"></i></a></li>
+								<li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+								<li><a href="#"><i class="fab fa-dribbble"></i></a></li>
+								<li><a href="#"><i class="fab fa-google-plus"></i></a></li>
 							</ul>
 						</div>
 					</div>
@@ -21,16 +32,16 @@
 				<div class="row">
 					<div class="col-sm-4">
 						<div class="logo pull-left">
-							<a href="#"><img src="~assets/images/home/logo.png" alt="" /></a>
+							<a @click="$router.push('/')"><img src="~assets/images/home/logo.png" alt="" /></a>
 						</div>
 					</div>
 					<div class="col-sm-8">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a @click="$router.push('/user/detail/'+user.id)" style="margin-left:-220px"><i class="fa fa-user"></i> Account</a></li>
-								<li><a @click="$router.push('/shop/checkout/'+user.id)" style="margin-left: -150px; margin-top:-20px"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-								<li><a @click="$router.push('/user/register')" style="margin-left:-70px; margin-top:-20px"><i class="fa fa-shopping-cart"></i> Register</a></li>
-								<li><a @click="$router.push('/login')" style=" margin-top:-20px"><i class="fa fa-lock"></i> Login</a></li>
+								<li><a @click="$router.push('/user/detail/'+user_id)" style="margin-left:-220px"> Account</a></li>
+								<li><a @click="$router.push('/shop/checkout/'+user_id)" style="margin-left: -150px; margin-top:-20px"> Checkout</a></li>
+								<li><a @click="$router.push('/register')" style="margin-left:-70px; margin-top:-20px"> Register</a></li>
+								<li><a @click="$router.push('/login')" style=" margin-top:-20px"> Login</a></li>
 							</ul>
 						</div>
 					</div>
@@ -44,24 +55,27 @@
 					<div class="col-sm-9">
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-								<li><a href="#" class="active" style="margin-top:-2px">Home</a></li>
-								<li class="dropdown"><a href="#" style="margin-top:-10px">Shop<i class="fa fa-angle-down"></i></a>
+								<li><a @click="$router.push('/')" class="active" style="margin-top:-2px">Home</a></li>
+								<li class="dropdown"><a href="#" style="margin-top:-10px">Shop</a>
                                     <ul role="menu" class="sub-menu">
                                         <li><a @click="$router.push('/shop/product')">Products</a></li>
-										<li><a @click="$router.push('/shop/checkout/'+user.id)">Checkout</a></li> 
+										<li><a @click="$router.push('/shop/checkout/'+user_id)">Checkout</a></li> 
 										<li><a @click="$router.push('/shop/cart')">Cart</a></li> 
 										<li><a @click="$router.push('/login')">Login</a></li> 
                                     </ul>
                                 </li> 
-								<li><a @click="$router.push('/shop/blog')">Blog<i class="fa fa-angle-down"></i></a>
+								<li><a @click="$router.push('/shop/blog')">Blog</a>
                                 </li> 
 								<li><a @click="$router.push('/shop/contact')">Contact</a></li>
 							</ul>
 						</div>
 					</div>
-					<div class="col-sm-3">
-						<div class="search_box pull-right">
-							<input type="text" placeholder="Search"/>
+					<div class="col-sm-3" style="margin-top:-20px">
+						<div class="search_box " style="display:inline; margin-right:30px"> 
+							<input type="search" placeholder="Search"/>
+						</div>
+						<div style="display:inline-block; font-size:25px;">						
+							<i class="fas fa-shopping-cart"></i>
 						</div>
 					</div>
 				</div>
@@ -136,9 +150,27 @@
 </template>
 <script>
 export default {
-    
+	mounted : function(){
+		this.getUsers()
+	},
+	data : function(){
+		return {
+			users:[],
+			user_id :''
+		}
+	},
+	methods: {
+		getUsers : function(){
+			let self = this
+			this.$axios.get('/users')
+			.then(function(res){
+				console.log(res)
+				self.user_id =res.data.decoded.user_id 
+				self.users = res.data.data
+			})
+		}
+	}
 }
 </script>
 <style scoped>
-	
 </style>

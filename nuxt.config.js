@@ -21,6 +21,7 @@ export default {
                 "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js",
                 "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js",
                 "https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js",
+                "https://fontawesome.com/",
                 "~/assets/js/bootstrap.min.js",
                 "~/assets/js/contact.js",
                 "~/assets/js/gmaps.js",
@@ -43,6 +44,7 @@ export default {
      */
     css: [
         "~/assets/css/style.css",
+        "~/assets/css/all.min.css",
         "~/assets/css/bootstrap.min.css",
         "~/assets/css/animate.css",
         "~/assets/css/main.css",
@@ -54,7 +56,7 @@ export default {
      */
     plugins: [
         "~/plugins/axios",
-        "~/plugins/v-validate"
+        "~/plugins/v-validate",
     ],
 
 

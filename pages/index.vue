@@ -32,20 +32,6 @@
                       </div>
                     </div>
                   </div>
-                  <div class="choose">
-                    <ul class="nav nav-pills nav-justified">
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-plus-square"></i>Add to wishlist
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-plus-square"></i>Add to compare
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
                 </div>
               </div>
               <div class="col-sm-4">
@@ -69,20 +55,6 @@
                       </div>
                     </div>
                   </div>
-                  <div class="choose">
-                    <ul class="nav nav-pills nav-justified">
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-plus-square"></i>Add to wishlist
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-plus-square"></i>Add to compare
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
                 </div>
               </div>
               <div class="col-sm-4">
@@ -105,20 +77,6 @@
                         </a>
                       </div>
                     </div>
-                  </div>
-                  <div class="choose">
-                    <ul class="nav nav-pills nav-justified">
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-plus-square"></i>Add to wishlist
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-plus-square"></i>Add to compare
-                        </a>
-                      </li>
-                    </ul>
                   </div>
                 </div>
               </div>
@@ -144,20 +102,6 @@
                     </div>
                     <img src="~assets/images/home/new.png" class="new" alt />
                   </div>
-                  <div class="choose">
-                    <ul class="nav nav-pills nav-justified">
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-plus-square"></i>Add to wishlist
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-plus-square"></i>Add to compare
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
                 </div>
               </div>
               <div class="col-sm-4">
@@ -182,20 +126,6 @@
                     </div>
                     <img src="~assets/images/home/sale.png" class="new" alt />
                   </div>
-                  <div class="choose">
-                    <ul class="nav nav-pills nav-justified">
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-plus-square"></i>Add to wishlist
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-plus-square"></i>Add to compare
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
                 </div>
               </div>
               <div class="col-sm-4">
@@ -218,20 +148,6 @@
                         </a>
                       </div>
                     </div>
-                  </div>
-                  <div class="choose">
-                    <ul class="nav nav-pills nav-justified">
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-plus-square"></i>Add to wishlist
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-plus-square"></i>Add to compare
-                        </a>
-                      </li>
-                    </ul>
                   </div>
                 </div>
               </div>
