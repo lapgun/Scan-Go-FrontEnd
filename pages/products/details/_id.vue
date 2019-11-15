@@ -16,7 +16,9 @@
         <td>{{tasks.id}}</td>
         <td>{{tasks.name}}</td>
         <td>{{tasks.categoriesId}}</td>
-        <td><img :src="tasks.picture" ></td>
+        <td>
+          <img :src="tasks.picture" />
+        </td>
         <td>{{tasks.price}}</td>
         <td>{{tasks.description}}</td>
         <td>{{tasks.detail}}</td>
@@ -29,36 +31,36 @@
   </div>
 </template>
 <script>
-    export default {
-        mounted: function () {
-            this.getTasks();
-        },
+export default {
+  mounted: function() {
+    this.getTasks();
+  },
 
-        data: function () {
-            return {
-                tasks: []
-            };
-        },
-        methods: {
-            getTasks: function () {
-                let self = this;
-                this.$axios.get("/products/" + this.$route.params.id).then(function (res) {
-                    console.log(res);
-                    self.tasks = res.data.data;
-                });
-            },
-            delTasks: function (id) {
-                let self = this;
-                this.$axios.delete("/products/" + id).then(function (res) {
-                    self.getTasks();
-                });
-            }
-        }
+  data: function() {
+    return {
+      tasks: []
     };
+  },
+  methods: {
+    getTasks: function() {
+      let self = this;
+      this.$axios.get("/products/" + this.$route.params.id).then(function(res) {
+        console.log(res);
+        self.tasks = res.data.data;
+      });
+    },
+    delTasks: function(id) {
+      let self = this;
+      this.$axios.delete("/products/" + id).then(function(res) {
+        self.getTasks();
+      });
+    }
+  }
+};
 </script>
 <style>
-  img {
-    width: 50px;
-    height: 50px;
-  }
+img {
+  width: 50px;
+  height: 50px;
+}
 </style>

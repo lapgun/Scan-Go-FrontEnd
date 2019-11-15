@@ -1,68 +1,55 @@
 <template>
   <div>
-    <b-navbar toggleable="lg" type="dark" variant="info">
-      <b-navbar-brand href="#">Home</b-navbar-brand>
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-      <b-collapse id="nav-collapse" is-nav>
-        <b-navbar-nav>
-          <b-nav-item-dropdown href="#">
-            <template v-slot:button-content>
-              <em>Categories</em>
-            </template>
-            <b-dropdown-item>Thực Phẩm</b-dropdown-item>
-          </b-nav-item-dropdown>
-          <b-nav-item href="#" disabled>Disabled</b-nav-item>
-        </b-navbar-nav>
-        <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto">
-          <b-nav-form>
-            <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
-            <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
-          </b-nav-form>
-          <!-- <b-nav-item-dropdown v-if="user">
-            Using 'button-content' slot
-            <template v-slot:button-content>
-              <em>{{$store.state.user.name}}</em>
-            </template>
-            <b-dropdown-item @click="$router.push('user/detail')">Profile</b-dropdown-item>
-            <b-dropdown-item href="#" @click="handelSigOut">Sign Out</b-dropdown-item>
-          </b-nav-item-dropdown>
-          <b-nav-item @click="$router.push('/login')" v-else>
-            <i class="fa fa-lock"></i>Login
-          </b-nav-item> -->
-        </b-navbar-nav>
-      </b-collapse>
-    </b-navbar>
-    <h1>Hello :{{}}</h1>
+    <div v-for="(n,index) in pageOffset" :key="index">
+      <img :src="'https://picsum.photos/800/150/?image='+index" alt />
+      <h6>Image Description {{index +1}} hey hey hey heyyyy</h6>
+    </div>
+    <footer>
+      <div ref="infinitescrolltrigger" id="scoll-trigger">
+        <div class="circle-loader"></div>
+      </div>
+    </footer>
   </div>
-  <!--  end header-->
 </template>
 <script>
-const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
-  middleware: "notAuthenticated",
-  // mounted: function() {
-  //   this.getUsers();
-  // },
-  // data: function() {
-  //   return {
-  //     user_id: ""
-  //   };
-  // },
-  methods: {
-    // getUsers: function() {
-    //   let self = this;
-    //   this.$axios.get("/users").then(function(res) {
-    //     console.log(res);
-    //     self.user_id = res.data.decoded.user_id;
-    //     self.users = res.data.data;
-    //   });
-    // },
-    handelSigOut() {
-      Cookie.remove("token");
-      this.$store.commit("setToken", null);
-      this.$router.push("/login");
+  data: () => {
+    return {
+      currentPage: 1,
+      maxPerPage: 3,
+      totalResults: 100,
+      showloader: false
+    };
+  },
+  computed: {
+    pageCount() {
+      return Math.ceil(this.totalResults / this.maxPerPage);
+    },
+    pageOffset() {
+      return this.maxPerPage * this.currentPage;
     }
+  },
+  methods: {
+    scrollTrigger() {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (
+            entry.intersectionRatio > 0 &&
+            this.currentPage < this.pageCount
+          ) {
+            this.showloader = true;
+            setTimeout(() => {
+              this.currentPage += 1;
+              this.showloader = false;
+            }, 2000);
+          }
+        });
+      });
+      observer.observe(this.$refs.infinitescrolltrigger);
+    }
+  },
+  mounted() {
+    this.scrollTrigger();
   }
 };
 </script>

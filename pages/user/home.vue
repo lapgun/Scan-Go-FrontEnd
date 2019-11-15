@@ -49,35 +49,31 @@
 	
 </template>
 <script>
-
-const Cookie = process.client ? require('js-cookie') : undefined
+const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
-	middleware: 'authenticated',
-	mounted : function(){
-        this.getUsers()
+  middleware: "authenticated",
+  mounted: function() {
+    this.getUsers();
+  },
+  data: function() {
+    return {
+      user_id: ""
+    };
+  },
+  methods: {
+    getUsers: function() {
+      let self = this;
+      this.$axios.get("/users").then(function(res) {
+        console.log(res);
+        self.user_id = res.data.decoded.user_id;
+        self.users = res.data.data;
+      });
     },
-    data : function(){
-        return {
-			user_id: "",
-			user_name:''
-		}
-	},
-	methods :{
-		getUsers : function(){
-            let self = this
-            this.$axios.get('/users')
-            .then(function(res){
-				console.log('sf',res)
-				self.user_id =res.data.decoded.user_id 
-				self.user_name = res.data.decoded.user_name
-                self.users = res.data.data
-            })
-        },
-		handleLogout : function(){
-			Cookie.remove("token");
-      		this.$store.commit("setToken", null);
-      		this.$router.push('/login');
-		}
-	}
-}
+    handleLogout: function() {
+      Cookie.remove("token");
+      this.$store.commit("setToken", null);
+      this.$router.push("/login");
+    }
+  }
+};
 </script>

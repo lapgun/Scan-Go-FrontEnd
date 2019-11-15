@@ -35,7 +35,7 @@
                   <div class="col-md-3">
                     <a>
                       <button
-                        type="button" style="margin-top:15px"
+                        type="button"
                         class="btn btn-dark"
                         @click="$router.push('/user/detail')"
                       >Back</button>
@@ -68,13 +68,10 @@ export default {
   methods: {
     handelSubmit() {
       let self = this;
-      this.$axios.put("/users/" + this.form.id, this.form).then(function(res) {
-        console.log(res);
-        if (res.data.data.role == true) {
-            self.$router.push("/user/home");
-          } else {
-            self.$router.push("/");
-          }
+      this.$axios.put("/users/edit", this.userDetail).then(function(res) {
+        self.$store.commit("setUser", self.userDetail);
+        Cookie.set("setUser", res.data.data);
+        self.$router.push("/user");
       });
       this.userDetail = "";
     }

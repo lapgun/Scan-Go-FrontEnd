@@ -67,19 +67,17 @@
 	    	</div>  
     	</div>	
     </div>
-	<shopFooter></shopFooter>
+    <shopFooter></shopFooter>
   </div>
 </template>
 <script>
-import shopHeader from '~/components/shopHeader.vue'
-import shopFooter from '~/components/shopFooter.vue'
+import shopHeader from "~/components/shopHeader.vue";
+import shopFooter from "~/components/shopFooter.vue";
 export default {
-  data : function(){
-    
-  },
+  data: function() {},
   components: {
-	shopHeader,
-	shopFooter
+    shopHeader,
+    shopFooter
   }
-}
+};
 </script>
