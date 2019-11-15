@@ -26,13 +26,18 @@ export default {
    ** Global CSS
    */
   css: [
-    '~/assets/css/style.css',
-    '~/assets/css/bootstrap.min.css'
+    "~/assets/css/style.css",
+    "~/assets/css/bootstrap.min.css"
   ],
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ["~/plugins/axios", "~/plugins/v-validate"],
+
+  plugins: [
+    "~/plugins/axios",
+    "~/plugins/v-validate"
+  ],
+
 
   /*
    ** Nuxt.js dev-modules

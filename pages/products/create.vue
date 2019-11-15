@@ -1,11 +1,6 @@
+
 <template>
   <div class="create-form">
-    <b-button variant="success" @click="$router.push('/task')">User</b-button>
-    <b-button variant="success" @click="$router.push('/blog')">Blog</b-button>
-    <b-button variant="success" @click="$router.push('/task/login')">Login</b-button>
-    <br />
-    <br />
-    <br />Name:
     <input
       v-model="form.name"
       type="text"
@@ -14,12 +9,7 @@
     />
     Select product's category in the select form below :
     <b-form-select v-model="form.categoriesId" :options="options"></b-form-select>
-    <input
-      v-model="form.picture"
-      type="text"
-      class="form-control"
-      placeholder="Enter your product picture"
-    />
+    <input type="file" id="file" ref="picture" v-on:change="handleFileUpload()" />
     <input
       v-model="form.price"
       type="text"
@@ -52,7 +42,7 @@
 </template>
 <script>
 export default {
-  mounted: function() {
+   mounted: function() {
     this.getCatProduct();
   },
   data: function() {
@@ -83,11 +73,29 @@ export default {
       });
       console.log(self.options);
     },
-    handleSubmit: function() {
+    handleSubmit() {
+      let formData = new FormData();
+      // formData.append('form',this.form);
+      formData.append("picture", this.picture);
+      formData.append("name", this.form.name);
+      formData.append("price", this.form.price);
+      formData.append("description", this.form.description);
+      formData.append("detail", this.form.detail);
+      formData.append("order_time", this.form.order_time);
+
       let self = this;
-      this.$axios.post("/products", this.form).then(function(res) {
-        self.$router.push("/products");
-      });
+      this.$axios
+        .post("/products/create", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        })
+        .then(function(res) {
+          self.$router.push("/products");
+        });
+    },
+    handleFileUpload() {
+      this.picture = this.$refs.picture.files[0];
     }
   }
 };

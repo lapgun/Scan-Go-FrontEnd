@@ -49,12 +49,15 @@
 			</ul>
 		</div>
 		<h1>Hello : {{admin_id}}</h1>
+		  token : {{this.$store.state.token}}
 	</div>
 	
 </template>
 <script>
+
 const Cookie = process.client ? require('js-cookie') : undefined
 export default {
+	middleware: 'authenticated',
 	mounted : function(){
         this.getAdmins()
     },
@@ -68,7 +71,7 @@ export default {
             let self = this
             this.$axios.get('/admins')
             .then(function(res){
-				console.log(res)
+				console.log('gujgj',res)
 				self.admin_id =res.data.decoded.admin_id 
                 self.admins = res.data.data
             })
