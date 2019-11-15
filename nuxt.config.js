@@ -18,10 +18,6 @@ export default {
         link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
         script: [{
             src: [
-                "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js",
-                "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js",
-                "https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js",
-                "https://fontawesome.com/",
                 "~/assets/js/bootstrap.min.js",
                 "~/assets/js/contact.js",
                 "~/assets/js/gmaps.js",
@@ -32,7 +28,22 @@ export default {
                 "~/assets/js/jquery.prettyPhoto.js",
                 "~/assets/js/jquery.scrollUp.min.js",
             ]
-        }]
+        },
+        {
+            src: "https://code.jquery.com/jquery-3.3.1.slim.min.js",
+            type: "text/javascript"
+          },
+          {
+            src:
+              "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js",
+            type: "text/javascript"
+          },
+          {
+            src:
+              "https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js",
+            type: "text/javascript"
+          }
+    ]
     },
     /*
      ** Customize the progress-bar color

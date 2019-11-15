@@ -16,7 +16,7 @@
 							<div class="post-meta">
 								<ul>
 									<li><i class="fa fa-user"></i> Mac Doe</li>
-									<li><i class="fa fa-clock-o"></i> 1:33 pm</li>
+									<li><i class="fas fa-clock-o"></i> 1:33 pm</li>
 									<li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
 								</ul>
 								<span>
@@ -38,7 +38,7 @@
 							<div class="post-meta">
 								<ul>
 									<li><i class="fa fa-user"></i> Mac Doe</li>
-									<li><i class="fa fa-clock-o"></i> 1:33 pm</li>
+									<li><i class="fas fa-clock-o"></i> 1:33 pm</li>
 									<li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
 								</ul>
 								<span>
@@ -60,7 +60,7 @@
 							<div class="post-meta">
 								<ul>
 									<li><i class="fa fa-user"></i> Mac Doe</li>
-									<li><i class="fa fa-clock-o"></i> 1:33 pm</li>
+									<li><i class="fas fa-clock-o"></i> 1:33 pm</li>
 									<li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
 								</ul>
 								<span>

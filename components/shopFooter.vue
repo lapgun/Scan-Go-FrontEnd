@@ -18,7 +18,7 @@
 										<img src="~assets/images/home/iframe1.png" alt="" />
 									</div>
 									<div class="overlay-icon">
-										<i class="fa fa-play-circle-o"></i>
+										<i class="fab fa-play-circle-o"></i>
 									</div>
 								</a>
 								<p>Circle of Hands</p>
@@ -33,7 +33,7 @@
 										<img src="~assets/images/home/iframe2.png" alt="" />
 									</div>
 									<div class="overlay-icon">
-										<i class="fa fa-play-circle-o"></i>
+										<i class="fab fa-play-circle-o"></i>
 									</div>
 								</a>
 								<p>Circle of Hands</p>
@@ -48,7 +48,7 @@
 										<img src="~assets/images/home/iframe3.png" alt="" />
 									</div>
 									<div class="overlay-icon">
-										<i class="fa fa-play-circle-o"></i>
+										<i class="fab fa-play-circle-o"></i>
 									</div>
 								</a>
 								<p>Circle of Hands</p>
@@ -63,7 +63,7 @@
 										<img src="~assets/images/home/iframe4.png" alt="" />
 									</div>
 									<div class="overlay-icon">
-										<i class="fa fa-play-circle-o"></i>
+										<i class="fab fa-play-circle-o"></i>
 									</div>
 								</a>
 								<p>Circle of Hands</p>
@@ -137,12 +137,11 @@
 							<h2>About Shopper</h2>
 							<form action="#" class="searchform">
 								<input type="text" placeholder="Your email address" />
-								<button type="submit" class="btn btn-default"><i class="fa fa-arrow-circle-o-right"></i></button>
+								<button type="submit" class="btn btn-default"><i class="fas fa-arrow-alt-circle-right"></i></button>
 								<p>Get the most recent updates from <br />our site and be updated your self...</p>
 							</form>
 						</div>
 					</div>
-					
 				</div>
 			</div>
 		</div>

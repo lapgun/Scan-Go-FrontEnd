@@ -8,7 +8,7 @@
 						<div class="contactinfo">
 							<ul class="nav nav-pills">
 								<li><a href="#"> +2 95 01 88 821</a></li>
-								<li><a href="#"> info@domain.com</a></li>
+								<li><a href="#"> nguyenthila@gmail.com</a></li>
 							</ul>
 						</div>
 					</div>
