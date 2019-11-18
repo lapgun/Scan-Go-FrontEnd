@@ -46,9 +46,8 @@
             getTasks: function () {
                 let self = this;
                 this.$axios.get("/products/" + this.$route.params.id).then(function (res) {
-                    self.tasks = res.data.data;
-                    console.log(self.tasks);
-                    console.log(self.tasks.images.default_image);
+                  console.log(res);
+                    self.tasks = res.data.data;        
                 });
             },
             delTasks: function (id) {

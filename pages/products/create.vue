@@ -20,19 +20,11 @@
                 placeholder="Enter your product price"
         />
         Description:
-        <input
-                v-model="form.description"
-                type="text"
-                class="form-control"
-                placeholder="Enter your product description"
-        />
+        <vue-ckeditor type="classic" v-model="form.description" :editors="editors" class="form-control"
+                placeholder="Enter your product description"></vue-ckeditor>
         Detail:
-        <input
-                v-model="form.detail"
-                type="text"
-                class="form-control"
-                placeholder="Enter your product detail"
-        />
+        <vue-ckeditor type="classic" v-model="form.detail" :editors="editors" class="form-control"
+                placeholder="Enter your product detail"></vue-ckeditor>
         Order time:
         <input
                 v-model="form.order_time"
@@ -47,11 +39,15 @@
     </div>
 </template>
 <script>
+    import Vue from 'vue'
+    import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+    import VueCkeditor from 'vue-ckeditor5'
     import upload_files from "../../components/upload_files";
 
     export default {
         components: {
-            upload_files
+            upload_files,
+            'vue-ckeditor': VueCkeditor.component
         },
         mounted: function () {
             this.getCatProduct();
@@ -69,7 +65,10 @@
                     order_time: "",
 
                 },
-                options: [{value: 0, text: "This is parent category "}]
+                options: [{value: 0, text: "This is parent category "}],
+                editors: {
+                    classic: ClassicEditor
+                }
             };
         },
         methods: {
