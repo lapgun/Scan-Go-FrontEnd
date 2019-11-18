@@ -94,7 +94,7 @@
 						</ol>
 						
 						<div class="carousel-inner">
-							<div class="item active">
+							<div class="carousel-item active">
 								<div class="col-sm-6">
 									<h1><span>E</span>-SHOPPER</h1>
 									<h2>Free E-Commerce Template</h2>
@@ -106,7 +106,7 @@
 									<img src="~assets/images/home/pricing.png"  class="pricing" alt="" />
 								</div>
 							</div>
-							<div class="item">
+							<div class="carousel-item">
 								<div class="col-sm-6">
 									<h1><span>E</span>-SHOPPER</h1>
 									<h2>100% Responsive Design</h2>
@@ -119,7 +119,7 @@
 								</div>
 							</div>
 							
-							<div class="item">
+							<div class="carousel-item">
 								<div class="col-sm-6">
 									<h1><span>E</span>-SHOPPER</h1>
 									<h2>Free Ecommerce Template</h2>
