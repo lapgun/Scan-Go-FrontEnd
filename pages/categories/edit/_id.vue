@@ -124,7 +124,6 @@ export default {
     },
     getDetail: function() {
       let self = this;
-
       this.$axios
         .get("/categories/" + this.$route.params.id)
         .then(function(res) {
@@ -133,7 +132,6 @@ export default {
     },
     handleSubmit: function() {
       let self = this;
-
       this.$axios
         .put("/categories/" + this.form.id, this.form)
         .then(function(res) {

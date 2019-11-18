@@ -15,7 +15,7 @@
               </a>
             </h4>
           </div>
-          <div :id="'a'+cat.id" class="pane=l-collapse collapse">
+          <div :id="'a'+cat.id" class="panel-collapse collapse">
             <div class="panel-body">
               <ul>
                 <li v-for="(menu,key) in menus" :key="key" v-show="menu.cat_parent == cat.id">
