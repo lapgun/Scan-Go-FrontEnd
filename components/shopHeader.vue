@@ -90,7 +90,7 @@
                 <input type="search" placeholder="Search"/>
               </div>
               <div style="display:inline-block; font-size:25px;" v-if="user_id">
-                <a @click="$router.push('shop/cart')"><i class="fas fa-shopping-cart"></i></a>
+                <a @click="$router.push('shop/cart')"><i class="fas fa-shopping-cart">{{numCart}}</i></a>
               </div>
             </div>
           </div>
@@ -183,12 +183,22 @@
                 user_name:''
             }
         },
+        computed:{
+            products(){
+                return this.$store.getters.products;
+            },
+            cart(){
+                return this.$store.getters.cart;
+            },
+            numCart () {
+                return this.cart.length
+            }
+        },
         methods: {
             getUsers() {
                 let self = this;
                 this.$axios.get('/users')
                     .then(function (res) {
-                        console.log(res);
                         self.user_id = res.data.decoded.user_id;
                         self.user_name = res.data.decoded.user_name;
                         self.users = res.data.data
