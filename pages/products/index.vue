@@ -41,7 +41,7 @@
         <td>
           <b-button @click="$router.push('/products/details/'+task.id)">Details</b-button>
           <b-button class="btn btn-info" @click="$router.push('/products/edit/'+task.id)">Edit</b-button>
-          <b-button class="btn btn-info" variant="danger" @click="delTasks(task.id)">Delete</b-button>
+          <b-button class="btn btn-danger" variant="danger" @click="delTasks(task.id)">Delete</b-button>
         </td>
       </tr>
       </tbody>
@@ -63,6 +63,7 @@
             getTasks: function () {
                 let self = this;
                 this.$axios.get("/products").then(function (res) {
+                    console
                     self.tasks = res.data.data;
                     console.log(res.data.data);
                 });

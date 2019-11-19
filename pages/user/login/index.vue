@@ -24,7 +24,7 @@
                 </span>
               </label>
               <input type="submit" @click="handelSubmit" class="btn btn-info btn-md" value="submit" />
-              <button class="btn btn-success" @click="$router.push('/user/register')">Register</button>
+              <button class="btn btn-success" @click="$router.push('/register')">Register</button>
             </div>
           </div>
         </div>

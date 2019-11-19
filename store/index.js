@@ -1,5 +1,4 @@
 const cookieparser = process.server ? require('cookieparser') : undefined;
-
 export const state = () => {
   return {
     token: null,
@@ -21,7 +20,7 @@ export const actions = {
     if (req.headers.cookie) {
       const parsed = cookieparser.parse(req.headers.cookie);
       token = parsed.token;
-      commit('setToken', token)
+      commit('setToken', token);
       user = parsed.user;
       commit('setUser', user)
     }
