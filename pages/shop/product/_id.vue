@@ -15,40 +15,20 @@
                 <div class="product-image-wrapper">
                   <div class="single-products">
                     <div class="productinfo text-center">
-                      <img :src="product.images.image_1" alt />
+                      <a  @click="$router.push('/shop/product_detail/'+product.id)">
+                        <!-- <img style="width:250px; height:250px" :src="product.images.default_image"  /> -->
+                      </a>
                       <h2>{{product.price}} đ</h2>
                       <p>{{product.name}}</p>
-                      <a href="#" class="btn btn-default add-to-cart">
+                      <a @click="$router.push('/shop/product_detail/'+product.id)" class="btn btn-default add-to-cart">
                         <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
                       </a>
                     </div>
-                    <div class="product-overlay">
-                      <div class="overlay-content">
-                        <h2>{{product.price}}</h2>
-                        <p>{{product.name}}</p>
-                        <a href="#" class="btn btn-default add-to-cart">
-                          <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
-                        </a>
-                      </div>
-                    </div>
+                  
                   </div>
                 </div>
               </div>
             </div>
-            <ul class="pagination">
-              <li class="active">
-                <a href>1</a>
-              </li>
-              <li>
-                <a href>2</a>
-              </li>
-              <li>
-                <a href>3</a>
-              </li>
-              <li>
-                <a href>&raquo;</a>
-              </li>
-            </ul>
           </div>
         </div>
       </div>
@@ -63,10 +43,17 @@ import shopNav from "~/components/shopNav.vue";
 export default {
   mounted: function() {
     this.getProducts();
+    this.getMenu();
+    this.getByCat();
   },
   data: function() {
     return {
-      products: []
+      products: [],
+      menu:[],
+      array:{
+        id :'',
+        name:''
+      }
     };
   },
   components: {
@@ -77,10 +64,27 @@ export default {
   methods: {
     getProducts: function() {
       let self = this;
-      this.$axios.get("/products").then(function(res) {
+      this.$axios.get("/products/menu/"+this.$route.params.id).then(function(res) {
         console.log(res);
-        self.products = res.data.data;
+        self.products = res.data.data
       });
+    },
+    getMenu(){
+      let self=this;
+      this.$axios.get("/categories/cat_parent/"+this.$route.params.id).then(function(res){
+        self.array = res.data.data.rows;
+        console.log("menu",res)
+        self.array.forEach(results => {
+          self.menu.push(results.id)
+        });
+        console.log("test",this.results.id)
+      })
+    },
+    getByCat(){
+      console.log('this menu',this.menu)
+      let self=this
+       this.$axios.post("/products/by_cat",this.menu).then(function(res){
+       })
     }
   }
 };

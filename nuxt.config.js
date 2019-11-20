@@ -26,8 +26,7 @@ export default {
                     "~/assets/js/main.js",
                     "~/assets/js/price-range.js",
                     "~/assets/js/jquery.prettyPhoto.js",
-                    "~/assets/js/jquery.scrollUp.min.js",
-                    "~/assets/js/vue-ckeditor5.js"
+                    "~/assets/js/jquery.scrollUp.min.js"
                 ]
             },
             {
@@ -68,8 +67,8 @@ export default {
         "~/plugins/axios",
         "~/plugins/v-validate",
         {
-            src : "~/plugins/vue-ckeditor5",
-            mode : 'client'
+            src: '~/plugins/vue-ckeditor5.js',
+            mode: 'client'
         }
     ],
 

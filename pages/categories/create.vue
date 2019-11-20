@@ -106,7 +106,8 @@ export default {
   methods: {
     getCategories: function() {
       let self = this;
-      this.$axios.get("/categories/cat_parent").then(function(res) {
+      let id = 0 
+      this.$axios.get("/categories/cat_parent/"+id).then(function(res) {
         let data = res.data.data.rows;
         data.forEach(value => {
           self.options.push({
@@ -118,8 +119,10 @@ export default {
       console.log(self.options);
     },
     handleSubmit: function() {
+      console.log(this.form);
       let self = this;
       this.$axios.post("/categories", this.form).then(function(res) {
+        
         self.$router.push("/categories");
       });
     },

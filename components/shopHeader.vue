@@ -58,7 +58,7 @@
 								<li><a @click="$router.push('/')" class="active" style="margin-top:-2px">Home</a></li>
 								<li class="dropdown"><a href="#" style="margin-top:-10px">Shop</a>
                                     <ul role="menu" class="sub-menu">
-                                        <li><a @click="$router.push('/shop/product')">Products</a></li>
+                                        <li><a @click="$router.push('/shop/products')">Products</a></li>
 										<li><a @click="$router.push('/shop/checkout/'+user_id)">Checkout</a></li> 
 										<li><a @click="$router.push('/shop/cart')">Cart</a></li> 
 										<li><a @click="$router.push('/login')">Login</a></li> 

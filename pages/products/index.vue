@@ -65,7 +65,7 @@
               placeholder="Search"
             />
           </div>
-        </form> -->
+        </form>-->
         <ul class="nav menu" style="display:block">
           <li>
             <a @click="$router.push('/user/home')">Home</a>
@@ -112,18 +112,14 @@
               <td>
                 <b-button v-b-toggle="'a-'+task.id" class="m-1">Show</b-button>
                 <b-collapse :id="'a-'+task.id">
-                  <vue-ckeditor type="classic">
-                     <vue-ckeditor type="classic" v-model="task.description">{{task.description}}</vue-ckeditor>
-                  </vue-ckeditor>
+                  <vue-ckeditor type="classic" v-model="task.description">{{task.description}}</vue-ckeditor>
                 </b-collapse>
               </td>
               <td>
                 <b-button v-b-toggle="'b-'+task.id" class="m-1">show</b-button>
                 <b-collapse :id="'b-'+task.id">
                   <b-card>
-                    <vue-ckeditor type="classic">
-                      <vue-ckeditor type="classic" v-model="task.detail">{{task.detail}}</vue-ckeditor>
-                    </vue-ckeditor>
+                    <vue-ckeditor type="classic" v-model="task.detail">{{task.detail}}</vue-ckeditor>
                   </b-card>
                 </b-collapse>
               </td>
@@ -134,17 +130,21 @@
                 <b-button class="btn btn-info" variant="danger" @click="delTasks(task.id)">Delete</b-button>
               </td>
             </tr>
-
           </tbody>
-          
         </table>
       </div>
     </div>
   </div>
 </template>
 <script>
-const Cookie = process.client ? require("js-cookie") : undefined;
+const Cookie = process.client ? require("js-cookie") : undefined
+import Vue from "vue"
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic"
+import VueCkeditor from "vue-ckeditor5"
 export default {
+  components: {
+    "vue-ckeditor": VueCkeditor.component
+  },
   mounted: function() {
     this.getTasks();
     this.getAdmins();
@@ -154,13 +154,17 @@ export default {
       tasks: [],
       search: "",
       user_id: "",
-      users: []
+      users: [],
+      editors: {
+        classic: ClassicEditor
+      }
     };
   },
   methods: {
     getTasks: function() {
       let self = this;
       this.$axios.get("/products").then(function(res) {
+        console.log(res);
         self.tasks = res.data.data;
       });
     },
