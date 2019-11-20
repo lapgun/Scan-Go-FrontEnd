@@ -13,7 +13,6 @@ export const mutations = {
   setUser(state, user) {
     state.user = user
   }
-
 };
 export const actions = {
   nuxtServerInit({commit}, {req}) {
@@ -28,4 +27,6 @@ export const actions = {
     }
   }
 
+
 };
+

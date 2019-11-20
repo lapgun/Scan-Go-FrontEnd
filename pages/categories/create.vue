@@ -75,16 +75,21 @@
       </div>
       <div class="col-sm-8 col-lg-10 sidebar">
         <div class="create-form">
-    <br />
-    <label>Please select your cat's name</label>
-    <input v-model="form.name" type="text" class="form-control" placeholder="Enter your cat name " />
-    <label>Please select your cat's parent</label>
-    <b-form-select v-model="form.cat_parent" :options="options"></b-form-select>
-    <br />
-    <label>
-      <button class="btn btn-info" @click="handleSubmit">Submit</button>
-    </label>
-  </div>
+          <br />
+          <label>Please select your cat's name</label>
+          <input
+            v-model="form.name"
+            type="text"
+            class="form-control"
+            placeholder="Enter your cat name "
+          />
+          <label>Please select your cat's parent</label>
+          <b-form-select v-model="form.cat_parent" :options="options"></b-form-select>
+          <br />
+          <label>
+            <button class="btn btn-info" @click="handleSubmit">Submit</button>
+          </label>
+        </div>
       </div>
     </div>
   </div>

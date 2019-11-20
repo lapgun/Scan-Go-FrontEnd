@@ -1,5 +1,6 @@
 <template>
-  <div class="create-form">
+  <div class="container">
+    <h1>Chỉnh Sửa thông tin</h1>
     <b-button variant="success" @click="$router.push('/task')">User</b-button>
     <b-button variant="success" @click="$router.push('/blog')">Blog</b-button>
     <b-button variant="success" @click="$router.push('/task/login')">Login</b-button>
@@ -13,31 +14,35 @@
       placeholder="Enter your product's name "
     />
     Select product's category in the select form below :
-    <b-form-select v-model="form.categoriesId" :options="options"></b-form-select>
+    <b-form-select v-model="form.categoriesId" :options="options"></b-form-select>Picture:
     <input
       v-model="form.picture"
       type="text"
       class="form-control"
       placeholder="Enter your product picture"
     />
+    Prices:
     <input
       v-model="form.price"
       type="text"
       class="form-control"
       placeholder="Enter your product price"
     />
+    Description:
     <input
       v-model="form.description"
       type="text"
       class="form-control"
       placeholder="Enter your product description"
     />
+    Detail:
     <input
       v-model="form.detail"
       type="text"
       class="form-control"
       placeholder="Enter your product detail"
     />
+    Oder time:
     <input
       v-model="form.order_time"
       type="text"

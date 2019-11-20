@@ -438,7 +438,7 @@
 
               <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
-                  <div class="item active">
+                  <div class="carousel-item active">
                     <div class="col-sm-4">
                       <div class="product-image-wrapper">
                         <div class="single-products">
@@ -482,7 +482,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="item">
+                  <div class="carousel-item">
                     <div class="col-sm-4">
                       <div class="product-image-wrapper">
                         <div class="single-products">
@@ -550,3 +550,4 @@ export default {
   }
 };
 </script>
+

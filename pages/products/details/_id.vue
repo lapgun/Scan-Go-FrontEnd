@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <b-button variant="success" @click="$router.push('/products/create')">Create new task</b-button>
+  <div class="container">
     <table class="table table-bordered">
       <tr>
         <th>Number</th>
@@ -11,6 +10,7 @@
         <th>description</th>
         <th>detail</th>
         <th>order_time</th>
+        <th>action</th>
       </tr>
       <tr>
         <td>{{tasks.id}}</td>
@@ -45,8 +45,9 @@ export default {
     getTasks: function() {
       let self = this;
       this.$axios.get("/products/" + this.$route.params.id).then(function(res) {
-        console.log(res);
         self.tasks = res.data.data;
+        console.log(self.tasks);
+        console.log(self.tasks.images.default_image);
       });
     },
     delTasks: function(id) {

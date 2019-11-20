@@ -1,6 +1,6 @@
-
 <template>
-  <div class="create-form">
+  <div class="container">
+    <h1>Thêm mới sản phẩm</h1>Name:
     <input
       v-model="form.name"
       type="text"
@@ -9,25 +9,31 @@
     />
     Select product's category in the select form below :
     <b-form-select v-model="form.categoriesId" :options="options"></b-form-select>
-    <input type="file" id="file" ref="picture" v-on:change="handleFileUpload()" />
+    <h3>selected : {{form.categoriesId}}</h3>
+    <!--    <input type="file" id="file" ref="picture" v-on:change="handleFileUpload()" />-->
+    Select product's pictures
+    <upload_files @uploaded="imageUploaded"></upload_files>Price:
     <input
       v-model="form.price"
       type="text"
       class="form-control"
       placeholder="Enter your product price"
     />
+    Description:
     <input
       v-model="form.description"
       type="text"
       class="form-control"
       placeholder="Enter your product description"
     />
+    Detail:
     <input
       v-model="form.detail"
       type="text"
       class="form-control"
       placeholder="Enter your product detail"
     />
+    Order time:
     <input
       v-model="form.order_time"
       type="text"
@@ -41,8 +47,13 @@
   </div>
 </template>
 <script>
+import upload_files from "../../components/upload_files";
+
 export default {
-   mounted: function() {
+  components: {
+    upload_files
+  },
+  mounted: function() {
     this.getCatProduct();
   },
   data: function() {
@@ -56,7 +67,7 @@ export default {
         detail: "",
         order_time: ""
       },
-      options: [{ value: 0, text: "This is parent category " }]
+      options: []
     };
   },
   methods: {
@@ -70,33 +81,25 @@ export default {
             text: value.name
           });
         });
+        console.log(self.options);
       });
-      console.log(self.options);
     },
     handleSubmit() {
-      let formData = new FormData();
-      // formData.append('form',this.form);
-      formData.append("picture", this.picture);
-      formData.append("name", this.form.name);
-      formData.append("price", this.form.price);
-      formData.append("description", this.form.description);
-      formData.append("detail", this.form.detail);
-      formData.append("order_time", this.form.order_time);
-
-      let self = this;
-      this.$axios
-        .post("/products/create", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        })
-        .then(function(res) {
-          self.$router.push("/products");
-        });
+      this.$axios.post("/products", this.form).then(res => {
+        console.log(this.form);
+        this.$router.push("/products");
+      });
     },
-    handleFileUpload() {
-      this.picture = this.$refs.picture.files[0];
+    imageUploaded(data = {}) {
+      this.form.picture = data.productImageInfo
+        ? data.productImageInfo.id
+        : null;
     }
   }
 };
 </script>
+<style scoped>
+div input {
+  padding-top: 10px;
+}
+</style>
