@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" >
     <table class="table table-bordered">
       <tr>
         <th>Number</th>
@@ -17,7 +17,8 @@
         <td>{{tasks.name}}</td>
         <td>{{tasks.categoriesId}}</td>
         <td>
-          <img :src="tasks.picture" />
+<!--          {{ tasks.images }}-->
+          <img :src="`/${tasks.images? tasks.images.default_image: ''}`"/>
         </td>
         <td>{{tasks.price}}</td>
         <td>{{tasks.description}}</td>
@@ -32,24 +33,26 @@
 </template>
 <script>
     export default {
-        mounted: function () {
+
+        created: function () {
             this.getTasks();
 
         },
+        // mounted: function () {
+        //     this.getTasks();
+        //
+        // },
 
         data: function () {
             return {
                 tasks: [],
+                // loaded : false,
             };
         },
         methods: {
-            getTasks: function () {
-                let self = this;
-                this.$axios.get("/products/" + this.$route.params.id).then(function (res) {
-                    self.tasks = res.data.data;
-                    console.log(self.tasks);
-                    console.log(self.tasks.images.default_image);
-                });
+            getTasks:async function () {
+                const res = await this.$axios.get("/products/" + this.$route.params.id);
+                this.tasks = res.data.data;
             },
             delTasks: function (id) {
                 let self = this;

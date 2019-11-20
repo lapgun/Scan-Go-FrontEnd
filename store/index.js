@@ -15,32 +15,51 @@ export const mutations = {
   setToken(state, token) {
     state.token = token;
   },
-  setUser(state, user) {
-    state.user = user;
+  setCart(state, cart){
+    state.cart = cart
   },
-  ADD_TO_CART(state, id) {
-    state.cart.push(id);
+  ADD_TO_CART(state, product) {
+    state.cart.push(product);
   },
-  setProducts(state, products){
-    state.products = products
+  REMOVE_FROM_CART(state, index) {
+    state.cart.splice(index, 1)
+  },
+  increment(state, id) {
+    for (let i = 0; i < state.cart.length; i++) {
+      if (state.cart[i].id === id)
+        state.cart[i].order_time++
+    }
+  },
+  decrement(state, id) {
+    for (let i = 0; i < state.cart.length; i++) {
+      if (state.cart[i].id === id)
+        state.cart[i].order_time--
+    }
   }
 };
 export const actions = {
   nuxtServerInit({commit}, {req}) {
     let token = null;
-    let user = null;
     if (req.headers.cookie) {
       const parsed = cookieparser.parse(req.headers.cookie);
       token = parsed.token;
       commit('setToken', token);
-      user = parsed.user;
-      commit('setUser', user)
     }
   },
-  addToCart(context, id) {
-    let products = null;
-    context.commit('ADD_TO_CART', id);
-    context.commit('setProducts', products);
+  addToCart(context, product) {
+    context.commit('ADD_TO_CART', product);
+  },
+  removeItem(context, index) {
+    context.commit('REMOVE_FROM_CART', index)
+  },
+  increment(context, id) {
+    context.commit('increment', id)
+  },
+  decrement(context, id) {
+    context.commit('decrement', id)
+  },
+  setCart(context, cart) {
+    context.commit('setCart', cart)
   }
 };
 

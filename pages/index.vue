@@ -27,7 +27,7 @@
                         <div class="overlay-content">
                           <h2>${{product.price}}</h2>
                           <p>{{product.name}}</p>
-                          <a href="#" class="btn btn-default add-to-cart" @click="addToCart(product.id)">
+                          <a href="#" class="btn btn-default add-to-cart" @click="addToCart(product)">
                             <i class="fa fa-shopping-cart"></i>Add to cart
                           </a>
                         </div>
@@ -423,6 +423,7 @@
   </div>
 </template>
 <script>
+    const Cookies = process.client ? require("js-cookie") : undefined;
     import shopHeader from "~/components/shopHeader.vue";
     import shopFooter from "~/components/shopFooter.vue";
     import shopNav from "~/components/shopNav.vue";
@@ -457,14 +458,14 @@
 
                     })
             },
-            addToCart(id) {
+            addToCart(product) {
                 let self = this;
-                this.$axios.get('/products/' + id)
+                this.$axios.get('/products/' + product)
                     .then(function (res) {
-                        self.$store.dispatch('addToCart', id);
-                        self.$store.commit('setProducts', self.products)
+                        self.$store.dispatch('addToCart', product );
+                        self.$store.commit('setCart', self.cart)
+                        Cookies.set('setCart', self.cart)
                     });
-
             }
         }
     };
