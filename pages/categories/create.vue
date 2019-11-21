@@ -69,6 +69,9 @@
             <a @click="$router.push('/orders')">Orders</a>
           </li>
           <li>
+            <a @click="$router.push('/slide')">Slide</a>
+          </li>
+          <li>
             <a @click="$router.push('/user')">Users</a>
           </li>
         </ul>
@@ -119,10 +122,8 @@ export default {
       console.log(self.options);
     },
     handleSubmit: function() {
-      console.log(this.form);
       let self = this;
       this.$axios.post("/categories", this.form).then(function(res) {
-        
         self.$router.push("/categories");
       });
     },

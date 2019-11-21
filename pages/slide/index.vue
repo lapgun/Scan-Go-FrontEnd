@@ -55,17 +55,6 @@
           <div class="clear"></div>
         </div>
         <div class="divider"></div>
-        <!-- <form role="search">
-          <div class="form-group">
-            <input
-              type="text"
-              @change="handleSearch"
-              v-model="search"
-              class="form-control"
-              placeholder="Search"
-            />
-          </div>
-        </form>-->
         <ul class="nav menu" style="display:block">
           <li>
             <a @click="$router.push('/user/home')">Home</a>
@@ -73,13 +62,13 @@
           <li>
             <a @click="$router.push('/categories')">Categories</a>
           </li>
-          <li class="active">
+          <li>
             <a @click="$router.push('/products')">Products</a>
           </li>
           <li>
             <a @click="$router.push('/orders')">Orders</a>
           </li>
-          <li>
+          <li class="active">
             <a @click="$router.push('/slide')">Slide</a>
           </li>
           <li>
@@ -87,50 +76,27 @@
           </li>
         </ul>
       </div>
-      <div class="col-sm-8 col-lg-10 sidebar">
-        <b-button variant="success" @click="$router.push('/products/create')">Create new task</b-button>
-        <table id="my-table" class="table table-bordered">
+      <div class="col-sm-9 col-lg-10 sidebar">
+        <b-button @click="$router.push('/slide/create')" variant="info">Create</b-button>
+        <table class="table table-bordered">
           <thead>
             <tr>
-              <th>Number</th>
-              <th>name</th>
-              <th>categoriesId</th>
-              <th>picture</th>
-              <th>price</th>
-              <th>description</th>
-              <th>detail</th>
-              <th>order_time</th>
-              <th>Edit</th>
+              <th>STT</th>
+              <th>Name</th>
+              <th>Image</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(task,index) in tasks" :key="index">
-              <td>{{index+1}}//{{task.id}}</td>
-              <td style="width:250px">{{task.name}}</td>
-              <td>{{task.categoriesId}}</td>
+            <tr v-for="(slide , index) in slides" :key="index">
+              <td>{{index+1}}</td>
+              <td>{{slide.name}}</td>
               <td>
-                <img :src="`/${task.images ? task.images.default_image : ''}`" />
-              </td>
-              <td>{{task.price}}</td>
-              <td>
-                <b-button v-b-toggle="'a-'+task.id" class="m-1">Show</b-button>
-                <b-collapse :id="'a-'+task.id">
-                  <div v-html="task.description"></div>
-                </b-collapse>
+                <img style="width:100px; height:60px" :src="`/${slide.slide_images? slide.slide_images.default_image: ''}`" />
               </td>
               <td>
-                <b-button v-b-toggle="'b-'+task.id" class="m-1">show</b-button>
-                <b-collapse :id="'b-'+task.id">
-                  <b-card>
-                    <div v-html="task.detail"></div>
-                  </b-card>
-                </b-collapse>
-              </td>
-              <td>{{task.order_time}}</td>
-              <td style="width:250px">
-                <b-button @click="$router.push('/products/details/'+task.id)">Details</b-button>
-                <b-button class="btn btn-info" @click="$router.push('/products/edit/'+task.id)">Edit</b-button>
-                <b-button class="btn btn-info" variant="danger" @click="delTasks(task.id)">Delete</b-button>
+                <b-button @click="$router.push('/orders/detail/'+slide.id)">Detail</b-button>
+                <b-button @click="handleDelete(slide.id)" variant="danger">Delete</b-button>
               </td>
             </tr>
           </tbody>
@@ -140,49 +106,47 @@
   </div>
 </template>
 <script>
-const Cookie = process.client ? require("js-cookie") : undefined;
-
 export default {
   mounted: function() {
-    this.getTasks();
+    this.getSlides();
     this.getAdmins();
   },
   data: function() {
     return {
-      tasks: {
-        name:'',
-        price:'',
-        description:'',
-        categoriesId:'',
-        id:'',
-        detail:'',
-        images : {
-          default_image:''
+      slides: {
+        index: "",
+        name: "",
+        slide_images: {
+          default_image: ""
         }
       },
       search: "",
+      totalResult: 0,
+      pagination: {
+        currentPage: 1,
+        perPage: 10
+      },
       user_id: "",
       users: []
     };
   },
   methods: {
-    getTasks: function() {
+    getSlides: function() {
       let self = this;
-      this.$axios.get("/products").then(function(res) {
+      this.$axios.get("/slide").then(function(res) {
         console.log(res);
-        self.tasks = res.data.data;
+        self.slides = res.data.rows;
       });
     },
-    delTasks: function(id) {
+    handleDelete: function(id) {
       let self = this;
-      this.$axios.delete("/products/" + id).then(function(res) {
-        self.getTasks();
+      this.$axios.delete("/slide/" + id).then(function(res) {
+        self.getSlides();
       });
     },
     getAdmins: function() {
       let self = this;
       this.$axios.get("/users").then(function(res) {
-        console.log(res);
         self.user_id = res.data.decoded.user_id;
         self.users = res.data.data;
       });
@@ -195,19 +159,3 @@ export default {
   }
 };
 </script>
-<style>
-img {
-  width: 50px;
-  height: 50px;
-}
-
-table {
-  margin-top: 10px;
-}
-
-.search {
-  width: 50%;
-  display: flex;
-  margin: 10px 0px;
-}
-</style>

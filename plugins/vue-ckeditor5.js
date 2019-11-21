@@ -9,4 +9,5 @@ const options = {
     name: 'ckeditor'
 }
 
+Vue.component("vue-ckeditor", VueCkeditor.component)
 Vue.use(VueCkeditor.plugin, options);
