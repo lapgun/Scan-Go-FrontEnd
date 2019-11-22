@@ -15,79 +15,18 @@
                   <img :src="`/${products.images? products.images.default_image: ''}`" />
                   <h3>ZOOM</h3>
                 </div>
-                <div id="similar-product" class="carousel slide" data-ride="carousel">
-                  <!-- Wrapper for slides -->
-                  <div class="carousel-inner">
-                    <div class="carousel-item active">
-                      <a href>
-                        <img
-                          style="width:100px; height:100px"
-                          :src="`/${products.images? products.images.default_image: ''}`"
-                        />
-                      </a>
-                      <a href>
-                        <img
-                          style="width:100px; height:100px"
-                          :src="`/${products.images? products.images.default_image: ''}`"
-                        />
-                      </a>
-                      <a href>
-                        <img
-                          style="width:100px; height:100px"
-                          :src="`/${products.images? products.images.default_image: ''}`"
-                        />
-                      </a>
-                    </div>
-                    <div class="carousel-item">
-                      <a href>
-                        <img
-                          style="width:100px; height:100px"
-                          :src="`/${products.images? products.images.default_image: ''}`"
-                        />
-                      </a>
-                      <a href>
-                        <img
-                          style="width:100px; height:100px"
-                          :src="`/${products.images? products.images.default_image: ''}`"
-                        />
-                      </a>
-                      <a href>
-                        <img
-                          style="width:100px; height:100px"
-                          :src="`/${products.images? products.images.default_image: ''}`"
-                        />
-                      </a>
-                    </div>
-                    <div class="carousel-item">
-                      <a href>
-                        <img
-                          style="width:100px; height:100px"
-                          :src="`/${products.images? products.images.default_image: ''}`"
-                        />
-                      </a>
-                      <a href>
-                        <img
-                          style="width:100px; height:100px"
-                          :src="`/${products.images? products.images.default_image: ''}`"
-                        />
-                      </a>
-                      <a href>
-                        <img
-                          style="width:100px; height:100px"
-                          :src="`/${products.images? products.images.default_image: ''}`"
-                        />
-                      </a>
-                    </div>
+                <b-carousel
+                  id="carousel"
+                  v-model="slide"
+                  :indicator="1110"
+                  controls
+                  @sliding-start="onSlileStart"
+                  @sliding-end="onSlileEnd"
+                >
+                  <div v-for="(picture,key) in pictures" :key="key">
+                    <b-carousel-slide style="width:100px !important" :img-src="`/${picture ? picture : ''}`"></b-carousel-slide>
                   </div>
-
-                  <!-- Controls -->
-                  <a class="left item-control" href="#similar-product" data-slide="prev">
-                    <i class="fa fa-angle-left"></i>
-                  </a>
-                  <a class="right item-control" href="#similar-product" data-slide="next">
-                    <i class="fa fa-angle-right"></i>
-                  </a>
-                </div>
+                </b-carousel>
               </div>
               <div class="col-sm-7">
                 <div class="product-information">
@@ -112,7 +51,7 @@
                     <b>Condition:</b> New
                   </p>
                   <p>
-                    <b>Brand:</b> E-SHOPPER
+                    <b>Brand:</b> Scan & go
                   </p>
                   <a href>
                     <img
@@ -131,10 +70,6 @@
             <h2 style="margin-top:100px" class="title text-center">Thông tin sản phẩm</h2>
             <div style="font-size:16px" v-html="products.detail"></div>
             <img class="img_detail" :src="`/${products.images? products.images.image_1 : ''}`" />
-            <h2 style="margin-top:100px" class="title text-center">Sản phẩm mới nhất</h2>
-            <div class="recommended_items">
-              <!--recommended_items-->
-            </div>
           </div>
         </div>
       </div>
@@ -160,10 +95,11 @@ export default {
         detail: "",
         order_time: "",
         categoriesId: "",
-        images: {
-          default_image: ""
-        }
-      }
+        images: {}
+      },
+      pictures: [],
+      slide: 0,
+      sliding: null,
     };
   },
   components: {
@@ -176,7 +112,23 @@ export default {
       let self = this;
       this.$axios.get("/products/" + this.$route.params.id).then(function(res) {
         self.products = res.data.data;
+        Object.keys(self.products.images).forEach(function(key) {
+          let img = self.products.images[key];
+          if (img) {
+            let text = img + "";
+            let test = text.split(".");
+            if (test[1] == "jpg" || test[1] == "png" || test[1] == "gif") {
+              self.pictures.push(img);
+            }
+          }
+        });
       });
+    },
+    onSlileStart(slide) {
+      this.sliding = true;
+    },
+    onSlileEnd(slide) {
+      this.sliding = false;
     }
   }
 };
@@ -187,5 +139,5 @@ export default {
   height: 500px;
   display: block;
   margin: 0 auto;
-}
+};
 </style>

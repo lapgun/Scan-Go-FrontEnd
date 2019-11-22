@@ -150,7 +150,18 @@
         <div class="container">
           <div class="row">
             <div class="col-sm-12">
-              <Slide></Slide>
+              <b-carousel
+               id="carousel"
+               v-model="slide"
+               :indicator="1110"
+               controls
+               @sliding-start="onSlileStart"
+               @sliding-end="onSlileEnd"
+              >
+                <div v-for="slide in slides" :key="slide.id">
+                  <b-carousel-slide :img-src="`/${slide.slide_images ? slide.slide_images.default_image : ''}`"></b-carousel-slide>
+                </div>
+              </b-carousel>
             </div>
           </div>
         </div>
@@ -160,17 +171,23 @@
   </div>
 </template>
 <script>
-import Slides from "~/components/carousel/Slides.vue";
-import Slide from "~/components/carousel/Slide.vue";
+
 export default {
-  mounted: function() {},
-  components: {
-    Slide,
-    Slides
+  mounted: function() {
+    this.getSlides()
   },
   data: function() {
     return {
-      search: ""
+      search: "",
+      slide:0,
+      sliding:null,
+      slides : {
+        id :'',
+        name:'',
+        slide_images :{
+          default_image:''
+        }
+      }
     };
   },
   methods: {
@@ -182,6 +199,19 @@ export default {
           console.log(res);
           self.products = res.data.data;
         });
+    },
+    onSlileStart(slide) {
+      this.sliding = true
+    },
+    onSlileEnd(slide) {
+      this.sliding = false
+    },
+    getSlides() {
+      let self = this
+       this.$axios.get('/slide').then(function(res){
+         console.log(res)
+         self.slides  = res.data.rows
+     })
     }
   }
 };

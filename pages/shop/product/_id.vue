@@ -16,7 +16,10 @@
                   <div class="single-products">
                     <div class="productinfo text-center">
                       <a @click="$router.push('/shop/product_detail/'+product.id)">
-                        <img style="width:250px; height:250px" :src="`/${product.images? product.images.default_image: ''}`"  />
+                        <img
+                          style="width:250px; height:250px"
+                          :src="`/${product.images? product.images.default_image: ''}`"
+                        />
                       </a>
                       <h2>{{product.price}} đ</h2>
                       <p>{{product.name}}</p>
@@ -46,21 +49,21 @@ export default {
   mounted: function() {
     this.getProducts();
     this.getByCat();
+    this.getPicture();
   },
   data: function() {
     return {
       products: {
-        id:'',
-        name:'',
-        description:'',
-        price:'',
-        detail:'',
-        order_time:'',
-        categoriesId:'',
-        images: {
-          default_image:''
-        }
+        id: "",
+        name: "",
+        description: "",
+        price: "",
+        detail: "",
+        order_time: "",
+        categoriesId: "",
+        picture: ""
       },
+      array: []
     };
   },
   components: {
@@ -83,15 +86,26 @@ export default {
         .get("/categories/cat_parent/" + this.$route.params.id)
         .then(function(res) {
           let data = res.data.data.rows;
-          console.log(res.data.data.rows);
           data.forEach(element => {
-            element.products.forEach(e =>{
-              self.products.push(e)
-            })
+            element.products.forEach(e => {
+              self.products.push(e);
+            });
           });
-          console.log("asdsadasdmenu: ", self.products);
+          // console.log("asdsadasdmenu: ", self.products);
+          self.products.forEach(element => {
+            self.array.push(element.picture);
+          });
+          // console.log(self.array)
         });
     },
+    getPicture() {
+      console.log(this.array);
+      let result = Object.keys(this.array).map(function(key) {
+        return [Number(key), this.array[key]];
+      });
+
+      console.log(result);
+    }
   }
 };
 </script>
