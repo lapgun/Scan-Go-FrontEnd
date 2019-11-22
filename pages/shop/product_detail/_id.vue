@@ -460,11 +460,27 @@ import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
 export default {
-  data: function() {},
+  mounted() {
+    this.getProducts();
+  },
+  data: function() {
+    return {
+      product: []
+    };
+  },
   components: {
     shopHeader,
     shopFooter,
     shopNav
+  },
+  methods: {
+    getProducts() {
+      let self = this;
+      this.$axios.get("/products/" + this.$route.params.id).then(function(res) {
+        console.log(res);
+        self.product = res.data.data;
+      });
+    }
   }
 };
 </script>

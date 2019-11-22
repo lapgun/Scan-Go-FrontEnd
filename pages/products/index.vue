@@ -94,11 +94,13 @@ export default {
           self.pagination.totalPage = res.data.pagination.totalPage;
         });
     },
-    handleSearch(){
-      let self=this
-      this.$axios.get("/products/search?search="+this.search).then(function(res){
+    handleSearch() {
+      let self = this;
+      this.$axios
+        .get("/products/search?search=" + this.search)
+        .then(function(res) {
           self.tasks = res.data.data;
-      });
+        });
     },
     delTasks: function(id) {
       let self = this;

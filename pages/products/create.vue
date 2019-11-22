@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>Thêm mới sản phẩm</h1>Name:
+    <h1>Thêm mới sản Phẩm</h1>Name:
     <input
       v-model="form.name"
       type="text"
@@ -9,9 +9,7 @@
     />
     Select product's category in the select form below :
     <b-form-select v-model="form.categoriesId" :options="options"></b-form-select>
-    <h3>selected : {{form.categoriesId}}</h3>
     <!--    <input type="file" id="file" ref="picture" v-on:change="handleFileUpload()" />-->
-    Select product's pictures
     <upload_files @uploaded="imageUploaded"></upload_files>Price:
     <input
       v-model="form.price"
@@ -20,20 +18,20 @@
       placeholder="Enter your product price"
     />
     Description:
-    <input
+    <vue-ckeditor
+      type="classic"
       v-model="form.description"
-      type="text"
+      :editors="editors"
       class="form-control"
       placeholder="Enter your product description"
-    />
-    Detail:
-    <input
+    ></vue-ckeditor>Detail:
+    <vue-ckeditor
+      type="classic"
       v-model="form.detail"
-      type="text"
+      :editors="editors"
       class="form-control"
       placeholder="Enter your product detail"
-    />
-    Order time:
+    ></vue-ckeditor>Order time:
     <input
       v-model="form.order_time"
       type="text"
@@ -47,11 +45,14 @@
   </div>
 </template>
 <script>
+import Vue from "vue";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import VueCkeditor from "vue-ckeditor5";
 import upload_files from "../../components/upload_files";
-
 export default {
   components: {
-    upload_files
+    upload_files,
+    "vue-ckeditor": VueCkeditor.component
   },
   mounted: function() {
     this.getCatProduct();
@@ -67,10 +68,35 @@ export default {
         detail: "",
         order_time: ""
       },
-      options: []
+      options: [{ value: 0, text: "This is parent category " }],
+      editors: {
+        classic: ClassicEditor
+      }
     };
   },
   methods: {
+    getCatProduct: function() {
+      let self = this;
+      this.$axios.get("/categories/cat_product").then(function(res) {
+        let data = res.data.data.rows;
+        data.forEach(value => {
+          self.options.push({
+            value: value.id,
+            text: value.name
+          });
+        });
+      });
+    },
+    handleSubmit() {
+      this.$axios.post("/products", this.form).then(res => {
+        this.$router.push("/products");
+      });
+    },
+    imageUploaded(data = {}) {
+      this.form.picture = data.productImageInfo
+        ? data.productImageInfo.id
+        : null;
+    },
     getCatProduct: function() {
       let self = this;
       this.$axios.get("/categories/cat_product").then(function(res) {

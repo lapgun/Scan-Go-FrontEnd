@@ -104,12 +104,11 @@
           </tr>
         </tbody>
         <infinite-loading
-        slot="append"
-        @infinite="infiniteHandler"
-        force-use-infinite-wrapper="table__body-wrapper"
-      ></infinite-loading>
+          slot="append"
+          @infinite="infiniteHandler"
+          force-use-infinite-wrapper="table__body-wrapper"
+        ></infinite-loading>
       </table>
-      
     </div>
   </div>
 </template>
@@ -160,10 +159,12 @@ export default {
         });
     },
     handleSearch: function() {
-      this.$axios.get("/categories/search?search="+this.search).then(function(res){
-        let self= this
-        self.tasks = res.data.data
-      });
+      this.$axios
+        .get("/categories/search?search=" + this.search)
+        .then(function(res) {
+          let self = this;
+          self.tasks = res.data.data;
+        });
     },
     delTasks: function(id) {
       let self = this;
