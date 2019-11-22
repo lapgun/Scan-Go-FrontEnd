@@ -16,26 +16,12 @@ export const mutations = {
     state.token = token;
   },
   setCart(state, cart){
-    state.cart = cart
+    state.cart = cart;
   },
   ADD_TO_CART(state, product) {
     state.cart.push(product);
   },
-  REMOVE_FROM_CART(state, index) {
-    state.cart.splice(index, 1)
-  },
-  increment(state, id) {
-    for (let i = 0; i < state.cart.length; i++) {
-      if (state.cart[i].id === id)
-        state.cart[i].order_time++
-    }
-  },
-  decrement(state, id) {
-    for (let i = 0; i < state.cart.length; i++) {
-      if (state.cart[i].id === id)
-        state.cart[i].order_time--
-    }
-  }
+
 };
 export const actions = {
   nuxtServerInit({commit}, {req}) {
@@ -48,15 +34,6 @@ export const actions = {
   },
   addToCart(context, product) {
     context.commit('ADD_TO_CART', product);
-  },
-  removeItem(context, index) {
-    context.commit('REMOVE_FROM_CART', index)
-  },
-  increment(context, id) {
-    context.commit('increment', id)
-  },
-  decrement(context, id) {
-    context.commit('decrement', id)
   },
   setCart(context, cart) {
     context.commit('setCart', cart)

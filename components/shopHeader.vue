@@ -39,10 +39,12 @@
               <div class="shop-menu pull-right">
                 <ul class="nav navbar-nav">
                   <li><a @click="$router.push('/user/detail/'+user_id)" style="margin-left:-220px"> Account</a></li>
-                  <li><a @click="$router.push('/shop/checkout/'+user_id)" style="margin-left: -150px; margin-top:-20px">Checkout</a></li>
+                  <li><a @click="$router.push('/shop/checkout/'+user_id)" style="margin-left: -150px; margin-top:-20px">Checkout</a>
+                  </li>
                   <template v-if="user_id">
                     <li><a style="margin-left:-71px ; margin-top: -20px" class="dropdown">
-                      <div class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <div class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                           aria-expanded="false">
                         <i class="fas fa-user">&nbsp;{{user_name}}</i>
                       </div>
                       <div class="dropdown-menu text-sm-center" aria-labelledby="dropdownMenuButton">
@@ -54,7 +56,8 @@
                     </li>
                   </template>
                   <template v-else>
-                    <li><a @click="$router.push('/register')" style="margin-left:-70px; margin-top:-20px"> Register</a></li>
+                    <li><a @click="$router.push('/register')" style="margin-left:-70px; margin-top:-20px"> Register</a>
+                    </li>
                     <li><a @click="$router.push('/login')" style=" margin-top:-20px">Login</a></li>
                   </template>
                 </ul>
@@ -90,7 +93,7 @@
                 <input type="search" placeholder="Search"/>
               </div>
               <div style="display:inline-block; font-size:25px;" v-if="user_id">
-                <a @click="$router.push('shop/cart')"><i class="fas fa-shopping-cart">{{numCart}}</i></a>
+                <a @click="$router.push('shop/cart')"><i class="fas fa-shopping-cart"></i>{{cart.length}}</a>
               </div>
             </div>
           </div>
@@ -167,31 +170,33 @@
   </div>
 </template>
 <script>
-    const Cookie = process.client ? require("js-cookie") : undefined;
+    const Cookies = process.client ? require("js-cookie") : undefined;
     export default {
-        mounted() {
-            if(this.$store.state.token){
-                this.getUsers();
-            }else {
-                this.$router.push("/");
-            }
-        },
         data() {
             return {
+                cart: [],
                 users: [],
                 user_id: '',
-                user_name:''
+                user_name: ''
             }
         },
-        computed:{
-            products(){
-                return this.$store.getters.products;
-            },
-            cart(){
-                return this.$store.getters.cart;
-            },
-            numCart () {
-                return this.cart.length
+        created() {
+            if (process.browser) {
+                if (Cookies.get("cart")) {
+                    let cart = JSON.parse(Cookies.get("cart"));
+                    return this.cart = cart;
+                } else {
+                    let cart =  this.$store.getters.cart;
+                    return this.cart = cart;
+                }
+            }
+
+        },
+        mounted() {
+            if (this.$store.state.token) {
+                this.getUsers();
+            } else {
+                this.$router.push("/");
             }
         },
         methods: {
@@ -204,11 +209,13 @@
                         self.users = res.data.data
                     })
             },
-            handelLogout(){
-                Cookie.remove("token");
+            handelLogout() {
+                Cookies.remove("token");
+                Cookies.remove("cart");
                 this.$store.commit("setToken", null);
+                this.$store.commit("setCart", []);
                 this.$router.push("/login");
-            }
+            },
         }
 
     }

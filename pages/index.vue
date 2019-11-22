@@ -37,7 +37,6 @@
                 </div>
               </template>
             </div>
-            {{cart}}sadsdas
             <!--features_items-->
             <div class="category-tab">
               <!--category-tab-->
@@ -429,43 +428,47 @@
     import shopNav from "~/components/shopNav.vue";
 
     export default {
-
+        data() {
+            return {
+                products: [],
+                cart: []
+            }
+        },
         components: {
             shopHeader,
             shopFooter,
             shopNav
         },
+        created() {
+            if (process.browser) {
+                if (Cookies.get("cart")) {
+                    let cart = JSON.parse(Cookies.get("cart"));
+                    return this.cart = cart;
+                } else {
+                    let cart = this.$store.getters.cart
+                    return this.cart = cart;
+                }
+            }
+        },
         mounted() {
             this.getProducts();
         },
-        data() {
-            return {
-                products: []
-            }
-        },
-        computed :{
-          cart () {
-              return this.$store.getters.cart
-          },
-        },
-
         methods: {
             getProducts() {
                 let self = this;
                 this.$axios.get('/products')
                     .then(function (res) {
                         self.products = res.data.data
-
                     })
             },
             addToCart(product) {
-                let self = this;
-                this.$axios.get('/products/' + product)
-                    .then(function (res) {
-                        self.$store.dispatch('addToCart', product );
-                        self.$store.commit('setCart', self.cart)
-                        Cookies.set('setCart', self.cart)
-                    });
+                let pro = this.cart.find(element => element.id == product.id);
+                if (pro) {
+                    alert("Đã tồn tại sản phẩm trong giỏ hàng")
+                } else
+                    this.$store.dispatch('addToCart', product);
+                    this.$store.dispatch('setCart', this.cart)
+                     Cookies.set('cart', this.cart)
             }
         }
     };

@@ -16,7 +16,7 @@
                 <thead>
                 <tr class="cart_menu">
                   <td class="image">Item</td>
-                  <td class="description"></td>
+                  <td class="description">Name</td>
                   <td class="price">Price</td>
                   <td class="quantity">Quantity</td>
                   <td class="total">Total</td>
@@ -38,10 +38,16 @@
                     </td>
                     <td class="cart_quantity">
                       <div class="cart_quantity_button">
-                        <a class="cart_quantity_up btn btn-success" @click="increment(item.id)"> + </a>
+                        <template v-if=" 1 < item.order_time">
+                          <a class="cart_quantity_down btn btn-success" @click="decrement(item.id)">-</a>
+                        </template>
+                        <template v-else>
+                          <a class="cart_quantity_down btn btn-success">-</a>
+                        </template>
                         <input class="cart_quantity_input" type="text" v-model="item.order_time" autocomplete="off"
                                size="2">
-                        <a class="cart_quantity_down btn btn-success" @click="decrement(item.id)"> - </a>
+                        <a class="cart_quantity_up btn btn-success" @click="increment(item.id)"> + </a>
+
                       </div>
                     </td>
                     <td class="cart_total">
@@ -54,6 +60,10 @@
                 </tr>
                 </tbody>
               </table>
+              <p id="total" class="cart_total_price">${{total}}
+                <button class="btn btn-success">Check-out</button>
+                <button class="btn btn-dark" @click="$router.push('/')">Back</button>
+              </p>
             </div>
           </div>
         </section> <!--/#cart_items-->
@@ -151,45 +161,86 @@
   </div>
 </template>
 <script>
+    const Cookies = process.client ? require("js-cookie") : undefined;
     import shopHeader from "~/components/shopHeader.vue";
     import shopFooter from "~/components/shopFooter.vue";
 
     export default {
         data() {
             return {
-                quantity: 1
+                cart: [],
+                total: 0
+            }
+        },
+        created() {
+            if (process.browser) {
+                if (Cookies.get("cart")) {
+                    let cart = JSON.parse(Cookies.get("cart"));
+                    return this.cart = cart;
+                } else {
+                    let cart = this.$store.getters.cart;
+                    return this.cart = cart;
+                }
             }
         },
         components: {
             shopHeader,
             shopFooter
         },
-        computed: {
-            cart() {
-                console.log(this.$store.getters.cart);
-                return this.$store.getters.cart;
-            },
+        mounted(){
+          this.totalPrice()
         },
         methods: {
+            setCookies() {
+                Cookies.set("cart", this.cart)
+            },
             removeItem(index) {
-                this.$store.dispatch('removeItem', index);
+                this.cart.splice(index, 1);
+                this.setCookies();
+                this.totalPrice();
             },
             increment(id) {
-                this.$store.dispatch('increment', id);
+                for (let i = 0; i < this.cart.length; i++) {
+                    if (this.cart[i].id === id)
+                        this.cart[i].order_time++
+                }
+                this.setCookies();
+
             },
             decrement(id) {
-                this.$store.dispatch('decrement', id);
+                for (let i = 0; i < this.cart.length; i++) {
+                    if (this.cart[i].id === id)
+                        this.cart[i].order_time--
+                }
+                this.setCookies();
 
+            },
+            totalPrice() {
+                let total = 0;
+                for (let i = 0; i < this.cart.length; i++) {
+                    total += this.cart[i].price * this.cart[i].order_time;
+                    this.total = total
+                }
             }
-
         }
     }
 </script>
 <style scoped>
-  img{
+  img {
     object-fit: cover;
     width: 100px;
     height: 100px;
-
   }
+
+  #total {
+    margin-left: 825px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  #total button{
+    /*margin-left: 43px;*/
+  }
+
+
+
 </style>
