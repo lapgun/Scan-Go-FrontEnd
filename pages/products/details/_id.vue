@@ -17,7 +17,7 @@
         <td>{{tasks.name}}</td>
         <td>{{tasks.categoriesId}}</td>
         <td>
-          <img :src="tasks.picture" />
+          <img :src="tasks.images.image_1" />
         </td>
         <td>{{tasks.price}}</td>
         <td>{{tasks.description}}</td>
@@ -39,16 +39,26 @@
 
         data: function () {
             return {
-                tasks: [],
+                tasks: {
+                  id: '',
+                  name:'',
+                  categoriesId : '',
+                  price:'',
+                  description:'',
+                  detail:'',
+                  order_time:'',
+                  images: {
+                    image_1 :''
+                  }
+                },
             };
         },
         methods: {
             getTasks: function () {
                 let self = this;
                 this.$axios.get("/products/" + this.$route.params.id).then(function (res) {
-                    self.tasks = res.data.data;
-                    console.log(self.tasks);
-                    console.log(self.tasks.images.default_image);
+                  console.log(res);
+                    self.tasks = res.data.data;        
                 });
             },
             delTasks: function (id) {

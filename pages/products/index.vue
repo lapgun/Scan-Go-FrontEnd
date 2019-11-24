@@ -55,7 +55,7 @@
           <div class="clear"></div>
         </div>
         <div class="divider"></div>
-        <form role="search">
+        <!-- <form role="search">
           <div class="form-group">
             <input
               type="text"
@@ -65,7 +65,7 @@
               placeholder="Search"
             />
           </div>
-        </form>
+        </form> -->
         <ul class="nav menu" style="display:block">
           <li>
             <a @click="$router.push('/user/home')">Home</a>
@@ -103,36 +103,47 @@
           <tbody>
             <tr v-for="(task,index) in tasks" :key="index">
               <td>{{index+1}}//{{task.id}}</td>
-              <td>{{task.name}}</td>
+              <td style="width:250px">{{task.name}}</td>
               <td>{{task.categoriesId}}</td>
               <td>
                 <img :src="task.images.default_image" />
               </td>
               <td>{{task.price}}</td>
               <td>
-                <b-button v-b-toggle="'1'" class="m-1">Show</b-button>
-                <b-collapse id="1">{{task.description}}</b-collapse>
+                <b-button v-b-toggle="'a-'+task.id" class="m-1">Show</b-button>
+                <b-collapse :id="'a-'+task.id">
+                  <vue-ckeditor type="classic">
+                     <vue-ckeditor type="classic" v-model="task.description">{{task.description}}</vue-ckeditor>
+                  </vue-ckeditor>
+                </b-collapse>
               </td>
               <td>
-                <b-button v-b-toggle.collapse-3 class="m-1">show</b-button>
-                <b-collapse id="collapse-3">
-                  <b-card>{{task.detail}}</b-card>
+                <b-button v-b-toggle="'b-'+task.id" class="m-1">show</b-button>
+                <b-collapse :id="'b-'+task.id">
+                  <b-card>
+                    <vue-ckeditor type="classic">
+                      <vue-ckeditor type="classic" v-model="task.detail">{{task.detail}}</vue-ckeditor>
+                    </vue-ckeditor>
+                  </b-card>
                 </b-collapse>
               </td>
               <td>{{task.order_time}}</td>
-              <td>
+              <td style="width:250px">
                 <b-button @click="$router.push('/products/details/'+task.id)">Details</b-button>
                 <b-button class="btn btn-info" @click="$router.push('/products/edit/'+task.id)">Edit</b-button>
                 <b-button class="btn btn-info" variant="danger" @click="delTasks(task.id)">Delete</b-button>
               </td>
             </tr>
+
           </tbody>
+          
         </table>
       </div>
     </div>
   </div>
 </template>
 <script>
+const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
   mounted: function() {
     this.getTasks();
@@ -151,7 +162,6 @@ export default {
       let self = this;
       this.$axios.get("/products").then(function(res) {
         self.tasks = res.data.data;
-        console.log(res.data.data);
       });
     },
     delTasks: function(id) {
