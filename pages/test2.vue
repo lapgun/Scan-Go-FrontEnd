@@ -71,7 +71,29 @@ export default {
     },
     scroll() {
       window.onscroll = () => {
-        var container = document.getElementById("container");
+        let bottomOfWindow =
+          Math.ceil(document.documentElement.scrollTop) + window.innerHeight >
+          document.documentElement.offsetHeight - 105;
+        console.log(bottomOfWindow);
+        if (bottomOfWindow) {
+          this.pagination.currentPage++;
+          // this.pagination.limitstart += this.pagination.limit;
+          if (this.pagination.currentPage <= this.pagination.totalPage) {
+            this.getTasks();
+          }
+        }
+      };
+    }
+  }
+};
+</script>
+<style scoped>
+#status {
+  position: fixed;
+  color: rgb(233, 60, 60);
+}
+</style>
+var container = document.getElementById("container");
         var contentHeight = container.offsetHeight;
         console.log(contentHeight);
         var yOffset = window.pageYOffset;
@@ -86,17 +108,5 @@ export default {
           } else {
             console.log("no more data");
           }
-        }
-        var status = document.getElementById("status");
-        status.innerHTML = contentHeight + " | " + y;
-      };
-    }
-  }
-};
-</script>
-<style scoped>
-#status {
-  position: fixed;
-  color: rgb(233, 60, 60);
 }
-</style>
+      
