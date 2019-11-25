@@ -45,14 +45,11 @@
   </div>
 </template>
 <script>
-import Vue from "vue";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import VueCkeditor from "vue-ckeditor5";
 import upload_files from "../../components/upload_files";
+
 export default {
   components: {
-    upload_files,
-    "vue-ckeditor": VueCkeditor.component
+    upload_files
   },
   mounted: function() {
     this.getCatProduct();
@@ -68,10 +65,7 @@ export default {
         detail: "",
         order_time: ""
       },
-      options: [{ value: 0, text: "This is parent category " }],
-      editors: {
-        classic: ClassicEditor
-      }
+      options: [{ value: 0, text: "This is parent category " }]
     };
   },
   methods: {
@@ -89,30 +83,6 @@ export default {
     },
     handleSubmit() {
       this.$axios.post("/products", this.form).then(res => {
-        this.$router.push("/products");
-      });
-    },
-    imageUploaded(data = {}) {
-      this.form.picture = data.productImageInfo
-        ? data.productImageInfo.id
-        : null;
-    },
-    getCatProduct: function() {
-      let self = this;
-      this.$axios.get("/categories/cat_product").then(function(res) {
-        let data = res.data.data.rows;
-        data.forEach(value => {
-          self.options.push({
-            value: value.id,
-            text: value.name
-          });
-        });
-        console.log(self.options);
-      });
-    },
-    handleSubmit() {
-      this.$axios.post("/products", this.form).then(res => {
-        console.log(this.form);
         this.$router.push("/products");
       });
     },

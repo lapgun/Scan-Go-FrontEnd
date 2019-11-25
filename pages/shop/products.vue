@@ -16,7 +16,7 @@
                   <div class="single-products">
                     <div class="productinfo text-center">
                       <a @click="$router.push('/shop/product_detail/'+product.id)">
-                        <img style="width:250px; height:250px" :src="product.images.image_1" alt />
+                        <img style="width:250px; height:250px" :src="`/${product.images? product.images.default_image: ''}`" alt />
                       </a>
                       <h2>{{product.price}} đ</h2>
                       <p>{{product.name}}</p>
@@ -48,7 +48,18 @@ export default {
   },
   data: function() {
     return {
-      products: []
+      products: {
+        id:'',
+        name:'',
+        description:'',
+        price:'',
+        detail:'',
+        order_time:'',
+        categoriesId:'',
+        images: {
+          default_image:''
+        }
+      }
     };
   },
   components: {

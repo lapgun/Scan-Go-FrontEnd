@@ -7,67 +7,127 @@
     </div>
     <b-button variant="success" @click="$router.push('/products/create')">Create new task</b-button>
     <div>
-      <table id="my-table" class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Number</th>
-            <th>name</th>
-            <th>categoriesId</th>
-            <th>picture</th>
-            <th>price</th>
-            <th>description</th>
-            <th>detail</th>
-            <th>order_time</th>
-            <th>Edit</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(task,index) in tasks" :key="index">
-            <td>{{index+1}}//{{task.id}}</td>
-            <td>{{task.name}}</td>
-            <td>{{task.categoriesId}}</td>
-            <td>
-              <img :src="task.images.default_image" />
-            </td>
-            <td>{{task.price}}</td>
-            <td>
-              <b-button v-b-toggle.collapse-2 class="m-1">Show</b-button>
-              <b-collapse id="collapse-2">{{task.description}}</b-collapse>
-            </td>
-            <td>
-              <b-button v-b-toggle.collapse-3 class="m-1">show</b-button>
-              <b-collapse id="collapse-3">
-                <b-card>{{task.detail}}</b-card>
-              </b-collapse>
-            </td>
-            <td>{{task.order_time}}</td>
-            <td>
-              <b-button @click="$router.push('/products/details/'+task.id)">Details</b-button>
-              <b-button class="btn btn-info" @click="$router.push('/products/edit/'+task.id)">Edit</b-button>
-              <b-button class="btn btn-info" variant="danger" @click="delTasks(task.id)">Delete</b-button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <infinite-loading @infinite="infiniteHandler"></infinite-loading>
+      <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar" style="margin-top:-30px">
+        <div class="profile-sidebar">
+          <div class="profile-userpic">
+            <img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt />
+          </div>
+          <div class="profile-usertitle">
+            <div class="profile-usertitle-name">Admin</div>
+            <div class="profile-usertitle-status">
+              <span class="indicator label-success"></span>Online
+            </div>
+          </div>
+          <div class="clear"></div>
+        </div>
+        <div class="divider"></div>
+        <!-- <form role="search">
+          <div class="form-group">
+            <input
+              type="text"
+              @change="handleSearch"
+              v-model="search"
+              class="form-control"
+              placeholder="Search"
+            />
+          </div>
+        </form>-->
+        <ul class="nav menu" style="display:block">
+          <li>
+            <a @click="$router.push('/user/home')">Home</a>
+          </li>
+          <li>
+            <a @click="$router.push('/categories')">Categories</a>
+          </li>
+          <li class="active">
+            <a @click="$router.push('/products')">Products</a>
+          </li>
+          <li>
+            <a @click="$router.push('/orders')">Orders</a>
+          </li>
+          <li>
+            <a @click="$router.push('/slide')">Slide</a>
+          </li>
+          <li>
+            <a @click="$router.push('/user')">Users</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-sm-8 col-lg-10 sidebar">
+        <b-button variant="success" @click="$router.push('/products/create')">Create new task</b-button>
+        <table id="my-table" class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Number</th>
+              <th>name</th>
+              <th>categoriesId</th>
+              <th>picture</th>
+              <th>price</th>
+              <th>description</th>
+              <th>detail</th>
+              <th>order_time</th>
+              <th>Edit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(task,index) in tasks" :key="index">
+              <td>{{index+1}}//{{task.id}}</td>
+              <td style="width:250px">{{task.name}}</td>
+              <td>{{task.categoriesId}}</td>
+              <td>
+                <img :src="`/${task.images ? task.images.default_image : ''}`" />
+              </td>
+              <td>{{task.price}}</td>
+              <td>
+                <b-button v-b-toggle="'a-'+task.id" class="m-1">Show</b-button>
+                <b-collapse :id="'a-'+task.id">
+                  <div v-html="task.description"></div>
+                </b-collapse>
+              </td>
+              <td>
+                <b-button v-b-toggle="'b-'+task.id" class="m-1">show</b-button>
+                <b-collapse :id="'b-'+task.id">
+                  <b-card>
+                    <div v-html="task.detail"></div>
+                  </b-card>
+                </b-collapse>
+              </td>
+              <td>{{task.order_time}}</td>
+              <td style="width:250px">
+                <b-button @click="$router.push('/products/details/'+task.id)">Details</b-button>
+                <b-button class="btn btn-info" @click="$router.push('/products/edit/'+task.id)">Edit</b-button>
+                <b-button class="btn btn-info" variant="danger" @click="delTasks(task.id)">Delete</b-button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
 <script>
-import InfiniteLoading from "vue-infinite-loading";
+const Cookie = process.client ? require("js-cookie") : undefined;
+
 export default {
   mounted: function() {
     this.getTasks();
   },
   data: function() {
     return {
-      tasks: [],
-      pagination: {
-        currentPage: 1,
-        perPage: 10,
-        totalPage: ""
+      tasks: {
+        name:'',
+        price:'',
+        description:'',
+        categoriesId:'',
+        id:'',
+        detail:'',
+        images : {
+          default_image:''
+        }
       },
-      search: ""
+      search: "",
+      user_id: "",
+      users: []
     };
   },
   components: {

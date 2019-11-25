@@ -55,17 +55,6 @@
           <div class="clear"></div>
         </div>
         <div class="divider"></div>
-        <form role="search">
-          <div class="form-group">
-            <input
-              type="text"
-              @change="handleSearch"
-              v-model="search"
-              class="form-control"
-              placeholder="Search"
-            />
-          </div>
-        </form>
         <ul class="nav menu" style="display:block">
           <li>
             <a @click="$router.push('/user/home')">Home</a>
@@ -76,10 +65,10 @@
           <li>
             <a @click="$router.push('/products')">Products</a>
           </li>
-          <li class="active">
+          <li>
             <a @click="$router.push('/orders')">Orders</a>
           </li>
-          <li>
+          <li class="active">
             <a @click="$router.push('/slide')">Slide</a>
           </li>
           <li>
@@ -88,37 +77,30 @@
         </ul>
       </div>
       <div class="col-sm-9 col-lg-10 sidebar">
-        <b-button @click="$router.push('/orders/create')" variant="info">Create</b-button>
+        <b-button @click="$router.push('/slide/create')" variant="info">Create</b-button>
         <table class="table table-bordered">
           <thead>
             <tr>
               <th>STT</th>
-              <th>Customer_id</th>
-              <th>Order_status</th>
-              <th>Total_price</th>
+              <th>Name</th>
+              <th>Image</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(order , index) in orders" :key="index">
+            <tr v-for="(slide , index) in slides" :key="index">
               <td>{{index+1}}</td>
-              <td>{{order.customerId}}</td>
-              <td>{{order.order_status}}</td>
-              <td>{{order.total_price}}</td>
+              <td>{{slide.name}}</td>
               <td>
-                <b-button @click="$router.push('/orders/detail/'+order.id)">Detail</b-button>
-                <b-button @click="handleDelete(order.id)" variant="danger">Delete</b-button>
+                <img style="width:100px; height:60px" :src="`/${slide.slide_images? slide.slide_images.default_image: ''}`" />
+              </td>
+              <td>
+                <b-button @click="$router.push('/orders/detail/'+slide.id)">Detail</b-button>
+                <b-button @click="handleDelete(slide.id)" variant="danger">Delete</b-button>
               </td>
             </tr>
           </tbody>
         </table>
-        <b-pagination
-          v-model="pagination.currentPage"
-          :total-rows="pagination.total"
-          :per-page="pagination.perPage"
-          aria-controls="my-table"
-          @change="handleChangePage"
-        ></b-pagination>
       </div>
     </div>
   </div>
@@ -126,16 +108,17 @@
 <script>
 export default {
   mounted: function() {
-    this.getOrders();
+    this.getSlides();
     this.getAdmins();
   },
   data: function() {
     return {
-      orders: {
+      slides: {
         index: "",
-        customerId: "",
-        order_status: "",
-        total_price: ""
+        name: "",
+        slide_images: {
+          default_image: ""
+        }
       },
       search: "",
       totalResult: 0,
@@ -148,41 +131,22 @@ export default {
     };
   },
   methods: {
-    getOrders: function() {
+    getSlides: function() {
       let self = this;
-      this.$axios
-        .get(
-          "/orders?search=" +
-            this.search +
-            "&currentPage=" +
-            this.pagination.currentPage +
-            "&perPage=" +
-            this.pagination.perPage
-        )
-        .then(function(res) {
-          console.log(res);
-          self.orders = res.data.data;
-          self.pagination = res.data.pagination;
-        });
+      this.$axios.get("/slide").then(function(res) {
+        console.log(res);
+        self.slides = res.data.rows;
+      });
     },
     handleDelete: function(id) {
       let self = this;
-      this.$axios.delete("/orders/" + id).then(function(res) {
-        console.log(res);
-        self.getOrders();
+      this.$axios.delete("/slide/" + id).then(function(res) {
+        self.getSlides();
       });
-    },
-    handleSearch: function() {
-      this.getOrders();
-    },
-    handleChangePage: function(page) {
-      this.pagination.currentPage = page;
-      this.getOrders();
     },
     getAdmins: function() {
       let self = this;
       this.$axios.get("/users").then(function(res) {
-        console.log(res);
         self.user_id = res.data.decoded.user_id;
         self.users = res.data.data;
       });

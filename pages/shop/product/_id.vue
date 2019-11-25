@@ -16,7 +16,10 @@
                   <div class="single-products">
                     <div class="productinfo text-center">
                       <a @click="$router.push('/shop/product_detail/'+product.id)">
-                        <!-- <img style="width:250px; height:250px" :src="product.images.default_image"  /> -->
+                        <img
+                          style="width:250px; height:250px"
+                          :src="`/${default_image ? default_image[index]: ''}`"
+                        />
                       </a>
                       <h2>{{product.price}} đ</h2>
                       <p>{{product.name}}</p>
@@ -43,15 +46,16 @@ import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
 export default {
-  mounted: function() {
-    this.getProducts();
-    this.getMenu();
-    this.getByCat();
+  mounted: async function() {
+    await this.getByMenu();
+    await this.getByCat();
+    this.getPicture();
   },
   data: function() {
     return {
-      products: [],
-      menu: []
+      products: {},
+      default_image: [],
+      array: []
     };
   },
   components: {
@@ -60,31 +64,39 @@ export default {
     shopNav
   },
   methods: {
-    getProducts: function() {
+    async getByMenu() {
       let self = this;
-      this.$axios
-        .get("/products/menu/" + this.$route.params.id)
-        .then(function(res) {
-          console.log(res);
-          self.products = res.data.data;
-        });
+      const res = await this.$axios.get(
+        `/products/menu/${this.$route.params.id}`
+      );
+      self.products = res.data.data;
     },
-    getMenu() {
+    async getByCat() {
       let self = this;
-      this.$axios
-        .get("/categories/cat_parent/" + this.$route.params.id)
-        .then(function(res) {
-          let array = res.data.data.rows;
-          array.forEach(element => {
-            self.menu.push(element.id);
-          });
+      const res = await this.$axios.get(
+        `/categories/cat_parent/${this.$route.params.id}`
+      );
+      console.log(res);
+      let data = res.data.data.rows;
+      data.forEach(element => {
+        element.products.forEach(e => {
+          self.products.push(e);
         });
+      });
+      self.products.forEach(element => {
+        self.array.push(element.picture);
+      });
     },
-    getByCat() {
-      console.log("this.menu", this.menu);
-      this.$axios
-        .post("/products/by_cat", this.menu)
-        .then(function(results) {});
+    getPicture() {
+      let self = this;
+      this.array.forEach(element => {
+        let id = element;
+        this.$axios.get("/gallery/" + id).then(function(res) {
+          let default_image = res.data.data.default_image;
+          self.default_image.push(default_image);
+        });
+      });
+      console.log(self.default_image);
     }
   }
 };
