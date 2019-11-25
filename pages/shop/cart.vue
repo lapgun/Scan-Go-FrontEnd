@@ -60,10 +60,6 @@
                 </tr>
                 </tbody>
               </table>
-              <p id="total" class="cart_total_price">${{total}}
-                <button class="btn btn-success">Check-out</button>
-                <button class="btn btn-dark" @click="$router.push('/')">Back</button>
-              </p>
             </div>
           </div>
         </section> <!--/#cart_items-->
@@ -77,67 +73,15 @@
             </div>
             <div class="row">
               <div class="col-sm-6">
-                <div class="chose_area">
-                  <ul class="user_option">
-                    <li>
-                      <input type="checkbox"/>
-                      <label>Use Coupon Code</label>
-                    </li>
-                    <li>
-                      <input type="checkbox"/>
-                      <label>Use Gift Voucher</label>
-                    </li>
-                    <li>
-                      <input type="checkbox"/>
-                      <label>Estimate Shipping & Taxes</label>
-                    </li>
-                  </ul>
-                  <ul class="user_info">
-                    <li class="single_field">
-                      <label>Country:</label>
-                      <select>
-                        <option>United States</option>
-                        <option>Bangladesh</option>
-                        <option>UK</option>
-                        <option>India</option>
-                        <option>Pakistan</option>
-                        <option>Ucrane</option>
-                        <option>Canada</option>
-                        <option>Dubai</option>
-                      </select>
-                    </li>
-                    <li class="single_field">
-                      <label>Region / State:</label>
-                      <select>
-                        <option>Select</option>
-                        <option>Dhaka</option>
-                        <option>London</option>
-                        <option>Dillih</option>
-                        <option>Lahore</option>
-                        <option>Alaska</option>
-                        <option>Canada</option>
-                        <option>Dubai</option>
-                      </select>
-                    </li>
-                    <li class="single_field zip-field">
-                      <label>Zip Code:</label>
-                      <input type="text"/>
-                    </li>
-                  </ul>
-                  <a class="btn btn-default update" href>Get Quotes</a>
-                  <a class="btn btn-default check_out" href>Continue</a>
-                </div>
-              </div>
-              <div class="col-sm-6">
                 <div class="total_area">
                   <ul>
                     <li>
                       Cart Sub Total
-                      <span>$59</span>
+                      <span>${{total}}</span>
                     </li>
                     <li>
-                      Eco Tax
-                      <span>$2</span>
+                      VAT
+                      <span>10%</span>
                     </li>
                     <li>
                       Shipping Cost
@@ -145,11 +89,11 @@
                     </li>
                     <li>
                       Total
-                      <span>$61</span>
+                      <span>${{total + total * 10/100}}</span>
                     </li>
                   </ul>
-                  <a class="btn btn-default update" href>Update</a>
-                  <a class="btn btn-default check_out" href>Check Out</a>
+                  <a class="btn btn-default update" @click="$router.push('/')">Back</a>
+                  <a class="btn btn-default check_out" @click="$router.push('/shop/checkout')">Check Out</a>
                 </div>
               </div>
             </div>
@@ -204,6 +148,7 @@
                     if (this.cart[i].id === id)
                         this.cart[i].order_time++
                 }
+                this.totalPrice();
                 this.setCookies();
 
             },
@@ -212,6 +157,7 @@
                     if (this.cart[i].id === id)
                         this.cart[i].order_time--
                 }
+                this.totalPrice();
                 this.setCookies();
 
             },
@@ -231,16 +177,4 @@
     width: 100px;
     height: 100px;
   }
-
-  #total {
-    margin-left: 825px;
-    margin-top: 30px;
-    margin-bottom: 30px;
-  }
-  #total button{
-    /*margin-left: 43px;*/
-  }
-
-
-
 </style>
