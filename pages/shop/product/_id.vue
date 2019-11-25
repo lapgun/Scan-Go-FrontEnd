@@ -18,7 +18,7 @@
                       <a @click="$router.push('/shop/product_detail/'+product.id)">
                         <img
                           style="width:250px; height:250px"
-                          :src="`/${product.images? product.images.default_image: ''}`"
+                          :src="`/${default_image ? default_image[index]: ''}`"
                         />
                       </a>
                       <h2>{{product.price}} đ</h2>
@@ -46,23 +46,15 @@ import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
 export default {
-  mounted: function() {
-    this.getProducts();
-    this.getByCat();
+  mounted: async function() {
+    await this.getByMenu();
+    await this.getByCat();
     this.getPicture();
   },
   data: function() {
     return {
-      products: {
-        id: "",
-        name: "",
-        description: "",
-        price: "",
-        detail: "",
-        order_time: "",
-        categoriesId: "",
-        picture: ""
-      },
+      products: {},
+      default_image: [],
       array: []
     };
   },
@@ -72,39 +64,38 @@ export default {
     shopNav
   },
   methods: {
-    getProducts: function() {
+    async getByMenu() {
       let self = this;
-      this.$axios
-        .get("/products/menu/" + this.$route.params.id)
-        .then(function(res) {
-          self.products = res.data.data;
-        });
+      const res = await this.$axios.get(
+        `/products/menu/${this.$route.params.id}`
+      );
+      self.products = res.data.data;
     },
-    getByCat() {
+    async getByCat() {
       let self = this;
-      this.$axios
-        .get("/categories/cat_parent/" + this.$route.params.id)
-        .then(function(res) {
-          let data = res.data.data.rows;
-          data.forEach(element => {
-            element.products.forEach(e => {
-              self.products.push(e);
-            });
-          });
-          // console.log("asdsadasdmenu: ", self.products);
-          self.products.forEach(element => {
-            self.array.push(element.picture);
-          });
-          // console.log(self.array)
+      const res = await this.$axios.get(
+        `/categories/cat_parent/${this.$route.params.id}`
+      );
+      console.log(res);
+      let data = res.data.data.rows;
+      data.forEach(element => {
+        element.products.forEach(e => {
+          self.products.push(e);
         });
+      });
+      self.products.forEach(element => {
+        self.array.push(element.picture);
+      });
     },
     getPicture() {
-      console.log(this.array);
-      let result = Object.keys(this.array).map(function(key) {
-        return [Number(key), this.array[key]];
+      let self = this;
+      this.array.forEach(element => {
+        let id = element;
+        this.$axios.get("/gallery/" + id).then(function(res) {
+          let default_image = res.data.data.default_image;
+          self.default_image.push(default_image);
+        });
       });
-
-      console.log(result);
     }
   }
 };

@@ -11,11 +11,8 @@
             <div class="product-details">
               <!--product-details-->
               <div class="col-sm-5">
-                <div class="view-product">
-                  <img :src="`/${products.images? products.images.default_image: ''}`" />
-                  <h3>ZOOM</h3>
-                </div>
-                <b-carousel
+                <div>
+                  <b-carousel
                   id="carousel"
                   v-model="slide"
                   :indicator="1110"
@@ -24,9 +21,18 @@
                   @sliding-end="onSlileEnd"
                 >
                   <div v-for="(picture,key) in pictures" :key="key">
-                    <b-carousel-slide style="width:100px !important" :img-src="`/${picture ? picture : ''}`"></b-carousel-slide>
+                    <b-carousel-slide :img-src="`/${picture ? picture : ''}`"></b-carousel-slide>
                   </div>
                 </b-carousel>
+                </div>
+                <div >
+                  <span v-for="(picture,index) in pictures" :key="index" style="margin-top:30px">
+                    <img
+                    style="margin-right:5px; width:75px !important; height:75px !important; display:inline-block !important"
+                    :src="`/${picture ? picture : ''}`"
+                  />
+                  </span>
+                </div>
               </div>
               <div class="col-sm-7">
                 <div class="product-information">
@@ -35,15 +41,21 @@
                   <h2>{{products.name}}</h2>
                   <p>Web ID: 1089772</p>
                   <img src="~assets/images/product-details/rating.png" alt />
-                  <span>
-                    <span>{{products.price}} đ</span>
-                    <label>Tổng:</label>
+                  <h3>{{products.price}} đ</h3>
+                  <div>
+                    <h4>Số lượng:</h4>
                     <input type="text" value="3" />
                     <button type="button" class="btn btn-fefault cart">
                       <i class="fa fa-shopping-cart"></i>
                       Thêm vào giỏ hàng
                     </button>
-                  </span>
+                  </div>
+                  <div>
+                    <span class="font-size-1">
+                      <i class="fas fa-truck-moving"></i> Miễn phí vận chuyển từ
+                      <strong>300.000đ</strong>
+                    </span>
+                  </div>
                   <p>
                     <b>Availability:</b> In Stock
                   </p>
@@ -100,6 +112,7 @@ export default {
       pictures: [],
       slide: 0,
       sliding: null,
+      slidesToShow: 3
     };
   },
   components: {
@@ -139,5 +152,5 @@ export default {
   height: 500px;
   display: block;
   margin: 0 auto;
-};
+}
 </style>

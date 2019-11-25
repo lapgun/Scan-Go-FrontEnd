@@ -157,8 +157,10 @@
                controls
                @sliding-start="onSlileStart"
                @sliding-end="onSlileEnd"
+               :visible-slides="3" 
+               :slide-ratio="1/4"
               >
-                <div v-for="slide in slides" :key="slide.id">
+                <div v-for="slide in slides" :key="slide.id" >
                   <b-carousel-slide :img-src="`/${slide.slide_images ? slide.slide_images.default_image : ''}`"></b-carousel-slide>
                 </div>
               </b-carousel>
@@ -181,6 +183,9 @@ export default {
       search: "",
       slide:0,
       sliding:null,
+      infinite: true,
+      slidesToShow: 2,
+      slidesToScroll: 2,
       slides : {
         id :'',
         name:'',
