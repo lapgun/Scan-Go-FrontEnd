@@ -82,15 +82,15 @@
         </div>
         <!--/register-req-->
 
-        <div class="shopper-informations" id="payment" >
+        <div class="shopper-informations" id="payment">
           <div class="text-center">
-            <div class="col-sm-6" >
+            <div class="col-sm-6">
               <div class="shopper-info">
                 <p>Shopper Information</p>
                 <form>
-                  <input type="text" placeholder="Display Name" :value="user_name" />
+                  <input type="text" placeholder="Display Name" :value="user_name"/>
                   <input type="text" placeholder="User Name" :value="user_email"/>
-                  <input type="number" placeholder="Number Phone" />
+                  <input type="number" placeholder="Number Phone"/>
                   <input type="text" placeholder="Address"/>
                 </form>
                 <a class="btn btn-primary" @click="$router.push('shop/cart')">Back</a>
@@ -108,6 +108,7 @@
     const Cookies = process.client ? require("js-cookie") : undefined;
     import shopHeader from "~/components/shopHeader.vue";
     import shopFooter from "~/components/shopFooter.vue";
+
     export default {
         created() {
             if (process.browser) {
@@ -123,21 +124,21 @@
         data() {
             return {
                 cart: [],
-                total:0,
+                total: 0,
                 user_id: '',
                 user_name: '',
-                user_email :''
+                user_email: ''
             }
         },
         components: {
             shopHeader,
             shopFooter
         },
-        mounted(){
+        mounted() {
             this.totalPrice();
             this.getUsers();
         },
-        methods:{
+        methods: {
             getUsers() {
                 let self = this;
                 this.$axios.get('/users')
@@ -154,14 +155,16 @@
                     this.total = total
                 }
             },
-            handelSubmit(){
+            handelSubmit() {
                 let self = this;
-                self.$axios.post('/orders' , {"cart" : this.cart , "total" : this.total , "user_id" : this.user_id} )
+                this.$axios.post('/orders', {"cart": this.cart, "total": this.total, "user_id": this.user_id})
                     .then(function (res) {
-                          self.$router.push('/');
-                          Cookies.remove('cart');
-                    })
-
+                                console.log(res);
+                    });
+                alert("da gui yeu cau mua hang");
+                self.$router.push('/');
+                Cookies.remove("cart");
+                self.$store.commit("setCart", []);
             }
         }
     };
@@ -169,15 +172,18 @@
 <style scoped>
   img {
     object-fit: cover;
-    width: 200px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
   }
-  #payment{
+
+  #payment {
     margin-left: 350px;
   }
+
   tbody tr td {
     padding-left: 50px;
   }
+
   thead tr td {
     padding-left: 50px;
   }
