@@ -50,13 +50,7 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-import VueCkeditor from 'vue-ckeditor5'
     export default {
-      components: {
-            'vue-ckeditor': VueCkeditor.component
-        },
         mounted: function () {
             this.getDetail();
             this.getCatProduct();
@@ -74,9 +68,6 @@ import VueCkeditor from 'vue-ckeditor5'
                     
                 },
                 options: [{value: 0, text: "This is parent category "}],
-                editors: {
-                    classic: ClassicEditor
-                }
             }        
         },
         methods: {

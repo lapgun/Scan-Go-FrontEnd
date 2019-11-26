@@ -65,7 +65,7 @@
               placeholder="Search"
             />
           </div>
-        </form> -->
+        </form>-->
         <ul class="nav menu" style="display:block">
           <li>
             <a @click="$router.push('/user/home')">Home</a>
@@ -78,6 +78,9 @@
           </li>
           <li>
             <a @click="$router.push('/orders')">Orders</a>
+          </li>
+          <li>
+            <a @click="$router.push('/slide')">Slide</a>
           </li>
           <li>
             <a @click="$router.push('/user')">Users</a>
@@ -106,24 +109,20 @@
               <td style="width:250px">{{task.name}}</td>
               <td>{{task.categoriesId}}</td>
               <td>
-                <img :src="task.images.default_image" />
+                <img :src="`/${task.images ? task.images.default_image : ''}`" />
               </td>
               <td>{{task.price}}</td>
               <td>
                 <b-button v-b-toggle="'a-'+task.id" class="m-1">Show</b-button>
                 <b-collapse :id="'a-'+task.id">
-                  <vue-ckeditor type="classic">
-                     <vue-ckeditor type="classic" v-model="task.description">{{task.description}}</vue-ckeditor>
-                  </vue-ckeditor>
+                  <div v-html="task.description"></div>
                 </b-collapse>
               </td>
               <td>
                 <b-button v-b-toggle="'b-'+task.id" class="m-1">show</b-button>
                 <b-collapse :id="'b-'+task.id">
                   <b-card>
-                    <vue-ckeditor type="classic">
-                      <vue-ckeditor type="classic" v-model="task.detail">{{task.detail}}</vue-ckeditor>
-                    </vue-ckeditor>
+                    <div v-html="task.detail"></div>
                   </b-card>
                 </b-collapse>
               </td>
@@ -134,9 +133,7 @@
                 <b-button class="btn btn-info" variant="danger" @click="delTasks(task.id)">Delete</b-button>
               </td>
             </tr>
-
           </tbody>
-          
         </table>
       </div>
     </div>
@@ -144,6 +141,7 @@
 </template>
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
+
 export default {
   mounted: function() {
     this.getTasks();
@@ -151,7 +149,17 @@ export default {
   },
   data: function() {
     return {
-      tasks: [],
+      tasks: {
+        name:'',
+        price:'',
+        description:'',
+        categoriesId:'',
+        id:'',
+        detail:'',
+        images : {
+          default_image:''
+        }
+      },
       search: "",
       user_id: "",
       users: []
@@ -161,6 +169,7 @@ export default {
     getTasks: function() {
       let self = this;
       this.$axios.get("/products").then(function(res) {
+        console.log(res);
         self.tasks = res.data.data;
       });
     },

@@ -69,6 +69,9 @@
             <a @click="$router.push('/orders')">Orders</a>
           </li>
           <li>
+            <a @click="$router.push('/slide')">Slide</a>
+          </li>
+          <li>
             <a @click="$router.push('/user')">Users</a>
           </li>
         </ul>
@@ -106,7 +109,8 @@ export default {
   methods: {
     getCategories: function() {
       let self = this;
-      this.$axios.get("/categories/cat_parent").then(function(res) {
+      let id = 0 
+      this.$axios.get("/categories/cat_parent/"+id).then(function(res) {
         let data = res.data.data.rows;
         data.forEach(value => {
           self.options.push({

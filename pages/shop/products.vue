@@ -15,40 +15,19 @@
                 <div class="product-image-wrapper">
                   <div class="single-products">
                     <div class="productinfo text-center">
-                      <img :src="product.images.image_1" alt />
+                      <a @click="$router.push('/shop/product_detail/'+product.id)">
+                        <img style="width:250px; height:250px" :src="`/${product.images? product.images.default_image: ''}`" alt />
+                      </a>
                       <h2>{{product.price}} đ</h2>
                       <p>{{product.name}}</p>
-                      <a href="#" class="btn btn-default add-to-cart">
+                      <a @click="$router.push('/shop/product_detail/'+product.id)" class="btn btn-default add-to-cart">
                         <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
                       </a>
-                    </div>
-                    <div class="product-overlay">
-                      <div class="overlay-content">
-                        <h2>{{product.price}}</h2>
-                        <p>{{product.name}}</p>
-                        <a href="#" class="btn btn-default add-to-cart">
-                          <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
-                        </a>
-                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <ul class="pagination">
-              <li class="active">
-                <a href>1</a>
-              </li>
-              <li>
-                <a href>2</a>
-              </li>
-              <li>
-                <a href>3</a>
-              </li>
-              <li>
-                <a href>&raquo;</a>
-              </li>
-            </ul>
           </div>
         </div>
       </div>
@@ -66,7 +45,18 @@ export default {
   },
   data: function() {
     return {
-      products: []
+      products: {
+        id:'',
+        name:'',
+        description:'',
+        price:'',
+        detail:'',
+        order_time:'',
+        categoriesId:'',
+        images: {
+          default_image:''
+        }
+      }
     };
   },
   components: {
@@ -74,13 +64,14 @@ export default {
     shopFooter,
     shopNav
   },
-  methods: {
-    getProducts: function() {
-      let self = this;
-      this.$axios.get("/products").then(function(res) {
-        console.log(res);
+  methods : {
+    getProducts : function(){
+      let self = this
+      this.$axios.get('/products')
+      .then(function(res){
+        console.log(res)
         self.products = res.data.data;
-      });
+      })
     }
   }
 };

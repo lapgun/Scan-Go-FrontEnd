@@ -68,6 +68,9 @@
           <li>
             <a @click="$router.push('/orders')">Orders</a>
           </li>
+          <li>
+            <a @click="$router.push('/slide')">Slide</a>
+          </li>
           <li class="active">
             <a @click="$router.push('/user')">Users</a>
           </li>
@@ -125,10 +128,8 @@ export default {
     getUsers: function() {
       let self = this;
       this.$axios.get("/users").then(function(res) {
-        console.log(res);
         self.user_id = res.data.decoded.user_id;
         self.users = res.data.data;
-        console.log(self.users);
       });
     },
     handelDelete(id) {

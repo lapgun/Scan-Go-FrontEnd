@@ -17,11 +17,11 @@
         <td>{{tasks.name}}</td>
         <td>{{tasks.categoriesId}}</td>
         <td>
-          <img :src="tasks.images.image_1" />
+         <img :src="`/${tasks.images? tasks.images.default_image: ''}`">
         </td>
         <td>{{tasks.price}}</td>
-        <td>{{tasks.description}}</td>
-        <td>{{tasks.detail}}</td>
+        <td style="width:300px" v-html="tasks.description"></td>
+        <td v-html="tasks.detail"></td>
         <td>{{tasks.order_time}}</td>
         <td>
           <b-button class="btn btn-dark" @click="$router.push('/products')">Back</b-button>
@@ -40,15 +40,15 @@
         data: function () {
             return {
                 tasks: {
-                  id: '',
+                  id:'',
                   name:'',
-                  categoriesId : '',
-                  price:'',
                   description:'',
+                  price:'',
                   detail:'',
                   order_time:'',
+                  categoriesId:'',
                   images: {
-                    image_1 :''
+                    default_image:''
                   }
                 },
             };
