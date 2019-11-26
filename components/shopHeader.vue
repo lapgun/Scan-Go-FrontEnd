@@ -203,7 +203,9 @@ export default {
         .then(function(res) {
           console.log(res);
           self.products = res.data.data;
-        });
+          self.$emit("products", self.products);  
+          self.$router.push('/shop/products?search='+self.search)
+          });
     },
     onSlileStart(slide) {
       this.sliding = true

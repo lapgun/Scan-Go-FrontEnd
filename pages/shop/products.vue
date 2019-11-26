@@ -48,7 +48,11 @@ import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
 export default {
   mounted: function() {
-    // this.getProducts();
+    if (this.$route.query.search) {
+      this.handleSearch();
+    } else {
+      this.getProducts();
+    }
   },
   data: function() {
     return {
@@ -61,10 +65,17 @@ export default {
     shopNav
   },
   methods: {
+    handleSearch() {
+      let self = this;
+      this.$axios
+        .get("/products/search?search=" + this.$route.query.search)
+        .then(function(res) {
+          self.products = res.data.data;
+        });
+    },
     getProducts: function() {
       let self = this;
       this.$axios.get("/products").then(function(res) {
-        console.log(res);
         self.products = res.data.data;
       });
     }
