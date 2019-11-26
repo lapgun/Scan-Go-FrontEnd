@@ -22,19 +22,17 @@
     "ckeditor": "^4.12.1",
     "cookieparser": "^0.1.0",
     "firebase-admin": "^8.7.0",
-    "fs": "0.0.1-security",
     "infinite-scroll": "^3.0.6",
-    "inspector": "^0.5.0",
     "js-cookie": "^2.2.1",
     "nuxt": "^2.0.0",
     "v-infinite-scroll": "^1.0.4",
     "vee-validate": "^3.0.11",
     "vue-ckeditor5": "^0.4.1",
     "vue-infinite-loading": "^2.4.4",
-    "vue-scroll-loader": "^1.1.6",
     "vue-upload-image": "^1.1.5",
     "vue-validator": "^3.0.0-alpha.2",
-    "vuelidate": "^0.7.4"
+    "vuelidate": "^0.7.4",
+    "vueperslides": "^2.0.3"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.11.2",
