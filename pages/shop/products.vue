@@ -11,6 +11,13 @@
             <div class="features_items">
               <!--features_items-->
               <h2 class="title text-center">Sản phẩm</h2>
+              <div>
+                <label>
+                  Sắp xếp theo
+                  <b-form-select v-model="order_by" :options="order" @change="getProducts"></b-form-select>
+                </label>
+              </div>
+
               <div class="col-sm-4" v-for="(product, index) in products" :key="index">
                 <div class="product-image-wrapper">
                   <div class="single-products">
@@ -56,7 +63,16 @@ export default {
   },
   data: function() {
     return {
-      products: []
+      products: [],
+      order: [
+        { value: ["name", "ASC"], text: "Tên từ A-Z" },
+        { value: ["name", "DESC"], text: "Tên từ Z-A" },
+        { value: ["price", "ASC"], text: "Giá tiền tăng dần" },
+        { value: ["price", "DESC"], text: "Giá tiền giảm dần" },
+        { value: ["id", "DESC"], text: "Mới nhất" },
+        { value: ["id", "ASC"], text: "Cũ nhất" }
+      ],
+      order_by: ["name", "ASC"],
     };
   },
   components: {
@@ -75,7 +91,8 @@ export default {
     },
     getProducts: function() {
       let self = this;
-      this.$axios.get("/products").then(function(res) {
+      this.$axios.post("/products", this.order_by).then(function(res) {
+        console.log(res);
         self.products = res.data.data;
       });
     }
