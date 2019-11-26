@@ -30,19 +30,11 @@
       placeholder="Enter your product price"
     />
     Description:
-    <input
-      v-model="form.description"
-      type="text"
-      class="form-control"
-      placeholder="Enter your product description"
-    />
+     <vue-ckeditor type="classic" v-model="form.description" :editors="editors" class="form-control"
+                placeholder="Enter your product description"></vue-ckeditor>
     Detail:
-    <input
-      v-model="form.detail"
-      type="text"
-      class="form-control"
-      placeholder="Enter your product detail"
-    />
+    <vue-ckeditor type="classic" v-model="form.detail" :editors="editors" class="form-control"
+                placeholder="Enter your product description"></vue-ckeditor>
     Oder time:
     <input
       v-model="form.order_time"
@@ -56,6 +48,7 @@
     </label>
   </div>
 </template>
+
 <script>
     export default {
         mounted: function () {
@@ -71,10 +64,11 @@
                     price: "",
                     description: "",
                     detail: "",
-                    order_time: ""
+                    order_time: "",
+                    
                 },
-                options: [{value: 0, text: "This is parent category "}]
-            };
+                options: [{value: 0, text: "This is parent category "}],
+            }        
         },
         methods: {
             getCatProduct: function () {

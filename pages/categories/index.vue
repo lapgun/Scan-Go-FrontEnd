@@ -107,10 +107,10 @@
               <td>
                 <b-button @click="$router.push('/categories/details/'+task.id)">Details</b-button>
                 <b-button
-                  class="btn btn-info"
+                  variant="info"
                   @click="$router.push('/categories/edit/'+task.id)"
                 >Update</b-button>
-                <b-button class="btn btn-info" variant="danger" @click="delTasks(task.id)">Delete</b-button>
+                <b-button variant="danger" @click="delTasks(task.id)">Delete</b-button>
               </td>
             </tr>
           </tbody>

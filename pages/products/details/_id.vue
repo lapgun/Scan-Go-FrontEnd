@@ -17,11 +17,11 @@
         <td>{{tasks.name}}</td>
         <td>{{tasks.categoriesId}}</td>
         <td>
-          <img :src="tasks.picture" />
+         <img :src="`/${tasks.images? tasks.images.default_image: ''}`">
         </td>
         <td>{{tasks.price}}</td>
-        <td>{{tasks.description}}</td>
-        <td>{{tasks.detail}}</td>
+        <td style="width:300px" v-html="tasks.description"></td>
+        <td v-html="tasks.detail"></td>
         <td>{{tasks.order_time}}</td>
         <td>
           <b-button class="btn btn-dark" @click="$router.push('/products')">Back</b-button>
@@ -46,9 +46,8 @@
             getTasks: function () {
                 let self = this;
                 this.$axios.get("/products/" + this.$route.params.id).then(function (res) {
-                    self.tasks = res.data.data;
-                    console.log(self.tasks);
-                    console.log(self.tasks.images.default_image);
+                  console.log(res);
+                    self.tasks = res.data.data;        
                 });
             },
             delTasks: function (id) {

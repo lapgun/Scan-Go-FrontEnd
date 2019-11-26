@@ -8,7 +8,7 @@
             style="font-size: 20px;font-weight: bold"
           >Thông tin người dùng</div>
           <div class="card-body" style="font-style: italic">
-            <div class="row" v-if="users">
+            <div class="row">
               <div class="col-12 col-md-8">
                 <div class="form-group row">
                   <label class="col-md-4 col-form-label text-md-left">Name</label>
