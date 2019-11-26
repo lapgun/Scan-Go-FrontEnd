@@ -95,8 +95,8 @@
               <td>{{task.order_time}}</td>
               <td style="width:250px">
                 <b-button @click="$router.push('/products/details/'+task.id)">Details</b-button>
-                <b-button class="btn btn-info" @click="$router.push('/products/edit/'+task.id)">Edit</b-button>
-                <b-button class="btn btn-info" variant="danger" @click="delTasks(task.id)">Delete</b-button>
+                <b-button variant="info" @click="$router.push('/products/edit/'+task.id)">Edit</b-button>
+                <b-button  variant="danger" @click="delTasks(task.id)">Delete</b-button>
               </td>
             </tr>
           </tbody>
@@ -114,17 +114,7 @@ export default {
   },
   data: function() {
     return {
-      tasks: {
-        name:'',
-        price:'',
-        description:'',
-        categoriesId:'',
-        id:'',
-        detail:'',
-        images : {
-          default_image:''
-        }
-      },
+      tasks: [],
       search: "",
       user_id: "",
       users: []

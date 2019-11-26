@@ -72,43 +72,38 @@
           </li>
         </ul>
       </div>
-    </div>
-    <div class="col-sm-8 col-lg-10 sidebar">
-      <b-button variant="success" @click="$router.push('/categories/create')">Create new task</b-button>
-      <table id="my-table" class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Number</th>
-            <th>name</th>
-            <th>cat_parent</th>
-            <th>Created_at</th>
-            <th>Updated_at</th>
-            <th>Edit</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(task,index) in tasks" :key="index">
-            <td>{{index+1}}//{{task.id}}</td>
-            <td>{{task.name}}</td>
-            <td>{{task.cat_parent}}</td>
-            <td>{{task.createdAt}}</td>
-            <td>{{task.updatedAt}}</td>
-            <td>
-              <b-button @click="$router.push('/categories/details/'+task.id)">Details</b-button>
-              <b-button
-                class="btn btn-info"
-                @click="$router.push('/categories/edit/'+task.id)"
-              >Update</b-button>
-              <b-button class="btn btn-info" variant="danger" @click="delTasks(task.id)">Delete</b-button>
-            </td>
-          </tr>
-        </tbody>
-        <infinite-loading
-          slot="append"
-          @infinite="infiniteHandler"
-          force-use-infinite-wrapper="table__body-wrapper"
-        ></infinite-loading>
-      </table>
+      <div class="col-sm-8 col-lg-10 sidebar">
+        <b-button variant="success" @click="$router.push('/categories/create')">Create new task</b-button>
+        <table id="my-table" class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Number</th>
+              <th>name</th>
+              <th>cat_parent</th>
+              <th>Created_at</th>
+              <th>Updated_at</th>
+              <th>Edit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(task,index) in tasks" :key="index">
+              <td>{{index+1}}//{{task.id}}</td>
+              <td>{{task.name}}</td>
+              <td>{{task.cat_parent}}</td>
+              <td>{{task.createdAt}}</td>
+              <td>{{task.updatedAt}}</td>
+              <td>
+                <b-button @click="$router.push('/categories/details/'+task.id)">Details</b-button>
+                <b-button
+                  variant="info"
+                  @click="$router.push('/categories/edit/'+task.id)"
+                >Update</b-button>
+                <b-button variant="danger" @click="delTasks(task.id)">Delete</b-button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>

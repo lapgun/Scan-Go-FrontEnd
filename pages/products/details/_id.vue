@@ -17,7 +17,7 @@
         <td>{{tasks.name}}</td>
         <td>{{tasks.categoriesId}}</td>
         <td>
-         <img :src="`/${tasks.images? tasks.images.default_image: ''}`">
+          <img :src="`/${tasks.images? tasks.images.default_image: ''}`" />
         </td>
         <td>{{tasks.price}}</td>
         <td style="width:300px" v-html="tasks.description"></td>

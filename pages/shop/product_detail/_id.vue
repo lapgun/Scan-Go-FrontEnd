@@ -13,24 +13,32 @@
               <div class="col-sm-5">
                 <div>
                   <b-carousel
-                  id="carousel"
-                  v-model="slide"
-                  :indicator="1110"
-                  controls
-                  @sliding-start="onSlileStart"
-                  @sliding-end="onSlileEnd"
-                >
-                  <div v-for="(picture,key) in pictures" :key="key">
-                    <b-carousel-slide :img-src="`/${picture ? picture : ''}`"></b-carousel-slide>
-                  </div>
-                </b-carousel>
+                    id="carousel"
+                    v-model="slide"
+                    :indicator="1110"
+                    img-width="320"
+                    img-height="320"
+                    controls
+                    @sliding-start="onSlileStart"
+                    @sliding-end="onSlileEnd"
+                  >
+                    <div v-for="(picture,index) in pictures" :key="index" :data-index="'#'+index">
+                      <b-carousel-slide :img-src="`/${picture ? picture : ''}`"></b-carousel-slide>
+                    </div>
+                  </b-carousel>
                 </div>
-                <div >
-                  <span v-for="(picture,index) in pictures" :key="index" style="margin-top:30px">
+                <div>
+                  <span
+                    v-for="(picture,index) in pictures"
+                    :key="index"
+                    style="margin-top:50px"
+                    :data-id="index"
+                  >
                     <img
-                    style="margin-right:5px; width:75px !important; height:75px !important; display:inline-block !important"
-                    :src="`/${picture ? picture : ''}`"
-                  />
+                      class="img_picture"
+                      :src="`/${picture ? picture : ''}`"
+                      v-on:click="activateImage(index)"
+                    />
                   </span>
                 </div>
               </div>
@@ -82,6 +90,30 @@
             <h2 style="margin-top:100px" class="title text-center">Thông tin sản phẩm</h2>
             <div style="font-size:16px" v-html="products.detail"></div>
             <img class="img_detail" :src="`/${products.images? products.images.image_1 : ''}`" />
+
+            <h2 style="margin-top:100px" class="title text-center">Sản phẩm mới nhất</h2>
+            <div class="col-sm-4" v-for="(newest,index) in newests" :key="index">
+              <div class="product-image-wrapper">
+                <div class="single-products">
+                  <div class="productinfo text-center">
+                    <img
+                      style="width:250px; height:250px"
+                      :src="`/${newest.images ? newest.images.default_image : ''}`"
+                      @click="$router.push('/shop/product_detail/'+newest.id)"
+                      alt
+                    />
+                    <h2>{{newest.price}} đ</h2>
+                    <p>{{newest.name}}</p>
+                    <a
+                      @click="$router.push('/shop/product_detail/'+newest .id)"
+                      class="btn btn-default add-to-cart"
+                    >
+                      <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -96,23 +128,17 @@ import shopNav from "~/components/shopNav.vue";
 export default {
   mounted() {
     this.getProducts();
+    this.getById();
   },
   data: function() {
     return {
-      products: {
-        id: "",
-        name: "",
-        description: "",
-        price: "",
-        detail: "",
-        order_time: "",
-        categoriesId: "",
-        images: {}
-      },
+      products: [],
+      newests: [],
       pictures: [],
       slide: 0,
       sliding: null,
-      slidesToShow: 3
+      slidesToShow: 3,
+      currentIndex: 0
     };
   },
   components: {
@@ -137,11 +163,21 @@ export default {
         });
       });
     },
+    getById: function() {
+      let self = this;
+      this.$axios.get("/products/new-products").then(function(res) {
+        self.newests = res.data.data;
+      });
+    },
     onSlileStart(slide) {
       this.sliding = true;
     },
     onSlileEnd(slide) {
       this.sliding = false;
+    },
+    activateImage(index) {
+      this.currentIndex = index;
+      console.log("aaaa: ", this.currentIndex);
     }
   }
 };
@@ -152,5 +188,13 @@ export default {
   height: 500px;
   display: block;
   margin: 0 auto;
+}
+.img_picture {
+  margin-right: 5px;
+  margin-top: 10px;
+  width: 75px !important;
+  height: 75px !important;
+  display: inline-block !important;
+  border: 1px solid #e6dfdf;
 }
 </style>
