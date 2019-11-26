@@ -151,15 +151,17 @@
           <div class="row">
             <div class="col-sm-12">
               <b-carousel
-               id="carousel"
-               v-model="slide"
-               :indicator="1110"
-               controls
-               @sliding-start="onSlileStart"
-               @sliding-end="onSlileEnd"
+                id="carousel"
+                v-model="slide"
+                :indicator="1110"
+                controls
+                @sliding-start="onSlileStart"
+                @sliding-end="onSlileEnd"
               >
                 <div v-for="slide in slides" :key="slide.id">
-                  <b-carousel-slide :img-src="`/${slide.slide_images ? slide.slide_images.default_image : ''}`"></b-carousel-slide>
+                  <b-carousel-slide
+                    :img-src="`/${slide.slide_images ? slide.slide_images.default_image : ''}`"
+                  ></b-carousel-slide>
                 </div>
               </b-carousel>
             </div>
@@ -171,26 +173,29 @@
   </div>
 </template>
 <script>
-
+import { url } from "inspector";
 export default {
   mounted: function() {
-    this.getSlides()
+    this.getSlides();
   },
   data: function() {
     return {
       search: "",
-      slide:0,
-      sliding:null,
-      slides : {
-        id :'',
-        name:'',
-        slide_images :{
-          default_image:''
+      slide: 0,
+      sliding: null,
+      slides: {
+        id: "",
+        name: "",
+        slide_images: {
+          default_image: ""
         }
       }
     };
   },
   methods: {
+    mounted() {
+      this.handleSearch();
+    },
     handleSearch() {
       let self = this;
       this.$axios
@@ -198,20 +203,21 @@ export default {
         .then(function(res) {
           console.log(res);
           self.products = res.data.data;
+          self.$emit("products", self.products);
         });
     },
     onSlileStart(slide) {
-      this.sliding = true
+      this.sliding = true;
     },
     onSlileEnd(slide) {
-      this.sliding = false
+      this.sliding = false;
     },
     getSlides() {
-      let self = this
-       this.$axios.get('/slide').then(function(res){
-         console.log(res)
-         self.slides  = res.data.rows
-     })
+      let self = this;
+      this.$axios.get("/slide").then(function(res) {
+        console.log(res);
+        self.slides = res.data.rows;
+      });
     }
   }
 };

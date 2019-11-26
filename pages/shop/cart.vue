@@ -1,6 +1,6 @@
 <template>
   <div>
-    <shopHeader></shopHeader>
+    <shopHeader @products="products=$event"></shopHeader>
     <section>
       <div class="container">
         <section id="cart_items">

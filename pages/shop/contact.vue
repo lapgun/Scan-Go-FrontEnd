@@ -1,6 +1,6 @@
 <template>
   <div>
-    <shopHeader></shopHeader>
+    <shopHeader @products="products=$event"></shopHeader>
     <div id="contact-page" class="container">
       <div class="bg">
         <div class="row">
