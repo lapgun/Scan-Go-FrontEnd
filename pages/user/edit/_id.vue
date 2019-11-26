@@ -20,10 +20,7 @@
                 </div>
                 <div class="form-group row">
                   <label class="col-md-4 col-form-label text-md-left">Nơi Sinh Sống :</label>
-                  <b-input
-                    class="col-md-8 col-form-label text-md-left"
-                    v-model="form.address"
-                  ></b-input>
+                  <b-input class="col-md-8 col-form-label text-md-left" v-model="form.address"></b-input>
                 </div>
                 <div class="form-group row">
                   <label class="col-md-4 col-form-label text-md-right"></label>
@@ -35,7 +32,8 @@
                   <div class="col-md-3">
                     <a>
                       <button
-                        type="button" style="margin-top:15px"
+                        type="button"
+                        style="margin-top:15px"
                         class="btn btn-dark"
                         @click="$router.push('/user/detail/'+users.id)"
                       >Back</button>
@@ -55,37 +53,33 @@
 const Cookie = process.client ? require("js-cookie") : undefined;
 import _ from "lodash";
 export default {
-  mounted: function(){
-    this.getUsers()
+  mounted: function() {
+    this.getUsers();
   },
-  data: function(){
+  data: function() {
     return {
-      form : {
-        id :'',
-        name:'',
-        email:'',
-        address:''
+      form: {
+        id: "",
+        name: "",
+        email: "",
+        address: ""
       }
-    }
+    };
   },
   methods: {
-    getUsers : function(){
-      let self = this
-      this.$axios.get('/users/'+this.$route.params.id).then(function(res){
+    getUsers: function() {
+      let self = this;
+      this.$axios.get("/users/" + this.$route.params.id).then(function(res) {
         console.log(res);
-        self.form = res.data.data
-      })
-    },
-    handelSubmit : function() {
-      let self = this
-      this.$axios.put('/users/' + this.form.id, this.form).then(function(res) {
-        console.log(res);
-        if (res.data.data.role == true) {
-            self.$router.push("/user/home");
-          } else {
-            self.$router.push("/");
-          }
+        self.form = res.data.data;
       });
+    },
+    handelSubmit: function() {
+      let self = this;
+      this.$axios.put("/users/" + this.form.id, this.form).then(function(res) {
+        console.log(res);
+      });
+      self.$router.push("/user/home");
     }
   }
 };

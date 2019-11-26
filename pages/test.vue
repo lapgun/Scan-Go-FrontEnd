@@ -1,98 +1,42 @@
-<template>
+ <template>
   <div>
-    <section class="section" id="app">
-      <div class="columns">
-        <div class="column is-4">
-          <div class="card">
-            <div class="card-content">
-              <div class="card-carousel">
-                <div class="card-img">
-                  <b-carousel
-                    id="carousel"
-                    v-model="slide"
-                    :indicator="1110"
-                    controls
-                    @sliding-start="onSlileStart"
-                    @sliding-end="onSlileEnd"
-                    :visible-slides="3"
-                    :slide-ratio="1/4"
-                  >
-                    <div v-for="image in images" :key="image.id">
-                      <b-carousel-slide
-                        :img-src="`/${image.slide_images ? image.slide_images.default_image : ''}`"
-                      ></b-carousel-slide>
-                    </div>
-                  </b-carousel>
-                </div>
-                <div class="thumbnails">
-                  <div
-                    v-for="(image, index) in  images"
-                    :key="image.id"
-                    :class="['thumbnail-image', (activeImage == index) ? 'active' : '']"
-                    @click="activateImage(index)"
-                  >
-                    <img style="width:200px; height:150px; display:inline" :src="`/${image.slide_images ? image.slide_images.default_image : ''}`" />
-                  </div>
-                </div>
-              </div>
-              <p>Card description.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <div id="status"></div>
+    <div id="wrap">
+      <h1 style="height:2000px;background: red">Hello</h1>
+    </div>
   </div>
 </template>
 <script>
 export default {
+  data() {
+    return {};
+  },
   mounted() {
-    this.getSlide();
-  },
-  data: function() {
-    return {
-      images: [],
-      //Index of the active image on the images array
-      activeImage: 0,
-      slide: 0,
-      sliding: null,
-      infinite: true,
-      slidesToShow: 2,
-      slidesToScroll: 2
-    };
-  },
-  computed: {
-    // currentImage gets called whenever activeImage changes
-    // and is the reason why we don't have to worry about the
-    // big image getting updated
-    currentImage() {
-      return this.images[this.activeImage].big;
-    }
+    this.scroll();
   },
   methods: {
-    getSlide() {
-      let self = this;
-      this.$axios.get("/slide").then(function(res) {
-        self.images = res.data.rows;
-      });
-    },
-    nextImage() {
-      var active = this.activeImage + 1;
-      if (active >= this.images.length) {
-        active = 0;
-      }
-      this.activateImage(active);
-    },
-    // Go backwards on the images array
-    // or go at the last image
-    onSlileStart(slide) {
-      this.sliding = true;
-    },
-    onSlileEnd(slide) {
-      this.sliding = false;
-    },
-    activateImage(imageIndex) {
-      this.activeImage = imageIndex;
+    scroll() {
+      window.onscroll = () => {
+        var container = document.getElementById("container");
+        var wrap = document.getElementById("wrap");
+        var contentHeight = wrap.offsetHeight;
+        var y = window.pageYOffset + window.innerHeight;
+        console.log(wrap.offsetHeight);
+        console.log(window.innerHeight);
+        if (y >= contentHeight) {
+          wrap.innerHTML +=
+            '<h1 style="height:1000px;background: black">ADD</h1>';
+        }
+        var status = document.getElementById("status");
+        status.innerHTML = contentHeight + " | " + y;
+      };
     }
   }
 };
 </script>
+<style scoped>
+#status {
+  position: fixed;
+  color: aliceblue;
+}
+</style>

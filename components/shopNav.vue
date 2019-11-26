@@ -28,7 +28,6 @@
         </div>
       </div>
       <!--/category-products-->
-
     </div>
   </div>
 </template>

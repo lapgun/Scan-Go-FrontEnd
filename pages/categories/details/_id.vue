@@ -75,30 +75,30 @@
       </div>
       <div class="col-sm-8 col-lg-10 sidebar">
         <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>Number</th>
-          <th>Name</th>
-          <th>Cat's parent</th>
-          <th>Created At</th>
-          <th>Updated At</th>
-          <th>Edit</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>{{tasks.id}}</td>
-          <td>{{tasks.name}}</td>
-          <td>{{tasks.cat_parent}}</td>
-          <td>{{tasks.createdAt}}</td>
-          <td>{{tasks.updatedAt}}</td>
-          <td>
-            <b-button class="btn btn-info" @click="$router.push('/task/edit/'+task.id)">Update</b-button>
-            <b-button class="btn btn-info" variant="danger" @click="delTasks(task.id)">Delete</b-button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          <thead>
+            <tr>
+              <th>Number</th>
+              <th>Name</th>
+              <th>Cat's parent</th>
+              <th>Created At</th>
+              <th>Updated At</th>
+              <th>Edit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{tasks.id}}</td>
+              <td>{{tasks.name}}</td>
+              <td>{{tasks.cat_parent}}</td>
+              <td>{{tasks.createdAt}}</td>
+              <td>{{tasks.updatedAt}}</td>
+              <td>
+                <b-button class="btn btn-info" @click="$router.push('/task/edit/'+task.id)">Update</b-button>
+                <b-button class="btn btn-info" variant="danger" @click="delTasks(task.id)">Delete</b-button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
