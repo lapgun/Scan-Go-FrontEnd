@@ -141,24 +141,10 @@ export default {
   methods: {
     getTasks() {
       let self = this;
-      this.$axios
-        .get(
-          "/products"
-          // ?search=" +
-          //   this.search +
-          //   "&currentPage=" +
-          //   this.pagination.currentPage +
-          //   "&perPage=" +
-          //   this.pagination.perPage
-        )
-        .then(function(res) {
-          console.log(res);
-          self.tasks = res.data.data;
-          // let results = res.data.data;
-          // results.forEach(function(element) {
-          //   self.tasks.push(element);
-        });
-      // self.pagination.totalPage = res.data.pagination.totalPage;
+      this.$axios.get("/products").then(function(res) {
+        console.log(res);
+        self.tasks = res.data.data;
+      });
     },
     handleSearch() {
       let self = this;
