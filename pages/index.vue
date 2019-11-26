@@ -76,25 +76,12 @@ export default {
   mounted: function() {
     this.getByOrderTime();
     this.getById();
+    this.getUser();
   },
   data: function() {
     return {
-      products: {
-        id : '',
-        name: '',
-        price:'',
-        images : {
-          default_image : ''
-        }
-      },
-      newests: {
-        id : '',
-        name: '',
-        price:'',
-        images : {
-          default_image : ''
-        }
-      },
+      products: [],
+      newests: [],
     };
   },
   components: {
@@ -115,6 +102,11 @@ export default {
         self.newests = res.data.data;
       });
     },
+    getUser(){
+      this.$axios.get("/get_user").then(function(res){
+        console.log(res)
+      })
+    }
   }
 };
 </script>

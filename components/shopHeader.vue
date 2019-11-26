@@ -157,8 +157,10 @@
                controls
                @sliding-start="onSlileStart"
                @sliding-end="onSlileEnd"
+               :visible-slides="3" 
+               :slide-ratio="1/4"
               >
-                <div v-for="slide in slides" :key="slide.id">
+                <div v-for="slide in slides" :key="slide.id" >
                   <b-carousel-slide :img-src="`/${slide.slide_images ? slide.slide_images.default_image : ''}`"></b-carousel-slide>
                 </div>
               </b-carousel>
@@ -181,13 +183,10 @@ export default {
       search: "",
       slide:0,
       sliding:null,
-      slides : {
-        id :'',
-        name:'',
-        slide_images :{
-          default_image:''
-        }
-      }
+      infinite: true,
+      slidesToShow: 2,
+      slidesToScroll: 2,
+      slides : []
     };
   },
   methods: {
@@ -196,9 +195,10 @@ export default {
       this.$axios
         .get("/products/search?search=" + this.search)
         .then(function(res) {
-          console.log(res);
           self.products = res.data.data;
-        });
+          self.$emit("products", self.products);  
+          self.$router.push('/shop/products?search='+self.search)
+          });
     },
     onSlileStart(slide) {
       this.sliding = true
@@ -209,7 +209,6 @@ export default {
     getSlides() {
       let self = this
        this.$axios.get('/slide').then(function(res){
-         console.log(res)
          self.slides  = res.data.rows
      })
     }

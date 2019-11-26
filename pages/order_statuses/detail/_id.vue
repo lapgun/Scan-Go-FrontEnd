@@ -1,25 +1,25 @@
 <template>
-    <div>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>STT</th>
-                    <th>Name</th>
-                    <th>Order_id</th>
-                    <th>Note</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{order_statuses.id}}</td>
-                    <td>{{order_statuses.name}}</td>
-                    <td>{{order_statuses.orderId}}</td>
-                    <td>{{order_statuses.note }}</td>
-                </tr>
-            </tbody>
-        </table>
-        <b-button variant="info" @click="$router.push('/order_statuses')">Oder_products</b-button>
-    </div>
+  <div>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Name</th>
+          <th>Order_id</th>
+          <th>Note</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{order_statuses.id}}</td>
+          <td>{{order_statuses.name}}</td>
+          <td>{{order_statuses.orderId}}</td>
+          <td>{{order_statuses.note }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <b-button variant="info" @click="$router.push('/order_statuses')">Oder_products</b-button>
+  </div>
 </template>
 <script>
 export default {

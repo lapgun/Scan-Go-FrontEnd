@@ -3,17 +3,6 @@
     <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
-          <button
-            type="button"
-            class="navbar-toggle collapsed"
-            data-toggle="collapse"
-            data-target="#sidebar-collapse"
-          >
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
           <a class="navbar-brand" href="#">
             <span>Scan & Go</span>Admin
           </a>
@@ -38,7 +27,6 @@
           </li>
         </div>
       </div>
-      <!-- /.container-fluid -->
     </nav>
     <div>
       <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar" style="margin-top:-30px">
@@ -55,7 +43,7 @@
           <div class="clear"></div>
         </div>
         <div class="divider"></div>
-        <!-- <form role="search">
+        <form role="search">
           <div class="form-group">
             <input
               type="text"
@@ -65,7 +53,7 @@
               placeholder="Search"
             />
           </div>
-        </form>-->
+        </form>
         <ul class="nav menu" style="display:block">
           <li>
             <a @click="$router.push('/user/home')">Home</a>
@@ -80,38 +68,35 @@
             <a @click="$router.push('/orders')">Orders</a>
           </li>
           <li>
-            <a @click="$router.push('/slide')">Slide</a>
-          </li>
-          <li>
             <a @click="$router.push('/user')">Users</a>
           </li>
         </ul>
       </div>
       <div class="col-sm-8 col-lg-10 sidebar">
-        <b-button variant="success" @click="$router.push('/products/create')">Create new task</b-button>
+        <b-button variant="success" @click="$router.push('/categories/create')">Create new task</b-button>
         <table id="my-table" class="table table-bordered">
           <thead>
             <tr>
               <th>Number</th>
               <th>name</th>
-              <th>categoriesId</th>
-              <th>picture</th>
-              <th>price</th>
-              <th>description</th>
-              <th>detail</th>
-              <th>order_time</th>
+              <th>Categories Id</th>
+              <th>Image</th>
+              <th>Detail</th>
+              <th>Description</th>
               <th>Edit</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(task,index) in tasks" :key="index">
               <td>{{index+1}}//{{task.id}}</td>
-              <td style="width:250px">{{task.name}}</td>
+              <td>{{task.name}}</td>
               <td>{{task.categoriesId}}</td>
               <td>
-                <img :src="`/${task.images ? task.images.default_image : ''}`" />
+                <img
+                  style="width:50px; height:50px"
+                  :src="`/${task.images ? task.images.default_image: ''}`"
+                />
               </td>
-              <td>{{task.price}}</td>
               <td>
                 <b-button v-b-toggle="'a-'+task.id" class="m-1">Show</b-button>
                 <b-collapse :id="'a-'+task.id">
@@ -126,11 +111,10 @@
                   </b-card>
                 </b-collapse>
               </td>
-              <td>{{task.order_time}}</td>
-              <td style="width:250px">
+              <td>
                 <b-button @click="$router.push('/products/details/'+task.id)">Details</b-button>
-                <b-button class="btn btn-info" @click="$router.push('/products/edit/'+task.id)">Edit</b-button>
-                <b-button class="btn btn-info" variant="danger" @click="delTasks(task.id)">Delete</b-button>
+                <b-button variant="info" @click="$router.push('/products/edit/'+task.id)">Update</b-button>
+                <b-button variant="danger" @click="delTasks(task.id)">Delete</b-button>
               </td>
             </tr>
           </tbody>
@@ -145,52 +129,55 @@ const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
   mounted: function() {
     this.getTasks();
-    this.getAdmins();
   },
   data: function() {
     return {
-      tasks: {
-        name:'',
-        price:'',
-        description:'',
-        categoriesId:'',
-        id:'',
-        detail:'',
-        images : {
-          default_image:''
-        }
-      },
+      tasks: [],
       search: "",
       user_id: "",
       users: []
     };
   },
   methods: {
-    getTasks: function() {
+    getTasks() {
       let self = this;
-      this.$axios.get("/products").then(function(res) {
-        console.log(res);
-        self.tasks = res.data.data;
-      });
+      this.$axios
+        .get(
+          "/products"
+          // ?search=" +
+          //   this.search +
+          //   "&currentPage=" +
+          //   this.pagination.currentPage +
+          //   "&perPage=" +
+          //   this.pagination.perPage
+        )
+        .then(function(res) {
+          console.log(res);
+          self.tasks = res.data.data;
+          // let results = res.data.data;
+          // results.forEach(function(element) {
+          //   self.tasks.push(element);
+        });
+      // self.pagination.totalPage = res.data.pagination.totalPage;
+    },
+    handleSearch() {
+      let self = this;
+      this.$axios
+        .get("/products/search?search=" + this.search)
+        .then(function(res) {
+          self.tasks = res.data.data;
+        });
+    },
+    handleLogout: function() {
+      Cookie.remove("token");
+      this.$store.commit("setToken", null);
+      this.$router.push("/login");
     },
     delTasks: function(id) {
       let self = this;
       this.$axios.delete("/products/" + id).then(function(res) {
         self.getTasks();
       });
-    },
-    getAdmins: function() {
-      let self = this;
-      this.$axios.get("/users").then(function(res) {
-        console.log(res);
-        self.user_id = res.data.decoded.user_id;
-        self.users = res.data.data;
-      });
-    },
-    handleLogout: function() {
-      Cookie.remove("token");
-      this.$store.commit("setToken", null);
-      this.$router.push("/login");
     }
   }
 };
