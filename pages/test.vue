@@ -1,54 +1,98 @@
 <template>
   <div>
-    <!--Carousel Wrapper-->
-<div id="carousel-thumb" class="carousel slide carousel-fade carousel-thumbnails" data-ride="carousel">
-  <!--Slides-->
-  <div class="carousel-inner" role="listbox">
-    <div class="carousel-item active">
-      <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Slides/img%20(88).jpg"
-        alt="First slide">
-    </div>
-    <div class="carousel-item">
-      <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Slides/img%20(121).jpg"
-        alt="Second slide">
-    </div>
-    <div class="carousel-item">
-      <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Slides/img%20(31).jpg"
-        alt="Third slide">
-    </div>
-  </div>
-  <!--/.Slides-->
-  <!--Controls-->
-  <a class="carousel-control-prev" href="#carousel-thumb" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#carousel-thumb" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
-  <!--/.Controls-->
-  <ol class="carousel-indicators">
-    <li data-target="#carousel-thumb" data-slide-to="0" class="active">
-      <img src="https://mdbootstrap.com/img/Photos/Others/Carousel-thumbs/img%20(88).jpg" width="100">
-    </li>
-    <li data-target="#carousel-thumb" data-slide-to="1">
-      <img src="https://mdbootstrap.com/img/Photos/Others/Carousel-thumbs/img%20(121).jpg" width="100">
-    </li>
-    <li data-target="#carousel-thumb" data-slide-to="2">
-      <img src="https://mdbootstrap.com/img/Photos/Others/Carousel-thumbs/img%20(31).jpg" width="100">
-    </li>
-  </ol>
-</div>
-<!--/.Carousel Wrapper-->
+    <section class="section" id="app">
+      <div class="columns">
+        <div class="column is-4">
+          <div class="card">
+            <div class="card-content">
+              <div class="card-carousel">
+                <div class="card-img">
+                  <b-carousel
+                    id="carousel"
+                    v-model="slide"
+                    :indicator="1110"
+                    controls
+                    @sliding-start="onSlileStart"
+                    @sliding-end="onSlileEnd"
+                    :visible-slides="3"
+                    :slide-ratio="1/4"
+                  >
+                    <div v-for="image in images" :key="image.id">
+                      <b-carousel-slide
+                        :img-src="`/${image.slide_images ? image.slide_images.default_image : ''}`"
+                      ></b-carousel-slide>
+                    </div>
+                  </b-carousel>
+                </div>
+                <div class="thumbnails">
+                  <div
+                    v-for="(image, index) in  images"
+                    :key="image.id"
+                    :class="['thumbnail-image', (activeImage == index) ? 'active' : '']"
+                    @click="activateImage(index)"
+                  >
+                    <img style="width:200px; height:150px; display:inline" :src="`/${image.slide_images ? image.slide_images.default_image : ''}`" />
+                  </div>
+                </div>
+              </div>
+              <p>Card description.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 <script>
 export default {
-
+  mounted() {
+    this.getSlide();
+  },
   data: function() {
     return {
+      images: [],
+      //Index of the active image on the images array
+      activeImage: 0,
+      slide: 0,
+      sliding: null,
+      infinite: true,
+      slidesToShow: 2,
+      slidesToScroll: 2
+    };
+  },
+  computed: {
+    // currentImage gets called whenever activeImage changes
+    // and is the reason why we don't have to worry about the
+    // big image getting updated
+    currentImage() {
+      return this.images[this.activeImage].big;
     }
   },
+  methods: {
+    getSlide() {
+      let self = this;
+      this.$axios.get("/slide").then(function(res) {
+        self.images = res.data.rows;
+      });
+    },
+    nextImage() {
+      var active = this.activeImage + 1;
+      if (active >= this.images.length) {
+        active = 0;
+      }
+      this.activateImage(active);
+    },
+    // Go backwards on the images array
+    // or go at the last image
+    onSlileStart(slide) {
+      this.sliding = true;
+    },
+    onSlileEnd(slide) {
+      this.sliding = false;
+    },
+    activateImage(imageIndex) {
+      this.activeImage = imageIndex;
+    }
+  }
 };
 </script>

@@ -79,22 +79,8 @@ export default {
   },
   data: function() {
     return {
-      products: {
-        id : '',
-        name: '',
-        price:'',
-        images : {
-          default_image : ''
-        }
-      },
-      newests: {
-        id : '',
-        name: '',
-        price:'',
-        images : {
-          default_image : ''
-        }
-      },
+      products: [],
+      newests: [],
     };
   },
   components: {

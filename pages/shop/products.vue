@@ -45,18 +45,7 @@ export default {
   },
   data: function() {
     return {
-      products: {
-        id:'',
-        name:'',
-        description:'',
-        price:'',
-        detail:'',
-        order_time:'',
-        categoriesId:'',
-        images: {
-          default_image:''
-        }
-      }
+      products: []
     };
   },
   components: {

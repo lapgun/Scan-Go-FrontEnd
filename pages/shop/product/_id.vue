@@ -76,7 +76,6 @@ export default {
       const res = await this.$axios.get(
         `/categories/cat_parent/${this.$route.params.id}`
       );
-      console.log(res);
       let data = res.data.data.rows;
       data.forEach(element => {
         element.products.forEach(e => {

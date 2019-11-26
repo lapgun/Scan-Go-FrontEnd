@@ -186,13 +186,7 @@ export default {
       infinite: true,
       slidesToShow: 2,
       slidesToScroll: 2,
-      slides : {
-        id :'',
-        name:'',
-        slide_images :{
-          default_image:''
-        }
-      }
+      slides : []
     };
   },
   methods: {
@@ -201,7 +195,6 @@ export default {
       this.$axios
         .get("/products/search?search=" + this.search)
         .then(function(res) {
-          console.log(res);
           self.products = res.data.data;
         });
     },
@@ -214,7 +207,6 @@ export default {
     getSlides() {
       let self = this
        this.$axios.get('/slide').then(function(res){
-         console.log(res)
          self.slides  = res.data.rows
      })
     }

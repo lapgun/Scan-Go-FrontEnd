@@ -39,18 +39,7 @@
 
         data: function () {
             return {
-                tasks: {
-                  id:'',
-                  name:'',
-                  description:'',
-                  price:'',
-                  detail:'',
-                  order_time:'',
-                  categoriesId:'',
-                  images: {
-                    default_image:''
-                  }
-                },
+                tasks: [],
             };
         },
         methods: {

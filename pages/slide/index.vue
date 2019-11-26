@@ -113,13 +113,7 @@ export default {
   },
   data: function() {
     return {
-      slides: {
-        index: "",
-        name: "",
-        slide_images: {
-          default_image: ""
-        }
-      },
+      slides:[],
       search: "",
       totalResult: 0,
       pagination: {
