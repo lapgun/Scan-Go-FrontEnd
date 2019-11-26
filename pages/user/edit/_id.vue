@@ -78,12 +78,8 @@ export default {
       let self = this;
       this.$axios.put("/users/" + this.form.id, this.form).then(function(res) {
         console.log(res);
-        if (res.data.data.role == true) {
-          self.$router.push("/user/home");
-        } else {
-          self.$router.push("/");
-        }
       });
+      self.$router.push("/user/home");
     }
   }
 };

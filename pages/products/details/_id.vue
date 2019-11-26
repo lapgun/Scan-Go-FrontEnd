@@ -49,9 +49,9 @@ export default {
         self.tasks = res.data.data;
       });
     },
-    delTasks: function(id) {
+    delTasks: function() {
       let self = this;
-      this.$axios.delete("/products/" + id).then(function(res) {
+      this.$axios.delete("/products/" + this.$route.params.id).then(function(res) {
         self.getTasks();
       });
     }

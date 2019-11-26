@@ -108,15 +108,11 @@
   </div>
 </template>
 <script>
-import InfiniteLoading from "vue-infinite-loading";
 const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
   mounted: function() {
     this.getTasks();
     this.getAdmins();
-  },
-  components: {
-    InfiniteLoading
   },
   data: function() {
     return {
@@ -137,12 +133,13 @@ export default {
       let self = this;
       this.$axios
         .get(
-          "/categories?search=" +
-            this.search +
-            "&currentPage=" +
-            this.pagination.currentPage +
-            "&perPage=" +
-            this.pagination.perPage
+          "/categories"
+          // ?search=" +
+          //   this.search +
+          //   "&currentPage=" +
+          //   this.pagination.currentPage +
+          //   "&perPage=" +
+          //   this.pagination.perPage
         )
         .then(function(res) {
           console.log(res);
@@ -150,7 +147,7 @@ export default {
           results.forEach(function(element) {
             self.tasks.push(element);
           });
-          self.pagination.totalPage = res.data.pagination.totalPage;
+          // self.pagination.totalPage = res.data.pagination.totalPage;
         });
     },
     handleSearch: function() {
@@ -180,19 +177,6 @@ export default {
       this.$store.commit("setToken", null);
       this.$router.push("/login");
     },
-    infiniteHandler($state) {
-      if (this.pagination.currentPage == this.pagination.totalPage) {
-        $state.complete();
-        return console.log("end scroll");
-      } else {
-        setTimeout(() => {
-          let self = this;
-          this.pagination.currentPage += 1;
-          this.getTasks();
-          $state.loaded();
-        }, 2000);
-      }
-    }
   }
 };
 </script>
