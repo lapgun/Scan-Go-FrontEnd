@@ -73,13 +73,20 @@
         </ul>
       </div>
       <div class="col-sm-8 col-lg-10 sidebar">
-        <b-button variant="success" @click="$router.push('/categories/create')">Create new task</b-button>
+        <b-button variant="success" @click="$router.push('/products/create')">Create new task</b-button>
+        <div>
+          <label>
+            Sắp xếp theo
+            <b-form-select v-model="order_by" :options="order" @change="getTasks"></b-form-select>
+          </label>
+        </div>
         <table id="my-table" class="table table-bordered">
           <thead>
             <tr>
               <th>Number</th>
               <th>name</th>
               <th>Categories Id</th>
+              <th>Price</th>
               <th>Image</th>
               <th>Detail</th>
               <th>Description</th>
@@ -91,6 +98,7 @@
               <td>{{index+1}}//{{task.id}}</td>
               <td>{{task.name}}</td>
               <td>{{task.categoriesId}}</td>
+              <td>{{test(task.price)}}</td>
               <td>
                 <img
                   style="width:50px; height:50px"
@@ -135,29 +143,29 @@ export default {
       tasks: [],
       search: "",
       user_id: "",
-      users: []
+      users: [],
+      order_by: ["id", "ASC"],
+      order: [
+        { value: ["name", "ASC"], text: "Tên từ A-Z" },
+        { value: ["name", "DESC"], text: "Tên từ Z-A" },
+        { value: ["price", "ASC"], text: "Giá tiền tăng dần" },
+        { value: ["price", "DESC"], text: "Giá tiền giảm dần" },
+        { value: ["id", "DESC"], text: "Mới nhất" },
+        { value: ["id", "ASC"], text: "Cũ nhất" }
+      ]
     };
   },
   methods: {
+    test(x) {
+      x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
+      return x
+    },
     getTasks() {
       let self = this;
-      this.$axios
-        .get(
-          "/products"
-          // ?search=" +
-          //   this.search +
-          //   "&currentPage=" +
-          //   this.pagination.currentPage +
-          //   "&perPage=" +
-          //   this.pagination.perPage
-        )
-        .then(function(res) {
-          console.log(res);
-          self.tasks = res.data.data;
-          // let results = res.data.data;
-          // results.forEach(function(element) {
-          //   self.tasks.push(element);
-        });
+      this.$axios.post("/products", this.order_by).then(function(res) {
+        console.log(res);
+        self.tasks = res.data.data;
+      });
       // self.pagination.totalPage = res.data.pagination.totalPage;
     },
     handleSearch() {

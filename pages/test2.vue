@@ -38,7 +38,7 @@ export default {
       tasks: [],
       pagination: {
         currentPage: 1,
-        perPage: 20,
+        perPage: 17,
         totalPage: ""
       },
       search: ""
@@ -93,20 +93,4 @@ export default {
   color: rgb(233, 60, 60);
 }
 </style>
-var container = document.getElementById("container");
-        var contentHeight = container.offsetHeight;
-        console.log(contentHeight);
-        var yOffset = window.pageYOffset;
-        var y = yOffset + window.innerHeight;
-        if (y >= contentHeight) {
-          if (this.pagination.currentPage <= this.pagination.totalPage) {
-            setTimeout(() => {
-              this.pagination.currentPage += 1;
-              this.getTasks();
-            }, 1000);
-            console.log(contentHeight);
-          } else {
-            console.log("no more data");
-          }
-}
       
