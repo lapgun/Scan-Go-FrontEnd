@@ -62,8 +62,8 @@
               </table>
             </div>
           </div>
-        </section> <!--/#cart_items-->
-
+        </section>
+        <!--/#cart_items-->
         <section id="do_action">
           <div class="container">
             <div class="heading">

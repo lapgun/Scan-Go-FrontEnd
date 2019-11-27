@@ -8,7 +8,7 @@
             style="font-size: 20px;font-weight: bold"
           >Thông tin người dùng</div>
           <div class="card-body" style="font-style: italic">
-            <div class="row" v-if="users">
+            <div class="row">
               <div class="col-12 col-md-8">
                 <div class="form-group row">
                   <label class="col-md-4 col-form-label text-md-left">Name</label>
@@ -34,16 +34,20 @@
                     </span>
                     <span>
                       <span v-if="users.role = false">
-                        <button style="margin-top:15px"
-                        type="button"
-                        class="btn btn-info" @click="$router.push('/user/home')"
-                      >Back</button>
+                        <button
+                          style="margin-top:15px"
+                          type="button"
+                          class="btn btn-info"
+                          @click="$router.push('/user/home')"
+                        >Back</button>
                       </span>
                       <span v-else>
-                        <button style="margin-top:15px ;display:inline"
-                        type="button"
-                        class="btn btn-info" @click="$router.push('/')"
-                      >Back</button>
+                        <button
+                          style="margin-top:15px ;display:inline"
+                          type="button"
+                          class="btn btn-info"
+                          @click="$router.push('/')"
+                        >Back</button>
                       </span>
                     </span>
                   </div>

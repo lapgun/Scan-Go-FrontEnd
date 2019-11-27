@@ -397,23 +397,8 @@
                     </div>
                   </div>
                 </div>
-                <a
-                  class="left recommended-item-control"
-                  href="#recommended-item-carousel"
-                  data-slide="prev"
-                >
-                  <i class="fa fa-angle-left"></i>
-                </a>
-                <a
-                  class="right recommended-item-control"
-                  href="#recommended-item-carousel"
-                  data-slide="next"
-                >
-                  <i class="fa fa-angle-right"></i>
-                </a>
               </div>
             </div>
-            <!--/recommended_items-->
           </div>
         </div>
       </div>
@@ -445,7 +430,7 @@
                     let cart = JSON.parse(Cookies.get("cart"));
                     return this.cart = cart;
                 } else {
-                    let cart = this.$store.getters.cart
+                    let cart = this.$store.getters.cart;
                     return this.cart = cart;
                 }
             }

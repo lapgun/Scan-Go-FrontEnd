@@ -3,17 +3,6 @@
     <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
-          <button
-            type="button"
-            class="navbar-toggle collapsed"
-            data-toggle="collapse"
-            data-target="#sidebar-collapse"
-          >
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
           <a class="navbar-brand" href="#">
             <span>Scan & Go</span>Admin
           </a>
@@ -38,7 +27,6 @@
           </li>
         </div>
       </div>
-      <!-- /.container-fluid -->
     </nav>
     <div>
       <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar" style="margin-top:-30px">
@@ -107,10 +95,10 @@
               <td>
                 <b-button @click="$router.push('/categories/details/'+task.id)">Details</b-button>
                 <b-button
-                  class="btn btn-info"
+                  variant="info"
                   @click="$router.push('/categories/edit/'+task.id)"
                 >Update</b-button>
-                <b-button class="btn btn-info" variant="danger" @click="delTasks(task.id)">Delete</b-button>
+                <b-button variant="danger" @click="delTasks(task.id)">Delete</b-button>
               </td>
             </tr>
           </tbody>
@@ -128,23 +116,47 @@ export default {
   },
   data: function() {
     return {
-      tasks: [],
-      search: "",
       user_id: "",
-      users : [],
+      users: [],
+      tasks: [],
+      pagination: {
+        currentPage: 1,
+        perPage: 3,
+        totalPage: ""
+      },
+      search: ""
     };
   },
 
   methods: {
-    getTasks: function() {
+    getTasks() {
       let self = this;
-      this.$axios.get("/categories?search=" + this.search).then(function(res) {
-        console.log(res);
-        self.tasks = res.data.data.rows;
-      });
+      this.$axios
+        .get(
+          "/categories"
+          // ?search=" +
+          //   this.search +
+          //   "&currentPage=" +
+          //   this.pagination.currentPage +
+          //   "&perPage=" +
+          //   this.pagination.perPage
+        )
+        .then(function(res) {
+          console.log(res);
+          let results = res.data.data;
+          results.forEach(function(element) {
+            self.tasks.push(element);
+          });
+          // self.pagination.totalPage = res.data.pagination.totalPage;
+        });
     },
     handleSearch: function() {
-      this.getTasks();
+      this.$axios
+        .get("/categories/search?search=" + this.search)
+        .then(function(res) {
+          let self = this;
+          self.tasks = res.data.data;
+        });
     },
     delTasks: function(id) {
       let self = this;
@@ -164,7 +176,7 @@ export default {
       Cookie.remove("token");
       this.$store.commit("setToken", null);
       this.$router.push("/login");
-    }
+    },
   }
 };
 </script>

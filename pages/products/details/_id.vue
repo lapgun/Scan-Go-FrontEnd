@@ -19,10 +19,11 @@
         <td>
 <!--          {{ tasks.images }}-->
           <img :src="`/${tasks.images? tasks.images.default_image: ''}`"/>
+
         </td>
         <td>{{tasks.price}}</td>
-        <td>{{tasks.description}}</td>
-        <td>{{tasks.detail}}</td>
+        <td style="width:300px" v-html="tasks.description"></td>
+        <td v-html="tasks.detail"></td>
         <td>{{tasks.order_time}}</td>
         <td>
           <b-button class="btn btn-dark" @click="$router.push('/products')">Back</b-button>
@@ -38,11 +39,6 @@
             this.getTasks();
 
         },
-        // mounted: function () {
-        //     this.getTasks();
-        //
-        // },
-
         data: function () {
             return {
                 tasks: [],

@@ -126,7 +126,7 @@ export default {
       } else {
         if (this.repassword == this.form.password) {
           this.$axios.post("/register", this.form).then(function(res) {
-            console.log(res); 
+            console.log(res);
             self.$router.push("/login");
           });
         } else {

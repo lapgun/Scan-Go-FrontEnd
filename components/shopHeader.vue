@@ -7,32 +7,61 @@
             <div class="col-sm-6">
               <div class="contactinfo">
                 <ul class="nav nav-pills">
-                  <li><a href="#"> +2 95 01 88 821</a></li>
-                  <li><a href="#"> nguyenthila@gmail.com</a></li>
+                  <li>
+                    <a href="#">+2 95 01 88 821</a>
+                  </li>
+                  <li>
+                    <a href="#">nguyenthila@gmail.com</a>
+                  </li>
                 </ul>
               </div>
             </div>
             <div class="col-sm-6">
               <div class="social-icons pull-right">
                 <ul style="margin-top:15px">
-                  <li><a href="#"><i class="fab fa-facebook"></i></a></li>
-                  <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                  <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
-                  <li><a href="#"><i class="fab fa-dribbble"></i></a></li>
-                  <li><a href="#"><i class="fab fa-google-plus"></i></a></li>
+                  <li>
+                    <a href="#">
+                      <i class="fab fa-facebook"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fab fa-twitter"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fab fa-linkedin"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fab fa-dribbble"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fab fa-google-plus"></i>
+                    </a>
+                  </li>
+
                 </ul>
               </div>
             </div>
           </div>
         </div>
-      </div><!--/header_top-->
+      </div>
+      <!--/header_top-->
 
-      <div class="header-middle"><!--header-middle-->
+      <div class="header-middle">
+        <!--header-middle-->
         <div class="container">
           <div class="row">
             <div class="col-sm-4">
               <div class="logo pull-left">
-                <a @click="$router.push('/')"><img src="~assets/images/home/logo.png" alt=""/></a>
+                <a @click="$router.push('/')">
+                  <img src="~assets/images/home/logo.png" alt />
+                </a>
               </div>
             </div>
             <div class="col-sm-8">
@@ -65,9 +94,10 @@
             </div>
           </div>
         </div>
-      </div><!--/header-middle-->
-
-      <div class="header-bottom"><!--header-bottom-->
+      </div>
+      <!--/header-middle-->
+      <div class="header-bottom">
+        <!--header-bottom-->
         <div class="container">
           <div class="row">
             <div class="col-sm-9">
