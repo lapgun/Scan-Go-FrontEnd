@@ -467,7 +467,7 @@
                     alert("Đã tồn tại sản phẩm trong giỏ hàng")
                 } else
                     this.$store.dispatch('addToCart', product);
-                    this.$store.dispatch('setCart', this.cart)
+                    this.$store.dispatch('setCart', this.cart);
                      Cookies.set('cart', this.cart)
             }
         }

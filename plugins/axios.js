@@ -7,8 +7,8 @@ export default function({ $axios, store, redirect }) {
     }
   });
   $axios.onError(error => {
-    // if (error.response.status === 403) {
-    //   redirect("/err/403");
-    // }
+    if (error.response.status === 403) {
+      redirect("/err/403");
+    }
   });
 }
