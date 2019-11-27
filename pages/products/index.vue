@@ -67,22 +67,25 @@
           <li>
             <a @click="$router.push('/orders')">Orders</a>
           </li>
+           <li>
+            <a @click="$router.push('/slide')">Slide</a>
+          </li>
           <li>
             <a @click="$router.push('/user')">Users</a>
           </li>
         </ul>
       </div>
       <div class="col-sm-8 col-lg-10 sidebar">
-        <b-button variant="success" @click="$router.push('/categories/create')">Create new task</b-button>
+        <b-button variant="success" @click="$router.push('/products/create')">Create new task</b-button>
         <table id="my-table" class="table table-bordered">
           <thead>
             <tr>
               <th>Number</th>
-              <th style="width:250px">name</th>
-              <th style="width:150px">Categories Id</th>
-              <th style="width:200px">Image</th>
-              <th style="width:250px">Detail</th>
-              <th style="width:250px">Description</th>
+              <th>name</th>
+              <th>Categories Id</th>
+              <th>Image</th>
+              <th>Detail</th>
+              <th>Description</th>
               <th>Edit</th>
             </tr>
           </thead>
@@ -125,7 +128,6 @@
 </template>
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
-
 export default {
   mounted: function() {
     this.getTasks();
@@ -187,11 +189,9 @@ img {
   width: 50px;
   height: 50px;
 }
-
 table {
   margin-top: 10px;
 }
-
 .search {
   width: 50%;
   display: flex;

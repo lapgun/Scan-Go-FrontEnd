@@ -24,7 +24,7 @@
                       <h2>{{product.price}} đ</h2>
                       <p>{{product.name}}</p>
                       <a
-                        @click="$router.push('/shop/product_detail/'+product.id)"
+                        @click="addToCart(product)"
                         class="btn btn-default add-to-cart"
                       >
                         <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
@@ -42,10 +42,22 @@
   </div>
 </template>
 <script>
+const Cookies = process.client ? require("js-cookie") : undefined;
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
 export default {
+  created() {
+    if (process.browser) {
+      if (Cookies.get("cart")) {
+        let cart = JSON.parse(Cookies.get("cart"));
+        return (this.cart = cart);
+      } else {
+        let cart = this.$store.getters.cart;
+        return (this.cart = cart);
+      }
+    }
+  },
   mounted: async function() {
     await this.getByMenu();
     await this.getByCat();
@@ -96,7 +108,19 @@ export default {
         });
       });
       console.log(self.default_image);
-    }
+    },
+    addToCart(product) {
+      // console.log('fdsdfg',this.cart)
+      // let pro = this.cart.find(element => element.id == product.id);
+      // console.log(pro)
+      // if (pro) {
+      //   alert("Đã tồn tại sản phẩm trong giỏ hàng");
+      // } else 
+      this.$store.dispatch("addToCart", product);
+      this.$store.dispatch("setCart", this.cart);
+      Cookies.set("cart", this.cart);
+      
+    },
   }
 };
 </script>

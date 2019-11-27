@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" >
     <table class="table table-bordered">
       <tr>
         <th>Number</th>

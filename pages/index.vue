@@ -23,10 +23,7 @@
                       />
                       <h2>{{product.price}} đ</h2>
                       <p>{{product.name}}</p>
-                      <a
-                        @click="$router.push('/shop/product_detail/'+product.id)"
-                        class="btn btn-default add-to-cart"
-                      >
+                      <a @click="addToCart(product)" class="btn btn-default add-to-cart">
                         <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
                       </a>
                     </div>
@@ -50,10 +47,7 @@
                       />
                       <h2>{{newest.price}} đ</h2>
                       <p>{{newest.name}}</p>
-                      <a
-                        @click="$router.push('/shop/product_detail/'+newest .id)"
-                        class="btn btn-default add-to-cart"
-                      >
+                      <a class="btn btn-default add-to-cart">
                         <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
                       </a>
                     </div>
@@ -69,19 +63,28 @@
   </div>
 </template>
 <script>
+const Cookies = process.client ? require("js-cookie") : undefined;
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
+
 export default {
-  mounted: function() {
-    this.getByOrderTime();
-    this.getById();
-    this.getUser();
+   created() {
+    if (process.browser) {
+      if (Cookies.get("cart")) {
+        let cart = JSON.parse(Cookies.get("cart"));
+        return (this.cart = cart);
+      } else {
+        let cart = this.$store.getters.cart;
+        return (this.cart = cart);
+      }
+    }
   },
-  data: function() {
+  data() {
     return {
       products: [],
-      newests: [],
+      cart: [],
+      newests: []
     };
   },
   components: {
@@ -89,25 +92,36 @@ export default {
     shopFooter,
     shopNav
   },
+ 
+  mounted() {
+    this.getByOrderTime();
+    this.getById();
+  },
   methods: {
-    getByOrderTime: function() {
+    getByOrderTime() {
       let self = this;
       this.$axios.get("/products/order_time").then(function(res) {
         self.products = res.data.data;
       });
     },
-    getById: function() {
+    getById() {
       let self = this;
       this.$axios.get("/products/newest").then(function(res) {
         self.newests = res.data.data;
       });
     },
-    getUser(){
-      this.$axios.get("/get_user").then(function(res){
-        console.log(res)
-      })
-    }
+    addToCart(product) {
+      // console.log('fdsdfg',this.cart)
+      // let pro = this.cart.find(element => element.id == product.id);
+      // console.log(pro)
+      // if (pro) {
+      //   alert("Đã tồn tại sản phẩm trong giỏ hàng");
+      // } else 
+      this.$store.dispatch("addToCart", product);
+      this.$store.dispatch("setCart", this.cart);
+      Cookies.set("cart", this.cart);
+      
+    },
   }
 };
 </script>
-
