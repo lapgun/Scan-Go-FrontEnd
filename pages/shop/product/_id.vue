@@ -1,6 +1,6 @@
 <template>
   <div>
-    <shopHeader></shopHeader>
+    <shopHeader @products="products=$event"></shopHeader>
     <section>
       <div class="container">
         <div class="row">
@@ -95,6 +95,7 @@ export default {
           self.default_image.push(default_image);
         });
       });
+      console.log(self.default_image);
     }
   }
 };

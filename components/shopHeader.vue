@@ -196,7 +196,9 @@ export default {
         .get("/products/search?search=" + this.search)
         .then(function(res) {
           self.products = res.data.data;
-        });
+          self.$emit("products", self.products);  
+          self.$router.push('/shop/products?search='+self.search)
+          });
     },
     onSlileStart(slide) {
       this.sliding = true
