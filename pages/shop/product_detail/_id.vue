@@ -15,14 +15,14 @@
                   <b-carousel
                     id="carousel"
                     v-model="slide"
-                    :indicator="1110"
+                    :indicator="4000"
                     img-width="320"
                     img-height="320"
                     controls
                     @sliding-start="onSlileStart"
                     @sliding-end="onSlileEnd"
                   >
-                    <div v-for="(picture,index) in pictures" :key="index" :data-index="'#'+index">
+                    <div v-for="(picture,index) in pictures" :key="index">
                       <b-carousel-slide :img-src="`/${picture ? picture : ''}`"></b-carousel-slide>
                     </div>
                   </b-carousel>
@@ -32,12 +32,11 @@
                     v-for="(picture,index) in pictures"
                     :key="index"
                     style="margin-top:50px"
-                    :data-id="index"
                   >
                     <img
                       class="img_picture"
                       :src="`/${picture ? picture : ''}`"
-                      v-on:click="activateImage(index)"
+                      @click="activateImage(index)"
                     />
                   </span>
                 </div>

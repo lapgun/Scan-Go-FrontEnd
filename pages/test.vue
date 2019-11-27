@@ -25,14 +25,17 @@
                   </b-carousel>
                 </div>
                 <div class="thumbnails">
-                  <div
+                  <span
                     v-for="(image, index) in  images"
                     :key="image.id"
                     :class="['thumbnail-image', (activeImage == index) ? 'active' : '']"
                     @click="activateImage(index)"
                   >
-                    <img style="width:200px; height:150px; display:inline" :src="`/${image.slide_images ? image.slide_images.default_image : ''}`" />
-                  </div>
+                    <img
+                      style="width:200px; height:150px; display:inline"
+                      :src="`/${image.slide_images ? image.slide_images.default_image : ''}`"
+                    />
+                  </span>
                 </div>
               </div>
               <p>Card description.</p>
@@ -61,9 +64,6 @@ export default {
     };
   },
   computed: {
-    // currentImage gets called whenever activeImage changes
-    // and is the reason why we don't have to worry about the
-    // big image getting updated
     currentImage() {
       return this.images[this.activeImage].big;
     }
@@ -82,8 +82,6 @@ export default {
       }
       this.activateImage(active);
     },
-    // Go backwards on the images array
-    // or go at the last image
     onSlileStart(slide) {
       this.sliding = true;
     },

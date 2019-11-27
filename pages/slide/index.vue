@@ -95,7 +95,7 @@
                 <img style="width:100px; height:60px" :src="`/${slide.slide_images? slide.slide_images.default_image: ''}`" />
               </td>
               <td>
-                <b-button @click="$router.push('/orders/detail/'+slide.id)">Detail</b-button>
+                <b-button @click="$router.push('/slide/detail/'+slide.id)">Detail</b-button>
                 <b-button @click="handleDelete(slide.id)" variant="danger">Delete</b-button>
               </td>
             </tr>
