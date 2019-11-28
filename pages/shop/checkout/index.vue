@@ -97,7 +97,7 @@
                   <input type="number" placeholder="Số điện thoại" />
                   <input type="text" placeholder="Địa chỉ" />
                 </form>
-                <a class="btn btn-primary" @click="$router.push('shop/cart')">Trở lại</a>
+                <a class="btn btn-primary" @click="$router.push('/shop/cart')">Trở lại</a>
                 <a class="btn btn-primary" @click="handelSubmit">Thanh toán</a>
               </div>
             </div>
