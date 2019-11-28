@@ -29,7 +29,7 @@
                           alt
                         />
                       </a>
-                      <h2>{{product.price}} đ</h2>
+                      <h2>{{currency(product.price)}}</h2>
                       <p>{{product.name}}</p>
                       <a
                         @click="addToCart(product)"
@@ -92,6 +92,10 @@ export default {
     shopNav
   },
   methods: {
+    currency(x) {
+      x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
+      return x;
+    },
     handleSearch() {
       let self = this;
       this.$axios

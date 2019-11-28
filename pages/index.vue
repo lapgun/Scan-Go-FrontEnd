@@ -21,8 +21,13 @@
                         @click="$router.push('/shop/product_detail/'+product.id)"
                         alt
                       />
-                      <h2>{{product.price}} đ</h2>
+                      <h2>{{currency(product.price)}}</h2>
                       <p>{{product.name}}</p>
+                      <qrcode-vue
+                        :value="'http://localhost:3000/shop/product_detail/'+product.id"
+                        size="100"
+                        level="H"
+                      ></qrcode-vue>
                       <a @click="addToCart(product)" class="btn btn-default add-to-cart">
                         <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
                       </a>
@@ -45,8 +50,13 @@
                         @click="$router.push('/shop/product_detail/'+newest.id)"
                         alt
                       />
-                      <h2>{{newest.price}} đ</h2>
+                      <h2>{{currency(newest.price)}}</h2>
                       <p>{{newest.name}}</p>
+                      <qrcode-vue
+                        :value="'http://localhost:3000/shop/product_detail/'+newest.id"
+                        size="100"
+                        level="H"
+                      ></qrcode-vue>
                       <a
                         @click="$router.push('/shop/product_detail/'+newest .id)"
                         class="btn btn-default add-to-cart"
@@ -70,19 +80,20 @@ const Cookies = process.client ? require("js-cookie") : undefined;
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
-
+import QrcodeVue from "qrcode.vue";
 export default {
   data() {
     return {
       products: [],
       cart: [],
-      newests:[]
+      newests: []
     };
   },
   components: {
     shopHeader,
     shopFooter,
-    shopNav
+    shopNav,
+    QrcodeVue
   },
   created() {
     if (process.browser) {
@@ -100,6 +111,10 @@ export default {
     this.getById();
   },
   methods: {
+    currency(x) {
+      x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
+      return x;
+    },
     getByOrderTime: function() {
       let self = this;
       this.$axios.get("/products/order_time").then(function(res) {

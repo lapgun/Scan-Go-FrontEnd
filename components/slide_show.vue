@@ -3,7 +3,7 @@
   <b-carousel
     id="carousel-1"
     v-model="slide"
-    :interval="4000"
+    :interval="1000"
     controls
     indicators
     background="#ababab"

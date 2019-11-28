@@ -41,7 +41,7 @@
                   </h4>
                 </td>
                 <td class="cart_price">
-                  <p>{{item.price}} đ</p>
+                  <p>{{currency(item.price)}}</p>
                 </td>
                 <td class="cart_quantity">
                   <div class="cart_quantity_button">
@@ -49,7 +49,7 @@
                   </div>
                 </td>
                 <td class="cart_total">
-                  <p class="cart_total_price">{{item.price * item.order_time}} đ</p>
+                  <p class="cart_total_price">{{currency(item.price * item.order_time)}}</p>
                 </td>
               </tr>
               <tr>
@@ -58,7 +58,7 @@
                   <table class="table table-condensed total-result">
                     <tr>
                       <td>Giá tiền</td>
-                      <td>{{total}} đ</td>
+                      <td>{{currency(total)}}</td>
                     </tr>
                     <tr>
                       <td>VAT</td>
@@ -71,7 +71,7 @@
                     <tr>
                       <td>Tổng giá tiền</td>
                       <td>
-                        <span>{{total + total * 10/100}} đ</span>
+                        <span>{{currency(total + total * 10/100)}}</span>
                       </td>
                     </tr>
                   </table>
@@ -143,6 +143,10 @@ export default {
     this.getUsers();
   },
   methods: {
+    currency(x) {
+      x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
+      return x;
+    },
     getUsers() {
       let self = this;
       this.$axios.get("/users").then(function(res) {
