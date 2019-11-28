@@ -158,6 +158,7 @@ export default {
     },
     setLocalStorage() {
       localStorage.setItem("cart", JSON.stringify(this.cart));
+      console.log('aaa',this.cart);
     },
     removeItem(index) {
       this.cart.splice(index, 1);

@@ -118,7 +118,11 @@ export default {
       } else this.$store.dispatch("addToCart", product);
       this.$store.dispatch("setCart", this.cart);
       localStorage.setItem("cart", JSON.stringify(this.cart));
-    }
+    },
+    currency(x) {
+      x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
+      return x;
+    },
   }
 };
 </script>

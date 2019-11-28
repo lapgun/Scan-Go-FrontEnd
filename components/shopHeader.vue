@@ -41,7 +41,8 @@
                             <i class="fas fa-sign-out-alt">&nbsp;Đăng xuất</i>
                           </a>
                           <a
-                            class="dropdown-item" href="#"
+                            class="dropdown-item"
+                            href="#"
                             @click="$router.push('/shop/user/detail/'+user_id)"
                           >Tài khoản</a>
                         </div>
@@ -93,10 +94,60 @@
                 <input v-model="search" @change="handleSearch" placeholder="Search" />
               </div>
               <div style="display:inline-block; font-size:25px;" v-if="user_id">
-                <a @click="$router.push('/shop/cart')">
-                  <i class="fas fa-shopping-cart"></i>
-                  {{cart.length}}
-                </a>
+                <div>
+                  <b-dropdown>
+                    <template v-slot:button-content>
+                      <a>
+                        <i class="fas fa-shopping-cart"></i>
+                        {{cart.length}}
+                      </a>
+                    </template>
+                    <b-dropdown-item v-if="cart.length == 0">
+                      <template>
+                        <div
+                          class="text-md-center checkout-preview-dropdown__empty p-7"
+                          style="min-width: 250px; height:100px"
+                        >
+                          <span
+                            class="d-block font-weight-bold"
+                            style="margin-top:80px"
+                          >Chưa có sản phẩm</span>
+                          <span class="btn btn-icon btn-soft-primary rounded-circle mb-3">
+                            <span class="fas fa-shopping-basket btn-icon__inner"></span>
+                          </span>
+                        </div>
+                      </template>
+                    </b-dropdown-item>
+                    <b-dropdown-item v-else>
+                      <template>
+                        <div>
+                          <span style="font-size:20px;margin-right:50px">Giỏ hàng của bạn</span>
+                          <span>{{cart.length}} sản phẩm</span>
+                        </div>
+                        <div style="border: 1px solid #c1bbbb ; margin-top:15px"></div>
+                        <div style="margin-top:15px" v-for="(item,index) in cart" :key="index">
+                          <img
+                            style="width:70px; height:70px"
+                            :src="`/${item.images? item.images.default_image: ''}`"
+                          />
+                          <span style="width:30px !important">{{item.name}}</span>
+                          <span>{{item.price}} đ</span>
+                        </div>
+                        <div style="border: 1px solid #c1bbbb ; margin-top:15px; margin-bottom:15px"></div>
+                        <div>
+                          <span style="font-size:20px">Tạm tính</span>
+                          <span>{{total}} đ</span>
+                        </div>
+                        <div style="font-size:12px; margin-top:10px">(Phí vận chuyển và thuế sẽ được tính lúc thanh toán.) </div>
+                        <div style="border: 1px solid #c1bbbb ; margin-top:15px; margin-bottom:15px"></div>
+                        <div>
+                          <a style="border: 1px solid #c1bbbb ; padding:10px 15px; width:100px; height:40px" href="#" @click="$router.push('/shop/cart')">Đến giỏ hàng</a>
+                          <a style="border: 1px solid #c1bbbb ;padding:10px 15px; width:100px; height:40px; float:right" href="#" @click="$router.push('/shop/checkout')">Mua ngay</a>
+                        </div>
+                      </template>
+                    </b-dropdown-item>
+                  </b-dropdown>
+                </div>
               </div>
             </div>
           </div>
@@ -136,6 +187,18 @@
 <script>
 const Cookies = process.client ? require("js-cookie") : undefined;
 export default {
+  created() {
+    if (process.browser) {
+      if (localStorage.getItem("cart")) {
+        let cart = JSON.parse(localStorage.getItem("cart"));
+        return (this.cart = cart);
+      } else {
+        let cart = this.$store.getters.cart;
+        return (this.cart = cart);
+        console.log(this.cart);
+      }
+    }
+  },
   mounted() {
     if (this.$store.state.token) {
       this.getUsers();
@@ -143,6 +206,7 @@ export default {
       this.$router.push("/");
     }
     this.getSlides();
+     this.totalPrice();
   },
   data() {
     return {
@@ -156,7 +220,8 @@ export default {
       infinite: true,
       slidesToShow: 2,
       slidesToScroll: 2,
-      slides: []
+      slides: [],
+      total: 0,
     };
   },
   created() {
@@ -203,6 +268,13 @@ export default {
           self.$emit("products", self.products);
           self.$router.push("/shop/products?search=" + self.search);
         });
+    },
+    totalPrice() {
+      let total = 0;
+      for (let i = 0; i < this.cart.length; i++) {
+        total += this.cart[i].price * this.cart[i].order_time;
+        this.total = total;
+      }
     },
     onSlileStart(slide) {
       this.sliding = true;

@@ -104,7 +104,6 @@ export default {
           self.default_image.push(default_image);
         });
       });
-      console.log(self.default_image);
     },
     addToCart(product) {
       let pro = this.cart.find(element => element.id == product.id);

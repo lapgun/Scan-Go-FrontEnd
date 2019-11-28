@@ -6,6 +6,13 @@
 <script>
 import QrcodeVue from "qrcode.vue";
 export default {
+  mounted() {
+    if (this.$store.state.token) {
+      this.getUsers();
+    } else {
+      this.$router.push("/");
+    }
+  },
   data() {
     return {
       value: "http://localhost:3000/products/details/9",

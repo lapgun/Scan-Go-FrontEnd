@@ -40,6 +40,10 @@ export default {
             {
                 src: "https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js",
                 type: "text/javascript"
+            },
+            {
+                src: "~/assets/js/qrcode.js",
+                type: "text/javascript"
             }
         ]
     },
@@ -59,6 +63,7 @@ export default {
         "~/assets/css/main.css",
         "~/assets/css/price-range.css",
         "~/assets/css/responsive.css",
+        "~/assets/css/qrcode.css"
     ],
     /*
      ** Plugins to load before mounting the App
