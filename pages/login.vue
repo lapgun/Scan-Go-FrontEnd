@@ -90,8 +90,6 @@ export default {
             alert(res.data.message);
           } else {
             alert(res.data.message);
-            console.log(res);
-            console.log(res.data.data.role);
             self.$store.commit("setToken", res.data.token);
             Cookie.set("token", res.data.token);
             if (res.data.data.role == true) {

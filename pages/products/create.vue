@@ -21,14 +21,12 @@
     <vue-ckeditor
       type="classic"
       v-model="form.description"
-      :editors="editors"
       class="form-control"
       placeholder="Enter your product description"
     ></vue-ckeditor>Detail:
     <vue-ckeditor
       type="classic"
       v-model="form.detail"
-      :editors="editors"
       class="form-control"
       placeholder="Enter your product detail"
     ></vue-ckeditor>Order time:

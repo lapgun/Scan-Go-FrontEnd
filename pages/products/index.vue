@@ -158,7 +158,7 @@ export default {
   methods: {
     test(x) {
       x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
-      return x
+      return x;
     },
     getTasks() {
       let self = this;
@@ -178,6 +178,7 @@ export default {
     },
     handleLogout: function() {
       Cookie.remove("token");
+      localStorage.removeItem("cart");
       this.$store.commit("setToken", null);
       this.$router.push("/login");
     },
@@ -199,7 +200,6 @@ img {
 table {
   margin-top: 10px;
 }
-
 .search {
   width: 50%;
   display: flex;

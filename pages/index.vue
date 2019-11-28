@@ -10,52 +10,36 @@
           <div class="col-sm-9 padding-right">
             <div class="features_items">
               <!--features_items-->
-              <h2 style="margin-top:3px" class="title text-center">Sản phẩm bán chạy nhất</h2>
-              <div class="col-sm-4" v-for="(product,index) in products" :key="index">
-                <div class="product-image-wrapper">
-                  <div class="single-products">
-                    <div class="productinfo text-center">
-                      <img
-                        style="width:250px; height:250px"
-                        :src="`/${product.images ? product.images.default_image : ''}`"
-                        @click="$router.push('/shop/product_detail/'+product.id)"
-                        alt
-                      />
-                      <h2>{{product.price}} đ</h2>
-                      <p>{{product.name}}</p>
-                      <a
-                        @click="$router.push('/shop/product_detail/'+product.id)"
-                        class="btn btn-default add-to-cart"
-                      >
-                        <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!--features_items-->
-            <div class="features_items">
-              <!--features_items-->
-              <h2 style="margin-top:3px" class="title text-center">Sản phẩm mới nhất</h2>
-              <div class="col-sm-4" v-for="(newest,index) in newests" :key="index">
-                <div class="product-image-wrapper">
-                  <div class="single-products">
-                    <div class="productinfo text-center">
-                      <img
-                        style="width:250px; height:250px"
-                        :src="`/${newest.images ? newest.images.default_image : ''}`"
-                        @click="$router.push('/shop/product_detail/'+newest.id)"
-                        alt
-                      />
-                      <h2>{{newest.price}} đ</h2>
-                      <p>{{newest.name}}</p>
-                      <a
-                        @click="$router.push('/shop/product_detail/'+newest .id)"
-                        class="btn btn-default add-to-cart"
-                      >
-                        <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
-                      </a>
+              <h2 class="title text-center">Features Items</h2>
+              <div v-for="(product,index) in products" :key="index">
+                <div class="col-sm-4">
+                  <div class="product-image-wrapper">
+                    <div class="single-products">
+                      <div class="productinfo text-center">
+                        <img
+                          style="width:250px; height:250px"
+                          :src="`/${product.images? product.images.default_image: ''}`"
+                          alt
+                        />
+                        <h2>${{product.price}}</h2>
+                        <p>{{product.name}}</p>
+                        <a href="#" class="btn btn-default add-to-cart">
+                          <i class="fa fa-shopping-cart"></i>Add to cart
+                        </a>
+                      </div>
+                      <div class="product-overlay">
+                        <div class="overlay-content">
+                          <h2>${{product.price}}</h2>
+                          <p>{{product.name}}</p>
+                          <a
+                            href="#"
+                            class="btn btn-default add-to-cart"
+                            @click="addToCart(product)"
+                          >
+                            <i class="fa fa-shopping-cart"></i>Add to cart
+                          </a>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -72,16 +56,12 @@
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
+
 export default {
-  mounted: function() {
-    this.getByOrderTime();
-    this.getById();
-    this.getUser();
-  },
-  data: function() {
+  data() {
     return {
       products: [],
-      newests: [],
+      cart: []
     };
   },
   components: {
@@ -89,25 +69,43 @@ export default {
     shopFooter,
     shopNav
   },
+  created() {
+    if (process.browser) {
+      if (localStorage.getItem("cart")) {
+        let cart = JSON.parse(localStorage.getItem("cart"));
+        return (this.cart = cart);
+      } else {
+        let cart = this.$store.getters.cart;
+        return (this.cart = cart);
+      }
+    }
+  },
+  mounted() {
+    this.getProducts();
+  },
   methods: {
-    getByOrderTime: function() {
+    getProducts() {
       let self = this;
-      this.$axios.get("/products/order_time").then(function(res) {
+      this.$axios.get("/products").then(function(res) {
         self.products = res.data.data;
       });
     },
-    getById: function() {
-      let self = this;
-      this.$axios.get("/products/newest").then(function(res) {
-        self.newests = res.data.data;
-      });
-    },
-    getUser(){
-      this.$axios.get("/get_user").then(function(res){
-        console.log(res)
-      })
+    addToCart(product) {
+      let pro = this.cart.find(element => element.id == product.id);
+      if (pro) {
+        alert("Đã tồn tại sản phẩm trong giỏ hàng");
+      } else this.$store.dispatch("addToCart", product);
+      this.$store.dispatch("setCart", this.cart);
+      localStorage.setItem("cart", JSON.stringify(this.cart));
     }
   }
 };
 </script>
+<style scoped>
+#default_image {
+  width: 248px;
+  height: 270px;
+  object-fit: cover;
+}
+</style>
 

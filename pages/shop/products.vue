@@ -91,7 +91,7 @@ export default {
     },
     getProducts: function() {
       let self = this;
-      this.$axios.post("/products", this.order_by).then(function(res) {
+      this.$axios.post("/products/get", this.order_by).then(function(res) {
         console.log(res);
         self.products = res.data.data;
       });
