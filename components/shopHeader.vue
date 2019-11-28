@@ -17,14 +17,8 @@
                 <ul class="nav navbar-nav">
                   <li>
                     <a
-                      @click="$router.push('/user/detail/'+user_id)"
-                      style="margin-left:-220px"
-                    >Account</a>
-                  </li>
-                  <li>
-                    <a
                       @click="$router.push('/shop/checkout')"
-                      style="margin-left: -150px; margin-top:-20px"
+                      style="margin-left: -150px; margin-top:10px"
                     >Thanh toán</a>
                   </li>
                   <template v-if="user_id">
@@ -46,6 +40,10 @@
                           <a class="dropdown-item" @click="handelLogout">
                             <i class="fas fa-sign-out-alt">&nbsp;Đăng xuất</i>
                           </a>
+                          <a
+                            class="dropdown-item" href="#"
+                            @click="$router.push('/shop/user/detail/'+user_id)"
+                          >Tài khoản</a>
                         </div>
                       </a>
                     </li>
