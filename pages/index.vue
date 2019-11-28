@@ -21,8 +21,13 @@
                         @click="$router.push('/shop/product_detail/'+product.id)"
                         alt
                       />
-                      <h2>{{product.price}} đ</h2>
+                      <h2>{{currency(product.price)}}</h2>
                       <p>{{product.name}}</p>
+                      <qrcode-vue
+                        :value="'http://localhost:3000/shop/product_detail/'+product.id"
+                        size="100"
+                        level="H"
+                      ></qrcode-vue>
                       <a @click="addToCart(product)" class="btn btn-default add-to-cart">
                         <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
                       </a>
@@ -45,8 +50,13 @@
                         @click="$router.push('/shop/product_detail/'+newest.id)"
                         alt
                       />
-                      <h2>{{newest.price}} đ</h2>
+                      <h2>{{currency(newest.price)}}</h2>
                       <p>{{newest.name}}</p>
+                      <qrcode-vue
+                        :value="'http://localhost:3000/shop/product_detail/'+newest.id"
+                        size="100"
+                        level="H"
+                      ></qrcode-vue>
                       <a
                         @click="$router.push('/shop/product_detail/'+newest .id)"
                         class="btn btn-default add-to-cart"
@@ -66,62 +76,67 @@
   </div>
 </template>
 <script>
-    import shopHeader from "~/components/shopHeader.vue";
-    import shopFooter from "~/components/shopFooter.vue";
-    import shopNav from "~/components/shopNav.vue";
-    export default {
-        data() {
-            return {
-                products: [],
-                cart: [],
-                newests: []
-            }
-        },
-        components: {
-            shopHeader,
-            shopFooter,
-            shopNav
-        },
-        created() {
-            if (process.browser) {
-                if (localStorage.getItem("cart")) {
-                    let cart = JSON.parse(localStorage.getItem("cart"));
-                    return this.cart = cart;
-                } else {
-                    let cart = this.$store.getters.cart;
-                    return this.cart = cart;
-                }
-            }
-        },
-        mounted() {
-            this.getByOrderTime();
-            this.getById();
-        },
-        methods: {
-            addToCart(product) {
-                let pro = this.cart.find(element => element.id == product.id);
-                if (pro) {
-                    alert("Đã tồn tại sản phẩm trong giỏ hàng")
-                } else
-                    this.$store.dispatch('addToCart', product);
-                this.$store.dispatch('setCart', this.cart);
-                localStorage.setItem('cart', JSON.stringify(this.cart))
-            },
-            getByOrderTime: function () {
-                let self = this;
-                this.$axios.get("/products/order_time").then(function (res) {
-                    self.products = res.data.data;
-                });
-            },
-            getById: function () {
-                let self = this;
-                this.$axios.get("/products/newest").then(function (res) {
-                    self.newests = res.data.data;
-                });
-            },
-
-        }
+const Cookies = process.client ? require("js-cookie") : undefined;
+import shopHeader from "~/components/shopHeader.vue";
+import shopFooter from "~/components/shopFooter.vue";
+import shopNav from "~/components/shopNav.vue";
+import QrcodeVue from "qrcode.vue";
+export default {
+  data() {
+    return {
+      products: [],
+      cart: [],
+      newests: []
+    };
+  },
+  components: {
+    shopHeader,
+    shopFooter,
+    shopNav,
+    QrcodeVue
+  },
+  created() {
+    if (process.browser) {
+      if (localStorage.getItem("cart")) {
+        let cart = JSON.parse(localStorage.getItem("cart"));
+        return (this.cart = cart);
+      } else {
+        let cart = this.$store.getters.cart;
+        return (this.cart = cart);
+      }
     }
+  },
+  mounted() {
+    this.getByOrderTime();
+    this.getById();
+  },
+  methods: {
+    currency(x) {
+      x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
+      return x;
+    },
+    getByOrderTime: function() {
+      let self = this;
+      this.$axios.get("/products/order_time").then(function(res) {
+        self.products = res.data.data;
+      });
+    },
+    getById: function() {
+      let self = this;
+      this.$axios.get("/products/newest").then(function(res) {
+        self.newests = res.data.data;
+      });
+    },
+    addToCart(product) {
+      let pro = this.cart.find(element => element.id == product.id);
+      if (pro) {
+        alert("Đã tồn tại sản phẩm trong giỏ hàng");
+      } else this.$store.dispatch("addToCart", product);
+      this.$store.dispatch("setCart", this.cart);
+      localStorage.setItem("cart", JSON.stringify(this.cart));
+    }
+  }
+};
 </script>
 <style scoped>
   #default_image {

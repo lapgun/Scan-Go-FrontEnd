@@ -44,7 +44,7 @@
       <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar" style="margin-top:-30px">
         <div class="profile-sidebar">
           <div class="profile-userpic">
-            <img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt />
+            <img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt/>
           </div>
           <div class="profile-usertitle">
             <div class="profile-usertitle-name">Admin</div>
@@ -91,26 +91,26 @@
         <h3>Orders Processing</h3>
         <table class="table table-bordered">
           <thead>
-            <tr>
-              <th>STT</th>
-              <th>Customer_id</th>
-              <th>Order_status</th>
-              <th>Total_price</th>
-              <th>Action</th>
-            </tr>
+          <tr>
+            <th>STT</th>
+            <th>Customer_id</th>
+            <th>Order_status</th>
+            <th>Total_price</th>
+            <th>Action</th>
+          </tr>
           </thead>
           <tbody>
-            <tr v-for="(order , index) in orders" :key="index">
-              <td>{{index+1}}</td>
-              <td>{{order.customerId}}</td>
-              <td>{{order.order_status}}</td>
-              <td>{{order.total_price}}</td>
-              <td>
-                <b-button variant="success">Confirm</b-button>
-                <b-button @click="$router.push('/orders/detail/'+ order.id)">Detail</b-button>
-                <b-button @click="handleDelete(order.id)" variant="danger">Delete</b-button>
-              </td>
-            </tr>
+          <tr v-for="(order , index) in orders" :key="index">
+            <td>{{index+1}}</td>
+            <td>{{order.customerId}}</td>
+            <td>{{order.order_status}}</td>
+            <td>{{order.total_price}}</td>
+            <td>
+              <b-button variant="success" @click="handelConfirm(order.id)">Confirm</b-button>
+              <b-button @click="$router.push('/orders/detail/'+ order.id)">Detail</b-button>
+              <b-button @click="handleDelete(order.id)" variant="danger">Delete</b-button>
+            </td>
+          </tr>
           </tbody>
         </table>
         <b-pagination
@@ -125,73 +125,76 @@
   </div>
 </template>
 <script>
-export default {
-  mounted: function() {
-    this.getOrders();
-    this.getAdmins();
-  },
-  data: function() {
-    return {
-      orders: {
-        index: "",
-        customerId: "",
-        order_status: "",
-        total_price: ""
-      },
-      search: "",
-      totalResult: 0,
-      pagination: {
-        currentPage: 1,
-        perPage: 10
-      },
-      user_id: "",
-      users: []
+    export default {
+        mounted: function () {
+            this.getOrders();
+            this.getAdmins();
+        },
+        data: function () {
+            return {
+                orders: {
+                    index: "",
+                    customerId: "",
+                    order_status: "",
+                    total_price: ""
+                },
+                search: "",
+                totalResult: 0,
+                pagination: {
+                    currentPage: 1,
+                    perPage: 10
+                },
+                user_id: "",
+                users: []
+            };
+        },
+        methods: {
+            getOrders: function () {
+                let self = this;
+                this.$axios
+                    .get(
+                        "/orders?search=" +
+                        this.search +
+                        "&currentPage=" +
+                        this.pagination.currentPage +
+                        "&perPage=" +
+                        this.pagination.perPage
+                    )
+                    .then(function (res) {
+                        self.orders = res.data.data;
+                        self.pagination = res.data.pagination;
+                    });
+            },
+            handleDelete: function (id) {
+                let self = this;
+                this.$axios.delete("/orders/" + id).then(function (res) {
+                    console.log(res);
+                    self.getOrders();
+                });
+            },
+            handleSearch: function () {
+                this.getOrders();
+            },
+            handleChangePage: function (page) {
+                this.pagination.currentPage = page;
+                this.getOrders();
+            },
+            getAdmins: function () {
+                let self = this;
+                this.$axios.get("/users").then(function (res) {
+                    console.log(res);
+                    self.user_id = res.data.decoded.user_id;
+                    self.users = res.data.data;
+                });
+            },
+            handelConfirm(id){
+
+            },
+            handleLogout: function () {
+                Cookie.remove("token");
+                this.$store.commit("setToken", null);
+                this.$router.push("/login");
+            }
+        }
     };
-  },
-  methods: {
-    getOrders: function() {
-      let self = this;
-      this.$axios
-        .get(
-          "/orders?search=" +
-            this.search +
-            "&currentPage=" +
-            this.pagination.currentPage +
-            "&perPage=" +
-            this.pagination.perPage
-        )
-        .then(function(res) {
-          self.orders = res.data.data;
-          self.pagination = res.data.pagination;
-        });
-    },
-    handleDelete: function(id) {
-      let self = this;
-      this.$axios.delete("/orders/" + id).then(function(res) {
-        console.log(res);
-        self.getOrders();
-      });
-    },
-    handleSearch: function() {
-      this.getOrders();
-    },
-    handleChangePage: function(page) {
-      this.pagination.currentPage = page;
-      this.getOrders();
-    },
-    getAdmins: function() {
-      let self = this;
-      this.$axios.get("/users").then(function(res) {
-        console.log(res);
-        self.user_id = res.data.decoded.user_id;
-        self.users = res.data.data;
-      });
-    },
-    handleLogout: function() {
-      Cookie.remove("token");
-      this.$store.commit("setToken", null);
-      this.$router.push("/login");
-    }
-  }
-};
 </script>

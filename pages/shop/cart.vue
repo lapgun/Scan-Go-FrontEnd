@@ -19,8 +19,8 @@
                 <tr class="cart_menu">
                   <td class="image">Sản phẩm</td>
                   <td class="description">Tên</td>
-                  <td class="price">Số lượng</td>
-                  <td class="quantity">Tổng tiền</td>
+                  <td class="quantity">Số lượng</td>
+                  <td class="price">Giá tiền</td>
                   <td class="total">Toàn bộ</td>
                   <td></td>
                 </tr>
@@ -49,18 +49,15 @@
                         <template v-else>
                           <a class="cart_quantity_down btn btn-success">-</a>
                         </template>
-                        <div
-                          class="cart_quantity_input"
-                          type="text"
-                          autocomplete="off"
-                          size="2"
-                        >{{item.order_time}}
+                        <div class="cart_quantity_input" type="text" autocomplete="off" size="2">
+                          {{item.order_time}}
                         </div>
                         <a class="cart_quantity_up btn btn-success" @click="increment(item.id)">+</a>
                       </div>
                     </td>
+                    <td>{{currency(item.price)}}</td>
                     <td class="cart_total">
-                      <p class="cart_total_price">{{item.price * item.order_time}} đ</p>
+                      <p class="cart_total_price">{{currency(item.price * item.order_time)}}</p>
                     </td>
                     <td class="cart_delete">
                       <a class="cart_quantity_delete" @click="removeItem(index)">
@@ -88,7 +85,7 @@
                   <ul>
                     <li>
                       Giá tiền
-                      <span>{{total}} đ</span>
+                      <span>{{currency(total)}}</span>
                     </li>
                     <li>
                       VAT
@@ -100,7 +97,7 @@
                     </li>
                     <li>
                       Tổng tiền
-                      <span>{{total + total * 10/100}} đ</span>
+                      <span>{{currency(total + total * 10/100)}}</span>
                     </li>
                   </ul>
                   <a class="btn btn-default update" @click="$router.push('/')">Trở lại</a>
@@ -123,55 +120,62 @@
   </div>
 </template>
 <script>
+    const Cookies = process.client ? require("js-cookie") : undefined;
     import shopHeader from "~/components/shopHeader.vue";
     import shopFooter from "~/components/shopFooter.vue";
 
     export default {
-        data() {
-            return {
-                cart: [],
-                total: 0
-            }
-        },
         created() {
             if (process.browser) {
                 if (localStorage.getItem("cart")) {
                     let cart = JSON.parse(localStorage.getItem("cart"));
-                    return this.cart = cart;
+                    return (this.cart = cart);
                 } else {
                     let cart = this.$store.getters.cart;
-                    return this.cart = cart;
+                    return (this.cart = cart);
+                    console.log(this.cart);
                 }
             }
+        },
+        data() {
+            return {
+                cart: [],
+                total: 0
+            };
         },
         components: {
             shopHeader,
             shopFooter
         },
         mounted() {
-            this.totalPrice()
+            this.totalPrice();
+            setTimeout(() => {
+                this.quantity();
+            }, 1000);
         },
         methods: {
+            currency(x) {
+                x = x.toLocaleString("currency", {style: "currency", currency: "VND"});
+                return x;
+            },
             setLocalStorage() {
-                localStorage.setItem("cart", JSON.stringify(this.cart))
+                localStorage.setItem("cart", JSON.stringify(this.cart));
             },
             removeItem(index) {
                 this.cart.splice(index, 1);
-                this.setLocalStorage();
                 this.totalPrice();
+                this.setLocalStorage();
             },
             increment(id) {
                 for (let i = 0; i < this.cart.length; i++) {
-                    if (this.cart[i].id === id)
-                        this.cart[i].order_time++
+                    if (this.cart[i].id === id) this.cart[i].order_time++;
                 }
                 this.totalPrice();
                 this.setLocalStorage();
             },
             decrement(id) {
                 for (let i = 0; i < this.cart.length; i++) {
-                    if (this.cart[i].id === id)
-                        this.cart[i].order_time--
+                    if (this.cart[i].id === id) this.cart[i].order_time--;
                 }
                 this.totalPrice();
                 this.setLocalStorage();
@@ -180,8 +184,13 @@
                 let total = 0;
                 for (let i = 0; i < this.cart.length; i++) {
                     total += this.cart[i].price * this.cart[i].order_time;
-                    this.total = total
+                    this.total = total;
                 }
+            },
+            quantity() {
+                this.cart.forEach(element => {
+                    element.order_time = 1;
+                });
             }
         }
     };
@@ -200,14 +209,5 @@
   .cart_quantity_input {
     margin-left: 15px;
     margin-right: 15px;
-  }
-  tbody tr td {
-    text-align: center;
-    padding-left: 50px;
-  }
-
-  thead tr td {
-    text-align: center;
-    padding-left: 50px;
   }
 </style>

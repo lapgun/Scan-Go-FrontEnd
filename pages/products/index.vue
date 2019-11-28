@@ -77,12 +77,19 @@
       </div>
       <div class="col-sm-8 col-lg-10 sidebar">
         <b-button variant="success" @click="$router.push('/products/create')">Create new task</b-button>
+        <div>
+          <label>
+            Sắp xếp theo
+            <b-form-select v-model="order_by" :options="order" @change="getTasks"></b-form-select>
+          </label>
+        </div>
         <table id="my-table" class="table table-bordered">
           <thead>
           <tr>
             <th>Number</th>
             <th>name</th>
             <th>Categories Id</th>
+            <th>Price</th>
             <th>Image</th>
             <th>Detail</th>
             <th>Description</th>
@@ -94,6 +101,7 @@
             <td>{{index+1}}//{{task.id}}</td>
             <td>{{task.name}}</td>
             <td>{{task.categoriesId}}</td>
+            <td>{{currency(task.price)}}</td>
             <td>
               <img
                 style="width:50px; height:50px"
@@ -136,12 +144,28 @@
             return {
                 tasks: [],
                 search: "",
+                user_id: "",
+                users: [],
+                order_by: ["id", "ASC"],
+                order: [
+                    {value: ["name", "ASC"], text: "Tên từ A-Z"},
+                    {value: ["name", "DESC"], text: "Tên từ Z-A"},
+                    {value: ["price", "ASC"], text: "Giá tiền tăng dần"},
+                    {value: ["price", "DESC"], text: "Giá tiền giảm dần"},
+                    {value: ["id", "DESC"], text: "Mới nhất"},
+                    {value: ["id", "ASC"], text: "Cũ nhất"}
+                ]
             };
         },
         methods: {
+            currency(x) {
+                x = x.toLocaleString("currency", {style: "currency", currency: "VND"});
+                return x;
+            },
             getTasks: function () {
                 let self = this;
                 this.$axios.get("/products").then(function (res) {
+                    console;
                     self.tasks = res.data.data;
                     console.log(res.data.data);
                 });
@@ -162,7 +186,7 @@
             },
             handleLogout: function () {
                 Cookie.remove("token");
-                localStorage.removeItem('cart');
+                localStorage.removeItem("cart");
                 this.$store.commit("setToken", null);
                 this.$router.push("/login");
             },

@@ -79,7 +79,7 @@ export default {
       this.$axios.put("/users/" + this.form.id, this.form).then(function(res) {
         console.log(res);
       });
-      self.$router.push("/user/home");
+      // self.$router.push("/user/home");
     }
   }
 };

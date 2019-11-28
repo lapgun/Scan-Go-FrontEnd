@@ -44,10 +44,10 @@
                   <h2>{{product.name}}</h2>
                   <p>Web ID: 1089772</p>
                   <img src="~assets/images/product-details/rating.png" alt />
-                  <h3>{{product.price}} đ</h3>
+                  <h3>{{product.price}}</h3>
                   <div>
                     <h4>Số lượng:</h4>
-                    <input type="text" value="3" />
+                    <input type="number" value="1 " />
                     <button type="button" @click="addToCart(product)" class="btn btn-fefault cart">
                       <i class="fa fa-shopping-cart"></i>
                       Thêm vào giỏ hàng
@@ -78,6 +78,7 @@
                 </div>
                 <!--/product-information-->
               </div>
+              
             </div>
             <h2 style="margin-top:10px" class="title text-center">Mô tả sản phẩm</h2>
             <div style="font-size:16px" v-html="product.description"></div>
@@ -97,7 +98,7 @@
                       @click="$router.push('/shop/product_detail/'+product.id)"
                       alt
                     />
-                    <h2>{{product.price}} đ</h2>
+                    <h3>{{product.price}}</h3>
                     <p>{{product.name}}</p>
                     <a @click="addToCart(product)" class="btn btn-default add-to-cart">
                       <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
@@ -105,7 +106,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> 
           </div>
         </div>
       </div>
@@ -152,6 +153,10 @@ export default {
     shopNav
   },
   methods: {
+    currency(x) {
+      x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
+      return x;
+    },
     getProducts() {
       let self = this;
       this.$axios.get("/products/" + this.$route.params.id).then(function(res) {
