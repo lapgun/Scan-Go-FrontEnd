@@ -105,15 +105,15 @@
   </div>
 </template>
 <script>
-    const Cookies = process.client ? require("js-cookie") : undefined;
+
     import shopHeader from "~/components/shopHeader.vue";
     import shopFooter from "~/components/shopFooter.vue";
 
     export default {
         created() {
             if (process.browser) {
-                if (Cookies.get("cart")) {
-                    let cart = JSON.parse(Cookies.get("cart"));
+                if (localStorage.getItem("cart")) {
+                    let cart = JSON.parse(localStorage.getItem("cart"));
                     return this.cart = cart;
                 } else {
                     let cart = this.$store.getters.cart;
@@ -163,7 +163,7 @@
                     });
                 alert("da gui yeu cau mua hang");
                 self.$router.push('/');
-                Cookies.remove("cart");
+                localStorage.removeItem('cart');
                 self.$store.commit("setCart", []);
             }
         }

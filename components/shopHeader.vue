@@ -212,8 +212,8 @@
         },
         created() {
             if (process.browser) {
-                if (Cookies.get("cart")) {
-                    let cart = JSON.parse(Cookies.get("cart"));
+                if (localStorage.getItem("cart")) {
+                    let cart = JSON.parse(localStorage.getItem("cart"));
                     return this.cart = cart;
                 } else {
                     let cart =  this.$store.getters.cart;
@@ -241,7 +241,7 @@
             },
             handelLogout() {
                 Cookies.remove("token");
-                Cookies.remove("cart");
+                localStorage.removeItem('cart');
                 this.$store.commit("setToken", null);
                 this.$store.commit("setCart", []);
                 this.$router.push("/login");

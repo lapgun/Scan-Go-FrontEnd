@@ -407,7 +407,6 @@
   </div>
 </template>
 <script>
-    const Cookies = process.client ? require("js-cookie") : undefined;
     import shopHeader from "~/components/shopHeader.vue";
     import shopFooter from "~/components/shopFooter.vue";
     import shopNav from "~/components/shopNav.vue";
@@ -426,8 +425,8 @@
         },
         created() {
             if (process.browser) {
-                if (Cookies.get("cart")) {
-                    let cart = JSON.parse(Cookies.get("cart"));
+                if (localStorage.getItem("cart")) {
+                    let cart = JSON.parse(localStorage.getItem("cart"));
                     return this.cart = cart;
                 } else {
                     let cart = this.$store.getters.cart;
@@ -453,7 +452,7 @@
                 } else
                     this.$store.dispatch('addToCart', product);
                     this.$store.dispatch('setCart', this.cart);
-                     Cookies.set('cart', this.cart)
+                     localStorage.setItem('cart',  JSON.stringify(this.cart))
             }
         }
     };

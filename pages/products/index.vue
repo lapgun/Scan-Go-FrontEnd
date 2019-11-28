@@ -73,7 +73,7 @@
         </ul>
       </div>
       <div class="col-sm-8 col-lg-10 sidebar">
-        <b-button variant="success" @click="$router.push('/categories/create')">Create new task</b-button>
+        <b-button variant="success" @click="$router.push('/products/create')">Create new task</b-button>
         <table id="my-table" class="table table-bordered">
           <thead>
           <tr>
@@ -124,6 +124,7 @@
   </div>
 </template>
 <script>
+    const Cookie = process.client ? require("js-cookie") : undefined;
     export default {
         mounted: function () {
             this.getTasks();
@@ -138,7 +139,6 @@
             getTasks: function () {
                 let self = this;
                 this.$axios.get("/products").then(function (res) {
-                    console
                     self.tasks = res.data.data;
                     console.log(res.data.data);
                 });
@@ -159,6 +159,7 @@
             },
             handleLogout: function () {
                 Cookie.remove("token");
+                localStorage.removeItem('cart');
                 this.$store.commit("setToken", null);
                 this.$router.push("/login");
             },

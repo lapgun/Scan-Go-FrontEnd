@@ -105,10 +105,8 @@
   </div>
 </template>
 <script>
-    const Cookies = process.client ? require("js-cookie") : undefined;
     import shopHeader from "~/components/shopHeader.vue";
     import shopFooter from "~/components/shopFooter.vue";
-
     export default {
         data() {
             return {
@@ -118,8 +116,8 @@
         },
         created() {
             if (process.browser) {
-                if (Cookies.get("cart")) {
-                    let cart = JSON.parse(Cookies.get("cart"));
+                if (localStorage.getItem("cart")) {
+                    let cart = JSON.parse(localStorage.getItem("cart"));
                     return this.cart = cart;
                 } else {
                     let cart = this.$store.getters.cart;
@@ -135,12 +133,12 @@
           this.totalPrice()
         },
         methods: {
-            setCookies() {
-                Cookies.set("cart", this.cart)
+            setLocalStorage() {
+                localStorage.setItem("cart", JSON.stringify(this.cart))
             },
             removeItem(index) {
                 this.cart.splice(index, 1);
-                this.setCookies();
+                this.setLocalStorage();
                 this.totalPrice();
             },
             increment(id) {
@@ -149,8 +147,7 @@
                         this.cart[i].order_time++
                 }
                 this.totalPrice();
-                this.setCookies();
-
+                this.setLocalStorage();
             },
             decrement(id) {
                 for (let i = 0; i < this.cart.length; i++) {
@@ -158,8 +155,7 @@
                         this.cart[i].order_time--
                 }
                 this.totalPrice();
-                this.setCookies();
-
+                this.setLocalStorage();
             },
             totalPrice() {
                 let total = 0;
