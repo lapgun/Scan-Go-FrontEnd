@@ -9,7 +9,6 @@
     />
     Select product's category in the select form below :
     <b-form-select v-model="form.categoriesId" :options="options"></b-form-select>
-    <!--    <input type="file" id="file" ref="picture" v-on:change="handleFileUpload()" />-->
     <upload_files @uploaded="imageUploaded"></upload_files>Price:
     <input
       v-model="form.price"
@@ -21,14 +20,12 @@
     <vue-ckeditor
       type="classic"
       v-model="form.description"
-      :editors="editors"
       class="form-control"
       placeholder="Enter your product description"
     ></vue-ckeditor>Detail:
     <vue-ckeditor
       type="classic"
       v-model="form.detail"
-      :editors="editors"
       class="form-control"
       placeholder="Enter your product detail"
     ></vue-ckeditor>Order time:
@@ -82,6 +79,7 @@ export default {
       });
     },
     handleSubmit() {
+      let self = this;
       this.$axios.post("/products", this.form).then(res => {
         this.$router.push("/products");
       });

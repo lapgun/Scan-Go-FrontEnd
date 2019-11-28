@@ -67,13 +67,16 @@
           <li>
             <a @click="$router.push('/orders')">Orders</a>
           </li>
+           <li>
+            <a @click="$router.push('/slide')">Slide</a>
+          </li>
           <li>
             <a @click="$router.push('/user')">Users</a>
           </li>
         </ul>
       </div>
       <div class="col-sm-8 col-lg-10 sidebar">
-        <b-button variant="success" @click="$router.push('/categories/create')">Create new task</b-button>
+        <b-button variant="success" @click="$router.push('/products/create')">Create new task</b-button>
         <table id="my-table" class="table table-bordered">
           <thead>
           <tr>
@@ -124,6 +127,7 @@
   </div>
 </template>
 <script>
+const Cookie = process.client ? require("js-cookie") : undefined;
     export default {
         mounted: function () {
             this.getTasks();
@@ -159,6 +163,7 @@
             },
             handleLogout: function () {
                 Cookie.remove("token");
+                localStorage.removeItem('cart');
                 this.$store.commit("setToken", null);
                 this.$router.push("/login");
             },

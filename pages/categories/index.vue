@@ -94,10 +94,7 @@
               <td>{{task.updatedAt}}</td>
               <td>
                 <b-button @click="$router.push('/categories/details/'+task.id)">Details</b-button>
-                <b-button
-                  variant="info"
-                  @click="$router.push('/categories/edit/'+task.id)"
-                >Update</b-button>
+                <b-button variant="info" @click="$router.push('/categories/edit/'+task.id)">Update</b-button>
                 <b-button variant="danger" @click="delTasks(task.id)">Delete</b-button>
               </td>
             </tr>
@@ -131,24 +128,13 @@ export default {
   methods: {
     getTasks() {
       let self = this;
-      this.$axios
-        .get(
-          "/categories"
-          // ?search=" +
-          //   this.search +
-          //   "&currentPage=" +
-          //   this.pagination.currentPage +
-          //   "&perPage=" +
-          //   this.pagination.perPage
-        )
-        .then(function(res) {
-          console.log(res);
-          let results = res.data.data;
-          results.forEach(function(element) {
-            self.tasks.push(element);
-          });
-          // self.pagination.totalPage = res.data.pagination.totalPage;
+      this.$axios.get("/categories").then(function(res) {
+        console.log(res);
+        let results = res.data.data;
+        results.forEach(function(element) {
+          self.tasks.push(element);
         });
+      });
     },
     handleSearch: function() {
       this.$axios
@@ -176,7 +162,7 @@ export default {
       Cookie.remove("token");
       this.$store.commit("setToken", null);
       this.$router.push("/login");
-    },
+    }
   }
 };
 </script>
