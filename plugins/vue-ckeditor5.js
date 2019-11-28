@@ -1,6 +1,6 @@
-import Vue from 'vue'
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-import VueCkeditor from 'vue-ckeditor5'
+import Vue from "vue";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import VueCkeditor from "vue-ckeditor5";
 
 const options = {
     editors: {
@@ -8,6 +8,5 @@ const options = {
     },
     name: 'ckeditor'
 }
-
 Vue.component("vue-ckeditor", VueCkeditor.component)
 Vue.use(VueCkeditor.plugin, options);

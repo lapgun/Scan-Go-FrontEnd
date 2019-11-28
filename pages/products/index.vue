@@ -68,18 +68,28 @@
             <a @click="$router.push('/orders')">Orders</a>
           </li>
           <li>
+            <a @click="$router.push('/slide')">Slide</a>
+          </li>
+          <li>
             <a @click="$router.push('/user')">Users</a>
           </li>
         </ul>
       </div>
       <div class="col-sm-8 col-lg-10 sidebar">
-        <b-button variant="success" @click="$router.push('/categories/create')">Create new task</b-button>
+        <b-button variant="success" @click="$router.push('/products/create')">Create new task</b-button>
+        <div>
+          <label>
+            Sắp xếp theo
+            <b-form-select v-model="order_by" :options="order" @change="getTasks"></b-form-select>
+          </label>
+        </div>
         <table id="my-table" class="table table-bordered">
           <thead>
             <tr>
               <th>Number</th>
               <th>name</th>
               <th>Categories Id</th>
+              <th>Price</th>
               <th>Image</th>
               <th>Detail</th>
               <th>Description</th>
@@ -91,6 +101,7 @@
               <td>{{index+1}}//{{task.id}}</td>
               <td>{{task.name}}</td>
               <td>{{task.categoriesId}}</td>
+              <td>{{currency(task.price)}}</td>
               <td>
                 <img
                   style="width:50px; height:50px"
@@ -135,15 +146,34 @@ export default {
       tasks: [],
       search: "",
       user_id: "",
-      users: []
+      users: [],
+      order_by: ["id", "ASC"],
+      order: [
+        { value: ["name", "ASC"], text: "Tên từ A-Z" },
+        { value: ["name", "DESC"], text: "Tên từ Z-A" },
+        { value: ["price", "ASC"], text: "Giá tiền tăng dần" },
+        { value: ["price", "DESC"], text: "Giá tiền giảm dần" },
+        { value: ["id", "DESC"], text: "Mới nhất" },
+        { value: ["id", "ASC"], text: "Cũ nhất" }
+      ]
     };
   },
   methods: {
-    getTasks() {
+    currency(x) {
+      x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
+      return x;
+    },
+    getTasks: function() {
       let self = this;
       this.$axios.get("/products").then(function(res) {
-        console.log(res);
+        console;
         self.tasks = res.data.data;
+      });
+    },
+    delTasks: function(id) {
+      let self = this;
+      this.$axios.delete("/products/" + id).then(function(res) {
+        self.getTasks();
       });
     },
     handleSearch() {
@@ -156,6 +186,7 @@ export default {
     },
     handleLogout: function() {
       Cookie.remove("token");
+      localStorage.removeItem("cart");
       this.$store.commit("setToken", null);
       this.$router.push("/login");
     },
@@ -177,7 +208,6 @@ img {
 table {
   margin-top: 10px;
 }
-
 .search {
   width: 50%;
   display: flex;

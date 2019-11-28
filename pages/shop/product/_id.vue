@@ -21,12 +21,9 @@
                           :src="`/${default_image ? default_image[index]: ''}`"
                         />
                       </a>
-                      <h2>{{product.price}} đ</h2>
+                      <h2>{{currency(product.price)}}</h2>
                       <p>{{product.name}}</p>
-                      <a
-                        @click="$router.push('/shop/product_detail/'+product.id)"
-                        class="btn btn-default add-to-cart"
-                      >
+                      <a @click="addToCart(product)" class="btn btn-default add-to-cart">
                         <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
                       </a>
                     </div>
@@ -42,10 +39,22 @@
   </div>
 </template>
 <script>
+const Cookies = process.client ? require("js-cookie") : undefined;
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
 export default {
+  created() {
+    if (process.browser) {
+      if (localStorage.getItem("cart")) {
+        let cart = JSON.parse(localStorage.getItem("cart"));
+        return (this.cart = cart);
+      } else {
+        let cart = this.$store.getters.cart;
+        return (this.cart = cart);
+      }
+    }
+  },
   mounted: async function() {
     await this.getByMenu();
     await this.getByCat();
@@ -96,6 +105,18 @@ export default {
         });
       });
       console.log(self.default_image);
+    },
+    addToCart(product) {
+      let pro = this.cart.find(element => element.id == product.id);
+      if (pro) {
+        alert("Đã tồn tại sản phẩm trong giỏ hàng");
+      } else this.$store.dispatch("addToCart", product);
+      this.$store.dispatch("setCart", this.cart);
+      localStorage.setItem("cart", JSON.stringify(this.cart));
+    },
+    currency(x) {
+      x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
+      return x;
     }
   }
 };

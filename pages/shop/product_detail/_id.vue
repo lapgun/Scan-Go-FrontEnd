@@ -15,29 +15,24 @@
                   <b-carousel
                     id="carousel"
                     v-model="slide"
-                    :indicator="1110"
+                    :indicator="4000"
                     img-width="320"
                     img-height="320"
                     controls
                     @sliding-start="onSlileStart"
                     @sliding-end="onSlileEnd"
                   >
-                    <div v-for="(picture,index) in pictures" :key="index" :data-index="'#'+index">
+                    <div v-for="(picture,index) in pictures" :key="index">
                       <b-carousel-slide :img-src="`/${picture ? picture : ''}`"></b-carousel-slide>
                     </div>
                   </b-carousel>
                 </div>
                 <div>
-                  <span
-                    v-for="(picture,index) in pictures"
-                    :key="index"
-                    style="margin-top:50px"
-                    :data-id="index"
-                  >
+                  <span v-for="(picture,index) in pictures" :key="index" style="margin-top:50px">
                     <img
                       class="img_picture"
                       :src="`/${picture ? picture : ''}`"
-                      v-on:click="activateImage(index)"
+                      @click="activateImage(index)"
                     />
                   </span>
                 </div>
@@ -46,14 +41,14 @@
                 <div class="product-information">
                   <!--/product-information-->
                   <img src="~assets/images/product-details/new.jpg" class="newarrival" alt />
-                  <h2>{{products.name}}</h2>
+                  <h2>{{product.name}}</h2>
                   <p>Web ID: 1089772</p>
                   <img src="~assets/images/product-details/rating.png" alt />
-                  <h3>{{products.price}} đ</h3>
+                  <h3>{{product.price}}</h3>
                   <div>
                     <h4>Số lượng:</h4>
-                    <input type="text" value="3" />
-                    <button type="button" class="btn btn-fefault cart">
+                    <input type="number" value="1 " />
+                    <button type="button" @click="addToCart(product)" class="btn btn-fefault cart">
                       <i class="fa fa-shopping-cart"></i>
                       Thêm vào giỏ hàng
                     </button>
@@ -83,37 +78,35 @@
                 </div>
                 <!--/product-information-->
               </div>
+              
             </div>
             <h2 style="margin-top:10px" class="title text-center">Mô tả sản phẩm</h2>
-            <div style="font-size:16px" v-html="products.description"></div>
+            <div style="font-size:16px" v-html="product.description"></div>
 
             <h2 style="margin-top:100px" class="title text-center">Thông tin sản phẩm</h2>
-            <div style="font-size:16px" v-html="products.detail"></div>
-            <img class="img_detail" :src="`/${products.images? products.images.image_1 : ''}`" />
+            <div style="font-size:16px" v-html="product.detail"></div>
+            <img class="img_detail" :src="`/${product.images? product.images.image_1 : ''}`" />
 
             <h2 style="margin-top:100px" class="title text-center">Sản phẩm mới nhất</h2>
-            <div class="col-sm-4" v-for="(newest,index) in newests" :key="index">
+            <div class="col-sm-4" v-for="(product,index) in products" :key="index">
               <div class="product-image-wrapper">
                 <div class="single-products">
                   <div class="productinfo text-center">
                     <img
                       style="width:250px; height:250px"
-                      :src="`/${newest.images ? newest.images.default_image : ''}`"
-                      @click="$router.push('/shop/product_detail/'+newest.id)"
+                      :src="`/${product.images ? product.images.default_image : ''}`"
+                      @click="$router.push('/shop/product_detail/'+product.id)"
                       alt
                     />
-                    <h2>{{newest.price}} đ</h2>
-                    <p>{{newest.name}}</p>
-                    <a
-                      @click="$router.push('/shop/product_detail/'+newest .id)"
-                      class="btn btn-default add-to-cart"
-                    >
+                    <h3>{{product.price}}</h3>
+                    <p>{{product.name}}</p>
+                    <a @click="addToCart(product)" class="btn btn-default add-to-cart">
                       <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
                     </a>
                   </div>
                 </div>
               </div>
-            </div>
+            </div> 
           </div>
         </div>
       </div>
@@ -122,6 +115,7 @@
   </div>
 </template>
 <script>
+const Cookies = process.client ? require("js-cookie") : undefined;
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
@@ -132,14 +126,26 @@ export default {
   },
   data: function() {
     return {
+      product: [],
       products: [],
-      newests: [],
       pictures: [],
       slide: 0,
       sliding: null,
       slidesToShow: 3,
-      currentIndex: 0
+      currentIndex: 0,
+      cart: []
     };
+  },
+  created() {
+    if (process.browser) {
+      if (localStorage.getItem("cart")) {
+        let cart = JSON.parse(localStorage.getItem("cart"));
+        return (this.cart = cart);
+      } else {
+        let cart = this.$store.getters.cart;
+        return (this.cart = cart);
+      }
+    }
   },
   components: {
     shopHeader,
@@ -147,12 +153,16 @@ export default {
     shopNav
   },
   methods: {
+    currency(x) {
+      x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
+      return x;
+    },
     getProducts() {
       let self = this;
       this.$axios.get("/products/" + this.$route.params.id).then(function(res) {
-        self.products = res.data.data;
-        Object.keys(self.products.images).forEach(function(key) {
-          let img = self.products.images[key];
+        self.product = res.data.data;
+        Object.keys(self.product.images).forEach(function(key) {
+          let img = self.product.images[key];
           if (img) {
             let text = img + "";
             let test = text.split(".");
@@ -166,7 +176,7 @@ export default {
     getById: function() {
       let self = this;
       this.$axios.get("/products/new-products").then(function(res) {
-        self.newests = res.data.data;
+        self.products = res.data.data;
       });
     },
     onSlileStart(slide) {
@@ -178,6 +188,14 @@ export default {
     activateImage(index) {
       this.currentIndex = index;
       console.log("aaaa: ", this.currentIndex);
+    },
+    addToCart(product) {
+      let pro = this.cart.find(element => element.id == product.id);
+      if (pro) {
+        alert("Đã tồn tại sản phẩm trong giỏ hàng");
+      } else this.$store.dispatch("addToCart", product);
+      this.$store.dispatch("setCart", this.cart);
+      localStorage.setItem("cart", JSON.stringify(this.cart));
     }
   }
 };

@@ -1,11 +1,11 @@
 <template>
   <div>
-    <shopHeader></shopHeader>
+    <shopHeader />
     <section>
       <div class="container">
         <div class="row">
           <div class="col-sm-3">
-            <shopNav></shopNav>
+            <shopNav />
           </div>
           <div class="col-sm-9 padding-right">
             <div class="features_items">
@@ -21,12 +21,14 @@
                         @click="$router.push('/shop/product_detail/'+product.id)"
                         alt
                       />
-                      <h2>{{product.price}} đ</h2>
+                      <h2>{{currency(product.price)}}</h2>
                       <p>{{product.name}}</p>
-                      <a
-                        @click="$router.push('/shop/product_detail/'+product.id)"
-                        class="btn btn-default add-to-cart"
-                      >
+                      <qrcode-vue
+                        :value="'http://localhost:3000/shop/product_detail/'+product.id"
+                        size="100"
+                        level="H"
+                      ></qrcode-vue>
+                      <a @click="addToCart(product)" class="btn btn-default add-to-cart">
                         <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
                       </a>
                     </div>
@@ -48,8 +50,13 @@
                         @click="$router.push('/shop/product_detail/'+newest.id)"
                         alt
                       />
-                      <h2>{{newest.price}} đ</h2>
+                      <h2>{{currency(newest.price)}}</h2>
                       <p>{{newest.name}}</p>
+                      <qrcode-vue
+                        :value="'http://localhost:3000/shop/product_detail/'+newest.id"
+                        size="100"
+                        level="H"
+                      ></qrcode-vue>
                       <a
                         @click="$router.push('/shop/product_detail/'+newest .id)"
                         class="btn btn-default add-to-cart"
@@ -65,31 +72,49 @@
         </div>
       </div>
     </section>
-    <shopFooter></shopFooter>
+    <shopFooter />
   </div>
 </template>
 <script>
+const Cookies = process.client ? require("js-cookie") : undefined;
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
+import QrcodeVue from "qrcode.vue";
 export default {
-  mounted: function() {
-    this.getByOrderTime();
-    this.getById();
-    this.getUser();
-  },
-  data: function() {
+  data() {
     return {
       products: [],
-      newests: [],
+      cart: [],
+      newests: []
     };
   },
   components: {
     shopHeader,
     shopFooter,
-    shopNav
+    shopNav,
+    QrcodeVue
+  },
+  created() {
+    if (process.browser) {
+      if (localStorage.getItem("cart")) {
+        let cart = JSON.parse(localStorage.getItem("cart"));
+        return (this.cart = cart);
+      } else {
+        let cart = this.$store.getters.cart;
+        return (this.cart = cart);
+      }
+    }
+  },
+  mounted() {
+    this.getByOrderTime();
+    this.getById();
   },
   methods: {
+    currency(x) {
+      x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
+      return x;
+    },
     getByOrderTime: function() {
       let self = this;
       this.$axios.get("/products/order_time").then(function(res) {
@@ -102,19 +127,22 @@ export default {
         self.newests = res.data.data;
       });
     },
-    getUser(){
-      this.$axios.get("/get_user").then(function(res){
-        console.log(res)
-      })
+    addToCart(product) {
+      let pro = this.cart.find(element => element.id == product.id);
+      if (pro) {
+        alert("Đã tồn tại sản phẩm trong giỏ hàng");
+      } else this.$store.dispatch("addToCart", product);
+      this.$store.dispatch("setCart", this.cart);
+      localStorage.setItem("cart", JSON.stringify(this.cart));
     }
   }
 };
 </script>
 <style scoped>
-  #default_image {
-    width: 248px;
-    height: 270px;
-    object-fit: cover;
-  }
+#default_image {
+  width: 248px;
+  height: 270px;
+  object-fit: cover;
+}
 </style>
 
