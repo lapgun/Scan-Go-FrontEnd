@@ -88,7 +88,7 @@
         </ul>
       </div>
       <div class="col-sm-9 col-lg-10 sidebar">
-        <b-button @click="$router.push('/orders/create')" variant="info">Create</b-button>
+        <h3>Orders Processing</h3>
         <table class="table table-bordered">
           <thead>
             <tr>
@@ -106,7 +106,7 @@
               <td>{{order.order_status}}</td>
               <td>{{order.total_price}}</td>
               <td>
-                <b-button @click="$router.push('/orders/detail/'+order.id)">Detail</b-button>
+                <b-button @click="$router.push('/orders/detail/'+ order.id)">Detail</b-button>
                 <b-button @click="handleDelete(order.id)" variant="danger">Delete</b-button>
               </td>
             </tr>
@@ -160,7 +160,6 @@ export default {
             this.pagination.perPage
         )
         .then(function(res) {
-          console.log(res);
           self.orders = res.data.data;
           self.pagination = res.data.pagination;
         });

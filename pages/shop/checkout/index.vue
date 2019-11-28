@@ -20,25 +20,28 @@
           <table class="table table-condensed">
             <thead>
             <tr class="cart_menu">
-              <td class="image" style="text-align: center">Item</td>
-              <td class="description">Name</td>
-              <td class="price">Price</td>
-              <td class="quantity">Quantity</td>
+              <td class="image" style="text-align: center">Sản phẩm</td>
+              <td class="description">Tên</td>
+              <td class="price">Số lượng</td>
+              <td class="quantity">Thành tiền</td>
               <td class="total">Total</td>
               <td></td>
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(item,index) in cart">
+            <tr v-for="(item,index) in cart" :key="index">
               <td class="cart_product">
-                <a><img :src="`/${item.images? item.images.default_image: ''}`"></a>
+                <a>
+                  <img :src="`/${item.images? item.images.default_image: ''}`"/>
+                </a>
               </td>
               <td class="cart_description">
-                <h4><a href="">{{item.name}}</a></h4>
-                <p>{{item.description}}</p>
+                <h4>
+                  <a href>{{item.name}}</a>
+                </h4>
               </td>
               <td class="cart_price">
-                <p>{{item.price}}</p>
+                <p>{{item.price}} đ</p>
               </td>
               <td class="cart_quantity">
                 <div class="cart_quantity_button">
@@ -46,7 +49,7 @@
                 </div>
               </td>
               <td class="cart_total">
-                <p class="cart_total_price">${{item.price * item.order_time}}</p>
+                <p class="cart_total_price">{{item.price * item.order_time}} đ</p>
               </td>
             </tr>
             <tr>
@@ -54,20 +57,22 @@
               <td colspan="2">
                 <table class="table table-condensed total-result">
                   <tr>
-                    <td>Cart Sub Total</td>
-                    <td>${{total}}</td>
+                    <td>Giá tiền</td>
+                    <td>{{total}} đ</td>
                   </tr>
                   <tr>
                     <td>VAT</td>
                     <td>10%</td>
                   </tr>
                   <tr class="shipping-cost">
-                    <td>Shipping Cost</td>
-                    <td>Free</td>
+                    <td>Phí vận chuyển</td>
+                    <td>Miễn phí</td>
                   </tr>
                   <tr>
-                    <td>Total</td>
-                    <td><span>${{total + total * 10/100}}</span></td>
+                    <td>Tổng giá tiền</td>
+                    <td>
+                      <span>{{total + total * 10/100}} đ</span>
+                    </td>
                   </tr>
                 </table>
               </td>
@@ -76,9 +81,9 @@
           </table>
         </div>
         <div class="register-req">
-          <p>Please , make sure check information before click submit</p>
-          <p>Help us keep your account safe and secure, please verify your billing information.</p>
-
+          <p>Xin vui lòng, đảm bảo thông tin kiểm tra trước khi bấm vào thanh toán</p>
+          <p>Giúp chúng tôi giữ an toàn tài khoản của bạn và an toàn, xin vui lòng xác minh thông tin thanh toán của
+            bạn.</p>
         </div>
         <!--/register-req-->
 
@@ -86,15 +91,15 @@
           <div class="text-center">
             <div class="col-sm-6">
               <div class="shopper-info">
-                <p>Shopper Information</p>
+                <p>Thông tin của bạn</p>
                 <form>
-                  <input type="text" placeholder="Display Name" :value="user_name"/>
-                  <input type="text" placeholder="User Name" :value="user_email"/>
-                  <input type="number" placeholder="Number Phone"/>
-                  <input type="text" placeholder="Address"/>
+                  <input type="text" placeholder="Họ tên" :value="user_name"/>
+                  <input type="text" placeholder="Email của bạn" :value="user_email"/>
+                  <input type="number" placeholder="Số điện thoại"/>
+                  <input type="text" placeholder="Địa chỉ"/>
                 </form>
-                <a class="btn btn-primary" @click="$router.push('shop/cart')">Back</a>
-                <a class="btn btn-primary" @click="handelSubmit">Pay Now</a>
+                <a class="btn btn-primary" @click="$router.push('/shop/cart')">Trở lại</a>
+                <a class="btn btn-primary" @click="handelSubmit">Thanh toán</a>
               </div>
             </div>
           </div>
@@ -105,7 +110,6 @@
   </div>
 </template>
 <script>
-
     import shopHeader from "~/components/shopHeader.vue";
     import shopFooter from "~/components/shopFooter.vue";
 
@@ -159,7 +163,7 @@
                 let self = this;
                 this.$axios.post('/orders', {"cart": this.cart, "total": this.total, "user_id": this.user_id})
                     .then(function (res) {
-                                console.log(res);
+                        console.log(res);
                     });
                 alert("da gui yeu cau mua hang");
                 self.$router.push('/');
@@ -167,7 +171,7 @@
                 self.$store.commit("setCart", []);
             }
         }
-    };
+    }
 </script>
 <style scoped>
   img {
@@ -181,10 +185,14 @@
   }
 
   tbody tr td {
+    text-align: center;
     padding-left: 50px;
   }
 
   thead tr td {
+    text-align: center;
     padding-left: 50px;
   }
+
+
 </style>

@@ -1,7 +1,9 @@
 <template>
   <div>
-    <header id="header"><!--header-->
-      <div class="header_top" style="height:60px"><!--header_top-->
+    <header id="header">
+      <!--header-->
+      <div class="header_top" style="height:60px">
+        <!--header_top-->
         <div class="container">
           <div class="row">
             <div class="col-sm-6">
@@ -44,7 +46,6 @@
                       <i class="fab fa-google-plus"></i>
                     </a>
                   </li>
-
                 </ul>
               </div>
             </div>
@@ -60,34 +61,58 @@
             <div class="col-sm-4">
               <div class="logo pull-left">
                 <a @click="$router.push('/')">
-                  <img src="~assets/images/home/logo.png" alt />
+                  <img src="~assets/images/home/logo.png" alt/>
                 </a>
               </div>
             </div>
             <div class="col-sm-8">
               <div class="shop-menu pull-right">
                 <ul class="nav navbar-nav">
-                  <li><a @click="$router.push('/user/detail/'+user_id)" style="margin-left:-220px"> Account</a></li>
-                  <li><a @click="$router.push('/shop/checkout/'+user_id)" style="margin-left: -150px; margin-top:-20px">Checkout</a>
+                  <li>
+                    <a
+                      @click="$router.push('/user/detail/'+user_id)"
+                      style="margin-left:-220px"
+                    >Account</a>
+                  </li>
+                  <li>
+                    <a
+                      @click="$router.push('/shop/checkout')"
+                      style="margin-left: -150px; margin-top:-20px"
+                    >Thanh toán</a>
                   </li>
                   <template v-if="user_id">
-                    <li><a style="margin-left:-71px ; margin-top: -20px" class="dropdown">
-                      <div class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                           aria-expanded="false">
-                        <i class="fas fa-user">&nbsp;{{user_name}}</i>
-                      </div>
-                      <div class="dropdown-menu text-sm-center" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" @click="handelLogout"><i class="fas fa-sign-out-alt">&nbsp;Log out</i></a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                      </div>
-                    </a>
+                    <li>
+                      <a style="margin-left:-71px ; margin-top: -20px" class="dropdown">
+                        <div
+                          class="dropdown-toggle"
+                          id="dropdownMenuButton"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          <i class="fas fa-user">&nbsp;{{user_name}}</i>
+                        </div>
+                        <div
+                          class="dropdown-menu text-sm-center"
+                          aria-labelledby="dropdownMenuButton"
+                        >
+                          <a class="dropdown-item" @click="handelLogout">
+                            <i class="fas fa-sign-out-alt">&nbsp;Đăng xuất</i>
+                          </a>
+                        </div>
+                      </a>
                     </li>
                   </template>
                   <template v-else>
-                    <li><a @click="$router.push('/register')" style="margin-left:-70px; margin-top:-20px"> Register</a>
+                    <li>
+                      <a
+                        @click="$router.push('/register')"
+                        style="margin-left:-70px; margin-top:-20px"
+                      >Đăng kí</a>
                     </li>
-                    <li><a @click="$router.push('/login')" style=" margin-top:-20px">Login</a></li>
+                    <li>
+                      <a @click="$router.push('/login')" style=" margin-top:-20px">Đăng nhập</a>
+                    </li>
                   </template>
                 </ul>
               </div>
@@ -103,100 +128,75 @@
             <div class="col-sm-9">
               <div class="mainmenu pull-left">
                 <ul class="nav navbar-nav collapse navbar-collapse">
-                  <li><a @click="$router.push('/')" class="active" style="margin-top:-2px">Home</a></li>
-                  <li class="dropdown"><a href="#" style="margin-top:-10px">Shop</a>
+                  <li>
+                    <a @click="$router.push('/')" class="active" style="margin-top:-2px">Trang chủ</a>
+                  </li>
+                  <li class="dropdown">
+                    <a href="#" style="margin-top:-10px">Cửa hàng</a>
                     <ul role="menu" class="sub-menu">
-                      <li><a @click="$router.push('/shop/product')">Products</a></li>
-                      <li><a @click="$router.push('/shop/checkout/'+user_id)">Checkout</a></li>
-                      <li><a @click="$router.push('/shop/cart')">Cart</a></li>
-                      <li><a @click="$router.push('/login')">Login</a></li>
+                      <li>
+                        <a @click="$router.push('/shop/products')">Sản phẩm</a>
+                      </li>
+                      <li>
+                        <a @click="$router.push('/shop/checkout')">Thanh toán</a>
+                      </li>
+                      <li>
+                        <a @click="$router.push('/shop/cart')">Giỏ hàng</a>
+                      </li>
                     </ul>
                   </li>
-                  <li><a @click="$router.push('/shop/blog')">Blog</a>
+                  <li>
+                    <a @click="$router.push('/shop/blog')">Blog</a>
                   </li>
-                  <li><a @click="$router.push('/shop/contact')">Contact</a></li>
+                  <li>
+                    <a @click="$router.push('/shop/contact')">Liên hệ</a>
+                  </li>
                 </ul>
               </div>
             </div>
             <div class="col-sm-3" style="margin-top:-20px">
-              <div class="search_box " style="display:inline; margin-right:30px">
+              <div class="search_box" style="display:inline; margin-right:30px">
                 <input type="search" placeholder="Search"/>
               </div>
               <div style="display:inline-block; font-size:25px;" v-if="user_id">
-                <a @click="$router.push('shop/cart')"><i class="fas fa-shopping-cart"></i>{{cart.length}}</a>
+                <a @click="$router.push('/shop/cart')">
+                  <i class="fas fa-shopping-cart"></i>
+                  {{cart.length}}
+                </a>
               </div>
             </div>
-          </div>
-        </div>
-      </div><!--/header-bottom-->
-    </header><!--/header-->
-    <section id="slider"><!--slider-->
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-12">
-            <div id="slider-carousel" class="carousel slide" data-ride="carousel">
-              <ol class="carousel-indicators">
-                <li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
-                <li data-target="#slider-carousel" data-slide-to="1"></li>
-                <li data-target="#slider-carousel" data-slide-to="2"></li>
-              </ol>
-
-              <div class="carousel-inner">
-                <div class="carousel-item active">
-                  <div class="col-sm-6">
-                    <h1><span>E</span>-SHOPPER</h1>
-                    <h2>Free E-Commerce Template</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                      labore et dolore magna aliqua. </p>
-                    <button type="button" class="btn btn-default get">Get it now</button>
-                  </div>
-                  <div class="col-sm-6">
-                    <img src="~assets/images/home/girl1.jpg" class="girl img-responsive" alt=""/>
-                    <img src="~assets/images/home/pricing.png" class="pricing" alt=""/>
-                  </div>
-                </div>
-                <div class="carousel-item">
-                  <div class="col-sm-6">
-                    <h1><span>E</span>-SHOPPER</h1>
-                    <h2>100% Responsive Design</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                      labore et dolore magna aliqua. </p>
-                    <button type="button" class="btn btn-default get">Get it now</button>
-                  </div>
-                  <div class="col-sm-6">
-                    <img src="~assets/images/home/girl2.jpg" class="girl img-responsive" alt=""/>
-                    <img src="~assets/images/home/pricing.png" class="pricing" alt=""/>
-                  </div>
-                </div>
-
-                <div class="carousel-item">
-                  <div class="col-sm-6">
-                    <h1><span>E</span>-SHOPPER</h1>
-                    <h2>Free Ecommerce Template</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                      labore et dolore magna aliqua. </p>
-                    <button type="button" class="btn btn-default get">Get it now</button>
-                  </div>
-                  <div class="col-sm-6">
-                    <img src="~assets/images/home/girl3.jpg" class="girl img-responsive" alt=""/>
-                    <img src="~assets/images/home/pricing.png" class="pricing" alt=""/>
-                  </div>
-                </div>
-
-              </div>
-
-              <a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
-                <i class="fa fa-angle-left"></i>
-              </a>
-              <a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
-                <i class="fa fa-angle-right"></i>
-              </a>
-            </div>
-
           </div>
         </div>
       </div>
-    </section><!--/slider-->
+      <!--/header-bottom-->
+    </header>
+    <!--/header-->
+    <section id="slider">
+      <!--slider-->
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <b-carousel
+              id="carousel"
+              v-model="slide"
+              :indicator="1110"
+              controls
+              @sliding-start="onSlileStart"
+              @sliding-end="onSlileEnd"
+              :visible-slides="3"
+              :slide-ratio="1/4"
+            >
+              <div v-for="slide in slides" :key="slide.id">
+                <b-carousel-slide
+                  :img-src="`/${slide.slide_images ? slide.slide_images.default_image : ''}`"
+                ></b-carousel-slide>
+              </div>
+            </b-carousel>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--/slider-->
   </div>
 </template>
 <script>
@@ -206,8 +206,15 @@
             return {
                 cart: [],
                 users: [],
-                user_id: '',
-                user_name: ''
+                user_id: "",
+                user_name: "",
+                search: "",
+                slide: 0,
+                sliding: null,
+                infinite: true,
+                slidesToShow: 2,
+                slidesToScroll: 2,
+                slides: []
             }
         },
         created() {
@@ -216,7 +223,7 @@
                     let cart = JSON.parse(localStorage.getItem("cart"));
                     return this.cart = cart;
                 } else {
-                    let cart =  this.$store.getters.cart;
+                    let cart = this.$store.getters.cart;
                     return this.cart = cart;
                 }
             }
@@ -228,6 +235,7 @@
             } else {
                 this.$router.push("/");
             }
+            this.getSlides();
         },
         methods: {
             getUsers() {
@@ -246,9 +254,21 @@
                 this.$store.commit("setCart", []);
                 this.$router.push("/login");
             },
-        }
+            onSlileStart(slide) {
+                this.sliding = true;
+            },
+            onSlileEnd(slide) {
+                this.sliding = false;
+            },
+            getSlides() {
+                let self = this;
+                this.$axios.get("/slide").then(function (res) {
+                    self.slides = res.data.rows;
+                });
 
-    }
+            }
+        }
+    };
 </script>
 <style scoped>
 </style>

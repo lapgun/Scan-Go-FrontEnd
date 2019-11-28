@@ -9,7 +9,6 @@
     />
     Select product's category in the select form below :
     <b-form-select v-model="form.categoriesId" :options="options"></b-form-select>
-    <!--    <input type="file" id="file" ref="picture" v-on:change="handleFileUpload()" />-->
     <upload_files @uploaded="imageUploaded"></upload_files>Price:
     <input
       v-model="form.price"
@@ -80,6 +79,7 @@ export default {
       });
     },
     handleSubmit() {
+      let self = this;
       this.$axios.post("/products", this.form).then(res => {
         this.$router.push("/products");
       });

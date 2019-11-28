@@ -57,50 +57,47 @@
 </template>
 
 <script>
-    export default {
-        mounted: function () {
-            this.getDetail();
-            this.getCatProduct();
-        },
-        data: function () {
-            return {
-                form: {
-                    name: "",
-                    categoriesId: "",
-                    picture: "",
-                    price: "",
-                    description: "",
-                    detail: "",
-                    order_time: "",
-                    
-                },
-                options: [{value: 0, text: "This is parent category "}],
-            }        
-        },
-        methods: {
-            getCatProduct: function () {
-                let self = this;
-                this.$axios.get("/categories/cat_product").then(function (res) {
-                    let data = res.data.data.rows;
-                    data.forEach(value => {
-                        self.options.push({
-                            value: value.id,
-                            text: value.name
-                        });
-                    });
-                });
-                console.log(self.options);
-            },
-            getDetail: function () {
-                let self = this;
-
+export default {
+  mounted: function() {
+    this.getDetail();
+    this.getCatProduct();
+  },
+  data: function() {
+    return {
+      form: {
+        name: "",
+        categoriesId: "",
+        picture: "",
+        price: "",
+        description: "",
+        detail: "",
+        order_time: ""
+      },
+      options: [{ value: 0, text: "This is parent category " }]
+    };
+  },
+  methods: {
+    getCatProduct: function() {
+      let self = this;
+      this.$axios.get("/categories/cat_product").then(function(res) {
+        let data = res.data.data.rows;
+        data.forEach(value => {
+          self.options.push({
+            value: value.id,
+            text: value.name
+          });
+        });
+      });
+      console.log(self.options);
+    },
+    getDetail: function() {
+      let self = this;
       this.$axios.get("/products/" + this.$route.params.id).then(function(res) {
         self.form = res.data.data;
       });
     },
     handleSubmit: function() {
       let self = this;
-
       this.$axios
         .put("/products/" + this.form.id, this.form)
         .then(function(res) {
