@@ -32,7 +32,7 @@
                       <h2>{{product.price}} đ</h2>
                       <p>{{product.name}}</p>
                       <a
-                        @click="$router.push('/shop/product_detail/'+product.id)"
+                        @click="addToCart(product)"
                         class="btn btn-default add-to-cart"
                       >
                         <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
@@ -54,6 +54,17 @@ import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
 export default {
+  created() {
+    if (process.browser) {
+      if (localStorage.getItem("cart")) {
+        let cart = JSON.parse(localStorage.getItem("cart"));
+        return (this.cart = cart);
+      } else {
+        let cart = this.$store.getters.cart;
+        return (this.cart = cart);
+      }
+    }
+  },
   mounted: function() {
     if (this.$route.query.search) {
       this.handleSearch();
@@ -91,10 +102,18 @@ export default {
     },
     getProducts: function() {
       let self = this;
-      this.$axios.post("/products", this.order_by).then(function(res) {
+      this.$axios.post("/products/sort", this.order_by).then(function(res) {
         console.log(res);
         self.products = res.data.data;
       });
+    },
+    addToCart(product) {
+      let pro = this.cart.find(element => element.id == product.id);
+      if (pro) {
+        alert("Đã tồn tại sản phẩm trong giỏ hàng");
+      } else this.$store.dispatch("addToCart", product);
+      this.$store.dispatch("setCart", this.cart);
+      localStorage.setItem("cart", JSON.stringify(this.cart));
     }
   }
 };

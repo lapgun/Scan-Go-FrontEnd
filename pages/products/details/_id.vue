@@ -1,5 +1,5 @@
 <template>
-  <div class="container" >
+  <div class="container">
     <table class="table table-bordered">
       <tr>
         <th>Number</th>
@@ -32,26 +32,23 @@
 </template>
 <script>
 export default {
-  mounted: function() {
+  created: function() {
     this.getTasks();
   },
-
   data: function() {
     return {
       tasks: []
+      // loaded : false,
     };
   },
   methods: {
-    getTasks: function() {
-      let self = this;
-      this.$axios.get("/products/" + this.$route.params.id).then(function(res) {
-        console.log(res);
-        self.tasks = res.data.data;
-      });
+    getTasks: async function() {
+      const res = await this.$axios.get("/products/" + this.$route.params.id);
+      this.tasks = res.data.data;
     },
-    delTasks: function() {
+    delTasks: function(id) {
       let self = this;
-      this.$axios.delete("/products/" + this.$route.params.id).then(function(res) {
+      this.$axios.delete("/products/" + id).then(function(res) {
         self.getTasks();
       });
     }

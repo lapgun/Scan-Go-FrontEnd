@@ -8,19 +8,23 @@
             <div class="breadcrumbs">
               <ol class="breadcrumb">
                 <li>
-                  <a href="#">Home</a>
+                  <a href="#" @click="$router.push('/')">Trang chủ</a>
                 </li>
-                <li class="active">Shopping Cart</li>
+                <li class="active">Giỏ hàng</li>
               </ol>
-            </div>
-            <div class="product_span">
-              <span>Sản phẩm</span>
-              <span style="margin-left:600px">Số lượng</span>
-              <span style="margin-left:900px">Thành tiền</span>
             </div>
             <div class="table-responsive cart_info">
               <table class="table table-condensed">
-                <thead></thead>
+                <thead>
+                  <tr class="cart_menu">
+                    <td class="image">Sản phẩm</td>
+                    <td class="description">Tên</td>
+                    <td class="price">Số lượng</td>
+                    <td class="quantity">Tổng tiền</td>
+                    <td class="total">Toàn bộ</td>
+                    <td></td>
+                  </tr>
+                </thead>
                 <tbody>
                   <tr v-for="(item,index) in cart" :key="index">
                     <template>
@@ -33,7 +37,6 @@
                         <h4>
                           <a href>{{item.name}}</a>
                         </h4>
-                        <p v-html="item.description"></p>
                       </td>
                       <td class="cart_quantity">
                         <div class="cart_quantity_button">
@@ -46,13 +49,12 @@
                           <template v-else>
                             <a class="cart_quantity_down btn btn-success">-</a>
                           </template>
-                          <input
+                          <div
                             class="cart_quantity_input"
                             type="text"
-                            v-model="item.order_time"
                             autocomplete="off"
                             size="2"
-                          />
+                          >{{item.order_time}}</div>
                           <a class="cart_quantity_up btn btn-success" @click="increment(item.id)">+</a>
                         </div>
                       </td>
@@ -72,22 +74,18 @@
           </div>
         </section>
         <!--/#cart_items-->
-
         <section id="do_action">
           <div class="container">
             <div class="heading">
-              <h3>What would you like to do next?</h3>
-              <p>
-                Choose if you have a discount code or reward points you want to use or would like to estimate your
-                delivery cost.
-              </p>
+              <h3>Bạn muốn thanh toán?</h3>
+              <p>Chọn nếu bạn có một mã hoặc thưởng giảm điểm bạn muốn sử dụng hoặc muốn để ước tính chi phí giao hàng của bạn.</p>
             </div>
             <div class="row">
               <div class="col-sm-6">
                 <div class="total_area">
                   <ul>
                     <li>
-                      Cart Sub Total
+                      Giá tiền
                       <span>{{total}} đ</span>
                     </li>
                     <li>
@@ -95,20 +93,24 @@
                       <span>10%</span>
                     </li>
                     <li>
-                      Shipping Cost
-                      <span>Free</span>
+                      Phí vận chuyển
+                      <span>Miễn phí</span>
                     </li>
                     <li>
-                      Total
+                      Tổng tiền
                       <span>{{total + total * 10/100}} đ</span>
                     </li>
                   </ul>
-                  <a class="btn btn-default update" @click="$router.push('/')">Back</a>
+                  <a class="btn btn-default update" @click="$router.push('/')">Trở lại</a>
                   <a
                     class="btn btn-default check_out"
                     @click="$router.push('/shop/checkout')"
-                  >Check Out</a>
+                  >Thanh toán</a>
                 </div>
+                <a href="#" @click="$router.push('/')">
+                  <i class="fas fa-arrow-left"></i>
+                  <h4 style="display:inline; margin-left:5px">Tiếp tục mua hàng</h4>
+                </a>
               </div>
             </div>
           </div>
@@ -125,14 +127,16 @@ import shopFooter from "~/components/shopFooter.vue";
 export default {
   created() {
     if (process.browser) {
-      if (Cookies.get("cart")) {
-        let cart = JSON.parse(Cookies.get("cart"));
+      if (localStorage.getItem("cart")) {
+        let cart = JSON.parse(localStorage.getItem("cart"));
         return (this.cart = cart);
       } else {
         let cart = this.$store.getters.cart;
         return (this.cart = cart);
+         console.log(this.cart)
       }
     }
+   
   },
   data() {
     return {
@@ -140,7 +144,6 @@ export default {
       total: 0
     };
   },
-
   components: {
     shopHeader,
     shopFooter
@@ -149,27 +152,27 @@ export default {
     this.totalPrice();
   },
   methods: {
-    setCookies() {
-      Cookies.set("cart", this.cart);
+    setLocalStorage() {
+      localStorage.setItem("cart", JSON.stringify(this.cart));
     },
     removeItem(index) {
       this.cart.splice(index, 1);
-      this.setCookies();
       this.totalPrice();
+      this.setLocalStorage();
     },
     increment(id) {
       for (let i = 0; i < this.cart.length; i++) {
         if (this.cart[i].id === id) this.cart[i].order_time++;
       }
       this.totalPrice();
-      this.setCookies();
+      this.setLocalStorage();
     },
     decrement(id) {
       for (let i = 0; i < this.cart.length; i++) {
         if (this.cart[i].id === id) this.cart[i].order_time--;
       }
       this.totalPrice();
-      this.setCookies();
+      this.setLocalStorage();
     },
     totalPrice() {
       let total = 0;
@@ -187,7 +190,11 @@ img {
   width: 100px;
   height: 100px;
 }
-.product_span{
-  font-size: 20px
+.product_span {
+  font-size: 20px;
+}
+.cart_quantity_input {
+  margin-left: 15px;
+  margin-right: 15px;
 }
 </style>

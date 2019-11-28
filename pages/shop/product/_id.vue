@@ -49,8 +49,8 @@ import shopNav from "~/components/shopNav.vue";
 export default {
   created() {
     if (process.browser) {
-      if (Cookies.get("cart")) {
-        let cart = JSON.parse(Cookies.get("cart"));
+      if (localStorage.getItem("cart")) {
+        let cart = JSON.parse(localStorage.getItem("cart"));
         return (this.cart = cart);
       } else {
         let cart = this.$store.getters.cart;
@@ -110,17 +110,13 @@ export default {
       console.log(self.default_image);
     },
     addToCart(product) {
-      // console.log('fdsdfg',this.cart)
-      // let pro = this.cart.find(element => element.id == product.id);
-      // console.log(pro)
-      // if (pro) {
-      //   alert("Đã tồn tại sản phẩm trong giỏ hàng");
-      // } else 
-      this.$store.dispatch("addToCart", product);
+      let pro = this.cart.find(element => element.id == product.id);
+      if (pro) {
+        alert("Đã tồn tại sản phẩm trong giỏ hàng");
+      } else this.$store.dispatch("addToCart", product);
       this.$store.dispatch("setCart", this.cart);
-      Cookies.set("cart", this.cart);
-      
-    },
+      localStorage.setItem("cart", JSON.stringify(this.cart));
+    }
   }
 };
 </script>

@@ -47,7 +47,10 @@
                       />
                       <h2>{{newest.price}} đ</h2>
                       <p>{{newest.name}}</p>
-                      <a class="btn btn-default add-to-cart">
+                      <a
+                        @click="$router.push('/shop/product_detail/'+newest .id)"
+                        class="btn btn-default add-to-cart"
+                      >
                         <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
                       </a>
                     </div>
@@ -69,22 +72,11 @@ import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
 
 export default {
-   created() {
-    if (process.browser) {
-      if (Cookies.get("cart")) {
-        let cart = JSON.parse(Cookies.get("cart"));
-        return (this.cart = cart);
-      } else {
-        let cart = this.$store.getters.cart;
-        return (this.cart = cart);
-      }
-    }
-  },
   data() {
     return {
       products: [],
       cart: [],
-      newests: []
+      newests:[]
     };
   },
   components: {
@@ -92,36 +84,51 @@ export default {
     shopFooter,
     shopNav
   },
- 
+  created() {
+    if (process.browser) {
+      if (localStorage.getItem("cart")) {
+        let cart = JSON.parse(localStorage.getItem("cart"));
+        return (this.cart = cart);
+      } else {
+        let cart = this.$store.getters.cart;
+        return (this.cart = cart);
+      }
+    }
+  },
   mounted() {
     this.getByOrderTime();
     this.getById();
   },
   methods: {
-    getByOrderTime() {
+    getByOrderTime: function() {
       let self = this;
       this.$axios.get("/products/order_time").then(function(res) {
         self.products = res.data.data;
       });
     },
-    getById() {
+    getById: function() {
       let self = this;
       this.$axios.get("/products/newest").then(function(res) {
+        console.log("aaaa", res);
         self.newests = res.data.data;
       });
     },
     addToCart(product) {
-      // console.log('fdsdfg',this.cart)
-      // let pro = this.cart.find(element => element.id == product.id);
-      // console.log(pro)
-      // if (pro) {
-      //   alert("Đã tồn tại sản phẩm trong giỏ hàng");
-      // } else 
-      this.$store.dispatch("addToCart", product);
+      let pro = this.cart.find(element => element.id == product.id);
+      if (pro) {
+        alert("Đã tồn tại sản phẩm trong giỏ hàng");
+      } else this.$store.dispatch("addToCart", product);
       this.$store.dispatch("setCart", this.cart);
-      Cookies.set("cart", this.cart);
-      
-    },
+      localStorage.setItem("cart", JSON.stringify(this.cart));
+    }
   }
 };
 </script>
+<style scoped>
+#default_image {
+  width: 248px;
+  height: 270px;
+  object-fit: cover;
+}
+</style>
+

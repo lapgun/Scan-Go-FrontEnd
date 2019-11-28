@@ -76,9 +76,9 @@
                   </li>
                   <li>
                     <a
-                      @click="$router.push('/shop/checkout/'+user_id)"
+                      @click="$router.push('/shop/checkout')"
                       style="margin-left: -150px; margin-top:-20px"
-                    >Checkout</a>
+                    >Thanh toán</a>
                   </li>
                   <template v-if="user_id">
                     <li>
@@ -97,7 +97,7 @@
                           aria-labelledby="dropdownMenuButton"
                         >
                           <a class="dropdown-item" @click="handelLogout">
-                            <i class="fas fa-sign-out-alt">&nbsp;Log out</i>
+                            <i class="fas fa-sign-out-alt">&nbsp;Đăng xuất</i>
                           </a>
                         </div>
                       </a>
@@ -121,7 +121,6 @@
         </div>
       </div>
       <!--/header-middle-->
-
       <div class="header-bottom">
         <!--header-bottom-->
         <div class="container">
@@ -139,7 +138,7 @@
                         <a @click="$router.push('/shop/products')">Sản phẩm</a>
                       </li>
                       <li>
-                        <a @click="$router.push('/shop/checkout/'+user_id)">Đơn hàng</a>
+                        <a @click="$router.push('/shop/checkout')">Thanh toán</a>
                       </li>
                       <li>
                         <a @click="$router.push('/shop/cart')">Giỏ hàng</a>
@@ -160,7 +159,7 @@
                 <input type="search" placeholder="Search" />
               </div>
               <div style="display:inline-block; font-size:25px;" v-if="user_id">
-                <a @click="$router.push('shop/cart')">
+                <a @click="$router.push('/shop/cart')">
                   <i class="fas fa-shopping-cart"></i>
                   {{cart.length}}
                 </a>
@@ -169,64 +168,40 @@
           </div>
         </div>
       </div>
-      <section id="slider">
-        <!--slider-->
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-12">
-              <b-carousel
-                id="carousel"
-                v-model="slide"
-                :indicator="1110"
-                controls
-                @sliding-start="onSlileStart"
-                @sliding-end="onSlileEnd"
-                :visible-slides="3"
-                :slide-ratio="1/4"
-              >
-                <div v-for="slide in slides" :key="slide.id">
-                  <b-carousel-slide
-                    :img-src="`/${slide.slide_images ? slide.slide_images.default_image : ''}`"
-                  ></b-carousel-slide>
-                </div>
-              </b-carousel>
-            </div>
-          </div>
-        </div>
-      </section>
+      <!--/header-bottom-->
     </header>
     <!--/header-->
+    <section id="slider">
+      <!--slider-->
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <b-carousel
+              id="carousel"
+              v-model="slide"
+              :indicator="1110"
+              controls
+              @sliding-start="onSlileStart"
+              @sliding-end="onSlileEnd"
+              :visible-slides="3"
+              :slide-ratio="1/4"
+            >
+              <div v-for="slide in slides" :key="slide.id">
+                <b-carousel-slide
+                  :img-src="`/${slide.slide_images ? slide.slide_images.default_image : ''}`"
+                ></b-carousel-slide>
+              </div>
+            </b-carousel>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--/slider-->
   </div>
 </template>
 <script>
 const Cookies = process.client ? require("js-cookie") : undefined;
 export default {
-  data() {
-    return {
-      cart: [],
-      users: [],
-      user_id: "",
-      user_name: "",
-      slide: 0,
-      sliding: null,
-      infinite: true,
-      slidesToShow: 2,
-      slidesToScroll: 2,
-      slides: [],
-      search: ""
-    };
-  },
-  created() {
-    if (process.browser) {
-      if (Cookies.get("cart")) {
-        let cart = JSON.parse(Cookies.get("cart"));
-        return (this.cart = cart);
-      } else {
-        let cart = this.$store.getters.cart;
-        return (this.cart = cart);
-      }
-    }
-  },
   mounted() {
     if (this.$store.state.token) {
       this.getUsers();
@@ -235,11 +210,36 @@ export default {
     }
     this.getSlides();
   },
+  data() {
+    return {
+      cart: [],
+      users: [],
+      user_id: "",
+      user_name: "",
+      search: "",
+      slide: 0,
+      sliding: null,
+      infinite: true,
+      slidesToShow: 2,
+      slidesToScroll: 2,
+      slides: []
+    };
+  },
+  created() {
+    if (process.browser) {
+      if (localStorage.getItem("cart")) {
+        let cart = JSON.parse(localStorage.getItem("cart"));
+        return (this.cart = cart);
+      } else {
+        let cart = this.$store.getters.cart;
+        return (this.cart = cart);
+      }
+    }
+  },
   methods: {
     getUsers() {
       let self = this;
       this.$axios.get("/users").then(function(res) {
-        console.log("user",res);
         self.user_id = res.data.decoded.user_id;
         self.user_name = res.data.decoded.user_name;
         self.users = res.data.data;
@@ -247,7 +247,7 @@ export default {
     },
     handelLogout() {
       Cookies.remove("token");
-      Cookies.remove("cart");
+      localStorage.removeItem("cart");
       this.$store.commit("setToken", null);
       this.$store.commit("setCart", []);
       this.$router.push("/login");
