@@ -94,7 +94,8 @@
                             <i class="fas fa-sign-out-alt">&nbsp;Đăng xuất</i>
                           </a>
                           <a
-                            class="dropdown-item" href="#"
+                            class="dropdown-item"
+                            href="#"
                             @click="$router.push('/shop/user/detail/'+user_id)"
                           >Tài khoản</a>
                         </div>
@@ -153,14 +154,51 @@
               </div>
             </div>
             <div class="col-sm-3" style="margin-top:-20px">
-              <div class="search_box" style="display:inline; margin-right:30px">
+              <div class="search_box" style="display:inline;">
                 <input type="search" placeholder="Search" />
               </div>
               <div style="display:inline-block; font-size:25px;" v-if="user_id">
-                <a @click="$router.push('/shop/cart')">
-                  <i class="fas fa-shopping-cart"></i>
-                  {{cart.length}}
-                </a>
+                <div>
+                  <b-dropdown>
+                    <template v-slot:button-content>
+                      <a>
+                        <i class="fas fa-shopping-cart"></i>
+                        {{cart.length}}
+                      </a>
+                    </template>
+                    <b-dropdown-item v-if="cart.length == 0">
+                      <template>
+                        <div
+                          class="text-md-center checkout-preview-dropdown__empty p-7"
+                          style="min-width: 250px; height:100px"
+                        >
+                          <span
+                            class="d-block font-weight-bold"
+                            style="margin-top:80px"
+                          >Chưa có sản phẩm</span>
+                          <span class="btn btn-icon btn-soft-primary rounded-circle mb-3">
+                            <span class="fas fa-shopping-basket btn-icon__inner"></span>
+                          </span>
+                        </div>
+                      </template>
+                    </b-dropdown-item>
+                    <b-dropdown-item v-else>
+                      <template >
+                        <div style="border-bottom: 1px solid #fff">
+                          <span style="font-size:20px;margin-right:50px">Giỏ hàng của bạn</span>
+                          <span>{{cart.length}} sản phẩm</span>
+                        </div>
+                        <div v-for="(item,index) in cart" :key="index">
+                          <span >
+                            <img style="width:70px; height:70px" :src="`/${item.images? item.images.default_image: ''}`" />
+                          </span>
+                          <span>{{item.name}}</span>
+                          <span>{{item.price}} đ</span>
+                        </div>
+                      </template>
+                    </b-dropdown-item>
+                  </b-dropdown>
+                </div>
               </div>
             </div>
           </div>
@@ -200,6 +238,18 @@
 <script>
 const Cookies = process.client ? require("js-cookie") : undefined;
 export default {
+  created() {
+    if (process.browser) {
+      if (localStorage.getItem("cart")) {
+        let cart = JSON.parse(localStorage.getItem("cart"));
+        return (this.cart = cart);
+      } else {
+        let cart = this.$store.getters.cart;
+        return (this.cart = cart);
+        console.log(this.cart);
+      }
+    }
+  },
   mounted() {
     if (this.$store.state.token) {
       this.getUsers();

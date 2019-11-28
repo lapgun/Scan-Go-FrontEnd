@@ -47,7 +47,26 @@
                   <h3>{{product.price}} đ</h3>
                   <div>
                     <h4>Số lượng:</h4>
-                    <input type="text" value="3" />
+                    <div class="cart_quantity">
+                      <div class="cart_quantity_button">
+                        <template v-if=" 1 < product.order_time">
+                          <a
+                            class="cart_quantity_down btn btn-success"
+                            @click="decrement(product.id)"
+                          >-</a>
+                        </template>
+                        <template v-else>
+                          <a class="cart_quantity_down btn btn-success">-</a>
+                        </template>
+                        <div style="margin-right:10px; margin-left:10px"
+                          class="cart_quantity_input"
+                          type="text"
+                          autocomplete="off"
+                          size="2"
+                        >{{product.order_time}}</div>
+                        <a class="cart_quantity_up btn btn-success" @click="increment(product.id)">+</a>
+                      </div>
+                    </div>
                     <button type="button" @click="addToCart(product)" class="btn btn-fefault cart">
                       <i class="fa fa-shopping-cart"></i>
                       Thêm vào giỏ hàng
@@ -122,6 +141,7 @@ export default {
   mounted() {
     this.getProducts();
     this.getById();
+    this.totalPrice();
   },
   data: function() {
     return {
@@ -132,7 +152,8 @@ export default {
       sliding: null,
       slidesToShow: 3,
       currentIndex: 0,
-      cart: []
+      cart: [],
+      total: 0
     };
   },
   created() {
@@ -184,6 +205,10 @@ export default {
       this.currentIndex = index;
       console.log("aaaa: ", this.currentIndex);
     },
+    setLocalStorage() {
+      localStorage.setItem("cart", JSON.stringify(this.cart));
+      console.log('aaa',this.cart);
+    },
     addToCart(product) {
       let pro = this.cart.find(element => element.id == product.id);
       if (pro) {
@@ -191,6 +216,27 @@ export default {
       } else this.$store.dispatch("addToCart", product);
       this.$store.dispatch("setCart", this.cart);
       localStorage.setItem("cart", JSON.stringify(this.cart));
+    },
+    increment(id) {
+      for (let i = 0; i < this.cart.length; i++) {
+        if (this.cart[i].id === id) this.cart[i].order_time++;
+      }
+      this.totalPrice();
+      this.setLocalStorage();
+    },
+    decrement(id) {
+      for (let i = 0; i < this.cart.length; i++) {
+        if (this.cart[i].id === id) this.cart[i].order_time--;
+      }
+      this.totalPrice();
+      this.setLocalStorage();
+    },
+    totalPrice() {
+      let total = 0;
+      for (let i = 0; i < this.cart.length; i++) {
+        total += this.cart[i].price * this.cart[i].order_time;
+        this.total = total;
+      }
     }
   }
 };

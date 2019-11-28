@@ -29,7 +29,7 @@
                           alt
                         />
                       </a>
-                      <h2>{{product.price}} đ</h2>
+                      <h2>{{currency(product.price)}}</h2>
                       <p>{{product.name}}</p>
                       <a
                         @click="addToCart(product)"
@@ -114,7 +114,11 @@ export default {
       } else this.$store.dispatch("addToCart", product);
       this.$store.dispatch("setCart", this.cart);
       localStorage.setItem("cart", JSON.stringify(this.cart));
-    }
+    },
+    currency(x) {
+      x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
+      return x;
+    },
   }
 };
 </script>

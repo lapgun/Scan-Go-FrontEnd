@@ -32,7 +32,7 @@
               <tr v-for="(item,index) in cart" :key="index">
                 <td class="cart_product">
                   <a>
-                    <img :src="`/${item.images? item.images.default_image: ''}`" />
+                    <img style="margin-left:-50px" :src="`/${item.images? item.images.default_image: ''}`" />
                   </a>
                 </td>
                 <td class="cart_description">
