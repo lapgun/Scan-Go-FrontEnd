@@ -10,36 +10,59 @@
           <div class="col-sm-9 padding-right">
             <div class="features_items">
               <!--features_items-->
-              <h2 class="title text-center">Features Items</h2>
-              <div v-for="(product,index) in products" :key="index">
-                <div class="col-sm-4">
-                  <div class="product-image-wrapper">
-                    <div class="single-products">
-                      <div class="productinfo text-center">
-                        <img
-                          style="width:250px; height:250px"
-                          :src="`/${product.images? product.images.default_image: ''}`"
-                          alt
-                        />
-                        <h2>${{product.price}}</h2>
-                        <p>{{product.name}}</p>
-                        <a href="#" class="btn btn-default add-to-cart">
-                          <i class="fa fa-shopping-cart"></i>Add to cart
-                        </a>
-                      </div>
-                      <div class="product-overlay">
-                        <div class="overlay-content">
-                          <h2>${{product.price}}</h2>
-                          <p>{{product.name}}</p>
-                          <a
-                            href="#"
-                            class="btn btn-default add-to-cart"
-                            @click="addToCart(product)"
-                          >
-                            <i class="fa fa-shopping-cart"></i>Add to cart
-                          </a>
-                        </div>
-                      </div>
+              <h2 style="margin-top:3px" class="title text-center">Sản phẩm bán chạy nhất</h2>
+              <div class="col-sm-4" v-for="(product,index) in products" :key="index">
+                <div class="product-image-wrapper">
+                  <div class="single-products">
+                    <div class="productinfo text-center">
+                      <img
+                        style="width:250px; height:250px"
+                        :src="`/${product.images ? product.images.default_image : ''}`"
+                        @click="$router.push('/shop/product_detail/'+product.id)"
+                        alt
+                      />
+                      <h2>{{currency(product.price)}}</h2>
+                      <p>{{product.name}}</p>
+                      <qrcode-vue
+                        :value="'http://localhost:3000/shop/product_detail/'+product.id"
+                        size="100"
+                        level="H"
+                      ></qrcode-vue>
+                      <a @click="addToCart(product)" class="btn btn-default add-to-cart">
+                        <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--features_items-->
+            <div class="features_items">
+              <!--features_items-->
+              <h2 style="margin-top:3px" class="title text-center">Sản phẩm mới nhất</h2>
+              <div class="col-sm-4" v-for="(newest,index) in newests" :key="index">
+                <div class="product-image-wrapper">
+                  <div class="single-products">
+                    <div class="productinfo text-center">
+                      <img
+                        style="width:250px; height:250px"
+                        :src="`/${newest.images ? newest.images.default_image : ''}`"
+                        @click="$router.push('/shop/product_detail/'+newest.id)"
+                        alt
+                      />
+                      <h2>{{currency(newest.price)}}</h2>
+                      <p>{{newest.name}}</p>
+                      <qrcode-vue
+                        :value="'http://localhost:3000/shop/product_detail/'+newest.id"
+                        size="100"
+                        level="H"
+                      ></qrcode-vue>
+                      <a
+                        @click="$router.push('/shop/product_detail/'+newest .id)"
+                        class="btn btn-default add-to-cart"
+                      >
+                        <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -53,21 +76,24 @@
   </div>
 </template>
 <script>
+const Cookies = process.client ? require("js-cookie") : undefined;
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
-
+import QrcodeVue from "qrcode.vue";
 export default {
   data() {
     return {
       products: [],
-      cart: []
+      cart: [],
+      newests: []
     };
   },
   components: {
     shopHeader,
     shopFooter,
-    shopNav
+    shopNav,
+    QrcodeVue
   },
   created() {
     if (process.browser) {
@@ -81,13 +107,25 @@ export default {
     }
   },
   mounted() {
-    this.getProducts();
+    this.getByOrderTime();
+    this.getById();
   },
   methods: {
-    getProducts() {
+    currency(x) {
+      x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
+      return x;
+    },
+    getByOrderTime: function() {
       let self = this;
-      this.$axios.get("/products").then(function(res) {
+      this.$axios.get("/products/order_time").then(function(res) {
         self.products = res.data.data;
+      });
+    },
+    getById: function() {
+      let self = this;
+      this.$axios.get("/products/newest").then(function(res) {
+        console.log("aaaa", res);
+        self.newests = res.data.data;
       });
     },
     addToCart(product) {

@@ -68,6 +68,9 @@
             <a @click="$router.push('/orders')">Orders</a>
           </li>
           <li>
+            <a @click="$router.push('/slide')">Slide</a>
+          </li>
+          <li>
             <a @click="$router.push('/user')">Users</a>
           </li>
         </ul>
@@ -98,7 +101,7 @@
               <td>{{index+1}}//{{task.id}}</td>
               <td>{{task.name}}</td>
               <td>{{task.categoriesId}}</td>
-              <td>{{test(task.price)}}</td>
+              <td>{{currency(task.price)}}</td>
               <td>
                 <img
                   style="width:50px; height:50px"
@@ -156,17 +159,23 @@ export default {
     };
   },
   methods: {
-    test(x) {
+    currency(x) {
       x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
       return x;
     },
-    getTasks() {
+    getTasks: function() {
       let self = this;
-      this.$axios.post("/products", this.order_by).then(function(res) {
-        console.log(res);
+      this.$axios.get("/products").then(function(res) {
+        console;
         self.tasks = res.data.data;
+        console.log(res.data.data);
       });
-      // self.pagination.totalPage = res.data.pagination.totalPage;
+    },
+    delTasks: function(id) {
+      let self = this;
+      this.$axios.delete("/products/" + id).then(function(res) {
+        self.getTasks();
+      });
     },
     handleSearch() {
       let self = this;

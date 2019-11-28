@@ -1,6 +1,6 @@
 <template>
   <div>
-    <shopHeader @products="products=$event"></shopHeader>
+    <shopHeader></shopHeader>
     <div id="contact-page" class="container">
       <div class="bg">
         <div class="row">
@@ -119,7 +119,6 @@
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 export default {
-  data: function() {},
   components: {
     shopHeader,
     shopFooter

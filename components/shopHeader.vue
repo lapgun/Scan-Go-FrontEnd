@@ -1,59 +1,6 @@
 <template>
   <div>
     <header id="header">
-      <!--header-->
-      <div class="header_top" style="height:60px">
-        <!--header_top-->
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="contactinfo">
-                <ul class="nav nav-pills">
-                  <li>
-                    <a href="#">0123456789</a>
-                  </li>
-                  <li>
-                    <a href="#">gmail@gmail.com</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="social-icons pull-right">
-                <ul style="margin-top:15px">
-                  <li>
-                    <a href="#">
-                      <i class="fab fa-facebook"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fab fa-twitter"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fab fa-linkedin"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fab fa-dribbble"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fab fa-google-plus"></i>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!--/header_top-->
-
       <div class="header-middle">
         <!--header-middle-->
         <div class="container">
@@ -76,9 +23,9 @@
                   </li>
                   <li>
                     <a
-                      @click="$router.push('/shop/checkout/'+user_id)"
+                      @click="$router.push('/shop/checkout')"
                       style="margin-left: -150px; margin-top:-20px"
-                    >Checkout</a>
+                    >Thanh toán</a>
                   </li>
                   <template v-if="user_id">
                     <li>
@@ -97,10 +44,8 @@
                           aria-labelledby="dropdownMenuButton"
                         >
                           <a class="dropdown-item" @click="handelLogout">
-                            <i class="fas fa-sign-out-alt">&nbsp;Log out</i>
+                            <i class="fas fa-sign-out-alt">&nbsp;Đăng xuất</i>
                           </a>
-                          <a class="dropdown-item" href="#">Another action</a>
-                          <a class="dropdown-item" href="#">Something else here</a>
                         </div>
                       </a>
                     </li>
@@ -131,24 +76,10 @@
               <div class="mainmenu pull-left">
                 <ul class="nav navbar-nav collapse navbar-collapse">
                   <li>
-                    <a @click="$router.push('/')" class="active" style="margin-top:-2px">Home</a>
+                    <a @click="$router.push('/')" class="active">Trang chủ</a>
                   </li>
-                  <li class="dropdown">
-                    <a href="#" style="margin-top:-10px">Shop</a>
-                    <ul role="menu" class="sub-menu">
-                      <li>
-                        <a @click="$router.push('/shop/product')">Products</a>
-                      </li>
-                      <li>
-                        <a @click="$router.push('/shop/checkout/'+user_id)">Checkout</a>
-                      </li>
-                      <li>
-                        <a @click="$router.push('/shop/cart/')">Cart</a>
-                      </li>
-                      <li>
-                        <a @click="$router.push('/login')">Login</a>
-                      </li>
-                    </ul>
+                  <li>
+                    <a @click="$router.push('/shop/products')">Sản Phẩm</a>
                   </li>
                   <li>
                     <a @click="$router.push('/shop/blog')">Blog</a>
@@ -164,7 +95,7 @@
                 <input v-model="search" @change="handleSearch" placeholder="Search" />
               </div>
               <div style="display:inline-block; font-size:25px;" v-if="user_id">
-                <a @click="$router.push('shop/cart')">
+                <a @click="$router.push('/shop/cart')">
                   <i class="fas fa-shopping-cart"></i>
                   {{cart.length}}
                 </a>
@@ -181,75 +112,22 @@
       <div class="container">
         <div class="row">
           <div class="col-sm-12">
-            <div id="slider-carousel" class="carousel slide" data-ride="carousel">
-              <ol class="carousel-indicators">
-                <li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
-                <li data-target="#slider-carousel" data-slide-to="1"></li>
-                <li data-target="#slider-carousel" data-slide-to="2"></li>
-              </ol>
-
-              <div class="carousel-inner">
-                <div class="carousel-item active">
-                  <div class="col-sm-6">
-                    <h1>
-                      <span>E</span>-SHOPPER
-                    </h1>
-                    <h2>Free E-Commerce Template</h2>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                      labore et dolore magna aliqua.
-                    </p>
-                    <button type="button" class="btn btn-default get">Get it now</button>
-                  </div>
-                  <div class="col-sm-6">
-                    <img src="~assets/images/home/girl1.jpg" class="girl img-responsive" alt />
-                    <img src="~assets/images/home/pricing.png" class="pricing" alt />
-                  </div>
-                </div>
-                <div class="carousel-item">
-                  <div class="col-sm-6">
-                    <h1>
-                      <span>E</span>-SHOPPER
-                    </h1>
-                    <h2>100% Responsive Design</h2>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                      labore et dolore magna aliqua.
-                    </p>
-                    <button type="button" class="btn btn-default get">Get it now</button>
-                  </div>
-                  <div class="col-sm-6">
-                    <img src="~assets/images/home/girl2.jpg" class="girl img-responsive" alt />
-                    <img src="~assets/images/home/pricing.png" class="pricing" alt />
-                  </div>
-                </div>
-
-                <div class="carousel-item">
-                  <div class="col-sm-6">
-                    <h1>
-                      <span>E</span>-SHOPPER
-                    </h1>
-                    <h2>Free Ecommerce Template</h2>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                      labore et dolore magna aliqua.
-                    </p>
-                    <button type="button" class="btn btn-default get">Get it now</button>
-                  </div>
-                  <div class="col-sm-6">
-                    <img src="~assets/images/home/girl3.jpg" class="girl img-responsive" alt />
-                    <img src="~assets/images/home/pricing.png" class="pricing" alt />
-                  </div>
-                </div>
+            <b-carousel
+              id="carousel"
+              v-model="slide"
+              :indicator="1110"
+              controls
+              @sliding-start="onSlileStart"
+              @sliding-end="onSlileEnd"
+              :visible-slides="3"
+              :slide-ratio="1/4"
+            >
+              <div v-for="slide in slides" :key="slide.id">
+                <b-carousel-slide
+                  :img-src="`/${slide.slide_images ? slide.slide_images.default_image : ''}`"
+                ></b-carousel-slide>
               </div>
-
-              <a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
-                <i class="fa fa-angle-left"></i>
-              </a>
-              <a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
-                <i class="fa fa-angle-right"></i>
-              </a>
-            </div>
+            </b-carousel>
           </div>
         </div>
       </div>
@@ -260,6 +138,14 @@
 <script>
 const Cookies = process.client ? require("js-cookie") : undefined;
 export default {
+  mounted() {
+    if (this.$store.state.token) {
+      this.getUsers();
+    } else {
+      this.$router.push("/");
+    }
+    this.getSlides();
+  },
   data() {
     return {
       cart: [],
@@ -267,6 +153,12 @@ export default {
       user_id: "",
       user_name: "",
       search: "",
+      slide: 0,
+      sliding: null,
+      infinite: true,
+      slidesToShow: 2,
+      slidesToScroll: 2,
+      slides: []
     };
   },
   created() {
@@ -286,6 +178,7 @@ export default {
     } else {
       this.$router.push("/");
     }
+    this.getSlides();
   },
   methods: {
     getUsers() {
@@ -296,22 +189,34 @@ export default {
         self.users = res.data.data;
       });
     },
-    handleSearch() {
-      let self = this;
-      this.$axios
-        .get("/products/search?search=" + this.search)
-        .then(function(res) {
-          self.products = res.data.data;
-          self.$emit("products", self.products);  
-          self.$router.push('/shop/products?search='+self.search)
-          });
-    },
     handelLogout() {
       Cookies.remove("token");
       localStorage.removeItem("cart");
       this.$store.commit("setToken", null);
       this.$store.commit("setCart", []);
       this.$router.push("/login");
+    },
+    handleSearch() {
+      let self = this;
+      this.$axios
+        .get("/products/search?search=" + this.search)
+        .then(function(res) {
+          self.products = res.data.data;
+          self.$emit("products", self.products);
+          self.$router.push("/shop/products?search=" + self.search);
+        });
+    },
+    onSlileStart(slide) {
+      this.sliding = true;
+    },
+    onSlileEnd(slide) {
+      this.sliding = false;
+    },
+    getSlides() {
+      let self = this;
+      this.$axios.get("/slide").then(function(res) {
+        self.slides = res.data.rows;
+      });
     }
   }
 };
