@@ -106,6 +106,7 @@
               <td>{{order.order_status}}</td>
               <td>{{order.total_price}}</td>
               <td>
+                <b-button variant="success">Confirm</b-button>
                 <b-button @click="$router.push('/orders/detail/'+ order.id)">Detail</b-button>
                 <b-button @click="handleDelete(order.id)" variant="danger">Delete</b-button>
               </td>

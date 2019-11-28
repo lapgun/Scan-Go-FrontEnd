@@ -1,11 +1,11 @@
 <template>
   <div>
-    <shopHeader></shopHeader>
+    <shopHeader />
     <section>
       <div class="container">
         <div class="row">
           <div class="col-sm-3">
-            <shopNav></shopNav>
+            <shopNav />
           </div>
           <div class="col-sm-9 padding-right">
             <div class="features_items">
@@ -62,7 +62,7 @@
         </div>
       </div>
     </section>
-    <shopFooter></shopFooter>
+    <shopFooter />
   </div>
 </template>
 <script>
