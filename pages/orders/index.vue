@@ -100,7 +100,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(order , index) in orders" :key="index">
+          <tr v-for="(order , index) in orders">
             <td>{{index+1}}</td>
             <td>{{order.customerId}}</td>
             <td>{{order.order_status}}</td>
@@ -108,7 +108,7 @@
             <td>
               <b-button variant="success" @click="handelConfirm(order.id)">Confirm</b-button>
               <b-button @click="$router.push('/orders/detail/'+ order.id)">Detail</b-button>
-              <b-button @click="handleDelete(order.id)" variant="danger">Delete</b-button>
+              <b-button @click="handleCancel(order.id)" variant="danger">Cancel</b-button>
             </td>
           </tr>
           </tbody>
@@ -127,6 +127,17 @@
 <script>
     export default {
         mounted: function () {
+            let self = this;
+            socket.on("success-status", function (data) {
+                let orderNew = self.orders.find(element => element.id == data.id);
+                if (orderNew)
+                    orderNew.order_status = data.order
+            });
+            socket.on("success-cancel", function (data) {
+                let orderNew = self.orders.find(element => element.id == data.id);
+                if (orderNew)
+                    orderNew.order_status = data.order
+            });
             this.getOrders();
             this.getAdmins();
         },
@@ -165,13 +176,6 @@
                         self.pagination = res.data.pagination;
                     });
             },
-            handleDelete: function (id) {
-                let self = this;
-                this.$axios.delete("/orders/" + id).then(function (res) {
-                    console.log(res);
-                    self.getOrders();
-                });
-            },
             handleSearch: function () {
                 this.getOrders();
             },
@@ -182,13 +186,27 @@
             getAdmins: function () {
                 let self = this;
                 this.$axios.get("/users").then(function (res) {
-                    console.log(res);
                     self.user_id = res.data.decoded.user_id;
                     self.users = res.data.data;
                 });
             },
-            handelConfirm(id){
-
+            handelConfirm(id) {
+                let self = this;
+                this.$axios.put("/orders/confirm/" + id).then(function (res) {
+                    let order = self.orders.find(element => element.id == id);
+                    if (order)
+                        order.order_status = 1;
+                    socket.emit("update-status", {order: order.order_status, id: id});
+                })
+            },
+            handleCancel: function (id) {
+                let self = this;
+                this.$axios.put("/orders/cancel/" + id).then(function (res) {
+                    let order = self.orders.find(element => element.id == id);
+                    if (order)
+                        order.order_status = 2;
+                    socket.emit("cancel-order", {order: order.order_status, id: id});
+                })
             },
             handleLogout: function () {
                 Cookie.remove("token");
@@ -196,5 +214,6 @@
                 this.$router.push("/login");
             }
         }
-    };
+    }
+
 </script>

@@ -32,14 +32,12 @@
     <vue-ckeditor
       type="classic"
       v-model="form.description"
-      :editors="editors"
       class="form-control"
       placeholder="Enter your product description"
     ></vue-ckeditor>Detail:
     <vue-ckeditor
       type="classic"
       v-model="form.detail"
-      :editors="editors"
       class="form-control"
       placeholder="Enter your product description"
     ></vue-ckeditor>Oder time:
@@ -88,7 +86,6 @@ export default {
           });
         });
       });
-      console.log(self.options);
     },
     getDetail: function() {
       let self = this;
@@ -101,7 +98,8 @@ export default {
       this.$axios
         .put("/products/" + this.form.id, this.form)
         .then(function(res) {
-          self.$router.push("/products");
+            console.log(res);
+            self.$router.push("/products");
         });
     }
   }

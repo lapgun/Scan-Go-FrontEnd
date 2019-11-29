@@ -25,6 +25,8 @@
                     <tr v-for="(order,index) in orders">
                       <td>{{index++}}</td>
                       <td v-if="order.order_status == 0">Đang chờ xử lí</td>
+                      <td v-if="order.order_status == 1">Đã xử lí</td>
+                      <td v-if="order.order_status == 2">Đã hủy đơn hàng</td>
                       <td>{{order.total_price}}</td>
                       <td><b-button variant="danger" @>Hủy đơn hàng</b-button></td>
                     </tr>
@@ -54,6 +56,17 @@
             shopUser
         },
         mounted: function () {
+            let self = this;
+            socket.on("success-status", function (data) {
+                let orderNew = self.orders.find(element => element.id == data.id);
+                if (orderNew)
+                    orderNew.order_status = data.order
+            });
+            socket.on("success-cancel", function (data) {
+                let orderNew = self.orders.find(element => element.id == data.id);
+                if (orderNew)
+                    orderNew.order_status = data.order
+            });
             this.getOrders();
         },
         data: function () {
@@ -65,7 +78,6 @@
             getOrders: function () {
                 let self = this;
                 this.$axios.get("/orders/customerId/" + this.$route.params.id).then(function (res) {
-                    console.log("ádsadasda", res);
                     self.orders = res.data.rows
                 });
             }

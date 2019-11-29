@@ -119,11 +119,11 @@
     <shopFooter></shopFooter>
   </div>
 </template>
+
 <script>
     const Cookies = process.client ? require("js-cookie") : undefined;
     import shopHeader from "~/components/shopHeader.vue";
     import shopFooter from "~/components/shopFooter.vue";
-
     export default {
         created() {
             if (process.browser) {
@@ -133,7 +133,6 @@
                 } else {
                     let cart = this.$store.getters.cart;
                     return (this.cart = cart);
-                    console.log(this.cart);
                 }
             }
         },
