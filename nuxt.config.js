@@ -74,6 +74,10 @@ export default {
         {
             src: '~/plugins/vue-ckeditor5.js',
             mode: 'client'
+        },
+        {
+            src: '~/plugins/vue-infinite-loading.js',
+            mode: 'client'
         }
     ],
 

@@ -11,10 +11,15 @@
             <div class="features_items">
               <!--features_items-->
               <h2 class="title text-center">Sản phẩm</h2>
-              <div>
+              <div style="margin-left:570px">
+                Sắp xếp theo
                 <label>
-                  Sắp xếp theo
-                  <b-form-select v-model="order_by" :options="order" @change="getProducts"></b-form-select>
+                  <b-form-select
+                    style="display:inline"
+                    v-model="order_by"
+                    :options="order"
+                    @change="getProducts"
+                  ></b-form-select>
                 </label>
               </div>
 
