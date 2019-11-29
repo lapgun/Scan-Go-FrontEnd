@@ -80,7 +80,7 @@
         <div>
           <label>
             Sắp xếp theo
-            <b-form-select v-model="order_by" :options="order" @change="getTasks"></b-form-select>
+            <b-form-select v-model="order_by" :options="order" @change="getProductsByOrder"></b-form-select>
           </label>
         </div>
         <table id="my-table" class="table table-bordered">
@@ -97,57 +97,58 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(task,index) in tasks" :key="index">
-              <td>{{index+1}}//{{task.id}}</td>
-              <td>{{task.name}}</td>
-              <td>{{task.categoriesId}}</td>
-              <td>{{currency(task.price)}}</td>
+            <tr v-for="(product,index) in products" :key="index">
+              <td>{{index+1}}//{{product.id}}</td>
+              <td>{{product.name}}</td>
+              <td>{{product.categoriesId}}</td>
+              <td>{{currency(product.price)}}</td>
               <td>
                 <img
                   style="width:50px; height:50px"
-                  :src="`/${task.images ? task.images.default_image: ''}`"
+                  :src="`/${product.images ? product.images.default_image: ''}`"
                 />
               </td>
               <td>
-                <b-button v-b-toggle="'a-'+task.id" class="m-1">Show</b-button>
-                <b-collapse :id="'a-'+task.id">
-                  <div v-html="task.description"></div>
+                <b-button v-b-toggle="'a-'+product.id" class="m-1">Show</b-button>
+                <b-collapse :id="'a-'+product.id">
+                  <div v-html="product.description"></div>
                 </b-collapse>
               </td>
               <td>
-                <b-button v-b-toggle="'b-'+task.id" class="m-1">show</b-button>
-                <b-collapse :id="'b-'+task.id">
+                <b-button v-b-toggle="'b-'+product.id" class="m-1">show</b-button>
+                <b-collapse :id="'b-'+product.id">
                   <b-card>
-                    <div v-html="task.detail"></div>
+                    <div v-html="product.detail"></div>
                   </b-card>
                 </b-collapse>
               </td>
               <td>
-                <b-button @click="$router.push('/products/details/'+task.id)">Details</b-button>
-                <b-button variant="info" @click="$router.push('/products/edit/'+task.id)">Update</b-button>
-                <b-button variant="danger" @click="delTasks(task.id)">Delete</b-button>
+                <b-button @click="$router.push('/products/details/'+product.id)">Details</b-button>
+                <b-button variant="info" @click="$router.push('/products/edit/'+product.id)">Update</b-button>
+                <b-button variant="danger" @click="delTasks(product.id)">Delete</b-button>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
+    <infinite-loading @infinite="infiniteHandler"></infinite-loading>
   </div>
 </template>
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
-
+import InfiniteLoading from "vue-infinite-loading";
 export default {
+  components: {
+    InfiniteLoading
+  },
   mounted: function() {
-    this.getTasks();
+    this.getProducts();
   },
   data: function() {
     return {
-      tasks: [],
       search: "",
-      user_id: "",
-      users: [],
-      order_by: ["id", "ASC"],
+      products: [],
       order: [
         { value: ["name", "ASC"], text: "Tên từ A-Z" },
         { value: ["name", "DESC"], text: "Tên từ Z-A" },
@@ -155,7 +156,13 @@ export default {
         { value: ["price", "DESC"], text: "Giá tiền giảm dần" },
         { value: ["id", "DESC"], text: "Mới nhất" },
         { value: ["id", "ASC"], text: "Cũ nhất" }
-      ]
+      ],
+      order_by: ["name", "ASC"],
+      pagination: {
+        currentPage: 1,
+        perPage: 10,
+        totalPage: ""
+      }
     };
   },
   methods: {
@@ -163,13 +170,43 @@ export default {
       x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
       return x;
     },
-    getTasks: function() {
+    getProducts: function() {
       let self = this;
-      this.$axios.get("/products").then(function(res) {
-        console;
-        self.tasks = res.data.data;
-        console.log(res.data.data);
-      });
+      this.$axios
+        .post(
+          "/products/sort?currentPage=" +
+            this.pagination.currentPage +
+            "&perPage=" +
+            this.pagination.perPage,
+          this.order_by
+        )
+        .then(function(res) {
+          console.log(res);
+          let temp = res.data.data;
+          self.products = self.products.concat(temp);
+          self.pagination.totalPage = res.data.pagination.totalPage;
+        });
+    },
+    getProductsByOrder(){
+      let self=this
+      self.products = []
+      this.pagination.currentPage = 1
+      this.getProducts();
+    },
+    infiniteHandler($state) {
+      setTimeout(() => {
+        this.pagination.currentPage++;
+        if (this.pagination.currentPage <= this.pagination.totalPage) {
+          console.log(this.pagination.currentPage);
+          console.log(this.pagination.totalPage);
+          this.getProducts();
+          setTimeout(() => {
+            $state.loaded();
+          }, 1000);
+        } else {
+          console.log("no more data");
+        }
+      }, 1000);
     },
     delTasks: function(id) {
       let self = this;

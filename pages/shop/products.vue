@@ -42,7 +42,7 @@
               <div v-else>
                 <label>
                   Sắp xếp theo
-                  <b-form-select v-model="order_by" :options="order" @change="getProducts"></b-form-select>
+                  <b-form-select v-model="order_by" :options="order" @change="getProductsByOrder"></b-form-select>
                 </label>
                 <div class="col-sm-4" v-for="(product, index) in products" :key="index">
                   <div class="product-image-wrapper">
@@ -162,6 +162,12 @@ export default {
           self.products = self.products.concat(temp);
           self.pagination.totalPage = res.data.pagination.totalPage;
         });
+    },
+    getProductsByOrder(){
+      let self=this
+      self.products = []
+      this.pagination.currentPage = 1
+      this.getProducts();
     },
     addToCart(product) {
       let pro = this.cart.find(element => element.id == product.id);

@@ -49,9 +49,12 @@
                           <template v-else>
                             <a class="cart_quantity_down btn btn-success">-</a>
                           </template>
-                          <div class="cart_quantity_input" type="text" autocomplete="off" size="2">
-                            {{item.order_time}}
-                          </div>
+                          <div
+                            class="cart_quantity_input"
+                            type="text"
+                            autocomplete="off"
+                            size="2"
+                          >{{item.order_time}}</div>
                           <a class="cart_quantity_up btn btn-success" @click="increment(item.id)">+</a>
                         </div>
                       </td>
