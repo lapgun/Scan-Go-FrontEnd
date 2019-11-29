@@ -173,7 +173,7 @@
                         <div style="border: 1px solid #c1bbbb ; margin:15px 0px 15px 0px"></div>
                         <div v-for="(item,index) in cart" :key="index">
                           <img
-                            style="width:70px; height:70px"
+                            style="width:70px; height:70px; margin-bottom:10px"
                             :src="`/${item.images? item.images.default_image: ''}`"
                           />
                           <span class="item_name">{{item.name}}</span>

@@ -27,6 +27,7 @@
     "js-cookie": "^2.2.1",
     "nuxt": "^2.0.0",
     "qrcode.vue": "^1.7.0",
+    "socket.io": "^2.3.0",
     "v-infinite-scroll": "^1.0.4",
     "vee-validate": "^3.0.11",
     "vue-ckeditor5": "^0.4.1",

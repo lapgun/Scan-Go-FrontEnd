@@ -78,6 +78,10 @@ export default {
         {
             src: '~/plugins/vue-infinite-loading.js',
             mode: 'client'
+        },
+        {
+            src: "~/plugins/vue-socket",
+            mode: 'client'
         }
     ],
 

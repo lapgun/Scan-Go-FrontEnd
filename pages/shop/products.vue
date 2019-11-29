@@ -11,40 +11,72 @@
             <div class="features_items">
               <!--features_items-->
               <h2 class="title text-center">Sản phẩm</h2>
-              <div style="margin-left:570px">
-                Sắp xếp theo
-                <label>
-                  <b-form-select
-                    style="display:inline"
-                    v-model="order_by"
-                    :options="order"
-                    @change="getProducts"
-                  ></b-form-select>
-                </label>
-              </div>
-
-              <div class="col-sm-4" v-for="(product, index) in products" :key="index">
-                <div class="product-image-wrapper">
-                  <div class="single-products">
-                    <div class="productinfo text-center">
-                      <a @click="$router.push('/shop/product_detail/'+product.id)">
-                        <img
-                          style="width:250px; height:250px"
-                          :src="`/${product.images? product.images.default_image: ''}`"
-                          alt
-                        />
-                      </a>
-                      <h2>{{currency(product.price)}}</h2>
-                      <p>{{product.name}}</p>
-                      <a
-                        @click="addToCart(product)"
-                        class="btn btn-default add-to-cart"
-                      >
-                        <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
-                      </a>
+              <div v-if="this.$route.query.search">
+                <h4>Có {{result}} kết quả với từ khóa '{{this.$route.query.search}}'</h4>
+                <div class="col-sm-4" v-for="(product, index) in products" :key="index">
+                  <div class="product-image-wrapper">
+                    <div class="single-products">
+                      <div class="productinfo text-center">
+                        <a @click="$router.push('/shop/product_detail/'+product.id)">
+                          <img
+                            style="width:250px; height:250px"
+                            :src="`/${product.images? product.images.default_image: ''}`"
+                            alt
+                          />
+                        </a>
+                        <h2>{{currency(product.price)}}</h2>
+                        <p>{{product.name}}</p>
+                        <qrcode-vue
+                          :value="'http://localhost:3000/shop/product_detail/'+product.id"
+                          size="100"
+                          level="H"
+                        ></qrcode-vue>
+                        <a @click="addToCart(product)" class="btn btn-default add-to-cart">
+                          <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>
+              </div>
+              <div v-else>
+                <div style="margin-left:520px; margin-bottom:30px">
+                  Sắp xếp theo thứ tự :
+                  <label>
+                    <b-form-select
+                      style="display:inline"
+                      v-model="order_by"
+                      :options="order"
+                      @change="getTasksByOder"
+                    ></b-form-select>
+                  </label>
+                </div>
+                <div class="col-sm-4" v-for="(product, index) in products" :key="index">
+                  <div class="product-image-wrapper">
+                    <div class="single-products">
+                      <div class="productinfo text-center">
+                        <a @click="$router.push('/shop/product_detail/'+product.id)">
+                          <img
+                            style="width:250px; height:250px"
+                            :src="`/${product.images? product.images.default_image: ''}`"
+                            alt
+                          />
+                        </a>
+                        <h2>{{currency(product.price)}}</h2>
+                        <p>{{product.name}}</p>
+                        <qrcode-vue
+                          :value="'http://localhost:3000/shop/product_detail/'+product.id"
+                          size="100"
+                          level="H"
+                        ></qrcode-vue>
+                        <a @click="addToCart(product)" class="btn btn-default add-to-cart">
+                          <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <infinite-loading @infinite="infiniteHandler"></infinite-loading>
               </div>
             </div>
           </div>
@@ -58,6 +90,8 @@
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
+import InfiniteLoading from "vue-infinite-loading";
+import QrcodeVue from "qrcode.vue";
 export default {
   created() {
     if (process.browser) {
@@ -75,7 +109,8 @@ export default {
       this.handleSearch();
     } else {
       this.getProducts();
-    }
+    };
+    this.getTasksByOder()
   },
   data: function() {
     return {
@@ -89,12 +124,20 @@ export default {
         { value: ["id", "ASC"], text: "Cũ nhất" }
       ],
       order_by: ["name", "ASC"],
+      result: "",
+      pagination: {
+        currentPage: 1,
+        perPage: 6,
+        totalPage: ""
+      },
     };
   },
   components: {
     shopHeader,
     shopFooter,
-    shopNav
+    shopNav,
+    InfiniteLoading,
+    QrcodeVue
   },
   methods: {
     currency(x) {
@@ -106,15 +149,33 @@ export default {
       this.$axios
         .get("/products/search?search=" + this.$route.query.search)
         .then(function(res) {
+          console.log(res);
           self.products = res.data.data;
+          self.result = res.data.data.length;
         });
     },
     getProducts: function() {
       let self = this;
-      this.$axios.post("/products/sort", this.order_by).then(function(res) {
-        console.log(res);
-        self.products = res.data.data;
-      });
+      this.$axios
+        .post(
+          "/products/sort?currentPage=" +
+            this.pagination.currentPage +
+            "&perPage=" +
+            this.pagination.perPage,
+          this.order_by
+        )
+        .then(function(res) {
+          console.log(res);
+          let temp = res.data.data;
+          self.products = self.products.concat(temp);
+          self.pagination.totalPage = res.data.pagination.totalPage;
+        });
+    },
+    getTasksByOder(){
+      let self = this
+      self.products = []
+      this.pagination.currentPage = 1
+      this.getProducts()
     },
     addToCart(product) {
       let pro = this.cart.find(element => element.id == product.id);
@@ -124,10 +185,21 @@ export default {
       this.$store.dispatch("setCart", this.cart);
       localStorage.setItem("cart", JSON.stringify(this.cart));
     },
-    currency(x) {
-      x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
-      return x;
-    },
+    infiniteHandler($state) {
+      setTimeout(() => {
+        this.pagination.currentPage++;
+        if (this.pagination.currentPage <= this.pagination.totalPage) {
+          console.log(this.pagination.currentPage);
+          console.log(this.pagination.totalPage);
+          this.getProducts();
+          setTimeout(() => {
+            $state.loaded();
+          }, 1000);
+        } else {
+          console.log("no more data");
+        }
+      }, 1000);
+    }
   }
 };
 </script>

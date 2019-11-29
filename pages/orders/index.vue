@@ -154,7 +154,7 @@ export default {
         .get(
           "/orders?search=" +
             this.search +
-            "&currentPage=" +
+            "&page=" +
             this.pagination.currentPage +
             "&perPage=" +
             this.pagination.perPage

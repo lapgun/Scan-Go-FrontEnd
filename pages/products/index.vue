@@ -77,10 +77,10 @@
       </div>
       <div class="col-sm-8 col-lg-10 sidebar">
         <b-button variant="success" @click="$router.push('/products/create')">Create new task</b-button>
-        <div>
+        <div style="margin-left:1300px">
+          Sắp xếp theo
           <label>
-            Sắp xếp theo
-            <b-form-select v-model="order_by" :options="order" @change="getTasks"></b-form-select>
+            <b-form-select v-model="order_by" :options="order" @change="getProducts"></b-form-select>
           </label>
         </div>
         <table id="my-table" class="table table-bordered">
@@ -130,6 +130,13 @@
             </tr>
           </tbody>
         </table>
+        <b-pagination
+          v-model="pagination.currentPage"
+          :total-rows="pagination.total"
+          :per-page="pagination.perPage"
+          aria-controls="my-table"
+          @change="handleChange"
+        ></b-pagination>
       </div>
     </div>
   </div>
@@ -139,7 +146,7 @@ const Cookie = process.client ? require("js-cookie") : undefined;
 
 export default {
   mounted: function() {
-    this.getTasks();
+    this.getProducts();
   },
   data: function() {
     return {
@@ -155,7 +162,13 @@ export default {
         { value: ["price", "DESC"], text: "Giá tiền giảm dần" },
         { value: ["id", "DESC"], text: "Mới nhất" },
         { value: ["id", "ASC"], text: "Cũ nhất" }
-      ]
+      ],
+      result: "",
+      pagination: {
+        currentPage: 1,
+        perPage: 10
+      },
+      totalResult: 0
     };
   },
   methods: {
@@ -163,38 +176,47 @@ export default {
       x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
       return x;
     },
-    getTasks: function() {
+    getProducts() {
       let self = this;
-      this.$axios.get("/products").then(function(res) {
-        console;
-        self.tasks = res.data.data;
-      });
-    },
-    delTasks: function(id) {
-      let self = this;
-      this.$axios.delete("/products/" + id).then(function(res) {
-        self.getTasks();
-      });
+      this.$axios
+        .post(
+          "/products/sort?page=" +
+            this.pagination.currentPage +
+            "&perPage=" +
+            this.pagination.perPage,
+          this.order_by
+        )
+        .then(function(res) {
+          console.log(res);
+          self.tasks = res.data.data;
+          self.pagination = res.data.pagination;
+        });
     },
     handleSearch() {
       let self = this;
       this.$axios
         .get("/products/search?search=" + this.search)
         .then(function(res) {
+          console.log(res);
           self.tasks = res.data.data;
+          self.result = res.data.data.length;
         });
     },
-    handleLogout: function() {
+    handleLogout() {
       Cookie.remove("token");
       localStorage.removeItem("cart");
       this.$store.commit("setToken", null);
       this.$router.push("/login");
     },
-    delTasks: function(id) {
+    delTasks(id) {
       let self = this;
       this.$axios.delete("/products/" + id).then(function(res) {
         self.getTasks();
       });
+    },
+    handleChange(page) {
+      this.pagination.currentPage = page
+      this.getProducts()
     }
   }
 };
