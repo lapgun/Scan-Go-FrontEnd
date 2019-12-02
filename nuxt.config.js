@@ -6,8 +6,8 @@ export default {
   head: {
     title: process.env.npm_package_name || "",
     meta: [
-      {charset: "utf-8"},
-      {name: "viewport", content: "width=device-width, initial-scale=1"},
+      { charset: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
       {
         hid: "description",
         name: "description",
@@ -15,30 +15,33 @@ export default {
       }
     ],
 
-    link: [{rel: "icon", type: "image/x-icon", href: "/favicon.ico"}],
-    script: [{
-      src: [
-        "~/assets/js/bootstrap.min.js",
-        "~/assets/js/contact.js",
-        "~/assets/js/gmaps.js",
-        "~/assets/js/html5shiv.js",
-        "~/assets/js/jquery.js",
-        "~/assets/js/main.js",
-        "~/assets/js/price-range.js",
-        "~/assets/js/jquery.prettyPhoto.js",
-        "~/assets/js/jquery.scrollUp.min.js"
-      ]
-    },
+    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+    script: [
+      {
+        src: [
+          "~/assets/js/bootstrap.min.js",
+          "~/assets/js/contact.js",
+          "~/assets/js/gmaps.js",
+          "~/assets/js/html5shiv.js",
+          "~/assets/js/jquery.js",
+          "~/assets/js/main.js",
+          "~/assets/js/price-range.js",
+          "~/assets/js/jquery.prettyPhoto.js",
+          "~/assets/js/jquery.scrollUp.min.js"
+        ]
+      },
       {
         src: "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js",
         type: "text/javascript"
       },
       {
-        src: "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js",
+        src:
+          "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js",
         type: "text/javascript"
       },
       {
-        src: "https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js",
+        src:
+          "https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js",
         type: "text/javascript"
       }
     ]
@@ -46,7 +49,7 @@ export default {
   /*
    ** Customize the progress-bar color
    */
-  loading: {color: "#fff"},
+  loading: { color: "#fff" },
   /*
 
    ** Global CSS
@@ -58,7 +61,7 @@ export default {
     "~/assets/css/animate.css",
     "~/assets/css/main.css",
     "~/assets/css/price-range.css",
-    "~/assets/css/responsive.css",
+    "~/assets/css/responsive.css"
   ],
   /*
    ** Plugins to load before mounting the App
@@ -67,15 +70,16 @@ export default {
     "~/plugins/axios",
     "~/plugins/v-validate",
     {
-      src : "~/plugins/vue-socket",
-      mode : 'client'
+      src: "~/plugins/vue-ckeditor5.js",
+      mode: "client"
     },
+    { src: "~/plugins/paypal.js", ssr: false },
+    { src: "~/plugins/vue-socket", mode: "client" },
     {
-      src: '~/plugins/vue-ckeditor5.js',
-      mode: 'client'
+      src: "~/plugins/vue-ckeditor5.js",
+      mode: "client"
     }
   ],
-
 
   /*
    ** Nuxt.js dev-modules
@@ -104,7 +108,6 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {
-    }
+    extend(config, ctx) {}
   }
-}
+};

@@ -22,7 +22,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(order,index) in orders">
+                    <tr v-for="(order,index) in orders" :key="index">
                       <td>{{index++}}</td>
                       <td v-if="order.order_status == 0">Đang chờ xử lí</td>
                       <td v-if="order.order_status == 1">Đã xử lí</td>
