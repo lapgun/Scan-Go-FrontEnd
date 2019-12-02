@@ -106,6 +106,10 @@
             <div style="font-size:16px" v-html="product.detail"></div>
             <img class="img_detail" :src="`/${product.images? product.images.image_1 : ''}`" />
 
+            <div style="border:1px solid #bfbfbf">
+              <h3 style="margin-left:30px;">Đánh giá sản phẩm</h3>
+            </div>
+
             <h2 style="margin-top:100px" class="title text-center">Sản phẩm mới nhất</h2>
             <div class="col-sm-4" v-for="(product,index) in products" :key="index">
               <div class="product-image-wrapper">
@@ -208,11 +212,9 @@ export default {
     },
     activateImage(index) {
       this.currentIndex = index;
-      console.log("aaaa: ", this.currentIndex);
     },
     setLocalStorage() {
       localStorage.setItem("cart", JSON.stringify(this.cart));
-      console.log('aaa',this.cart);
     },
     addToCart(product) {
       let pro = this.cart.find(element => element.id == product.id);
@@ -223,15 +225,18 @@ export default {
       localStorage.setItem("cart", JSON.stringify(this.cart));
     },
     increment(id) {
-      for (let i = 0; i < this.cart.length; i++) {
-        if (this.cart[i].id === id) this.cart[i].order_time++;
+      console.log("dasdsa", id, this.products);
+
+      for (let i = 0; i < this.products.length; i++) {
+        if (this.products[i].id === id) 
+        this.products[i].order_time++;
       }
       this.totalPrice();
       this.setLocalStorage();
     },
     decrement(id) {
-      for (let i = 0; i < this.cart.length; i++) {
-        if (this.cart[i].id === id) this.cart[i].order_time--;
+      for (let i = 0; i < this.products.length; i++) {
+        if (this.products[i].id === id) this.products[i].order_time--;
       }
       this.totalPrice();
       this.setLocalStorage();

@@ -40,13 +40,13 @@
                     <a href>{{item.name}}</a>
                   </h4>
                 </td>
-                <td class="cart_price">
-                  <p>{{currency(item.price)}}</p>
-                </td>
                 <td class="cart_quantity">
                   <div class="cart_quantity_button">
                     <p>{{item.order_time}}</p>
                   </div>
+                </td>
+                <td class="cart_price">
+                  <p>{{currency(item.price)}}</p>
                 </td>
                 <td class="cart_total">
                   <p class="cart_total_price">{{currency(item.price * item.order_time)}}</p>
