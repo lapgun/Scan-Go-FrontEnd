@@ -71,10 +71,10 @@
           <li>
             <a @click="$router.push('/slide')">Slide</a>
           </li>
-           <li>
+          <li class="active">
             <a @click="$router.push('/comment')">Comment</a>
           </li>
-          <li class="active">
+          <li>
             <a @click="$router.push('/user')">Users</a>
           </li>
         </ul>
@@ -83,30 +83,24 @@
         <table class="table table-bordered">
           <thead>
             <tr>
-              <th>id</th>
+              <th>STT</th>
+              <th>UserId</th>
               <th>Name</th>
-              <th>Email</th>
-              <th>Address</th>
-              <th>Action</th>
+              <th>Comment</th>
+              <th>Rate</th>
+              <th>ParentId</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(user, index) in users" :key="index">
-              <td>{{user.id}}</td>
-              <td>{{user.name}}</td>
-              <td>{{user.email}}</td>
-              <td>{{user.address}}</td>
+            <tr v-for="(comment , index) in comments" :key="index">
+              <td>{{index+1}}</td>
+              <td>{{comment.userId}}</td>
+              <td>{{comment.user.name}}</td>
               <td>
-                <button
-                  class="btn btn-danger"
-                  v-show="user_id == user.id "
-                  @click="handelDelete(user.id)"
-                >Delete</button>
-                <button
-                  class="btn btn-secondary"
-                  @click="$router.push('/user/detail/'+user_id)"
-                >Detail</button>
+                {{comment.comment}}
               </td>
+              <td>{{comment.rate}}</td>
+              <td>{{comment.parentId}}</td>
             </tr>
           </tbody>
         </table>
@@ -115,38 +109,30 @@
   </div>
 </template>
 <script>
-const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
-  middleware: "authenticated",
-  mounted : function(){
-    this.getUsers();
+  mounted: function() {
+    this.getSlides();
   },
-  data : function() {
+  data: function() {
     return {
-      users: [],
-      user_id: ""
+      comments:[],
+      search: "",
+      totalResult: 0,
+      pagination: {
+        currentPage: 1,
+        perPage: 10
+      },
     };
   },
   methods: {
-    getUsers: function() {
+    getSlides() {
       let self = this;
-      this.$axios.get("/users").then(function(res) {
-        self.user_id = res.data.decoded.user_id;
-        self.users = res.data.data;
+      this.$axios.get("/comment").then(function(res) {
+          console.log('dfhjkjh',res)
+        self.comments = res.data.data;
       });
     },
-    handelDelete(id) {
-      let self = this;
-      this.$axios.delete("/users/" + id).then(function(res) {
-        if (res.data.error) {
-          alert(res.data.message);
-        } else {
-          alert(res.data.message);
-          self.getUsers();
-        }
-      });
-    },
-    handleLogout: function() {
+    handleLogout() {
       Cookie.remove("token");
       this.$store.commit("setToken", null);
       this.$router.push("/login");

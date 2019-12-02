@@ -71,6 +71,9 @@
           <li class="active">
             <a @click="$router.push('/slide')">Slide</a>
           </li>
+           <li>
+            <a @click="$router.push('/comment')">Comment</a>
+          </li>
           <li>
             <a @click="$router.push('/user')">Users</a>
           </li>
@@ -128,7 +131,6 @@ export default {
     getSlides: function() {
       let self = this;
       this.$axios.get("/slide").then(function(res) {
-        console.log(res);
         self.slides = res.data.rows;
       });
     },

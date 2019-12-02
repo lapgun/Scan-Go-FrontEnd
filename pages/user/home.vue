@@ -76,6 +76,9 @@
           <a @click="$router.push('/slide')">Slide</a>
         </li>
         <li>
+          <a @click="$router.push('/comment')">Comment</a>
+        </li>
+        <li>
           <a @click="$router.push('/user')">Users</a>
         </li>
       </ul>

@@ -82,7 +82,6 @@ export default {
           });
         });
       });
-      console.log(self.options);
     },
     getDetail() {
       let self = this;
@@ -95,8 +94,8 @@ export default {
       this.$axios
         .put("/products/" + this.form.id, this.form)
         .then(function(res) {
-          console.log(res)
-          self.$router.push("/products");
+            console.log(res);
+            self.$router.push("/products");
         });
     }
   }

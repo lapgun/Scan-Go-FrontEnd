@@ -92,7 +92,7 @@
                             class="dropdown-item"
                             href="#"
                             @click="$router.push('/shop/user/detail/'+user_id)"
-                          >Tài khoản</a>
+                          >Trang cá nhân</a>
                         </div>
                       </a>
                     </li>
@@ -303,6 +303,8 @@ export default {
         self.user_id = res.data.decoded.user_id;
         self.user_name = res.data.decoded.user_name;
         self.users = res.data.data;
+        self.$emit("user_id", self.user_id);
+        console.log(self.user_id)
       });
     },
     handelLogout() {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <shopHeader @products="products=$event"></shopHeader>
+    <shopHeader @user_id="user_id=$event" />
     <section>
       <div class="container">
         <div class="row">
@@ -58,7 +58,8 @@
                         <template v-else>
                           <a class="cart_quantity_down btn btn-success">-</a>
                         </template>
-                        <div style="margin-right:10px; margin-left:10px"
+                        <div
+                          style="margin-right:10px; margin-left:10px"
                           class="cart_quantity_input"
                           type="text"
                           autocomplete="off"
@@ -97,7 +98,6 @@
                 </div>
                 <!--/product-information-->
               </div>
-              
             </div>
             <h2 style="margin-top:10px" class="title text-center">Mô tả sản phẩm</h2>
             <div style="font-size:16px" v-html="product.description"></div>
@@ -105,11 +105,71 @@
             <h2 style="margin-top:100px" class="title text-center">Thông tin sản phẩm</h2>
             <div style="font-size:16px" v-html="product.detail"></div>
             <img class="img_detail" :src="`/${product.images? product.images.image_1 : ''}`" />
-
-            <div style="border:1px solid #bfbfbf">
-              <h3 style="margin-left:30px;">Đánh giá sản phẩm</h3>
+            
+            <h2 style="margin-top:10px" class="title text-center">Đánh giá sản phẩm</h2>
+            <div>
+              <div
+                style="border:1px solid #bfbfbf; width:200px; height:50px ; float:right ;margin-top:-42px"
+              >
+                <i style="margin-top:15px;margin-left:20px" class="fas fa-pen"></i>
+                <label for="viet_bai_danh_gia">
+                  <h4 style="margin-top:5px;display:inline">Viết bài đánh giá</h4>
+                </label>
+              </div>
+              <input
+                type="text"
+                style="width:100%; margin-top:30px"
+                @change="handleSubmit"
+                v-model="form.comment"
+                id="viet_bai_danh_gia"
+                placeholder="Viết bài đánh giá..."
+              />
+              <div>
+                <div style="border:1px solid #bfbfbf; margin:15px 5px 0 5px;background:#f9ede5">
+                  <ul class="nav menu" style="margin:30px 0 30px 0">
+                    <li style="margin:0 0 0 20px">
+                      <span>5.0 trên 5</span>
+                      <div>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                      </div>
+                    </li>
+                    <li class="rating">
+                      <a href="#" style="padding-left:20px">Tất cả</a>
+                    </li>
+                    <li class="rating_1">
+                      <a href="#" style="padding-left:20px">Bình luận</a>
+                    </li>
+                    <li class="rating">
+                      <a href="#" style="padding-left:25px">5 sao</a>
+                    </li>
+                     <li class="rating">
+                      <a href="#" style="padding-left:25px">4 sao</a>
+                    </li>
+                     <li class="rating">
+                      <a href="#" style="padding-left:25px">3 sao</a>
+                    </li>
+                     <li class="rating">
+                      <a href="#" style="padding-left:25px">2 sao</a>
+                    </li>
+                     <li class="rating">
+                      <a href="#" style="padding-left:25px">1 sao</a>
+                    </li>
+                  </ul>
+                </div>
+                <div v-for="(comment, index) in comments" :key="index">
+                  <h4>{{comment.user.name}}</h4>
+                  <i class="fas fa-star"></i>
+                  <h5>{{comment.comment}}</h5>
+                  <h4>{{comment.createdAt}}</h4>
+                  <div style="border:1px solid #bfbfbf"></div>
+                </div>
+                
+              </div>
             </div>
-
             <h2 style="margin-top:100px" class="title text-center">Sản phẩm mới nhất</h2>
             <div class="col-sm-4" v-for="(product,index) in products" :key="index">
               <div class="product-image-wrapper">
@@ -129,7 +189,7 @@
                   </div>
                 </div>
               </div>
-            </div> 
+            </div>
           </div>
         </div>
       </div>
@@ -147,9 +207,12 @@ export default {
     this.getProducts();
     this.getById();
     this.totalPrice();
+    this.getUsers();
+    this.getComments();
   },
   data: function() {
     return {
+      user_id: "",
       product: [],
       products: [],
       pictures: [],
@@ -158,7 +221,16 @@ export default {
       slidesToShow: 3,
       currentIndex: 0,
       cart: [],
-      total: 0
+      total: 0,
+      form: {
+        comment: "",
+        userId: "",
+        rate: "",
+        parentId: "",
+        name: ""
+      },
+
+      users: []
     };
   },
   created() {
@@ -228,8 +300,7 @@ export default {
       console.log("dasdsa", id, this.products);
 
       for (let i = 0; i < this.products.length; i++) {
-        if (this.products[i].id === id) 
-        this.products[i].order_time++;
+        if (this.products[i].id === id) this.products[i].order_time++;
       }
       this.totalPrice();
       this.setLocalStorage();
@@ -247,6 +318,29 @@ export default {
         total += this.cart[i].price * this.cart[i].order_time;
         this.total = total;
       }
+    },
+    getUsers() {
+      let self = this;
+      this.$axios.get("/users").then(function(res) {
+        console.log("aaaa", res);
+        self.users = res.data.data;
+        self.form.userId = res.data.decoded.user_id;
+        self.form.name = res.data.decoded.user_name;
+      });
+    },
+    handleSubmit() {
+      let self = this;
+      this.$axios.post("/comment", this.form).then(function(res) {
+        self.getProducts();
+        self.form.comment = "";
+      });
+    },
+    getComments() {
+      let self = this;
+      this.$axios.get("/comment").then(function(res) {
+        console.log(res);
+        self.comments = res.data.data;
+      });
     }
   }
 };
@@ -265,5 +359,17 @@ export default {
   height: 75px !important;
   display: inline-block !important;
   border: 1px solid #e6dfdf;
+}
+.rating {
+  border: 1px solid #bfbfbf;
+  width: 86px;
+  height: 40px;
+  margin-left: 10px;
+}
+.rating_1 {
+  border: 1px solid #bfbfbf;
+  width: 100px;
+  height: 40px;
+  margin-left: 10px;
 }
 </style>

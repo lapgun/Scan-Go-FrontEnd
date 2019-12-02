@@ -15,6 +15,7 @@ export default {
             }
         ],
 
+
         link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
         script: [{
                 src: [
@@ -45,6 +46,33 @@ export default {
                 src: "~/assets/js/qrcode.js",
                 type: "text/javascript"
             }
+        ],
+        link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+        script: [{
+                src: [
+                    "~/assets/js/bootstrap.min.js",
+                    "~/assets/js/contact.js",
+                    "~/assets/js/gmaps.js",
+                    "~/assets/js/html5shiv.js",
+                    "~/assets/js/jquery.js",
+                    "~/assets/js/main.js",
+                    "~/assets/js/price-range.js",
+                    "~/assets/js/jquery.prettyPhoto.js",
+                    "~/assets/js/jquery.scrollUp.min.js"
+                ]
+            },
+            {
+                src: "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js",
+                type: "text/javascript"
+            },
+            {
+                src: "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js",
+                type: "text/javascript"
+            },
+            {
+                src: "https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js",
+                type: "text/javascript"
+            }
         ]
     },
     /*
@@ -53,8 +81,8 @@ export default {
     loading: { color: "#fff" },
     /*
 
-     ** Global CSS
-     */
+       ** Global CSS
+       */
     css: [
         "~/assets/css/style.css",
         "~/assets/css/all.min.css",
