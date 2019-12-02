@@ -52,8 +52,8 @@ export default {
   loading: { color: "#fff" },
   /*
 
-     ** Global CSS
-     */
+   ** Global CSS
+   */
   css: [
     "~/assets/css/style.css",
     "~/assets/css/all.min.css",
@@ -73,7 +73,12 @@ export default {
       src: "~/plugins/vue-ckeditor5.js",
       mode: "client"
     },
-    { src: "~/plugins/paypal.js", ssr: false }
+    { src: "~/plugins/paypal.js", ssr: false },
+    { src: "~/plugins/vue-socket", mode: "client" },
+    {
+      src: "~/plugins/vue-ckeditor5.js",
+      mode: "client"
+    }
   ],
 
   /*

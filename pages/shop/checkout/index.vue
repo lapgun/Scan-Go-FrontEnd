@@ -19,14 +19,14 @@
         <div class="table-responsive cart_info">
           <table class="table table-condensed">
             <thead>
-              <tr class="cart_menu">
-                <td class="image" style="text-align: center">Sản phẩm</td>
-                <td class="description">Tên</td>
-                <td class="price">Số lượng</td>
-                <td class="quantity">Thành tiền</td>
-                <td class="total">Total</td>
-                <td></td>
-              </tr>
+            <tr class="cart_menu">
+              <td class="image" style="text-align: center">Sản phẩm</td>
+              <td class="description">Tên</td>
+              <td class="price">Số lượng</td>
+              <td class="quantity">Thành tiền</td>
+              <td class="total">Total</td>
+              <td></td>
+            </tr>
             </thead>
             <tbody>
               <tr v-for="(item,index) in cart" :key="index">
@@ -131,7 +131,6 @@ export default {
       },
       myItems: [],
       loaded: false,
-      paidFor: false
     };
   },
   components: {
@@ -215,7 +214,6 @@ export default {
           },
           onApprove: async (data, actions) => {
             const order = await actions.order.capture();
-            this.paidFor = true;
             console.log(order);
             this.handelSubmit();
           },
@@ -229,21 +227,25 @@ export default {
 };
 </script>
 <style scoped>
-img {
-  object-fit: cover;
-  width: 100px;
-  height: 100px;
-}
+  img {
+    object-fit: cover;
+    width: 100px;
+    height: 100px;
+  }
 
-#payment {
-  margin-left: 350px;
-}
+  #payment {
+    margin-left: 350px;
+  }
 
-tbody tr td {
-  padding-left: 50px;
-}
+  tbody tr td {
+    text-align: center;
+    padding-left: 50px;
+  }
 
-thead tr td {
-  padding-left: 50px;
-}
+  thead tr td {
+    text-align: center;
+    padding-left: 50px;
+  }
+
+
 </style>

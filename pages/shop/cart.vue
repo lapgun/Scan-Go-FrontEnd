@@ -108,6 +108,7 @@
     <shopFooter></shopFooter>
   </div>
 </template>
+
 <script>
 const Cookies = process.client ? require("js-cookie") : undefined;
 import shopHeader from "~/components/shopHeader.vue";
@@ -117,11 +118,11 @@ export default {
     if (process.browser) {
       if (localStorage.getItem("cart")) {
         let cart = JSON.parse(localStorage.getItem("cart"));
+        console.log("dsadsa", cart);
         return (this.cart = cart);
       } else {
         let cart = this.$store.getters.cart;
         return (this.cart = cart);
-        console.log(this.cart);
       }
     }
   },
@@ -189,9 +190,11 @@ img {
   width: 100px;
   height: 100px;
 }
+
 .product_span {
   font-size: 20px;
 }
+
 .cart_quantity_input {
   margin-left: 15px;
   margin-right: 15px;
