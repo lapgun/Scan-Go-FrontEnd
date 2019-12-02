@@ -31,6 +31,7 @@
     "vee-validate": "^3.0.11",
     "vue-ckeditor5": "^0.4.1",
     "vue-infinite-loading": "^2.4.4",
+    "vue-paypal-checkout": "^3.2.0",
     "vue-qrcode-component": "^2.1.1",
     "vue-upload-image": "^1.1.5",
     "vue-validator": "^3.0.0-alpha.2",

@@ -27,10 +27,10 @@
                         <h2>{{currency(product.price)}}</h2>
                         <p>{{product.name}}</p>
                         <qrcode-vue
-                        :value="'http://localhost:3000/shop/product_detail/'+product.id"
-                        size="100"
-                        level="H"
-                      ></qrcode-vue>
+                          :value="'http://localhost:3000/shop/product_detail/'+product.id"
+                          size="100"
+                          level="H"
+                        ></qrcode-vue>
                         <a @click="addToCart(product)" class="btn btn-default add-to-cart">
                           <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
                         </a>
@@ -58,10 +58,10 @@
                         <h2>{{currency(product.price)}}</h2>
                         <p>{{product.name}}</p>
                         <qrcode-vue
-                        :value="'http://localhost:3000/shop/product_detail/'+product.id"
-                        size="100"
-                        level="H"
-                      ></qrcode-vue>
+                          :value="'http://localhost:3000/shop/product_detail/'+product.id"
+                          size="100"
+                          level="H"
+                        ></qrcode-vue>
                         <a @click="addToCart(product)" class="btn btn-default add-to-cart">
                           <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
                         </a>
@@ -163,10 +163,10 @@ export default {
           self.pagination.totalPage = res.data.pagination.totalPage;
         });
     },
-    getProductsByOrder(){
-      let self=this
-      self.products = []
-      this.pagination.currentPage = 1
+    getProductsByOrder() {
+      let self = this;
+      self.products = [];
+      this.pagination.currentPage = 1;
       this.getProducts();
     },
     addToCart(product) {

@@ -79,27 +79,14 @@
           <div class="container">
             <div class="heading">
               <h3>Bạn muốn thanh toán?</h3>
-              <p>Chọn nếu bạn có một mã hoặc thưởng giảm điểm bạn muốn sử dụng hoặc muốn để ước tính chi phí giao hàng của bạn.</p>
             </div>
             <div class="row">
               <div class="col-sm-6">
                 <div class="total_area">
                   <ul>
                     <li>
-                      Giá tiền
-                      <span>{{currency(total)}}</span>
-                    </li>
-                    <li>
-                      VAT
-                      <span>10%</span>
-                    </li>
-                    <li>
-                      Phí vận chuyển
-                      <span>Miễn phí</span>
-                    </li>
-                    <li>
                       Tổng tiền
-                      <span>{{currency(total + total * 10/100)}}</span>
+                      <span>{{currency(total)}}</span>
                     </li>
                   </ul>
                   <a class="btn btn-default update" @click="$router.push('/')">Trở lại</a>
@@ -191,9 +178,6 @@ export default {
     quantity() {
       this.cart.forEach(element => {
         element.order_time = 1;
-        // this.$axios.put("/products/" + element.id).then(function(res) {
-        //   console.log("update order times");
-        // });
       });
     }
   }

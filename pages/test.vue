@@ -1,25 +1,72 @@
 <template>
   <div>
-    <!-- PayPal Logo -->
-    <table border="0" cellpadding="10" cellspacing="0" align="center">
-      <tr>
-        <td align="center"></td>
-      </tr>
-      <tr>
-        <td align="center">
-          <a
-            href="https://www.sandbox.paypal.com/myaccount/summary"
-            title="How PayPal Works"
-            onclick="javascript:window.open('https://www.sandbox.paypal.com/myaccount/summary','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;"
-          >
-            <img
-              src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-small.png"
-              alt="Check out with PayPal"
-            />
-          </a>
-        </td>
-      </tr>
-    </table>
-    <!-- PayPal Logo -->
+    <div v-if="!paidFor">
+      <h1>Buy this Lamp - ${{ product.price }} OBO</h1>
+
+      <p>{{ product.description }}</p>
+
+    </div>
+
+    <div v-if="paidFor">
+      <h1>Noice, you bought a beautiful lamp!</h1>
+    </div>
+
+    <div ref="paypal"></div>
   </div>
 </template>
+
+<script>
+// import image from "../assets/lamp.png"
+export default {
+  name: "HelloWorld",
+
+  data: function() {
+    return {
+      loaded: false,
+      paidFor: false,
+      product: {
+        price: 777.77,
+        description: "leg lamp from that one movie",
+        img: "./assets/lamp.jpg"
+      }
+    };
+  },
+  mounted: function() {
+    const script = document.createElement("script");
+    script.src =
+      "https://www.paypal.com/sdk/js?client-id=AfNZOlnY_KmQuNqPDXQp7ZxW5YKIn1C0jLk79D2HCkaTpU0W6g13y0G_RMI2573ePjvsN_MU9eSXHVLG";
+    script.addEventListener("load", this.setLoaded);
+    document.body.appendChild(script);
+  },
+  methods: {
+    setLoaded: function() {
+      this.loaded = true;
+      window.paypal
+        .Buttons({
+          createOrder: (data, actions) => {
+            return actions.order.create({
+              purchase_units: [
+                {
+                  description: "ấdasssss",
+                  amount: {
+                    currency_code: "USD",
+                    value: 123.13
+                  }
+                }
+              ]
+            });
+          },
+          onApprove: async (data, actions) => {
+            const order = await actions.order.capture();
+            this.paidFor = true;
+            console.log(order);
+          },
+          onError: err => {
+            console.log(err);
+          }
+        })
+        .render(this.$refs.paypal);
+    }
+  }
+};
+</script>

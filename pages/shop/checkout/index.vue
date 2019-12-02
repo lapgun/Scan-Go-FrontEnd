@@ -57,22 +57,10 @@
                 <td colspan="2">
                   <table class="table table-condensed total-result">
                     <tr>
-                      <td>Giá tiền</td>
-                      <td>{{currency(total)}}</td>
-                    </tr>
-                    <tr>
-                      <td>VAT</td>
-                      <td>10%</td>
-                    </tr>
-                    <tr class="shipping-cost">
-                      <td>Phí vận chuyển</td>
-                      <td>Miễn phí</td>
-                    </tr>
-                    <tr>
                       <td>Tổng giá tiền</td>
-                      <td>
-                        <span>{{currency(total + total * 10/100)}}</span>
-                      </td>
+                      <span>
+                        <td>{{currency(total)}}</td>
+                      </span>
                     </tr>
                   </table>
                 </td>
@@ -82,7 +70,6 @@
         </div>
         <div class="register-req">
           <p>Xin vui lòng, đảm bảo thông tin kiểm tra trước khi bấm vào thanh toán</p>
-          <p>Giúp chúng tôi giữ an toàn tài khoản của bạn và an toàn, xin vui lòng xác minh thông tin thanh toán của bạn.</p>
         </div>
         <!--/register-req-->
 
@@ -94,12 +81,19 @@
                 <form>
                   <input type="text" placeholder="Họ tên" :value="user_name" />
                   <input type="text" placeholder="Email của bạn" :value="user_email" />
-                  <input type="number" placeholder="Số điện thoại" />
-                  <input type="text" placeholder="Địa chỉ" />
                 </form>
-                <a class="btn btn-primary" @click="$router.push('/shop/cart')">Trở lại</a>
-                <a class="btn btn-primary" @click="handelSubmit">Thanh toán</a>
               </div>
+              <!-- <no-ssr>
+                <paypal-checkout
+                  env="sandbox"
+                  :amount="total"
+                  currency="USD"
+                  :client="paypal"
+                  :items="myItems"
+                ></paypal-checkout>
+              </no-ssr> -->
+              <div ref="paypal"></div>
+              <a class="btn btn-primary" @click="$router.push('/shop/cart')">Trở lại</a>
             </div>
           </div>
         </div>
@@ -112,7 +106,6 @@
 const Cookies = process.client ? require("js-cookie") : undefined;
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
-
 export default {
   created() {
     if (process.browser) {
@@ -131,7 +124,14 @@ export default {
       total: 0,
       user_id: "",
       user_name: "",
-      user_email: ""
+      user_email: "",
+      paypal: {
+        sandbox:
+          "AfNZOlnY_KmQuNqPDXQp7ZxW5YKIn1C0jLk79D2HCkaTpU0W6g13y0G_RMI2573ePjvsN_MU9eSXHVLG"
+      },
+      myItems: [],
+      loaded: false,
+      paidFor: false
     };
   },
   components: {
@@ -141,6 +141,12 @@ export default {
   mounted() {
     this.totalPrice();
     this.getUsers();
+    this.updateOrderTime();
+    const script = document.createElement("script");
+    script.src =
+      "https://www.paypal.com/sdk/js?client-id=AfNZOlnY_KmQuNqPDXQp7ZxW5YKIn1C0jLk79D2HCkaTpU0W6g13y0G_RMI2573ePjvsN_MU9eSXHVLG";
+    script.addEventListener("load", this.setLoaded);
+    document.body.appendChild(script);
   },
   methods: {
     currency(x) {
@@ -177,6 +183,47 @@ export default {
       self.$router.push("/");
       localStorage.removeItem("cart");
       self.$store.commit("setCart", []);
+    },
+    updateOrderTime() {
+      this.cart.forEach(element => {
+        this.myItems.push({
+          name: element.name,
+          description: element.detail,
+          quantity: element.order_time,
+          price: element.price,
+          currency: "USD"
+        });
+      });
+    },
+    setLoaded: function() {
+      this.loaded = true;
+      window.paypal
+        .Buttons({
+          createOrder: (data, actions) => {
+            return actions.order.create({
+              purchase_units: [
+                {
+                  description: "Scan And Go",
+                  amount: {
+                    currency_code: "USD",
+                    value: this.total
+                  },
+                  // items: this.myItems
+                }
+              ]
+            });
+          },
+          onApprove: async (data, actions) => {
+            const order = await actions.order.capture();
+            this.paidFor = true;
+            console.log(order);
+            this.handelSubmit();
+          },
+          onError: err => {
+            console.log(err);
+          }
+        })
+        .render(this.$refs.paypal);
     }
   }
 };
