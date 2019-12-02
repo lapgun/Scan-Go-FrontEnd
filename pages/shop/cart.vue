@@ -129,6 +129,7 @@
             if (process.browser) {
                 if (localStorage.getItem("cart")) {
                     let cart = JSON.parse(localStorage.getItem("cart"));
+                    console.log("dsadsa",cart);
                     return (this.cart = cart);
                 } else {
                     let cart = this.$store.getters.cart;
