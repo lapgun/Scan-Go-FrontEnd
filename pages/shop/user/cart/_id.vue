@@ -28,7 +28,7 @@
                       <td v-if="order.order_status == 1">Đã xử lí</td>
                       <td v-if="order.order_status == 2">Đã hủy đơn hàng</td>
                       <td>{{order.total_price}}</td>
-                      <td><b-button variant="danger" @>Hủy đơn hàng</b-button></td>
+                      <td><b-button variant="danger" @click="handelCancel(order.id)">Hủy đơn hàng</b-button></td>
                     </tr>
                     </tbody>
                   </table>
@@ -67,6 +67,12 @@
                 if (orderNew)
                     orderNew.order_status = data.order
             });
+            socket.on("success-cancel-user-order", function (data) {
+                let orderNew = self.orders.find(element => element.id == data.id);
+                if (orderNew)
+                    orderNew.order_status = data.order
+            });
+
             this.getOrders();
         },
         data: function () {
@@ -80,6 +86,15 @@
                 this.$axios.get("/orders/customerId/" + this.$route.params.id).then(function (res) {
                     self.orders = res.data.rows
                 });
+            },
+            handelCancel(id){
+                let self = this;
+                this.$axios.put("/orders/cancel/" + id).then(function (res) {
+                    let order = self.orders.find(element => element.id == id);
+                    if (order)
+                        order.order_status = 2;
+                    socket.emit("cancel-user-order", {order: order.order_status, id: id});
+                })
             }
         }
     };

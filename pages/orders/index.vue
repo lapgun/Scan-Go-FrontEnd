@@ -138,6 +138,11 @@
                 if (orderNew)
                     orderNew.order_status = data.order
             });
+            socket.on("success-cancel-user-order", function (data) {
+                let orderNew = self.orders.find(element => element.id == data.id);
+                if (orderNew)
+                    orderNew.order_status = data.order
+            });
             this.getOrders();
             this.getAdmins();
         },
