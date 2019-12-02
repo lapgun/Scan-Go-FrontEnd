@@ -2,10 +2,10 @@
   <div>
     <ul class="nav menu" style="display:block">
       <li class="active">
-        <a href="#" @click="$router.push('/shop/user/detail/'+user_id)">Thông tin tài khoản</a>
+        <a href="#" @click="$router.push('/shop/user/detail/'+ user_id)">Thông tin tài khoản</a>
       </li>
       <li>
-        <a href="#" @click="$router.push('/shop/user/cart')">Đơn hàng của tôi</a>
+        <a href="#" @click="$router.push('/shop/user/cart/' + user_id)">Đơn hàng của tôi</a>
       </li>
     </ul>
   </div>
