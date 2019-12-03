@@ -7,6 +7,9 @@
       <li>
         <a href="#" @click="$router.push('/shop/user/cart/' + user_id)">Đơn hàng của tôi</a>
       </li>
+      <li>
+        <a href="#" @click="$router.push('/shop/user/changepassword/' + user_id)">Thay đổi mật khẩu</a>
+      </li>
     </ul>
   </div>
 </template>

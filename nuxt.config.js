@@ -76,6 +76,14 @@ export default {
     { src: "~/plugins/paypal.js", ssr: false },
     { src: "~/plugins/vue-socket", mode: "client" },
     {
+      src: "~/plugins/vue-flash",
+      mode: 'client'
+    },
+    {
+      src: '~/plugins/vue-ckeditor5.js',
+      mode: 'client'
+    },
+    {
       src: "~/plugins/vue-ckeditor5.js",
       mode: "client"
     }
@@ -108,6 +116,6 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {}
+    extend(config, ctx) { }
   }
 };
