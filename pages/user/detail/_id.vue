@@ -47,7 +47,7 @@
                           <button
                             style="margin-top:15px ;display:inline"
                             type="button"
-                            class="btn btn-info"
+                            class="btn btn-dark"
                             @click="$router.push('/')"
                           >Back</button>
                         </span>

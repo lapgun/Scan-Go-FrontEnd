@@ -71,12 +71,14 @@ export default {
       mode : 'client'
     },
     {
+      src : "~/plugins/vue-flash",
+      mode : 'client'
+    },
+    {
       src: '~/plugins/vue-ckeditor5.js',
       mode: 'client'
-    }
+    },
   ],
-
-
   /*
    ** Nuxt.js dev-modules
    */
