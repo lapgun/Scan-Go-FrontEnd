@@ -84,23 +84,21 @@
           <thead>
             <tr>
               <th>STT</th>
-              <th>UserId</th>
               <th>Name</th>
               <th>Comment</th>
               <th>Rate</th>
               <th>ParentId</th>
+              <th>ProductId</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(comment , index) in comments" :key="index">
               <td>{{index+1}}</td>
-              <td>{{comment.userId}}</td>
-              <td>{{comment.user.name}}</td>
-              <td>
-                {{comment.comment}}
-              </td>
+              <td>{{comment.name}}</td>
+              <td>{{comment.comment}}</td>
               <td>{{comment.rate}}</td>
               <td>{{comment.parentId}}</td>
+              <td>{{comment.productId}}</td>
             </tr>
           </tbody>
         </table>
@@ -115,20 +113,20 @@ export default {
   },
   data: function() {
     return {
-      comments:[],
+      comments: [],
       search: "",
       totalResult: 0,
       pagination: {
         currentPage: 1,
         perPage: 10
-      },
+      }
     };
   },
   methods: {
     getSlides() {
       let self = this;
       this.$axios.get("/comment").then(function(res) {
-          console.log('dfhjkjh',res)
+        console.log(res)
         self.comments = res.data.data;
       });
     },

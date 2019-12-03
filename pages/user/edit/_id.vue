@@ -51,7 +51,7 @@
 
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
-import _ from "lodash";
+// import _ from "lodash";
 export default {
   mounted: function() {
     this.getUsers();

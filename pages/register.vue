@@ -77,7 +77,7 @@
                 <input type="checkbox" v-model="form.role" value="1" /> Are you admin?
               </b-form-group>
               <div class="form-group text-xl-center">
-                <input type="submit" class="btn btn-info btn-md" value="submit" />
+                <input type="submit" class="btn btn-info btn-md" value="submit" @click="showAlert" />
               </div>
             </b-form>
           </div>
@@ -133,6 +133,15 @@ export default {
           alert("Repassword is not correct");
         }
       }
+    },
+    showAlert() {
+      this.$fire({
+        title: "Đăng kí thành công!",
+        type: "success",
+        timer: 3000
+      }).then(r => {
+        console.log(r.value);
+      });
     }
   }
 };

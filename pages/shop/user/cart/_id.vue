@@ -55,7 +55,7 @@
             shopFooter,
             shopUser
         },
-        mounted: function () {
+        mounted () {
             let self = this;
             socket.on("success-status", function (data) {
                 let orderNew = self.orders.find(element => element.id == data.id);
@@ -75,13 +75,13 @@
 
             this.getOrders();
         },
-        data: function () {
+        data () {
             return {
                 orders: []
             };
         },
         methods: {
-            getOrders: function () {
+            getOrders () {
                 let self = this;
                 this.$axios.get("/orders/customerId/" + this.$route.params.id).then(function (res) {
                     self.orders = res.data.rows

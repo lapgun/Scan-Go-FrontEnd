@@ -146,7 +146,6 @@
 </template>
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
-
 export default {
   mounted: function() {
     this.getProducts();
@@ -227,11 +226,9 @@ export default {
     width: 50px;
     height: 50px;
   }
-
   table {
     margin-top: 10px;
   }
-
   .search {
     width: 50%;
     display: flex;

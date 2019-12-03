@@ -3,19 +3,18 @@
      <ul>
        <ol v-for="(text,index) in newText" :key="index">{{text}}</ol>
      </ul>
-     <input v-model="text">
-     <b-button @click="handleChange">Submit</b-button>
+     <input v-model="text" @change="handleChange">
    </div>
 </template>
 <script>
 export default {
-  mounted : function(){
+  mounted(){
     let self = this
     socket.on('push-new-text',function(text){
       self.newText.push(text)
     })
   },
-  data : function(){
+  data (){
     return {
       newText : [],
         text : ''

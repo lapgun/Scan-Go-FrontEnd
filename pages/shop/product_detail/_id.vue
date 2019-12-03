@@ -64,7 +64,7 @@
                           type="text"
                           autocomplete="off"
                           size="2"
-                        >{{product.order_time}}</div>
+                        >1</div>
                         <a class="cart_quantity_up btn btn-success" @click="increment(product.id)">+</a>
                       </div>
                     </div>
@@ -104,71 +104,68 @@
 
             <h2 style="margin-top:100px" class="title text-center">Thông tin sản phẩm</h2>
             <div style="font-size:16px" v-html="product.detail"></div>
-            <img class="img_detail" :src="`/${product.images? product.images.image_1 : ''}`" />
-            
+            <img
+              style="margin-bottom:40px"
+              class="img_detail"
+              :src="`/${product.images? product.images.image_1 : ''}`"
+            />
+
             <h2 style="margin-top:10px" class="title text-center">Đánh giá sản phẩm</h2>
+            <div
+              style="border:1px solid #bfbfbf; width:200px; height:50px ; float:right"
+            >
+              <i style="margin-top:15px;margin-left:20px" class="fas fa-pen"></i>
+              <label for="viet_bai_danh_gia">
+                <h4 style="margin-top:50px;display:inline">Viết bài đánh giá</h4>
+              </label>
+            </div>
             <div>
-              <div
-                style="border:1px solid #bfbfbf; width:200px; height:50px ; float:right ;margin-top:-42px"
-              >
-                <i style="margin-top:15px;margin-left:20px" class="fas fa-pen"></i>
-                <label for="viet_bai_danh_gia">
-                  <h4 style="margin-top:5px;display:inline">Viết bài đánh giá</h4>
-                </label>
-              </div>
+              <label style="margin:20px 0 30px 0" for="viet_bai_danh_gia">Đánh giá sản phẩm</label>
               <input
+                class="input_rating"
                 type="text"
-                style="width:100%; margin-top:30px"
                 @change="handleSubmit"
                 v-model="form.comment"
                 id="viet_bai_danh_gia"
-                placeholder="Viết bài đánh giá..."
+                placeholder="Viết bình luận..."
               />
               <div>
                 <div style="border:1px solid #bfbfbf; margin:15px 5px 0 5px;background:#f9ede5">
                   <ul class="nav menu" style="margin:30px 0 30px 0">
-                    <li style="margin:0 0 0 20px">
+                    <li style="margin:0 0 0 50px">
                       <span>5.0 trên 5</span>
-                      <div>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                      </div>
+                      <star-rating v-bind:star-size="20" :increment="0.5"></star-rating>
                     </li>
-                    <li class="rating">
-                      <a href="#" style="padding-left:20px">Tất cả</a>
+                    <li class="rating_2">
+                      <a href="#">Tất cả ({{this.pagination.total}})</a>
                     </li>
                     <li class="rating_1">
                       <a href="#" style="padding-left:20px">Bình luận</a>
                     </li>
-                    <li class="rating">
-                      <a href="#" style="padding-left:25px">5 sao</a>
-                    </li>
-                     <li class="rating">
-                      <a href="#" style="padding-left:25px">4 sao</a>
-                    </li>
-                     <li class="rating">
-                      <a href="#" style="padding-left:25px">3 sao</a>
-                    </li>
-                     <li class="rating">
-                      <a href="#" style="padding-left:25px">2 sao</a>
-                    </li>
-                     <li class="rating">
-                      <a href="#" style="padding-left:25px">1 sao</a>
-                    </li>
                   </ul>
                 </div>
                 <div v-for="(comment, index) in comments" :key="index">
-                  <h4>{{comment.user.name}}</h4>
-                  <i class="fas fa-star"></i>
-                  <h5>{{comment.comment}}</h5>
-                  <h4>{{comment.createdAt}}</h4>
-                  <div style="border:1px solid #bfbfbf"></div>
+                  <div v-if="comment.productId == product.id">
+                    <h3 style="margin:50px 30px 0 30px">{{comment.name}}</h3>
+                    <star-rating
+                      style="margin:10px 0 30px 35px"
+                      v-bind:star-size="20"
+                      :increment="0.5"
+                    ></star-rating>
+                    <h4 style="margin:15px 0 15px 30px">{{comment.comment}}</h4>
+                    <h6 style="margin-left:30px">{{comment.createdAt}}</h6>
+                    <div style="border:1px solid #bfbfbf; margin-top:20px"></div>
+                  </div>
                 </div>
-                
               </div>
+              <b-pagination
+                style="float:right;margin-top:30px"
+                v-model="pagination.currentPage"
+                :total-rows="pagination.total"
+                :per-page="pagination.perPage"
+                aria-controls="my-table"
+                @change="handleChange"
+              ></b-pagination>
             </div>
             <h2 style="margin-top:100px" class="title text-center">Sản phẩm mới nhất</h2>
             <div class="col-sm-4" v-for="(product,index) in products" :key="index">
@@ -181,7 +178,7 @@
                       @click="$router.push('/shop/product_detail/'+product.id)"
                       alt
                     />
-                    <h3>{{product.price}}</h3>
+                    <h3>{{product.price}} đ</h3>
                     <p>{{product.name}}</p>
                     <a @click="addToCart(product)" class="btn btn-default add-to-cart">
                       <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
@@ -209,6 +206,7 @@ export default {
     this.totalPrice();
     this.getUsers();
     this.getComments();
+    this.getCommentProducts();
   },
   data: function() {
     return {
@@ -222,15 +220,25 @@ export default {
       currentIndex: 0,
       cart: [],
       total: 0,
+      comments: [],
+      comment: "",
       form: {
         comment: "",
         userId: "",
         rate: "",
         parentId: "",
-        name: ""
+        name: "",
+        productId: ""
       },
 
-      users: []
+      users: [],
+      results: "",
+      pagination: {
+        currentPage: 1,
+        perPage: 5
+      },
+      totalResult: 0,
+      commentProducts: []
     };
   },
   created() {
@@ -258,6 +266,7 @@ export default {
       let self = this;
       this.$axios.get("/products/" + this.$route.params.id).then(function(res) {
         self.product = res.data.data;
+        self.form.productId = res.data.data.id;
         Object.keys(self.product.images).forEach(function(key) {
           let img = self.product.images[key];
           if (img) {
@@ -270,7 +279,7 @@ export default {
         });
       });
     },
-    getById: function() {
+    getById() {
       let self = this;
       this.$axios.get("/products/new-products").then(function(res) {
         self.products = res.data.data;
@@ -297,8 +306,6 @@ export default {
       localStorage.setItem("cart", JSON.stringify(this.cart));
     },
     increment(id) {
-      console.log("dasdsa", id, this.products);
-
       for (let i = 0; i < this.products.length; i++) {
         if (this.products[i].id === id) this.products[i].order_time++;
       }
@@ -322,7 +329,6 @@ export default {
     getUsers() {
       let self = this;
       this.$axios.get("/users").then(function(res) {
-        console.log("aaaa", res);
         self.users = res.data.data;
         self.form.userId = res.data.decoded.user_id;
         self.form.name = res.data.decoded.user_name;
@@ -337,10 +343,30 @@ export default {
     },
     getComments() {
       let self = this;
-      this.$axios.get("/comment").then(function(res) {
-        console.log(res);
-        self.comments = res.data.data;
-      });
+      this.$axios
+        .get(
+          "/comment?page=" +
+            this.pagination.currentPage +
+            "&perPage=" +
+            this.pagination.perPage
+        )
+        .then(function(res) {
+          self.comments = res.data.data;
+          self.results = res.data.data.length;
+          self.pagination = res.data.pagination;
+        });
+    },
+    handleChange(page) {
+      this.pagination.currentPage = page;
+      this.getComments();
+    },
+    getCommentProducts() {
+      let self = this;
+      this.$axios
+        .get("/products/comment/" + this.$route.params.id)
+        .then(function(res) {
+          self.commentProducts = res.data.data;
+        });
     }
   }
 };
@@ -365,11 +391,25 @@ export default {
   width: 86px;
   height: 40px;
   margin-left: 10px;
+  border-radius: 1em;
 }
 .rating_1 {
   border: 1px solid #bfbfbf;
   width: 100px;
   height: 40px;
-  margin-left: 10px;
+  margin-left: 50px;
+  border-radius: 1em;
+}
+.input_rating {
+  border-radius: 1em;
+  width: 30% !important;
+  height: 40px;
+}
+.rating_2 {
+  border: 1px solid #bfbfbf;
+  border-radius: 1em;
+  width: 100px;
+  height: 40px;
+  margin-left: 50px;
 }
 </style>

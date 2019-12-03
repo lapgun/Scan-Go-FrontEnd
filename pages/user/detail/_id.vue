@@ -1,6 +1,5 @@
 <template>
   <div>
-    <shopHeader></shopHeader>
     <div class="container mt-5">
       <div class="row justify-content-center">
         <div class="col-md-8">
@@ -61,19 +60,10 @@
         </div>
       </div>
     </div>
-    <shopFooter></shopFooter>
   </div>
 </template>
 <script>
-import shopHeader from "~/components/shopHeader.vue";
-import shopFooter from "~/components/shopFooter.vue";
-import shopNav from "~/components/shopNav.vue";
 export default {
-  components: {
-    shopHeader,
-    shopFooter,
-    shopNav
-  },
   mounted: function() {
     this.getUsers();
   },

@@ -42,7 +42,7 @@
                           style="margin-top:15px ;display:inline"
                           type="button"
                           class="btn btn-info"
-                          @click="$router.push('/shop/user/detail/'+users.id)"
+                          @click="$router.push('/')"
                         >Back</button>
                       </span>
                     </div>
