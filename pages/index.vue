@@ -139,10 +139,10 @@ export default {
 };
 </script>
 <style scoped>
-  #default_image {
-    width: 248px;
-    height: 270px;
-    object-fit: cover;
-  }
+#default_image {
+  width: 248px;
+  height: 270px;
+  object-fit: cover;
+}
 </style>
 

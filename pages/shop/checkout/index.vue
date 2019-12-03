@@ -178,7 +178,7 @@ export default {
         .then(function(res) {
           console.log(res);
         });
-      alert("Đã gửi yêu cầu mua hàng");
+      alert("Đã thanh toán thành công");
       self.$router.push("/");
       localStorage.removeItem("cart");
       self.$store.commit("setCart", []);

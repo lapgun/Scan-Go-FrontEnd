@@ -92,7 +92,10 @@
               <td>{{index+1}}</td>
               <td>{{slide.name}}</td>
               <td>
-                <img style="width:100px; height:60px" :src="`/${slide.slide_images? slide.slide_images.default_image: ''}`" />
+                <img
+                  style="width:100px; height:60px"
+                  :src="`/${slide.slide_images? slide.slide_images.default_image: ''}`"
+                />
               </td>
               <td>
                 <b-button @click="$router.push('/slide/detail/'+slide.id)">Detail</b-button>
@@ -113,7 +116,7 @@ export default {
   },
   data: function() {
     return {
-      slides:[],
+      slides: [],
       search: "",
       totalResult: 0,
       pagination: {
