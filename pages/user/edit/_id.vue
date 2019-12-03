@@ -51,7 +51,6 @@
 
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
-import _ from "lodash";
 export default {
   mounted: function() {
     this.getUsers();
@@ -70,16 +69,14 @@ export default {
     getUsers: function() {
       let self = this;
       this.$axios.get("/users/" + this.$route.params.id).then(function(res) {
-        console.log(res);
         self.form = res.data.data;
       });
     },
     handelSubmit: function() {
       let self = this;
       this.$axios.put("/users/" + this.form.id, this.form).then(function(res) {
-        console.log(res);
       });
-      // self.$router.push("/user/home");
+      self.$router.push("/");
     }
   }
 };
