@@ -80,7 +80,7 @@
         <div>
           <label>
             Sắp xếp theo
-            <b-form-select v-model="order_by" :options="order" @change="getTasks"></b-form-select>
+            <b-form-select v-model="order_by" :options="order" @change="getProductsByOrder"></b-form-select>
           </label>
         </div>
         <table id="my-table" class="table table-bordered">
@@ -132,6 +132,7 @@
         </table>
       </div>
     </div>
+    <infinite-loading @infinite="infiniteHandler"></infinite-loading>
   </div>
 </template>
 <script>

@@ -23,6 +23,11 @@
                       </a>
                       <h2>{{currency(product.price)}}</h2>
                       <p>{{product.name}}</p>
+                      <qrcode-vue
+                        :value="'http://localhost:3000/shop/product_detail/'+product.id"
+                        size="100"
+                        level="H"
+                      ></qrcode-vue>
                       <a @click="addToCart(product)" class="btn btn-default add-to-cart">
                         <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
                       </a>
@@ -43,6 +48,7 @@ const Cookies = process.client ? require("js-cookie") : undefined;
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
+import QrcodeVue from "qrcode.vue";
 export default {
   created() {
     if (process.browser) {
@@ -70,7 +76,8 @@ export default {
   components: {
     shopHeader,
     shopFooter,
-    shopNav
+    shopNav,
+    QrcodeVue
   },
   methods: {
     async getByMenu() {
