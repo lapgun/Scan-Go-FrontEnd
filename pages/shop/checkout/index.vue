@@ -19,20 +19,23 @@
         <div class="table-responsive cart_info">
           <table class="table table-condensed">
             <thead>
-            <tr class="cart_menu">
-              <td class="image" style="text-align: center">Sản phẩm</td>
-              <td class="description">Tên</td>
-              <td class="price">Số lượng</td>
-              <td class="quantity">Thành tiền</td>
-              <td class="total">Total</td>
-              <td></td>
-            </tr>
+              <tr class="cart_menu">
+                <td class="image" style="text-align: center">Sản phẩm</td>
+                <td class="description">Tên</td>
+                <td class="price">Số lượng</td>
+                <td class="quantity">Thành tiền</td>
+                <td class="total">Total</td>
+                <td></td>
+              </tr>
             </thead>
             <tbody>
               <tr v-for="(item,index) in cart" :key="index">
                 <td class="cart_product">
                   <a>
-                    <img style="margin-left:-50px" :src="`/${item.images? item.images.default_image: ''}`" />
+                    <img
+                      style="margin-left:-50px"
+                      :src="`/${item.images? item.images.default_image: ''}`"
+                    />
                   </a>
                 </td>
                 <td class="cart_description">
@@ -121,7 +124,7 @@ export default {
           "AfNZOlnY_KmQuNqPDXQp7ZxW5YKIn1C0jLk79D2HCkaTpU0W6g13y0G_RMI2573ePjvsN_MU9eSXHVLG"
       },
       myItems: [],
-      loaded: false,
+      loaded: false
     };
   },
   components: {
@@ -166,9 +169,7 @@ export default {
           total: this.total,
           user_id: this.user_id
         })
-        .then(function(res) {
-          console.log(res);
-        });
+        .then(function(res) {});
       alert("Đã gửi yêu cầu mua hàng");
       self.$router.push("/");
       localStorage.removeItem("cart");
@@ -197,20 +198,16 @@ export default {
                   amount: {
                     currency_code: "USD",
                     value: this.total
-                  },
-                  // items: this.myItems
+                  }
                 }
               ]
             });
           },
           onApprove: async (data, actions) => {
             const order = await actions.order.capture();
-            console.log(order);
             this.handelSubmit();
           },
-          onError: err => {
-            console.log(err);
-          }
+          onError: err => {}
         })
         .render(this.$refs.paypal);
     }
@@ -218,25 +215,23 @@ export default {
 };
 </script>
 <style scoped>
-  img {
-    object-fit: cover;
-    width: 100px;
-    height: 100px;
-  }
+img {
+  object-fit: cover;
+  width: 100px;
+  height: 100px;
+}
 
-  #payment {
-    margin-left: 350px;
-  }
+#payment {
+  margin-left: 350px;
+}
 
-  tbody tr td {
-    text-align: center;
-    padding-left: 50px;
-  }
+tbody tr td {
+  text-align: center;
+  padding-left: 50px;
+}
 
-  thead tr td {
-    text-align: center;
-    padding-left: 50px;
-  }
-
-
+thead tr td {
+  text-align: center;
+  padding-left: 50px;
+}
 </style>

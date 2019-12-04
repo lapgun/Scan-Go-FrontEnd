@@ -139,9 +139,7 @@ export default {
         title: "Đăng kí thành công!",
         type: "success",
         timer: 3000
-      }).then(r => {
-        console.log(r.value);
-      });
+      }).then(r => {});
     }
   }
 };

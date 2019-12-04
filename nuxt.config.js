@@ -18,7 +18,6 @@ export default {
         link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
         script: [{
                 src: [
-                    "~/assets/js/bootstrap.min.js",
                     "~/assets/js/contact.js",
                     "~/assets/js/gmaps.js",
                     "~/assets/js/html5shiv.js",
@@ -54,11 +53,13 @@ export default {
     css: [
         "~/assets/css/style.css",
         "~/assets/css/all.min.css",
-        "~/assets/css/bootstrap.min.css",
         "~/assets/css/animate.css",
         "~/assets/css/main.css",
         "~/assets/css/price-range.css",
-        "~/assets/css/responsive.css"
+        "~/assets/css/responsive.css",
+        "~/assets/css/bootstrap.min.css",
+        "~/assets/css/bootstrap.css",
+
     ],
     /*
      ** Plugins to load before mounting the App

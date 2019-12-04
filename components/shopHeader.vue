@@ -351,13 +351,13 @@ export default {
 }
 .cart_checkout_1 , .cart_checkout_2 {
   border: 1px solid #c1bbbb;
-  padding: 10px 10px;
+  padding: 15px 15px;
   width: 100px;
   height: 40px;
-  float: right;
 }
 .cart_checkout_1 {
-  margin-left: 30px
+  margin-left: 30px;
+  float: right;
 }
 .cart_checkout_2 {
   margin-left: 40px

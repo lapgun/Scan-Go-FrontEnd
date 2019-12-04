@@ -80,6 +80,7 @@ export default {
     getUsers: function() {
       let self = this;
       this.$axios.get("/users/" + this.$route.params.id).then(function(res) {
+        console.log('dgfds',res)
         self.users = res.data.data;
       });
     }
