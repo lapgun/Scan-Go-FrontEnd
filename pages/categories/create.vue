@@ -99,10 +99,10 @@
 </template>
 <script>
 export default {
-  mounted: function() {
+  mounted() {
     this.getCategories();
   },
-  data: function() {
+  data() {
     return {
       form: {
         name: "",
@@ -112,7 +112,7 @@ export default {
     };
   },
   methods: {
-    getCategories: function() {
+    getCategories() {
       let self = this;
       let id = 0;
       this.$axios.get("/categories/cat_parent/" + id).then(function(res) {
@@ -126,13 +126,13 @@ export default {
       });
       console.log(self.options);
     },
-    handleSubmit: function() {
+    handleSubmit() {
       let self = this;
       this.$axios.post("/categories", this.form).then(function(res) {
         self.$router.push("/categories");
       });
     },
-    handleLogout: function() {
+    handleLogout() {
       Cookie.remove("token");
       this.$store.commit("setToken", null);
       this.$router.push("/login");
