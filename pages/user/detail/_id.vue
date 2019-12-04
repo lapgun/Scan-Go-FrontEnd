@@ -1,6 +1,5 @@
 <template>
   <div>
-    <shopHeader></shopHeader>
     <div class="container mt-5">
       <div class="row justify-content-center">
         <div class="col-md-8">
@@ -35,20 +34,12 @@
                         >Edit Profile</button>
                       </span>
                       <span>
-                        <span v-if="users.role = false">
+                        <span>
                           <button
                             style="margin-top:15px"
                             type="button"
                             class="btn btn-info"
-                            @click="$router.push('/user/home')"
-                          >Back</button>
-                        </span>
-                        <span v-else>
-                          <button
-                            style="margin-top:15px ;display:inline"
-                            type="button"
-                            class="btn btn-dark"
-                            @click="$router.push('/')"
+                            @click="$router.push('/user/home/')"
                           >Back</button>
                         </span>
                       </span>
@@ -61,19 +52,10 @@
         </div>
       </div>
     </div>
-    <shopFooter></shopFooter>
   </div>
 </template>
 <script>
-import shopHeader from "~/components/shopHeader.vue";
-import shopFooter from "~/components/shopFooter.vue";
-import shopNav from "~/components/shopNav.vue";
 export default {
-  components: {
-    shopHeader,
-    shopFooter,
-    shopNav
-  },
   mounted: function() {
     this.getUsers();
   },

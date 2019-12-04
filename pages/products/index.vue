@@ -70,6 +70,9 @@
           <li>
             <a @click="$router.push('/slide')">Slide</a>
           </li>
+           <li>
+            <a @click="$router.push('/comment')">Comment</a>
+          </li>
           <li>
             <a @click="$router.push('/user')">Users</a>
           </li>
@@ -77,7 +80,7 @@
       </div>
       <div class="col-sm-8 col-lg-10 sidebar">
         <b-button variant="success" @click="$router.push('/products/create')">Create new task</b-button>
-        <div>
+        <div style="margin-left:1300px">
           <label>
             Sắp xếp theo
             <b-form-select v-model="order_by" :options="order" @change="getProductsByOrder()"></b-form-select>
@@ -130,6 +133,13 @@
             </tr>
           </tbody>
         </table>
+        <b-pagination
+          v-model="pagination.currentPage"
+          :total-rows="pagination.total"
+          :per-page="pagination.perPage"
+          aria-controls="my-table"
+          @change="handleChange"
+        ></b-pagination>
       </div>
     </div>
     <infinite-loading v-if="!search" @infinite="infiniteHandler"></infinite-loading>
@@ -192,7 +202,6 @@ export default {
           this.order_by
         )
         .then(function(res) {
-          console.log(res);
           let temp = res.data.data;
           self.tasks = self.tasks.concat(temp);
           self.pagination.totalPage = res.data.pagination.totalPage;

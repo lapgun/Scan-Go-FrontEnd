@@ -9,7 +9,6 @@
               Contact
               <strong>Us</strong>
             </h2>
-            <div id="gmap" class="contact-map"></div>
           </div>
         </div>
         <div class="row">

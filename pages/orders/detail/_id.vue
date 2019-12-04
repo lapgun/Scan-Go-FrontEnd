@@ -20,7 +20,7 @@
       </tbody>
     </table>
 
-    <h3>List Products</h3>
+    <h3>Danh sách sản phẩm</h3>
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -43,7 +43,7 @@
         </tr>
       </tbody>
     </table>
-    <b-button variant="dark" @click="$router.push('/orders')">back</b-button>
+    <b-button variant="dark" @click="$router.push('/orders')">Trở lại</b-button>
   </div>
 </template>
 <script>

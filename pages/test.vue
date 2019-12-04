@@ -1,72 +1,113 @@
 <template>
   <div>
-    <div v-if="!paidFor">
-      <h1>Buy this Lamp - ${{ product.price }} OBO</h1>
-
-      <p>{{ product.description }}</p>
-
+    <h2 style="margin-top:10px" class="title text-center">Đánh giá sản phẩm</h2>
+    <div>
+      <div>
+        <label style="margin:20px 0 30px 420px" for="viet_bai_danh_gia">Đánh giá sản phẩm</label>
+        <input
+          class="input_rating"
+          type="text"
+          v-model="form.comment"
+          id="viet_bai_danh_gia"
+          placeholder="Viết bình luận..."
+        />
+        <star-rating
+          style="float:right"
+          :show-rating="false"
+          @rating-selected="setRating"
+          v-model="form.rating"
+          v-bind:star-size="20"
+          :increment="0.5"
+        ></star-rating>
+        <b-button variant="info" style="float:right" @click="handleSubmit">Comment</b-button>
+      </div>
     </div>
-
-    <div v-if="paidFor">
-      <h1>Noice, you bought a beautiful lamp!</h1>
-    </div>
-
-    <div ref="paypal"></div>
   </div>
 </template>
-
 <script>
-// import image from "../assets/lamp.png"
-export default {
-  name: "HelloWorld",
+const Cookies = process.client ? require("js-cookie") : undefined;
 
-  data: function() {
+export default {
+  mounted() {
+    this.getProducts();
+  },
+  data() {
     return {
-      loaded: false,
-      paidFor: false,
-      product: {
-        price: 777.77,
-        description: "leg lamp from that one movie",
-        img: "./assets/lamp.jpg"
+      form: {
+        comment: "",
+        userId: "",
+        rate: "",
+        parentId: "",
+        name: "",
+        productId: "",
+        rating: 0,
+        id: ""
       }
     };
   },
-  mounted: function() {
-    const script = document.createElement("script");
-    script.src =
-      "https://www.paypal.com/sdk/js?client-id=AfNZOlnY_KmQuNqPDXQp7ZxW5YKIn1C0jLk79D2HCkaTpU0W6g13y0G_RMI2573ePjvsN_MU9eSXHVLG";
-    script.addEventListener("load", this.setLoaded);
-    document.body.appendChild(script);
-  },
   methods: {
-    setLoaded: function() {
-      this.loaded = true;
-      window.paypal
-        .Buttons({
-          createOrder: (data, actions) => {
-            return actions.order.create({
-              purchase_units: [
-                {
-                  description: "ấdasssss",
-                  amount: {
-                    currency_code: "USD",
-                    value: 123.13
-                  }
-                }
-              ]
-            });
-          },
-          onApprove: async (data, actions) => {
-            const order = await actions.order.capture();
-            this.paidFor = true;
-            console.log(order);
-          },
-          onError: err => {
-            console.log(err);
-          }
-        })
-        .render(this.$refs.paypal);
+    handleSubmit() {
+      let self = this;
+      this.$axios.post("/comment", this.form).then(function(res) {
+        self.getProducts();
+        self.form.comment = "";
+        self.form.rating = "";
+      });
+    },
+    getProducts() {
+      let self = this;
+      this.$axios.get("/products/" + this.$route.params.id).then(function(res) {
+        self.product = res.data.data;
+        self.form.productId = res.data.data.id;
+      });
+    },
+    setRating() {
+      axios.post("/comment").then(response => {
+        this.rating = 0;
+      });
     }
   }
 };
 </script>
+<style>
+.img_detail {
+  width: 500px;
+  height: 500px;
+  display: block;
+  margin: 0 auto;
+}
+.img_picture {
+  margin-right: 5px;
+  margin-top: 10px;
+  width: 73px !important;
+  height: 75px !important;
+  display: inline-block !important;
+  border: 1px solid #e6dfdf;
+}
+.rating {
+  border: 1px solid #bfbfbf;
+  width: 86px;
+  height: 40px;
+  margin-left: 10px;
+  border-radius: 1em;
+}
+.rating_1 {
+  border: 1px solid #bfbfbf;
+  width: 130px;
+  height: 40px;
+  margin-left: 100px;
+  border-radius: 1em;
+}
+.input_rating {
+  border-radius: 1em;
+  width: 30% !important;
+  height: 40px;
+}
+.rating_2 {
+  border: 1px solid #bfbfbf;
+  border-radius: 1em;
+  width: 130px;
+  height: 40px;
+  margin-left: 100px;
+}
+</style>

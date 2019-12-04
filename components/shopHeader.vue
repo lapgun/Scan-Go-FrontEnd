@@ -1,29 +1,77 @@
 <template>
   <div>
     <header id="header">
+      <div class="header_top">
+        <!--header_top-->
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="contactinfo">
+                <ul class="nav nav-pills">
+                  <li>
+                    <a href="#">
+                      <i class="fas fa-phone"></i> +2 95 01 88 821
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fas fa-envelope"></i> ScanAndGo@gmail.com
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="social-icons pull-right">
+                <ul style="display:inline; margin-top:15px" class="nav navbar-nav">
+                  <li style="display:inline">
+                    <a href="#">
+                      <i class="fab fa-facebook"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fab fa-twitter"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fab fa-linkedin"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fab fa-dribbble"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fab fa-google-plus"></i>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="header-middle">
         <!--header-middle-->
         <div class="container">
           <div class="row">
             <div class="col-sm-4">
               <div class="logo pull-left">
-                <a @click="$router.push('/')">
-                  <img src="~assets/images/home/logo.png" alt/>
+                <a href="#" @click="$router.push('/')">
+                  <img src="~assets/images/home/logo.png" alt />
                 </a>
               </div>
             </div>
             <div class="col-sm-8">
               <div class="shop-menu pull-right">
                 <ul class="nav navbar-nav">
-                  <li>
-                    <a
-                      @click="$router.push('/shop/checkout')"
-                      style="margin-left: -150px; margin-top:10px"
-                    >Thanh toán</a>
-                  </li>
                   <template v-if="user_id">
                     <li>
-                      <a style="margin-left:-71px ; margin-top: -20px" class="dropdown">
+                      <a style="margin-left:-71px" class="dropdown">
                         <div
                           class="dropdown-toggle"
                           id="dropdownMenuButton"
@@ -41,7 +89,8 @@
                             <i class="fas fa-sign-out-alt">&nbsp;Đăng xuất</i>
                           </a>
                           <a
-                            class="dropdown-item" href="#"
+                            class="dropdown-item"
+                            href="#"
                             @click="$router.push('/shop/user/detail/'+user_id)"
                           >Trang cá nhân</a>
                         </div>
@@ -89,15 +138,77 @@
               </div>
             </div>
             <div class="col-sm-3" style="margin-top:-20px">
-              <div class="search_box" style="display:inline; margin-right:30px">
-                <input v-model="search" @change="handleSearch" placeholder="Search"/>
-
+              <div class="search_box" style="display:inline;">
+                <input v-model="search" @change="handleSearch" placeholder="Search" />
               </div>
-              <div style="display:inline-block; font-size:25px;" v-if="user_id">
-                <a @click="$router.push('/shop/cart')">
-                  <i class="fas fa-shopping-cart"></i>
-                  {{cart.length}}
-                </a>
+              <div style="display:inline-block; font-size:25px;margin-bottom:-28px" v-if="user_id">
+                <div>
+                  <b-dropdown size="lg" variant="link" toggle-class="text-decoration-none" no-caret>
+                    <template style="background:#fff" v-slot:button-content>
+                      <i class="fas fa-shopping-cart"></i>
+                      {{cart.length}}
+                    </template>
+                    <b-dropdown-item v-if="cart.length == 0">
+                      <template class="cart_dropdown">
+                        <div
+                          class="text-md-center checkout-preview-dropdown__empty p-7"
+                          style="min-width: 250px; height:100px"
+                        >
+                          <span
+                            class="d-block font-weight-bold"
+                            style="margin-top:80px"
+                          >Chưa có sản phẩm</span>
+                          <span class="btn btn-icon btn-soft-primary rounded-circle mb-3">
+                            <span class="fas fa-shopping-basket btn-icon__inner"></span>
+                          </span>
+                        </div>
+                      </template>
+                    </b-dropdown-item>
+                    <b-dropdown-item v-else>
+                      <template>
+                        <div>
+                          <span style="font-size:20px;margin-right:50px">Giỏ hàng của bạn</span>
+                          <span>{{cart.length}} sản phẩm</span>
+                        </div>
+                        <div style="border: 1px solid #c1bbbb ; margin:15px 0px 15px 0px"></div>
+                        <div v-for="(item,index) in cart" :key="index">
+                          <img
+                            style="width:70px; height:70px; margin-bottom:10px"
+                            :src="`/${item.images? item.images.default_image: ''}`"
+                          />
+                          <span class="item_name">{{item.name}}</span>
+                          <span class="item_price">{{item.price}} đ</span>
+                        </div>
+                        <div
+                          style="border: 1px solid #c1bbbb ; margin-top:15px; margin-bottom:15px"
+                        ></div>
+                        <div>
+                          <span style="font-size:20px">Tạm tính</span>
+                          <span style="float:right">{{total}} đ</span>
+                        </div>
+                        <div
+                          style="font-size:12px; margin-top:10px"
+                        >(Phí vận chuyển và thuế sẽ được tính lúc thanh toán.)</div>
+                        <div
+                          style="border: 1px solid #c1bbbb ; margin-top:15px; margin-bottom:15px"
+                        ></div>
+                        <div>
+                          <a
+                            class="cart_checkout_1"
+                            href="#"
+                            @click="$router.push('/shop/cart')"
+                          >Đến giỏ hàng</a>
+                          <a
+                            class="cart_checkout_2"
+                            style="border: 1px solid #c1bbbb ;padding:10px 15px; width:100px; height:40px; float:right"
+                            href="#"
+                            @click="$router.push('/shop/checkout')"
+                          >Mua ngay</a>
+                        </div>
+                      </template>
+                    </b-dropdown-item>
+                  </b-dropdown>
+                </div>
               </div>
             </div>
           </div>
@@ -135,83 +246,120 @@
   </div>
 </template>
 <script>
-    const Cookies = process.client ? require("js-cookie") : undefined;
-    export default {
-        data() {
-            return {
-                cart: [],
-                users: [],
-                user_id: "",
-                user_name: "",
-                search: "",
-                slide: 0,
-                sliding: null,
-                infinite: true,
-                slidesToShow: 2,
-                slidesToScroll: 2,
-                slides: []
-            }
-        },
-        created() {
-            if (process.browser) {
-                if (localStorage.getItem("cart")) {
-                    let cart = JSON.parse(localStorage.getItem("cart"));
-                    return this.cart = cart;
-                } else {
-                    let cart = this.$store.getters.cart;
-                    return this.cart = cart;
-                }
-            }
-
-        },
-        mounted() {
-            if (this.$store.state.token) {
-                this.getUsers();
-            } else {
-                this.$router.push("/");
-            }
-            this.getSlides();
-        },
-        methods: {
-            getUsers() {
-                let self = this;
-                this.$axios.get("/users").then(function (res) {
-                    self.user_id = res.data.decoded.user_id;
-                    self.user_name = res.data.decoded.user_name;
-                    self.users = res.data.data;
-                });
-            },
-            handelLogout() {
-                Cookies.remove("token");
-                localStorage.removeItem("cart");
-                this.$store.commit("setToken", null);
-                this.$store.commit("setCart", []);
-                this.$router.push("/login");
-            },
-            handleSearch() {
-                let self = this;
-                this.$axios
-                    .get("/products/search?search=" + this.search)
-                    .then(function (res) {
-                        self.products = res.data.data;
-                        self.$emit("products", self.products);
-                        self.$router.push("/shop/products?search=" + self.search);
-                    });
-            },
-            onSlileStart(slide) {
-                this.sliding = true;
-            },
-            onSlileEnd(slide) {
-                this.sliding = false;
-            },
-            getSlides() {
-                let self = this;
-                this.$axios.get("/slide").then(function (res) {
-                    self.slides = res.data.rows;
-                });
-            }
-        }
+const Cookies = process.client ? require("js-cookie") : undefined;
+export default {
+  created() {
+    if (process.browser) {
+      if (localStorage.getItem("cart")) {
+        let cart = JSON.parse(localStorage.getItem("cart"));
+        return (this.cart = cart);
+      } else {
+        let cart = this.$store.getters.cart;
+        return (this.cart = cart);
+        console.log(this.cart);
+      }
+    }
+  },
+  mounted() {
+    if (this.$store.state.token) {
+      this.getUsers();
+    } else {
+      this.$router.push("/");
+    }
+    this.getSlides();
+    this.totalPrice();
+  },
+  data() {
+    return {
+      cart: [],
+      users: [],
+      user_id: "",
+      user_name: "",
+      search: "",
+      slide: 0,
+      sliding: null,
+      infinite: true,
+      slidesToShow: 2,
+      slidesToScroll: 2,
+      slides: [],
+      total: 0
     };
+  },
+  created() {
+    if (process.browser) {
+      if (localStorage.getItem("cart")) {
+        let cart = JSON.parse(localStorage.getItem("cart"));
+        return (this.cart = cart);
+      } else {
+        let cart = this.$store.getters.cart;
+        return (this.cart = cart);
+      }
+    }
+  },
+  methods: {
+    getUsers() {
+      let self = this;
+      this.$axios.get("/users").then(function(res) {
+        self.user_id = res.data.decoded.user_id;
+        self.user_name = res.data.decoded.user_name;
+        self.users = res.data.data;
+        self.$emit("user_id", self.user_id);
+      });
+    },
+    handelLogout() {
+      Cookies.remove("token");
+      localStorage.removeItem("cart");
+      this.$store.commit("setToken", null);
+      this.$store.commit("setCart", []);
+      this.$router.push("/login");
+    },
+    handleSearch() {
+      let self = this;
+      this.$axios
+        .get("/products/search?search=" + this.search)
+        .then(function(res) {
+          self.products = res.data.data;
+          self.$emit("products", self.products);
+          self.$router.push("/shop/products?search=" + self.search);
+        });
+    },
+    totalPrice() {
+      let total = 0;
+      for (let i = 0; i < this.cart.length; i++) {
+        total += this.cart[i].price * this.cart[i].order_time;
+        this.total = total;
+      }
+    },
+    onSlileStart(slide) {
+      this.sliding = true;
+    },
+    onSlileEnd(slide) {
+      this.sliding = false;
+    },
+    getSlides() {
+      let self = this;
+      this.$axios.get("/slide").then(function(res) {
+        self.slides = res.data.rows;
+      });
+    }
+  }
+};
 </script>
 <style scoped>
+.cart_dropdown:hover {
+  background: #fff;
+}
+.cart_checkout_1 , .cart_checkout_2 {
+  border: 1px solid #c1bbbb;
+  padding: 15px 15px;
+  width: 100px;
+  height: 40px;
+}
+.cart_checkout_1 {
+  margin-left: 30px;
+  float: right;
+}
+.cart_checkout_2 {
+  margin-left: 40px
+}
 </style>

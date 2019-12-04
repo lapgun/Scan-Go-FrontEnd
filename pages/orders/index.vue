@@ -81,6 +81,9 @@
           <li>
             <a @click="$router.push('/slide')">Slide</a>
           </li>
+           <li>
+            <a @click="$router.push('/comment')">Comment</a>
+          </li>
           <li>
             <a @click="$router.push('/user')">Users</a>
           </li>
@@ -154,7 +157,7 @@ export default {
       totalResult: 0,
       pagination: {
         currentPage: 1,
-        perPage: 10
+        perPage: 3
       },
       user_id: "",
       users: []
@@ -180,8 +183,8 @@ export default {
     handleSearch: function() {
       this.getOrders();
     },
-    handleChangePage: function(page) {
-      this.pagination.currentPage = page;
+    handleChangePage: function(currentPage) {
+      this.pagination.currentPage = currentPage;
       this.getOrders();
     },
     getAdmins: function() {
