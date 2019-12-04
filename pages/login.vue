@@ -90,7 +90,6 @@ export default {
             alert(res.data.message);
           } else {
             alert(res.data.message);
-            FF;
             self.$store.commit("setToken", res.data.token);
             Cookie.set("token", res.data.token);
             if (res.data.data.role == true) {

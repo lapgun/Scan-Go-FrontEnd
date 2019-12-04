@@ -40,10 +40,10 @@
                 </div>
               </div>
               <div v-else>
-                <label>
+                <div style="width: 225px;margin-left: 598px;margin-bottom: 20px;">
                   Sắp xếp theo
                   <b-form-select v-model="order_by" :options="order" @change="getProductsByOrder"></b-form-select>
-                </label>
+                </div>
                 <div class="col-sm-4" v-for="(product, index) in products" :key="index">
                   <div class="product-image-wrapper">
                     <div class="single-products">
@@ -181,8 +181,6 @@ export default {
       setTimeout(() => {
         this.pagination.currentPage++;
         if (this.pagination.currentPage <= this.pagination.totalPage) {
-          console.log(this.pagination.currentPage);
-          console.log(this.pagination.totalPage);
           this.getProducts();
           setTimeout(() => {
             $state.loaded();
