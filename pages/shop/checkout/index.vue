@@ -19,14 +19,14 @@
         <div class="table-responsive cart_info">
           <table class="table table-condensed">
             <thead>
-            <tr class="cart_menu">
-              <td class="image" style="text-align: center">Sản phẩm</td>
-              <td class="description">Tên</td>
-              <td class="price">Số lượng</td>
-              <td class="quantity">Thành tiền</td>
-              <td class="total">Total</td>
-              <td></td>
-            </tr>
+              <tr class="cart_menu">
+                <td class="image" style="text-align: center">Sản phẩm</td>
+                <td class="description">Tên</td>
+                <td class="price">Số lượng</td>
+                <td class="quantity">Thành tiền</td>
+                <td class="total">Total</td>
+                <td></td>
+              </tr>
             </thead>
             <tbody>
               <tr v-for="(item,index) in cart" :key="index">
@@ -91,7 +91,7 @@
                   :client="paypal"
                   :items="myItems"
                 ></paypal-checkout>
-              </no-ssr> -->
+              </no-ssr>-->
               <div ref="paypal"></div>
               <a class="btn btn-primary" @click="$router.push('/shop/cart')">Trở lại</a>
             </div>
@@ -130,7 +130,7 @@ export default {
           "AfNZOlnY_KmQuNqPDXQp7ZxW5YKIn1C0jLk79D2HCkaTpU0W6g13y0G_RMI2573ePjvsN_MU9eSXHVLG"
       },
       myItems: [],
-      loaded: false,
+      loaded: false
     };
   },
   components: {
@@ -178,7 +178,7 @@ export default {
         .then(function(res) {
           console.log(res);
         });
-      alert("Đã gửi yêu cầu mua hàng");
+      alert("Đã thanh toán thành công");
       self.$router.push("/");
       localStorage.removeItem("cart");
       self.$store.commit("setCart", []);
@@ -206,7 +206,7 @@ export default {
                   amount: {
                     currency_code: "USD",
                     value: this.total
-                  },
+                  }
                   // items: this.myItems
                 }
               ]
@@ -227,25 +227,23 @@ export default {
 };
 </script>
 <style scoped>
-  img {
-    object-fit: cover;
-    width: 100px;
-    height: 100px;
-  }
+img {
+  object-fit: cover;
+  width: 100px;
+  height: 100px;
+}
 
-  #payment {
-    margin-left: 350px;
-  }
+#payment {
+  margin-left: 350px;
+}
 
-  tbody tr td {
-    text-align: center;
-    padding-left: 50px;
-  }
+tbody tr td {
+  text-align: center;
+  padding-left: 50px;
+}
 
-  thead tr td {
-    text-align: center;
-    padding-left: 50px;
-  }
-
-
+thead tr td {
+  text-align: center;
+  padding-left: 50px;
+}
 </style>

@@ -55,6 +55,16 @@
           <div class="clear"></div>
         </div>
         <div class="divider"></div>
+        <form role="search">
+          <div class="form-group">
+            <input
+              type="text"
+              v-model="search"
+              class="form-control"
+              placeholder="Search"
+            />
+          </div>
+        </form>
         <ul class="nav menu" style="display:block">
           <li>
             <a @click="$router.push('/user/home')">Home</a>
@@ -92,7 +102,10 @@
               <td>{{index+1}}</td>
               <td>{{slide.name}}</td>
               <td>
-                <img style="width:100px; height:60px" :src="`/${slide.slide_images? slide.slide_images.default_image: ''}`" />
+                <img
+                  style="width:100px; height:60px"
+                  :src="`/${slide.slide_images? slide.slide_images.default_image: ''}`"
+                />
               </td>
               <td>
                 <b-button @click="$router.push('/slide/detail/'+slide.id)">Detail</b-button>
@@ -113,7 +126,7 @@ export default {
   },
   data: function() {
     return {
-      slides:[],
+      slides: [],
       search: "",
       totalResult: 0,
       pagination: {
@@ -137,6 +150,14 @@ export default {
       this.$axios.delete("/slide/" + id).then(function(res) {
         self.getSlides();
       });
+    },
+    handleSearch: function() {
+      this.$axios
+        .get("/categories/search?search=" + this.search)
+        .then(function(res) {
+          let self = this;
+          self.tasks = res.data.data;
+        });
     },
     getAdmins: function() {
       let self = this;

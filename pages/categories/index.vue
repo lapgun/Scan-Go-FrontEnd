@@ -43,17 +43,17 @@
           <div class="clear"></div>
         </div>
         <div class="divider"></div>
-        <form role="search">
-          <div class="form-group">
-            <input
-              type="text"
-              @change="handleSearch"
-              v-model="search"
-              class="form-control"
-              placeholder="Search"
-            />
-          </div>
-        </form>
+
+        <div class="form-group">
+          <input
+            type="text"
+            @change="handleSearch"
+            v-model="search"
+            class="form-control"
+            placeholder="Search"
+          />
+        </div>
+
         <ul class="nav menu" style="display:block">
           <li>
             <a @click="$router.push('/user/home')">Home</a>
@@ -66,6 +66,9 @@
           </li>
           <li>
             <a @click="$router.push('/orders')">Orders</a>
+          </li>
+          <li>
+            <a @click="$router.push('/slide')">Slide</a>
           </li>
           <li>
             <a @click="$router.push('/user')">Users</a>
@@ -108,19 +111,14 @@
 const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
   mounted: function() {
-    this.getTasks();
     this.getAdmins();
+    this.getTasks();
   },
   data: function() {
     return {
       user_id: "",
       users: [],
       tasks: [],
-      pagination: {
-        currentPage: 1,
-        perPage: 3,
-        totalPage: ""
-      },
       search: ""
     };
   },
@@ -130,17 +128,16 @@ export default {
       let self = this;
       this.$axios.get("/categories").then(function(res) {
         console.log(res);
-        let results = res.data.data;
-        results.forEach(function(element) {
-          self.tasks.push(element);
-        });
+        self.tasks = res.data.data;
       });
     },
-    handleSearch: function() {
+    handleSearch() {
+      let self = this;
+      self.tasks = [];
       this.$axios
         .get("/categories/search?search=" + this.search)
         .then(function(res) {
-          let self = this;
+          console.log(res);
           self.tasks = res.data.data;
         });
     },
