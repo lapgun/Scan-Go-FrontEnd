@@ -162,7 +162,7 @@ export default {
       ],
       pagination: {
         currentPage: 1,
-        perPage: 15,
+        perPage: 10,
         totalPage: ""
       }
     };

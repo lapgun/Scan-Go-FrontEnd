@@ -83,7 +83,6 @@
             placeholder="Enter your cat name "
           />
           <label>Select category's parent in the select form below :</label>
-
           <b-form-select v-model="form.cat_parent" :options="options"></b-form-select>
           <br />
           <label>
@@ -112,7 +111,7 @@ export default {
   methods: {
     getCategories: function() {
       let self = this;
-      this.$axios.get("/categories/cat_parent").then(function(res) {
+      this.$axios.get("/categories/cat_parent/0").then(function(res) {
         let data = res.data.data.rows;
         data.forEach(value => {
           self.options.push({

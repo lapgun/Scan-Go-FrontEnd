@@ -93,8 +93,8 @@
               <td>{{tasks.createdAt}}</td>
               <td>{{tasks.updatedAt}}</td>
               <td>
-                <b-button class="btn btn-info" @click="$router.push('/task/edit/'+task.id)">Update</b-button>
-                <b-button class="btn btn-info" variant="danger" @click="delTasks(task.id)">Delete</b-button>
+                <b-button class="btn btn-info" @click="$router.push('/categories/edit/'+tasks.id)">Update</b-button>
+                <b-button class="btn btn-info" variant="danger" @click="delTasks(tasks.id)">Delete</b-button>
               </td>
             </tr>
           </tbody>
