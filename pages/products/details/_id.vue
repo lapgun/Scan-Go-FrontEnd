@@ -34,10 +34,12 @@
 export default {
   created: function() {
     this.getTasks();
+    this.getComments();
   },
   data: function() {
     return {
-      tasks: []
+      tasks: [],
+      comments:[]
       // loaded : false,
     };
   },
@@ -45,6 +47,11 @@ export default {
     getTasks: async function() {
       const res = await this.$axios.get("/products/" + this.$route.params.id);
       this.tasks = res.data.data;
+    },
+    getComments: async function() {
+      const res = await this.$axios.get("/products/comment/" + this.$route.params.id);
+      console.log(res)
+      this.comments = res.data.data;
     },
     delTasks: function(id) {
       let self = this;

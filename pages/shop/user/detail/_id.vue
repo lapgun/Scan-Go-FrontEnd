@@ -42,7 +42,7 @@
                           style="margin-top:15px ;display:inline"
                           type="button"
                           class="btn btn-info"
-                          @click="$router.push('/shop/user/detail/'+users.id)"
+                          @click="$router.push('/')"
                         >Back</button>
                       </span>
                     </div>
@@ -80,6 +80,7 @@ export default {
     getUsers: function() {
       let self = this;
       this.$axios.get("/users/" + this.$route.params.id).then(function(res) {
+        console.log('dgfds',res)
         self.users = res.data.data;
       });
     }

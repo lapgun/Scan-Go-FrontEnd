@@ -35,7 +35,7 @@
                         type="button"
                         style="margin-top:15px"
                         class="btn btn-dark"
-                        @click="$router.push('/user/detail/'+users.id)"
+                        @click="$router.push('/user/home')"
                       >Back</button>
                     </a>
                   </div>
@@ -61,7 +61,8 @@ export default {
         id: "",
         name: "",
         email: "",
-        address: ""
+        address: "",
+        userId: ""
       }
     };
   },
@@ -70,13 +71,15 @@ export default {
       let self = this;
       this.$axios.get("/users/" + this.$route.params.id).then(function(res) {
         self.form = res.data.data;
+        self.form.userId = res.data.decoded.user_id;
       });
     },
     handelSubmit: function() {
       let self = this;
-      this.$axios.put("/users/" + this.form.id, this.form).then(function(res) {
-      });
-      self.$router.push("/");
+      this.$axios
+        .put("/users/" + this.form.id, this.form)
+        .then(function(res) {});
+      self.$router.push("/user/home");
     }
   }
 };
