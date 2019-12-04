@@ -7,8 +7,8 @@
       class="form-control"
       placeholder="Enter your product's name "
     />
-     <upload_files @uploaded="imageUploaded"></upload_files>
-     <b-button @click="handleSubmit">Submit</b-button>
+    <upload_files @uploaded="imageUploaded"></upload_files>
+    <b-button @click="handleSubmit">Submit</b-button>
   </div>
 </template>
 <script>
@@ -22,12 +22,12 @@ export default {
     return {
       form: {
         name: "",
-        image:''
+        image: ""
       }
     };
   },
   methods: {
-     handleSubmit: function() {
+    handleSubmit: function() {
       let self = this;
       this.$axios.post("/slide", this.form).then(function(res) {
         console.log(res);
@@ -35,9 +35,7 @@ export default {
       });
     },
     imageUploaded(data = {}) {
-      this.form.image = data.productImageInfo
-        ? data.productImageInfo.id
-        : null;
+      this.form.image = data.productImageInfo ? data.productImageInfo.id : null;
     }
   }
 };

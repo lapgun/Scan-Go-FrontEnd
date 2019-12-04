@@ -37,7 +37,6 @@ export default {
       this.$axios.get("/slide/" + this.$route.params.id).then(function(res) {
         console.log(res);
         self.slides = res.data;
-        
       });
     }
   }
