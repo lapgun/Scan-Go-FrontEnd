@@ -141,6 +141,7 @@ export default {
     this.totalPrice();
     this.getUsers();
     this.updateOrderTime();
+    console.log(this.cart);
     const script = document.createElement("script");
     script.src =
       "https://www.paypal.com/sdk/js?client-id=AfNZOlnY_KmQuNqPDXQp7ZxW5YKIn1C0jLk79D2HCkaTpU0W6g13y0G_RMI2573ePjvsN_MU9eSXHVLG";

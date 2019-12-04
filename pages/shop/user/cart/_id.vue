@@ -11,7 +11,7 @@
             <div
               class="card-header text-md-center"
               style="font-size: 20px;font-weight: bold"
-            >Thông tin đơn hàng
+            >Danh sách đơn hàng
             </div>
             <div class="card-body" style="font-style: italic">
               <div class="row">
@@ -27,24 +27,28 @@
                     </thead>
                     <tbody>
                     <tr v-for="(order,index) in orders" :key="index">
-                      <td>{{index+1}}</td>
+                      <td>{{index++}}</td>
                       <td v-if="order.order_status == 0">Đang chờ xử lí</td>
-                      <td v-if="order.order_status == 1">Xác nhận đơn hàng</td>
+                      <td v-if="order.order_status == 1">Đã thanh toán</td>
                       <td v-if="order.order_status == 2">Đã hủy đơn hàng</td>
                       <td>{{order.total_price}}</td>
                       <td>
                         <b-button variant="danger" @click="handelCancel(order.id)">Hủy đơn hàng</b-button>
-                        <b-button variant="info" v-b-toggle.collapse-2 @click="getOrder_products(order.id)">Thông tin
+                        <b-button
+                          variant="info"
+                          v-b-toggle.collapse-1
+                          @click="getOrder_products(order.id)"
+                        >Thông tin
                         </b-button>
                       </td>
                     </tr>
                     </tbody>
                   </table>
-                  <b-collapse id="collapse-2">
+                  <b-collapse id="collapse-1">
                     <div
                       class="card-header text-md-center"
                       style="font-size: 20px;font-weight: bold"
-                    >Danh sách sản phẩm
+                    >Thông tin đơn hàng
                     </div>
                     <table class="table table-bordered">
                       <thead>
@@ -60,18 +64,15 @@
                       <tr v-for="(product,key) in products" :key="key">
                         <td>{{key+1}}</td>
                         <td>{{product.name}}</td>
-                        <td>{{order_product[key].quantity ? order_product[key].quantity : undefined }}</td>
+                        <td>{{product.quantity[key].quantity}}</td>
                         <td>{{product.price}}</td>
-                        <td>{{product.price *order_product[key].quantity ? product.price *order_product[key].quantity :
-                          undefined}}
-                        </td>
+                        <td>{{product.price * product.quantity[key].quantity}}</td>
                       </tr>
                       </tbody>
                     </table>
                   </b-collapse>
                 </div>
               </div>
-              <!-- </div> -->
             </div>
           </div>
         </div>
@@ -152,7 +153,11 @@
                 self.productId.forEach(element => {
                     this.$axios.get("/products/" + element).then(function (res) {
                         let product = res.data.data;
-                        self.products.push(product);
+                        self.products.push({
+                            name: product.name,
+                            price: product.price,
+                            quantity: self.order_product
+                        });
                     });
                 });
             }

@@ -1,6 +1,5 @@
 <template>
   <div id="login">
-    <FlashMessage :position="'right top'"/>
     <h3 class="text-center text-white pt-5">Register</h3>
     <div class="container">
       <div
@@ -123,14 +122,15 @@ export default {
     handleCreate() {
       let self = this;
       if (this.$v.$invalid) {
-          self.flashMessage.error({title : "error", message: "not exist!"});
+        alert("failled");
       } else {
-        if (self.repassword == this.form.password) {
+        if (this.repassword == this.form.password) {
           this.$axios.post("/register", this.form).then(function(res) {
+            console.log(res);
             self.$router.push("/login");
           });
         } else {
-          self.flashMessage.warning({title : "warning", message: "Repassword is not correct"});
+          alert("Repassword is not correct");
         }
       }
     }

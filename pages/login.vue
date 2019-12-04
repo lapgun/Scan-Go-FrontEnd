@@ -1,6 +1,5 @@
 <template>
   <div id="login">
-    <FlashMessage :position="'right top'"/>
     <h3 class="text-center text-white pt-5">Login form</h3>
     <div class="container">
       <b-form @submit.prevent="handleLogin">
@@ -84,13 +83,13 @@ export default {
     handleLogin: function(id) {
       let self = this;
       if (this.$v.$invalid) {
-          self.flashMessage.error({title : "error", message: "not exist!"});
+        alert("failled");
       } else {
         this.$axios.post("/login", this.user).then(function(res) {
           if (res.data.error) {
-              self.flashMessage.error({title : "error", message: res.data.message});
+            alert(res.data.message);
           } else {
-              self.flashMessage.success({title : "success", message: res.data.message});
+            alert(res.data.message);
             self.$store.commit("setToken", res.data.token);
             Cookie.set("token", res.data.token);
             if (res.data.data.role == true) {
