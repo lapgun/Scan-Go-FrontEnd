@@ -86,7 +86,7 @@
                   <ul>
                     <li>
                       Tổng tiền
-                      <span>{{currency(total)}}</span>
+                      <span>{{currency(total)}}đ</span>
                     </li>
                   </ul>
                   <a class="btn btn-default update" @click="$router.push('/')">Trở lại</a>

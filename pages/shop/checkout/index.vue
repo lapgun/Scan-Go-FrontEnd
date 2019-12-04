@@ -62,7 +62,7 @@
                     <tr>
                       <td>Tổng giá tiền</td>
                       <span>
-                        <td>{{currency(total)}}</td>
+                        <td>{{currency(total)}}đ</td>
                       </span>
                     </tr>
                   </table>
@@ -86,15 +86,6 @@
                   <input type="text" placeholder="Email của bạn" :value="user_email" />
                 </form>
               </div>
-              <!-- <no-ssr>
-                <paypal-checkout
-                  env="sandbox"
-                  :amount="total"
-                  currency="USD"
-                  :client="paypal"
-                  :items="myItems"
-                ></paypal-checkout>
-              </no-ssr>-->
               <div ref="paypal"></div>
               <a class="btn btn-primary" @click="$router.push('/shop/cart')">Trở lại</a>
             </div>

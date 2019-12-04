@@ -97,8 +97,8 @@
                       </a>
                     </li>
                   </template>
-                  <template v-else>
-                    <li>
+                  <template v-else >
+                    <li style="margin-top: 30px;" >
                       <a
                         @click="$router.push('/register')"
                         style="margin-left:-70px; margin-top:-20px"
@@ -138,7 +138,7 @@
               </div>
             </div>
             <div class="col-sm-3" style="margin-top:-20px">
-              <div class="search_box" style="display:inline;">
+              <div class="search_box" style="display:inline">
                 <input v-model="search" @change="handleSearch" placeholder="Search" />
               </div>
               <div style="display:inline-block; font-size:25px;margin-bottom:-28px" v-if="user_id">
@@ -256,7 +256,6 @@ export default {
       } else {
         let cart = this.$store.getters.cart;
         return (this.cart = cart);
-        console.log(this.cart);
       }
     }
   },

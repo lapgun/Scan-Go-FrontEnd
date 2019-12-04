@@ -1,5 +1,7 @@
 <template>
+
   <div class="container mt-5">
+    <FlashMessage :position="'right bottom'"/>
     <div class="row justify-content-center">
       <div class="col-md-8">
         <div class="card">
@@ -78,7 +80,6 @@ export default {
       let self = this;
       this.$axios.put("/users/" + this.form.id, this.form).then(function(res) {
           self.flashMessage.success({title : "success", message: "Cập nhật thành công!"});
-
       });
       self.$router.push("/shop/user/detail/" + this.user_id);
     }

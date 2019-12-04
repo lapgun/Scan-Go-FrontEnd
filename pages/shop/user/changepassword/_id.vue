@@ -61,6 +61,7 @@
 <script>
     import shopFooter from "~/components/shopFooter.vue";
     import shopUser from "~/components/shopUser.vue";
+    // import shopHeader from "~/component/shopHeader.vue"
     export default {
         components: {
             // shopHeader,
@@ -103,7 +104,7 @@
                      title: 'Error',
                      message : 'password fail'
                  })
-            }
+            },
         }
     };
 </script>
