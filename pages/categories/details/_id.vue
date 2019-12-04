@@ -87,13 +87,13 @@
           </thead>
           <tbody>
             <tr>
-              <td>{{tasks.id}}</td>
-              <td>{{tasks.name}}</td>
-              <td>{{tasks.cat_parent}}</td>
-              <td>{{tasks.createdAt}}</td>
-              <td>{{tasks.updatedAt}}</td>
+              <td>{{task.id}}</td>
+              <td>{{task.name}}</td>
+              <td>{{task.cat_parent}}</td>
+              <td>{{task.createdAt}}</td>
+              <td>{{task.updatedAt}}</td>
               <td>
-                <b-button class="btn btn-info" @click="$router.push('/task/edit/'+task.id)">Update</b-button>
+                <b-button variant="info" @click="$router.push('/categories/edit/'+task.id)">Update</b-button>
                 <b-button class="btn btn-info" variant="danger" @click="delTasks(task.id)">Delete</b-button>
               </td>
             </tr>
@@ -110,7 +110,7 @@ export default {
   },
   data: function() {
     return {
-      tasks: []
+      task: []
     };
   },
   methods: {
@@ -119,8 +119,8 @@ export default {
       this.$axios
         .get("/categories/" + this.$route.params.id)
         .then(function(res) {
-          console.log(res);
-          self.tasks = res.data.data;
+          console.log('aaa',res);
+          self.task = res.data.data;
         });
     },
     delTasks: function(id) {

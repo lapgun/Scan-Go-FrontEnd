@@ -34,20 +34,12 @@
                         >Edit Profile</button>
                       </span>
                       <span>
-                        <span v-if="users.role = false">
+                        <span>
                           <button
                             style="margin-top:15px"
                             type="button"
                             class="btn btn-info"
-                            @click="$router.push('/user/home')"
-                          >Back</button>
-                        </span>
-                        <span v-else>
-                          <button
-                            style="margin-top:15px ;display:inline"
-                            type="button"
-                            class="btn btn-info"
-                            @click="$router.push('/')"
+                            @click="$router.push('/user/home/')"
                           >Back</button>
                         </span>
                       </span>

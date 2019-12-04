@@ -35,7 +35,7 @@
                       </td>
                       <td class="cart_description">
                         <h4>
-                          <a href>{{item.name}}</a>
+                          <h5>{{item.name}}</h5>
                         </h4>
                       </td>
                       <td class="cart_quantity">

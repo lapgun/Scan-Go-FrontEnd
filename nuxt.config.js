@@ -53,13 +53,11 @@ export default {
     css: [
         "~/assets/css/style.css",
         "~/assets/css/all.min.css",
+        "~/assets/css/bootstrap.min.css",
         "~/assets/css/animate.css",
         "~/assets/css/main.css",
         "~/assets/css/price-range.css",
         "~/assets/css/responsive.css",
-        "~/assets/css/bootstrap.min.css",
-        "~/assets/css/bootstrap.css",
-
     ],
     /*
      ** Plugins to load before mounting the App

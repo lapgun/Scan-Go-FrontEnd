@@ -43,7 +43,7 @@
                   <img src="~assets/images/product-details/new.jpg" class="newarrival" alt />
                   <h2>{{product.name}}</h2>
                   <p>Web ID: 1089772</p>
-                  <star-rating
+                  <star-rating style="margin-top:-15px"
                     v-bind:star-size="20"
                     :read-only="true"
                     v-model="average"
@@ -74,7 +74,7 @@
                         <a class="cart_quantity_up btn btn-success" @click="increment(product.id)">+</a>
                       </div>
                     </div>
-                    <button type="button" @click="addToCart(product)" class="btn btn-fefault cart">
+                    <button style="margin-left:10px;" type="button" @click="addToCart(product)" class="btn btn-default add-to-cart">
                       <i class="fa fa-shopping-cart"></i>
                       Thêm vào giỏ hàng
                     </button>

@@ -55,6 +55,11 @@
           <div class="clear"></div>
         </div>
         <div class="divider"></div>
+
+        <div class="form-group">
+          <input type="text" v-model="search" class="form-control" placeholder="Search" />
+        </div>
+
         <ul class="nav menu" style="display:block">
           <li>
             <a @click="$router.push('/user/home')">Home</a>
@@ -124,7 +129,8 @@ export default {
   data : function() {
     return {
       users: [],
-      user_id: ""
+      user_id: "",
+      search: ""
     };
   },
   methods: {
@@ -135,6 +141,14 @@ export default {
         self.user_id = res.data.decoded.user_id;
         self.users = res.data.data;
       });
+    },
+    handleSearch: function() {
+      this.$axios
+        .get("/categories/search?search=" + this.search)
+        .then(function(res) {
+          let self = this;
+          self.tasks = res.data.data;
+        });
     },
     handelDelete(id) {
       let self = this;

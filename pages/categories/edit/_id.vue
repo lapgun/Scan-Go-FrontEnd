@@ -112,7 +112,7 @@ export default {
   methods: {
     getCategories: function() {
       let self = this;
-      this.$axios.get("/categories/cat_parent").then(function(res) {
+      this.$axios.get("/categories/cat_parent/0").then(function(res) {
         let data = res.data.data.rows;
         data.forEach(value => {
           self.options.push({

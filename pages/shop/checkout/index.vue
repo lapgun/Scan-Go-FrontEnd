@@ -86,6 +86,15 @@
                   <input type="text" placeholder="Email của bạn" :value="user_email" />
                 </form>
               </div>
+              <!-- <no-ssr>
+                <paypal-checkout
+                  env="sandbox"
+                  :amount="total"
+                  currency="USD"
+                  :client="paypal"
+                  :items="myItems"
+                ></paypal-checkout>
+              </no-ssr>-->
               <div ref="paypal"></div>
               <a class="btn btn-primary" @click="$router.push('/shop/cart')">Trở lại</a>
             </div>
@@ -135,6 +144,7 @@ export default {
     this.totalPrice();
     this.getUsers();
     this.updateOrderTime();
+    console.log(this.cart);
     const script = document.createElement("script");
     script.src =
       "https://www.paypal.com/sdk/js?client-id=AfNZOlnY_KmQuNqPDXQp7ZxW5YKIn1C0jLk79D2HCkaTpU0W6g13y0G_RMI2573ePjvsN_MU9eSXHVLG";
@@ -169,8 +179,10 @@ export default {
           total: this.total,
           user_id: this.user_id
         })
-        .then(function(res) {});
-      alert("Đã gửi yêu cầu mua hàng");
+        .then(function(res) {
+          console.log(res);
+        });
+      alert("Đã thanh toán thành công");
       self.$router.push("/");
       localStorage.removeItem("cart");
       self.$store.commit("setCart", []);
@@ -199,6 +211,7 @@ export default {
                     currency_code: "USD",
                     value: this.total
                   }
+                  // items: this.myItems
                 }
               ]
             });
