@@ -77,7 +77,8 @@ export default {
     handelSubmit: function() {
       let self = this;
       this.$axios.put("/users/" + this.form.id, this.form).then(function(res) {
-        alert("Cập nhật thông tin thành công");
+          self.flashMessage.success({title : "success", message: "Cập nhật thành công!"});
+
       });
       self.$router.push("/shop/user/detail/" + this.user_id);
     }

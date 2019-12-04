@@ -157,7 +157,6 @@ export default {
           this.order_by
         )
         .then(function(res) {
-          console.log(res);
           let temp = res.data.data;
           self.products = self.products.concat(temp);
           self.pagination.totalPage = res.data.pagination.totalPage;
@@ -172,7 +171,7 @@ export default {
     addToCart(product) {
       let pro = this.cart.find(element => element.id == product.id);
       if (pro) {
-        alert("Đã tồn tại sản phẩm trong giỏ hàng");
+        this.flashMessage.warning({title : "warning", message: "Đã tồn tại sản phẩm trong giỏ hàng"});
       } else this.$store.dispatch("addToCart", product);
       this.$store.dispatch("setCart", this.cart);
       localStorage.setItem("cart", JSON.stringify(this.cart));

@@ -166,7 +166,6 @@
             getTasks: function () {
                 let self = this;
                 this.$axios.get("/products").then(function (res) {
-                    console;
                     self.tasks = res.data.data;
                     console.log(res.data.data);
                 });
