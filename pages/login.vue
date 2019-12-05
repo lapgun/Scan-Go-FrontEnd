@@ -39,6 +39,7 @@
                   </span>
                 </label>
                 <input type="submit" class="btn btn-info btn-md" value="submit" />
+                <a @click="handleLoginFb">login face</a>
                 <button class="btn btn-success" @click="$router.push('/register')">Register</button>
               </div>
             </div>
@@ -100,7 +101,13 @@ export default {
           }
         });
       }
-    }
+    },
+      handleLoginFb(){
+        let self = this;
+        this.$axios.get("/social/auth/fb").then(function (res) {
+            console.log("sdaas");
+        })
+      }
   }
 };
 </script>
