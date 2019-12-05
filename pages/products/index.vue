@@ -138,7 +138,7 @@
           :total-rows="pagination.total"
           :per-page="pagination.perPage"
           aria-controls="my-table"
-          @change="handleChange"
+          @change="getProductsByOrder"
         ></b-pagination>
       </div>
     </div>
@@ -172,7 +172,7 @@ export default {
       ],
       pagination: {
         currentPage: 1,
-        perPage: 15,
+        perPage: 10,
         totalPage: ""
       }
     };

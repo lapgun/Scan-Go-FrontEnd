@@ -76,7 +76,7 @@
           <li>
             <a @click="$router.push('/slide')">Slide</a>
           </li>
-           <li>
+          <li>
             <a @click="$router.push('/comment')">Comment</a>
           </li>
           <li class="active">
@@ -123,10 +123,10 @@
 const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
   middleware: "authenticated",
-  mounted : function(){
+  mounted: function() {
     this.getUsers();
   },
-  data : function() {
+  data: function() {
     return {
       users: [],
       user_id: "",
@@ -137,7 +137,7 @@ export default {
     getUsers: function() {
       let self = this;
       this.$axios.get("/users").then(function(res) {
-        console.log('dfgf',res)
+        console.log("dfgf", res);
         self.user_id = res.data.decoded.user_id;
         self.users = res.data.data;
       });

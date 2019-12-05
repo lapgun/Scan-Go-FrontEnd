@@ -67,10 +67,10 @@
           <li>
             <a @click="$router.push('/orders')">Orders</a>
           </li>
-           <li>
+          <li>
             <a @click="$router.push('/slide')">Slide</a>
           </li>
-           <li>
+          <li>
             <a @click="$router.push('/comment')">Comment</a>
           </li>
           <li>

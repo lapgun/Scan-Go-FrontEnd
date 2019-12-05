@@ -162,7 +162,7 @@
                 });
             }
         }
-    };
+    }
 </script>
 <style scoped>
   tbody {

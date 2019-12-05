@@ -15,7 +15,7 @@
                   </li>
                   <li>
                     <a href="#">
-                      <i class="fas fa-envelope"></i> nguyenthila@gmail.com
+                      <i class="fas fa-envelope"></i> ScanAndGo@gmail.com
                     </a>
                   </li>
                 </ul>

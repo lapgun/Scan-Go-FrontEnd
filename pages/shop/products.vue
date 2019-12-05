@@ -102,8 +102,7 @@ export default {
       this.handleSearch();
     } else {
       this.getProducts();
-    };
-    this.getTasksByOder()
+    }
   },
   data: function() {
     return {
@@ -122,7 +121,7 @@ export default {
         currentPage: 1,
         perPage: 6,
         totalPage: ""
-      },
+      }
     };
   },
   components: {
@@ -163,11 +162,11 @@ export default {
           self.pagination.totalPage = res.data.pagination.totalPage;
         });
     },
-    getTasksByOder(){
-      let self = this
-      self.products = []
-      this.pagination.currentPage = 1
-      this.getProducts()
+    getProductsByOrder() {
+      let self = this;
+      self.products = [];
+      this.pagination.currentPage = 1;
+      this.getProducts();
     },
     addToCart(product) {
       let pro = this.cart.find(element => element.id == product.id);
