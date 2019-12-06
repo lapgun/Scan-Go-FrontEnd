@@ -50,7 +50,6 @@ export default {
     },
     getComments: async function() {
       const res = await this.$axios.get("/products/comment/" + this.$route.params.id);
-      console.log(res)
       this.comments = res.data.data;
     },
     delTasks: function(id) {

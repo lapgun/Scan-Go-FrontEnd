@@ -67,10 +67,10 @@
           <li>
             <a @click="$router.push('/orders')">Orders</a>
           </li>
-           <li>
+          <li>
             <a @click="$router.push('/slide')">Slide</a>
           </li>
-           <li>
+          <li>
             <a @click="$router.push('/comment')">Comment</a>
           </li>
           <li>
@@ -116,7 +116,7 @@
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
-  mounted: function() {
+  mounted () {
     this.getAdmins();
     this.getTasks();
   },
@@ -125,15 +125,14 @@ export default {
       user_id: "",
       users: [],
       tasks: [],
-      search: ""
+      search: "",
+      cancel: false
     };
   },
-
   methods: {
     getTasks() {
       let self = this;
       this.$axios.get("/categories").then(function(res) {
-        console.log(res);
         self.tasks = res.data.data;
       });
     },
@@ -143,20 +142,37 @@ export default {
       this.$axios
         .get("/categories/search?search=" + this.search)
         .then(function(res) {
-          console.log(res);
           self.tasks = res.data.data;
         });
     },
-    delTasks: function(id) {
-      let self = this;
-      this.$axios.delete("/categories/" + id).then(function(res) {
-        self.getTasks();
-      });
+    delTasks (id) {
+      this.$swal
+        .fire({
+          title: "Bạn chắc chắn muốm xóa?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, delete it!",
+          cancelButtonText: "No, keep it"
+        })
+        .then(result => {
+          if (result.value) {
+            this.$swal.fire("Xóa!", "Bạn xóa thể loại thành công!.", "success");
+            let self = this;
+            this.$axios.delete("/categories/" + id).then(function(res) {
+              self.getTasks();
+            });
+          } else if (result.dismiss === this.$swal.DismissReason.cancel) {
+            this.$swal.fire(
+              "Cancelled",
+              "Your imaginary file is safe :)",
+              "error"
+            );
+          }
+        });
     },
     getAdmins: function() {
       let self = this;
       this.$axios.get("/users").then(function(res) {
-        console.log(res);
         self.user_id = res.data.decoded.user_id;
         self.users = res.data.data;
       });

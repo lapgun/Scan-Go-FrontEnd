@@ -137,7 +137,6 @@ export default {
     getUsers: function() {
       let self = this;
       this.$axios.get("/users").then(function(res) {
-        console.log('dfgf',res)
         self.user_id = res.data.decoded.user_id;
         self.users = res.data.data;
       });

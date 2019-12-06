@@ -65,7 +65,6 @@ export default {
     getOrders: function() {
       let self = this;
       this.$axios.get("/orders/" + this.$route.params.id).then(function(res) {
-        console.log(res);
         self.orders = res.data;
         self.order_products = res.data.order_products;
         console.log(self.order_products);

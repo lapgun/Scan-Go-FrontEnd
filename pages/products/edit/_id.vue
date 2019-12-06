@@ -90,11 +90,11 @@ export default {
       });
     },
     handleSubmit() {
+      this.$swal.fire('Yes...', 'Cập nhật sản phẩm thành công!', 'success')
       let self = this;
       this.$axios
         .put("/products/" + this.form.id, this.form)
         .then(function(res) {
-            console.log(res);
             self.$router.push("/products");
         });
     }

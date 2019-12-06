@@ -40,7 +40,8 @@
         </div>
       </div>
     </section>
-    <shopFooter></shopFooter>
+    <shopFooter />
+    <chatShop />
   </div>
 </template>
 <script>
@@ -48,6 +49,7 @@ const Cookies = process.client ? require("js-cookie") : undefined;
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
+import chatShop from "~/components/chatShop.vue";
 import QrcodeVue from "qrcode.vue";
 export default {
   created() {
@@ -77,7 +79,8 @@ export default {
     shopHeader,
     shopFooter,
     shopNav,
-    QrcodeVue
+    QrcodeVue,
+    chatShop
   },
   methods: {
     async getByMenu() {

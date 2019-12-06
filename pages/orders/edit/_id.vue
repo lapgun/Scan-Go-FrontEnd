@@ -24,14 +24,12 @@ export default {
     getOrders: function() {
       let self = this;
       this.$axios.get("/orders/" + this.$route.params.id).then(function(res) {
-        console.log(res);
         self.form = res.data;
       });
     },
     handleCreate: function() {
       let self = this;
       this.$axios.put("/orders/" + this.form.id, this.form).then(function(res) {
-        console.log(res);
         self.$router.push("/orders");
       });
     }

@@ -57,12 +57,7 @@
         <div class="divider"></div>
         <form role="search">
           <div class="form-group">
-            <input
-              type="text"
-              v-model="search"
-              class="form-control"
-              placeholder="Search"
-            />
+            <input type="text" v-model="search" class="form-control" placeholder="Search" />
           </div>
         </form>
         <ul class="nav menu" style="display:block">
@@ -81,7 +76,7 @@
           <li class="active">
             <a @click="$router.push('/slide')">Slide</a>
           </li>
-           <li>
+          <li>
             <a @click="$router.push('/comment')">Comment</a>
           </li>
           <li>
@@ -147,10 +142,29 @@ export default {
       });
     },
     handleDelete: function(id) {
-      let self = this;
-      this.$axios.delete("/slide/" + id).then(function(res) {
-        self.getSlides();
-      });
+      this.$swal
+        .fire({
+          title: "Bạn chắc chắn muốm xóa?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, delete it!",
+          cancelButtonText: "No, keep it"
+        })
+        .then(result => {
+          if (result.value) {
+            this.$swal.fire("Xóa!", "Bạn xóa slide thành công!.", "success");
+            let self = this;
+            this.$axios.delete("/slide/" + id).then(function(res) {
+              self.getSlides();
+            });
+          } else if (result.dismiss === this.$swal.DismissReason.cancel) {
+            this.$swal.fire(
+              "Cancelled",
+              "Your imaginary file is safe :)",
+              "error"
+            );
+          }
+        });
     },
     handleSearch: function() {
       this.$axios

@@ -76,13 +76,15 @@
         </div>
       </div>
     </section>
-    <shopFooter></shopFooter>
+    <shopFooter />
+    <chatShop />
   </div>
 </template>
 <script>
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
+import chatShop from "~/components/chatShop.vue";
 import InfiniteLoading from "vue-infinite-loading";
 import QrcodeVue from "qrcode.vue";
 export default {
@@ -97,15 +99,15 @@ export default {
       }
     }
   },
-  mounted: function() {
+  mounted() {
     if (this.$route.query.search) {
       this.handleSearch();
     } else {
       this.getProducts();
-    };
-    this.getTasksByOder()
+    }
+    this.getProducts();
   },
-  data: function() {
+  data() {
     return {
       products: [],
       order: [
@@ -122,7 +124,7 @@ export default {
         currentPage: 1,
         perPage: 6,
         totalPage: ""
-      },
+      }
     };
   },
   components: {
@@ -130,7 +132,8 @@ export default {
     shopFooter,
     shopNav,
     InfiniteLoading,
-    QrcodeVue
+    QrcodeVue,
+    chatShop
   },
   methods: {
     currency(x) {
@@ -142,12 +145,11 @@ export default {
       this.$axios
         .get("/products/search?search=" + this.$route.query.search)
         .then(function(res) {
-          console.log(res);
           self.products = res.data.data;
           self.result = res.data.data.length;
         });
     },
-    getProducts: function() {
+    getProducts() {
       let self = this;
       this.$axios
         .post(
@@ -158,17 +160,16 @@ export default {
           this.order_by
         )
         .then(function(res) {
-          console.log(res);
           let temp = res.data.data;
           self.products = self.products.concat(temp);
           self.pagination.totalPage = res.data.pagination.totalPage;
         });
     },
-    getTasksByOder(){
-      let self = this
-      self.products = []
-      this.pagination.currentPage = 1
-      this.getProducts()
+    getProductsByOrder() {
+      let self = this;
+      self.products = [];
+      this.pagination.currentPage = 1;
+      this.getProducts();
     },
     addToCart(product) {
       let pro = this.cart.find(element => element.id == product.id);
@@ -194,3 +195,5 @@ export default {
   }
 };
 </script>
+<style>
+</style>

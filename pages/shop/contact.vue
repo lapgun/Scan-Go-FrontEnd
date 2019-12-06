@@ -111,16 +111,19 @@
         </div>
       </div>
     </div>
-    <shopFooter></shopFooter>
+    <shopFooter />
+    <chatShop />
   </div>
 </template>
 <script>
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
+import chatShop from "~/components/chatShop.vue";
 export default {
   components: {
     shopHeader,
-    shopFooter
+    shopFooter,
+    chatShop
   }
 };
 </script>

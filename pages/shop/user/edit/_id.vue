@@ -52,10 +52,10 @@
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
-  mounted: function() {
+  mounted() {
     this.getUsers();
   },
-  data: function() {
+  data() {
     return {
       form: {
         id: "",
@@ -74,7 +74,7 @@ export default {
         self.user_id = res.data.decoded.user_id;
       });
     },
-    handelSubmit: function() {
+    handelSubmit(){
       let self = this;
       this.$axios.put("/users/" + this.form.id, this.form).then(function(res) {
         alert("Cập nhật thông tin thành công");

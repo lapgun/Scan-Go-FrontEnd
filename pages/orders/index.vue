@@ -128,7 +128,7 @@
 </template>
 <script>
 export default {
-  mounted: function() {
+  mounted() {
     let self = this;
     socket.on("success-status", function(data) {
       let orderNew = self.orders.find(element => element.id == data.id);
@@ -145,7 +145,7 @@ export default {
     this.getOrders();
     this.getAdmins();
   },
-  data: function() {
+  data() {
     return {
       orders: {
         index: "",
@@ -164,7 +164,7 @@ export default {
     };
   },
   methods: {
-    getOrders: function() {
+    getOrders() {
       let self = this;
       this.$axios
         .get(
@@ -180,14 +180,14 @@ export default {
           self.pagination = res.data.pagination;
         });
     },
-    handleSearch: function() {
+    handleSearch() {
       this.getOrders();
     },
-    handleChangePage: function(page) {
-      this.pagination.currentPage = page;
+    handleChangePage(currentPage) {
+      this.pagination.currentPage = currentPage;
       this.getOrders();
     },
-    getAdmins: function() {
+    getAdmins() {
       let self = this;
       this.$axios.get("/users").then(function(res) {
         self.user_id = res.data.decoded.user_id;
@@ -202,7 +202,7 @@ export default {
         socket.emit("update-status", { order: order.order_status, id: id });
       });
     },
-    handleCancel: function(id) {
+    handleCancel(id) {
       let self = this;
       this.$axios.put("/orders/cancel/" + id).then(function(res) {
         let order = self.orders.find(element => element.id == id);
@@ -210,7 +210,7 @@ export default {
         socket.emit("cancel-order", { order: order.order_status, id: id });
       });
     },
-    handleLogout: function() {
+    handleLogout() {
       Cookie.remove("token");
       this.$store.commit("setToken", null);
       this.$router.push("/login");

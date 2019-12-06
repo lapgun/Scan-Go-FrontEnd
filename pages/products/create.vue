@@ -79,6 +79,7 @@ export default {
       });
     },
     handleSubmit() {
+      this.$swal.fire('Yes...', 'Tạo sản phẩm thành công!', 'success')
       let self = this;
       this.$axios.post("/products", this.form).then(res => {
         this.$router.push("/products");

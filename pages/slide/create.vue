@@ -28,6 +28,7 @@ export default {
   },
   methods: {
     handleSubmit: function() {
+      this.$swal.fire('Yes...', 'Tạo slide thành công!', 'success')
       let self = this;
       this.$axios.post("/slide", this.form).then(function(res) {
         console.log(res);

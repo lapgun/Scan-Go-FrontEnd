@@ -56,28 +56,31 @@
       </div>
     </div>
     <shopFooter />
+    <chatShop />
   </div>
 </template>
 <script>
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopUser from "~/components/shopUser.vue";
+import chatShop from "~/components/chatShop.vue";
 export default {
   components: {
     shopHeader,
     shopFooter,
-    shopUser
+    shopUser,
+    chatShop
   },
-  mounted: function() {
+  mounted() {
     this.getUsers();
   },
-  data: function() {
+  data() {
     return {
       users: []
     };
   },
   methods: {
-    getUsers: function() {
+    getUsers() {
       let self = this;
       this.$axios.get("/users/" + this.$route.params.id).then(function(res) {
         console.log('dgfds',res)

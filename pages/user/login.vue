@@ -48,7 +48,6 @@ export default {
                 }
             })
             .then(function(res){
-                console.log(res)
                 self.$store.commit('setToken', res.data.token)
                 Cookie.set('token', res.data.token)
                 self.$router.push('/admins/home')

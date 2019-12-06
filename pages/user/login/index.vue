@@ -48,9 +48,8 @@ export default {
     handelSubmit() {
       let self = this;
       this.$axios
-        .post("http://127.0.0.1:4000/users/login", this.user)
+        .post("/users/login", this.user)
         .then(function(res) {
-          console.log(res);
           self.$store.commit("setToken", res.data.token);
           Cookies.set("setToken", res.data.token);
           self.$router.push("/");

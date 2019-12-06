@@ -119,7 +119,6 @@ export default {
       this.$axios
         .get("/categories/" + this.$route.params.id)
         .then(function(res) {
-          console.log('aaa',res);
           self.task = res.data.data;
         });
     },

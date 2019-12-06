@@ -96,11 +96,11 @@
 </template>
 <script>
 export default {
-  mounted: function() {
+  mounted() {
     this.getDetail();
     this.getCategories();
   },
-  data: function() {
+  data() {
     return {
       form: {
         name: "",
@@ -110,7 +110,7 @@ export default {
     };
   },
   methods: {
-    getCategories: function() {
+    getCategories() {
       let self = this;
       this.$axios.get("/categories/cat_parent/0").then(function(res) {
         let data = res.data.data.rows;
@@ -122,7 +122,7 @@ export default {
         });
       });
     },
-    getDetail: function() {
+    getDetail() {
       let self = this;
       this.$axios
         .get("/categories/" + this.$route.params.id)
@@ -130,7 +130,8 @@ export default {
           self.form = res.data.data;
         });
     },
-    handleSubmit: function() {
+    handleSubmit() {
+      this.$swal.fire("Yes...", "Cập nhật thể loại thành công!", "success");
       let self = this;
       this.$axios
         .put("/categories/" + this.form.id, this.form)
@@ -138,7 +139,7 @@ export default {
           self.$router.push("/categories");
         });
     },
-    handleLogout: function() {
+    handleLogout() {
       Cookie.remove("token");
       this.$store.commit("setToken", null);
       this.$router.push("/login");

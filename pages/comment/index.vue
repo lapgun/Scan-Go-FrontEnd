@@ -86,7 +86,7 @@
               <th>STT</th>
               <th>Name</th>
               <th>Comment</th>
-              <th>Rate</th>
+              <th>Rating</th>
               <th>ParentId</th>
               <th>ProductId</th>
             </tr>
@@ -96,7 +96,7 @@
               <td>{{index+1}}</td>
               <td>{{comment.name}}</td>
               <td>{{comment.comment}}</td>
-              <td>{{comment.rate}}</td>
+              <td>{{comment.rating}}</td>
               <td>{{comment.parentId}}</td>
               <td>{{comment.productId}}</td>
             </tr>
@@ -126,7 +126,6 @@ export default {
     getSlides() {
       let self = this;
       this.$axios.get("/comment").then(function(res) {
-        console.log(res)
         self.comments = res.data.data;
       });
     },

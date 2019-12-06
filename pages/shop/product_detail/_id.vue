@@ -5,7 +5,7 @@
       <div class="container">
         <div class="row">
           <div class="col-sm-3">
-            <shopNav></shopNav>
+            <shopNav />
           </div>
           <div class="col-sm-9 padding-right">
             <div class="product-details">
@@ -43,7 +43,8 @@
                   <img src="~assets/images/product-details/new.jpg" class="newarrival" alt />
                   <h2>{{product.name}}</h2>
                   <p>Web ID: 1089772</p>
-                  <star-rating style="margin-top:-15px"
+                  <star-rating
+                    style="margin-top:-15px"
                     v-bind:star-size="20"
                     :read-only="true"
                     v-model="average"
@@ -56,10 +57,7 @@
                     <div class="cart_quantity">
                       <div class="cart_quantity_button">
                         <template v-if=" 1 < product.order_time">
-                          <a
-                            class="cart_quantity_down btn btn-success"
-                            @click="decrement(product.id)"
-                          >-</a>
+                          <a class="cart_quantity_down btn btn-success">-</a>
                         </template>
                         <template v-else>
                           <a class="cart_quantity_down btn btn-success">-</a>
@@ -71,10 +69,15 @@
                           autocomplete="off"
                           size="2"
                         >1</div>
-                        <a class="cart_quantity_up btn btn-success" @click="increment(product.id)">+</a>
+                        <a class="cart_quantity_up btn btn-success">+</a>
                       </div>
                     </div>
-                    <button style="margin-left:10px;" type="button" @click="addToCart(product)" class="btn btn-default add-to-cart">
+                    <button
+                      style="margin-left:10px;"
+                      type="button"
+                      @click="addToCart(product)"
+                      class="btn btn-default add-to-cart"
+                    >
                       <i class="fa fa-shopping-cart"></i>
                       Thêm vào giỏ hàng
                     </button>
@@ -118,7 +121,8 @@
             <h2 style="margin-top:10px" class="title text-center">Đánh giá sản phẩm</h2>
             <div v-if="user_id">
               <div>
-                <label style="margin:20px 0 30px 20px" for="viet_bai_danh_gia">Đánh giá sản phẩm</label>
+                <i style="margin-left:20px" class="fas fa-pen"></i>
+                <label style="margin:20px 0 30px 0" for="viet_bai_danh_gia">Đánh giá sản phẩm</label>
                 <input
                   class="input_rating"
                   type="text"
@@ -143,7 +147,8 @@
                 <div style="border:1px solid #bfbfbf; margin:15px 5px 0 5px;background:#f9ede5">
                   <ul class="nav menu" style="margin:30px 0 30px 0">
                     <li style="margin:0 0 0 50px">
-                      <span>{{average}} trên 5</span>
+                      <span v-if="average">{{average}} trên 5</span>
+                      <span v-else>0 trên 5</span>
                       <star-rating
                         v-bind:star-size="20"
                         :read-only="true"
@@ -153,7 +158,7 @@
                       ></star-rating>
                     </li>
                     <li class="rating_2">
-                      <a href="#">Tất cả ({{this.comments.length}})</a>
+                      <a>Tất cả ({{this.comments.length}})</a>
                     </li>
                     <li class="rating_1">
                       <a href="#" style="padding-left:20px">Bình luận</a>
@@ -201,7 +206,8 @@
         </div>
       </div>
     </section>
-    <shopFooter></shopFooter>
+    <shopFooter />
+    <chatShop />
   </div>
 </template>
 <script>
@@ -209,6 +215,7 @@ const Cookies = process.client ? require("js-cookie") : undefined;
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
+import chatShop from "~/components/chatShop.vue";
 export default {
   mounted() {
     this.getProducts();
@@ -240,7 +247,7 @@ export default {
         productId: "",
         rating: 0
       },
-      average: ""
+      average: "",
     };
   },
   created() {
@@ -257,7 +264,8 @@ export default {
   components: {
     shopHeader,
     shopFooter,
-    shopNav
+    shopNav,
+    chatShop,
   },
   methods: {
     currency(x) {

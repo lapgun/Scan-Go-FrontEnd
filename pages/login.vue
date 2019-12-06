@@ -83,15 +83,15 @@ export default {
     handleLogin: function(id) {
       let self = this;
       if (this.$v.$invalid) {
-        alert("failled");
+        alert("Mật khẩu chưa chính xác");
       } else {
         this.$axios.post("/login", this.user).then(function(res) {
           if (res.data.error) {
             alert(res.data.message);
           } else {
-            alert(res.data.message);
+            alert('Đăng nhập thành công');
             self.$store.commit("setToken", res.data.token);
-            Cookie.set("token", res.data.token);
+            Cookie.set("token", res.data.token)
             if (res.data.data.role == true) {
               self.$router.push("/user/home");
             } else {

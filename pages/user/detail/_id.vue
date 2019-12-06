@@ -68,7 +68,6 @@ export default {
     getUsers: function() {
       let self = this;
       this.$axios.get("/users/" + this.$route.params.id).then(function(res) {
-        console.log(res);
         self.users = res.data.data;
       });
     }
