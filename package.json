@@ -4,7 +4,6 @@
     "description": "My ace Nuxt.js project",
     "author": "lapgun",
     "private": true,
-    "proxy" : "http://localhost:4000/auth/fb/cb",
     "scripts": {
         "dev": "nuxt",
         "build": "nuxt build",

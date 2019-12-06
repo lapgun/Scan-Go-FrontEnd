@@ -142,7 +142,6 @@
         ></b-pagination>
       </div>
     </div>
-    <infinite-loading v-if="!search" @infinite="infiniteHandler"></infinite-loading>
   </div>
 </template>
 <script>
