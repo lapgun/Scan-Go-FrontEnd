@@ -1,23 +1,14 @@
 <template>
   <div>
-    <h1>Example component</h1>
-    <button class="btn btn-default" @click="showAlert">Click to use vue-alert</button>
+    <LazyYoutubeVideo url="https://www.youtube.com/watch?v=aU1s-qErhFs" />
   </div>
 </template>
 
 <script>
 export default {
-  methods: {
-    showAlert() {
-      this.$fire({
-        title: "Title",
-        text: "text",
-        type: "success",
-        timer: 3000
-      }).then(r => {
-        console.log(r.value);
-      });
-    }
-  }
+  methods: {}
+  // components: {
+  //   LazyYoutubeVideo
+  // }
 };
 </script>

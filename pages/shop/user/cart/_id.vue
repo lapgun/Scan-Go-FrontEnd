@@ -156,8 +156,7 @@ export default {
             quantity: self.order_product
           });
         });
-      });
-      console.log(self.products);
+      }); 
     }
   }
 };

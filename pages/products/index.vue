@@ -12,10 +12,7 @@
                 <a @click="$router.push('/user/home')">Home</a>
               </li>
               <li>
-                <a @click="$router.push('/user/detail/'+user_id)">Admin</a>
-              </li>
-              <li>
-                <a @click="$router.push('/user/edit/'+user_id)">Profile</a>
+                <a @click="$router.push('/user/detail/'+user_id)">Profile</a>
               </li>
               <li>
                 <a @click="$router.push('/register')">Register</a>
@@ -70,7 +67,7 @@
           <li>
             <a @click="$router.push('/slide')">Slide</a>
           </li>
-           <li>
+          <li>
             <a @click="$router.push('/comment')">Comment</a>
           </li>
           <li>
@@ -80,19 +77,17 @@
       </div>
       <div class="col-sm-8 col-lg-10 sidebar">
         <b-button variant="success" @click="$router.push('/products/create')">Create new task</b-button>
-        <div style="margin-left:1300px">
-          <label>
-            Sắp xếp theo
+          <label> 
             <b-form-select v-model="order_by" :options="order" @change="getProductsByOrder()"></b-form-select>
           </label>
-        </div>
         <table id="my-table" class="table table-bordered">
           <thead>
             <tr>
-              <th>Number</th>
+              <th>Number // Id</th>
               <th>name</th>
               <th>Categories Id</th>
               <th>Price</th>
+              <th>Order Times</th>
               <th>Image</th>
               <th>Detail</th>
               <th>Description</th>
@@ -101,10 +96,11 @@
           </thead>
           <tbody>
             <tr v-for="(task,index) in tasks" :key="index">
-              <td>{{index+1}}//{{task.id}}</td>
+              <td>{{index+1}} // {{task.id}}</td>
               <td>{{task.name}}</td>
               <td>{{task.categoriesId}}</td>
               <td>{{task.price}}</td>
+              <td>{{task.order_time}}</td>
               <td>
                 <img
                   style="width:50px; height:50px"
@@ -133,13 +129,6 @@
             </tr>
           </tbody>
         </table>
-        <b-pagination
-          v-model="pagination.currentPage"
-          :total-rows="pagination.total"
-          :per-page="pagination.perPage"
-          aria-controls="my-table"
-          @change="handleChange"
-        ></b-pagination>
       </div>
     </div>
     <infinite-loading v-if="!search" @infinite="infiniteHandler"></infinite-loading>
@@ -168,7 +157,8 @@ export default {
         { value: ["price", "ASC"], text: "Giá tiền tăng dần" },
         { value: ["price", "DESC"], text: "Giá tiền giảm dần" },
         { value: ["id", "DESC"], text: "Mới nhất" },
-        { value: ["id", "ASC"], text: "Cũ nhất" }
+        { value: ["id", "ASC"], text: "Cũ nhất" },
+        { value: ["order_time", "DESC"], text: "Đặt hàng nhiều nhất" }
       ],
       pagination: {
         currentPage: 1,

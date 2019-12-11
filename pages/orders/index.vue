@@ -23,10 +23,7 @@
                 <a @click="$router.push('/user/home')">Home</a>
               </li>
               <li>
-                <a @click="$router.push('/user/detail/'+user_id)">Admin</a>
-              </li>
-              <li>
-                <a @click="$router.push('/user/edit/'+user_id)">Profile</a>
+                <a @click="$router.push('/user/detail/'+user_id)">Profile</a>
               </li>
               <li>
                 <a @click="$router.push('/register')">Register</a>
@@ -55,16 +52,11 @@
           <div class="clear"></div>
         </div>
         <div class="divider"></div>
-       
-          <div class="form-group">
-            <input
-              type="text"
-              v-model="search"
-              class="form-control"
-              placeholder="Search"
-            />
-          </div>
-      
+
+        <div class="form-group">
+          <input type="text" v-model="search" class="form-control" placeholder="Search" />
+        </div>
+
         <ul class="nav menu" style="display:block">
           <li>
             <a @click="$router.push('/user/home')">Home</a>
@@ -81,7 +73,7 @@
           <li>
             <a @click="$router.push('/slide')">Slide</a>
           </li>
-           <li>
+          <li>
             <a @click="$router.push('/comment')">Comment</a>
           </li>
           <li>
@@ -90,7 +82,10 @@
         </ul>
       </div>
       <div class="col-sm-9 col-lg-10 sidebar">
-        <h3>Orders Processing</h3>
+        <h3>Orders</h3>
+        <label>
+          <b-form-select v-model="order_status" :options="options" @change="getOrders"></b-form-select>
+        </label>
         <table class="table table-bordered">
           <thead>
             <tr>
@@ -147,12 +142,7 @@ export default {
   },
   data: function() {
     return {
-      orders: {
-        index: "",
-        customerId: "",
-        order_status: "",
-        total_price: ""
-      },
+      orders: [],
       search: "",
       totalResult: 0,
       pagination: {
@@ -160,7 +150,14 @@ export default {
         perPage: 10
       },
       user_id: "",
-      users: []
+      users: [],
+      order_status: "",
+      options: [
+        { value: "", text: "Order's status" },
+        { value: 0, text: "Processing" },
+        { value: 1, text: "Paid" },
+        { value: 2, text: "Canceled" }
+      ]
     };
   },
   methods: {
@@ -173,7 +170,9 @@ export default {
             "&currentPage=" +
             this.pagination.currentPage +
             "&perPage=" +
-            this.pagination.perPage
+            this.pagination.perPage +
+            "&order_status=" +
+            this.order_status
         )
         .then(function(res) {
           self.orders = res.data.data;
@@ -183,15 +182,14 @@ export default {
     handleSearch: function() {
       this.getOrders();
     },
-    handleChangePage: function(page) {
-      this.pagination.currentPage = page;
+    handleChangePage: function(currentPage) {
+      this.pagination.currentPage = currentPage;
       this.getOrders();
     },
     getAdmins: function() {
       let self = this;
-      this.$axios.get("/users").then(function(res) {
+      this.$axios.get("/users/decoded").then(function(res) {
         self.user_id = res.data.decoded.user_id;
-        self.users = res.data.data;
       });
     },
     handelConfirm(id) {
@@ -204,11 +202,13 @@ export default {
     },
     handleCancel: function(id) {
       let self = this;
-      this.$axios.put("/orders/cancel/" + id).then(function(res) {
-        let order = self.orders.find(element => element.id == id);
-        if (order) order.order_status = 2;
-        socket.emit("cancel-order", { order: order.order_status, id: id });
-      });
+      if (confirm("Are you sure?")) {
+        this.$axios.put("/orders/cancel/" + id).then(function(res) {
+          let order = self.orders.find(element => element.id == id);
+          if (order) order.order_status = 2;
+          socket.emit("cancel-order", { order: order.order_status, id: id });
+        });
+      }
     },
     handleLogout: function() {
       Cookie.remove("token");

@@ -10,7 +10,7 @@
                 <h2>
                   <span>Scan</span>-Go
                 </h2>
-                <p>Text</p>
+                <p>Testing Project</p>
               </div>
             </div>
             <div class="col-sm-7">

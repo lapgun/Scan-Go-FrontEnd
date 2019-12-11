@@ -77,8 +77,10 @@
                 <input type="checkbox" v-model="form.role" value="1" /> Are you admin?
               </b-form-group>
               <div class="form-group text-xl-center">
-                <input type="submit" class="btn btn-info btn-md" value="submit" @click="showAlert" />
+                <input type="submit" class="btn btn-info btn-md" value="Submit" />
+                <b-button variant="success" @click="$router.push('/login')">Login</b-button>
               </div>
+              
             </b-form>
           </div>
         </div>
@@ -126,20 +128,17 @@ export default {
       } else {
         if (this.repassword == this.form.password) {
           this.$axios.post("/register", this.form).then(function(res) {
-            console.log(res);
-            self.$router.push("/login");
+            if (res.data.error) {
+              alert(res.data.message);
+            } else {
+              alert(res.data.message);
+              self.$router.push("/login");
+            }
           });
         } else {
           alert("Repassword is not correct");
         }
       }
-    },
-    showAlert() {
-      this.$fire({
-        title: "Đăng kí thành công!",
-        type: "success",
-        timer: 3000
-      }).then(r => {});
     }
   }
 };

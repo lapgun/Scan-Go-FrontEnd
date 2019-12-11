@@ -12,7 +12,6 @@
           placeholder="Viết bình luận..."
         />
         <star-rating
-          style="float:right"
           :show-rating="false"
           @rating-selected="setRating"
           v-model="form.rating"

@@ -15,7 +15,7 @@
                   </li>
                   <li>
                     <a href="#">
-                      <i class="fas fa-envelope"></i> nguyenthila@gmail.com
+                      <i class="fas fa-envelope"></i> ScanAndGo@gmail.com
                     </a>
                   </li>
                 </ul>
@@ -159,7 +159,13 @@
                             style="margin-top:80px"
                           >Chưa có sản phẩm</span>
                           <span class="btn btn-icon btn-soft-primary rounded-circle mb-3">
-                            <span class="fas fa-shopping-basket btn-icon__inner"></span>
+                            <span class="fas fa-shopping-basket btn-icon__inner">
+                              <a
+                                class="cart_checkout_1"
+                                href="#"
+                                @click="$router.push('/shop/cart')"
+                              >Đến giỏ hàng</a>
+                            </span>
                           </span>
                         </div>
                       </template>
@@ -186,9 +192,6 @@
                           <span style="font-size:20px">Tạm tính</span>
                           <span style="float:right">{{total}} đ</span>
                         </div>
-                        <div
-                          style="font-size:12px; margin-top:10px"
-                        >(Phí vận chuyển và thuế sẽ được tính lúc thanh toán.)</div>
                         <div
                           style="border: 1px solid #c1bbbb ; margin-top:15px; margin-bottom:15px"
                         ></div>
@@ -267,7 +270,9 @@ export default {
       this.$router.push("/");
     }
     this.getSlides();
-    this.totalPrice();
+    setTimeout(() => {
+      this.totalPrice();
+    }, 1000);
   },
   data() {
     return {
@@ -299,7 +304,7 @@ export default {
   methods: {
     getUsers() {
       let self = this;
-      this.$axios.get("/users").then(function(res) {
+      this.$axios.get("/users/decoded").then(function(res) {
         self.user_id = res.data.decoded.user_id;
         self.user_name = res.data.decoded.user_name;
         self.users = res.data.data;
@@ -349,7 +354,8 @@ export default {
 .cart_dropdown:hover {
   background: #fff;
 }
-.cart_checkout_1 , .cart_checkout_2 {
+.cart_checkout_1,
+.cart_checkout_2 {
   border: 1px solid #c1bbbb;
   padding: 15px 15px;
   width: 100px;
@@ -360,6 +366,6 @@ export default {
   float: right;
 }
 .cart_checkout_2 {
-  margin-left: 40px
+  margin-left: 40px;
 }
 </style>

@@ -23,10 +23,7 @@
                 <a @click="$router.push('/user/home')">Home</a>
               </li>
               <li>
-                <a @click="$router.push('/user/detail/'+user_id)">Admin</a>
-              </li>
-              <li>
-                <a @click="$router.push('/user/edit/'+user_id)">Profile</a>
+                <a @click="$router.push('/user/detail/'+user_id)">Profile</a>
               </li>
               <li>
                 <a @click="$router.push('/register')">Register</a>
@@ -83,27 +80,33 @@
         </li>
       </ul>
     </div>
+    <div style class="col-sm-9 col-lg-10 sidebar">
+      <h1>state : {{this.$store.state}}</h1>
+    </div>
   </div>
 </template>
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
-  middleware: "authenticated",
   mounted: function() {
-    this.getUsers();
+    this.getDecoded();
   },
   data: function() {
     return {
-      user_id: ""
+      user_id: "",
+      role: ""
     };
   },
   methods: {
-    getUsers: function() {
+    getDecoded: function() {
       let self = this;
-      this.$axios.get("/users").then(function(res) {
+      this.$axios.get("/users/decoded").then(function(res) {
         console.log(res);
         self.user_id = res.data.decoded.user_id;
-        self.users = res.data.data;
+        self.role = res.data.decoded.user_role;
+        if(self.role==0){
+          self.$router.push("/")
+        }
       });
     },
     handleLogout: function() {

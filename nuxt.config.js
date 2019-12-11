@@ -4,7 +4,7 @@ export default {
      ** Headers of the page
      */
     head: {
-        title: process.env.npm_package_name || "",
+        title: "Scan And Go",
         meta: [
             { charset: "utf-8" },
             { name: "viewport", content: "width=device-width, initial-scale=1" },
@@ -15,7 +15,7 @@ export default {
             }
         ],
 
-        link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+        link: [{ rel: "icon", type: "image/x-icon", href: "/browser.png" }],
         script: [{
                 src: [
                     "~/assets/js/contact.js",
@@ -48,8 +48,8 @@ export default {
     loading: { color: "#fff" },
     /*
 
-     ** Global CSS
-     */
+       ** Global CSS
+       */
     css: [
         "~/assets/css/style.css",
         "~/assets/css/all.min.css",
@@ -57,7 +57,7 @@ export default {
         "~/assets/css/animate.css",
         "~/assets/css/main.css",
         "~/assets/css/price-range.css",
-        "~/assets/css/responsive.css",
+        "~/assets/css/responsive.css"
     ],
     /*
      ** Plugins to load before mounting the App
