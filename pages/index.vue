@@ -37,10 +37,10 @@
 
                         <a v-else class="cart_quantity_down btn btn-success">-</a>
 
-                        <input style="width:30%" v-model="product.quantity" type="number"/>
+                        <p class="quantity_cart" type="number">{{product.quantity}}</p>
 
                         <a class="cart_quantity_up btn btn-success" @click="increment(product.id)">+</a>
-                        <a @click="addToCart(product)" class="btn btn-default add-to-cart">
+                        <a style="margin-top:26px;margin-left:10px" @click="addToCart(product)" class="btn btn-default add-to-cart">
                           <i class="fa fa-shopping-cart"></i>
                         </a>
                       </div>
@@ -79,16 +79,13 @@
 
                         <a v-else class="cart_quantity_down btn btn-success">-</a>
 
-                        <input style="width:30%" v-model="product.quantity" type="number" >
+                        <p class="quantity_cart">{{product.quantity}}</p>
 
                         <a class="cart_quantity_up btn btn-success" @click="increment1(product.id)">+</a>
-                        <a @click="addToCart(product)" class="btn btn-default add-to-cart">
+                        <a style="margin-top:26px;margin-left:10px" @click="addToCart(product)" class="btn btn-default add-to-cart">
                           <i class="fa fa-shopping-cart"></i>
                         </a>
                       </div>
-                      <a @click="addToCart(product)" class="btn btn-default add-to-cart">
-                        <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
-                      </a>
                     </div>
                   </div>
                 </div>
@@ -141,13 +138,13 @@ export default {
       x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
       return x;
     },
-    getByOrderTime: function() {
+    getByOrderTime () {
       let self = this;
       this.$axios.get("/products/order_time").then(function(res) {
         self.products = res.data.data;
       });
     },
-    getById: function() {
+    getById () {
       let self = this;
       this.$axios.get("/products/newest").then(function(res) {
         self.newests = res.data.data;
@@ -200,6 +197,11 @@ export default {
   width: 248px;
   height: 270px;
   object-fit: cover;
+}
+.quantity_cart {
+  display: inline;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 </style>
 

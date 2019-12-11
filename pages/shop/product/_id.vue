@@ -28,9 +28,29 @@
                         size="100"
                         level="H"
                       ></qrcode-vue>
-                      <a @click="addToCart(product)" class="btn btn-default add-to-cart">
-                        <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
-                      </a>
+                     <div>
+                          <a
+                            v-if=" 1 < product.quantity"
+                            class="cart_quantity_down btn btn-success"
+                            @click="decrement(product.id)"
+                          >-</a>
+
+                          <a v-else class="cart_quantity_down btn btn-success">-</a>
+
+                          <p class="quantity_cart">{{product.quantity}}</p>
+
+                          <a
+                            class="cart_quantity_up btn btn-success"
+                            @click="increment(product.id)"
+                          >+</a>
+                          <a
+                            style="margin-top:26px;margin-left:10px"
+                            @click="addToCart(product)"
+                            class="btn btn-default add-to-cart"
+                          >
+                            <i class="fa fa-shopping-cart"></i>
+                          </a>
+                        </div>
                     </div>
                   </div>
                 </div>
@@ -113,6 +133,17 @@ export default {
       });
     },
     addToCart(product) {
+      product = {
+        id: product.id,
+        name: product.name,
+        categoriesId: product.categoriesId,
+        images: product.images,
+        price: product.price,
+        description: product.description,
+        detail: product.detail,
+        quantity: product.quantity,
+        order_time: product.order_time
+      };
       let pro = this.cart.find(element => element.id == product.id);
       if (pro) {
         alert("Đã tồn tại sản phẩm trong giỏ hàng");
@@ -123,7 +154,24 @@ export default {
     currency(x) {
       x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
       return x;
+    },
+    increment(id) {
+      for (let i = 0; i < this.products.length; i++) {
+        if (this.products[i].id === id) this.products[i].quantity++;
+      }
+    },
+    decrement(id) {
+      for (let i = 0; i < this.products.length; i++) {
+        if (this.products[i].id === id) this.products[i].quantity--;
+      }
     }
   }
 };
 </script>
+<style scoped>
+.quantity_cart {
+  display: inline;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+</style>
