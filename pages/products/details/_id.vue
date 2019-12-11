@@ -32,11 +32,12 @@
 </template>
 <script>
 export default {
-  created: function() {
+  head: { title: "Chi tiết sản phẩm"},
+  created() {
     this.getTasks();
     this.getComments();
   },
-  data: function() {
+  data() {
     return {
       tasks: [],
       comments:[]
@@ -52,7 +53,7 @@ export default {
       const res = await this.$axios.get("/products/comment/" + this.$route.params.id);
       this.comments = res.data.data;
     },
-    delTasks: function(id) {
+    delTasks(id) {
       let self = this;
       this.$axios.delete("/products/" + id).then(function(res) {
         self.getTasks();

@@ -45,13 +45,14 @@
 import upload_files from "../../components/upload_files";
 
 export default {
+  head: { title: "Tạo sản phẩm"},
   components: {
     upload_files
   },
-  mounted: function() {
+  mounted() {
     this.getCatProduct();
   },
-  data: function() {
+  data() {
     return {
       form: {
         name: "",
@@ -66,7 +67,7 @@ export default {
     };
   },
   methods: {
-    getCatProduct: function() {
+    getCatProduct() {
       let self = this;
       this.$axios.get("/categories/cat_product").then(function(res) {
         let data = res.data.data.rows;

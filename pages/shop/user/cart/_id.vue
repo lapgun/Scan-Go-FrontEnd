@@ -85,6 +85,7 @@ import shopFooter from "~/components/shopFooter.vue";
 import shopUser from "~/components/shopUser.vue";
 import chatShop from "~/components/chatShop.vue";
 export default {
+  head: { title: "Chi tiết giỏ hàng" },
   components: {
     shopHeader,
     shopFooter,

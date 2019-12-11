@@ -12,10 +12,7 @@
                 <a @click="$router.push('/user/home')">Home</a>
               </li>
               <li>
-                <a @click="$router.push('/user/detail/'+user_id)">Admin</a>
-              </li>
-              <li>
-                <a @click="$router.push('/user/edit/'+user_id)">Profile</a>
+                <a @click="$router.push('/user/detail/'+user_id)">Profile</a>
               </li>
               <li>
                 <a @click="$router.push('/register')">Register</a>
@@ -79,20 +76,18 @@
         </ul>
       </div>
       <div class="col-sm-8 col-lg-10 sidebar">
-        <b-button style="margin-bottom:-130px" variant="success" @click="$router.push('/products/create')">Create new task</b-button>
-        <div style="margin-left:1300px">
-          <label>
-            Sắp xếp theo
+        <b-button variant="success" @click="$router.push('/products/create')">Create new task</b-button>
+          <label> 
             <b-form-select v-model="order_by" :options="order" @change="getProductsByOrder()"></b-form-select>
           </label>
-        </div>
         <table id="my-table" class="table table-bordered">
           <thead>
             <tr>
-              <th>Number</th>
+              <th>Number // Id</th>
               <th>name</th>
               <th>Categories Id</th>
               <th>Price</th>
+              <th>Order Times</th>
               <th>Image</th>
               <th>Detail</th>
               <th>Description</th>
@@ -101,10 +96,11 @@
           </thead>
           <tbody>
             <tr v-for="(task,index) in tasks" :key="index">
-              <td>{{index+1}}//{{task.id}}</td>
+              <td>{{index+1}} // {{task.id}}</td>
               <td>{{task.name}}</td>
               <td>{{task.categoriesId}}</td>
               <td>{{task.price}}</td>
+              <td>{{task.order_time}}</td>
               <td>
                 <img
                   style="width:50px; height:50px"
@@ -147,11 +143,12 @@
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
-  mounted: function() {
+  head: { title: "Sản phẩm"},
+  mounted() {
     this.getTasks();
   },
 
-  data: function() {
+  data() {
     return {
       tasks: [],
       search: "",
@@ -164,7 +161,8 @@ export default {
         { value: ["price", "ASC"], text: "Giá tiền tăng dần" },
         { value: ["price", "DESC"], text: "Giá tiền giảm dần" },
         { value: ["id", "DESC"], text: "Mới nhất" },
-        { value: ["id", "ASC"], text: "Cũ nhất" }
+        { value: ["id", "ASC"], text: "Cũ nhất" },
+        { value: ["order_time", "DESC"], text: "Đặt hàng nhiều nhất" }
       ],
       pagination: {
         currentPage: 1,
@@ -196,7 +194,7 @@ export default {
       self.pagination.currentPage = 1;
       this.getTasks();
     },
-    delTasks: function(id) {
+    delTasks(id) {
       let self = this;
       this.$axios.delete("/products/" + id).then(function(res) {
         self.getTasks();
@@ -211,13 +209,13 @@ export default {
           self.tasks = res.data.data;
         });
     },
-    handleLogout: function() {
+    handleLogout() {
       Cookie.remove("token");
       localStorage.removeItem("cart");
       this.$store.commit("setToken", null);
       this.$router.push("/login");
     },
-    delTasks: function(id) {
+    delTasks(id) {
       this.$swal
         .fire({
           title: "Bạn chắc chắn muốm xóa?",

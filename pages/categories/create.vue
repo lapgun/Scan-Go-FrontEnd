@@ -99,6 +99,7 @@
 </template>
 <script>
 export default {
+  head: { title: "Tạo thể loại"},
   mounted() {
     this.getCategories();
   },

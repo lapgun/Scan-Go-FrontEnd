@@ -83,7 +83,6 @@
             placeholder="Enter your cat name "
           />
           <label>Select category's parent in the select form below :</label>
-
           <b-form-select v-model="form.cat_parent" :options="options"></b-form-select>
           <br />
           <label>
@@ -96,6 +95,7 @@
 </template>
 <script>
 export default {
+  head: { title: "Sửa thể loại"},
   mounted() {
     this.getDetail();
     this.getCategories();

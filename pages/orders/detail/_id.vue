@@ -48,13 +48,14 @@
 </template>
 <script>
 export default {
-  mounted: function() {
+  head: { title: "Chi tiết order"},
+  mounted() {
     this.getOrders();
     setTimeout(() => {
       this.getProducts();
     }, 1000);
   },
-  data: function() {
+  data() {
     return {
       orders: [],
       order_products: [],
@@ -62,19 +63,18 @@ export default {
     };
   },
   methods: {
-    getOrders: function() {
+    getOrders() {
       let self = this;
       this.$axios.get("/orders/" + this.$route.params.id).then(function(res) {
         self.orders = res.data;
         self.order_products = res.data.order_products;
-        console.log(self.order_products);
       });
     },
     getProducts() {
       let self = this;
       self.order_products.forEach(element => {
         this.$axios.get("/products/" + element.productId).then(function(res) {
-          let pro = res.data.data
+          let pro = res.data.data;
           self.products.push(pro);
         });
       });

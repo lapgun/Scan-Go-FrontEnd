@@ -5,7 +5,7 @@
       <div class="container">
         <div class="row">
           <div class="col-sm-3">
-            <shopNav />
+            <shopNav></shopNav>
           </div>
           <div class="col-sm-9 padding-right">
             <div class="product-details">
@@ -54,33 +54,26 @@
                   <h3>{{product.price}}</h3>
                   <div>
                     <h4>Số lượng:</h4>
-                    <div class="cart_quantity">
-                      <div class="cart_quantity_button">
-                        <template v-if=" 1 < product.order_time">
-                          <a class="cart_quantity_down btn btn-success">-</a>
-                        </template>
-                        <template v-else>
-                          <a class="cart_quantity_down btn btn-success">-</a>
-                        </template>
-                        <div
-                          style="margin-right:10px; margin-left:10px"
-                          class="cart_quantity_input"
-                          type="text"
-                          autocomplete="off"
-                          size="2"
-                        >1</div>
-                        <a class="cart_quantity_up btn btn-success">+</a>
-                      </div>
+                    <div>
+                      <a
+                        v-if=" 1 < product.quantity"
+                        class="cart_quantity_down btn btn-success"
+                        @click="decrement1(product.id)"
+                      >-</a>
+
+                      <a v-else class="cart_quantity_down btn btn-success">-</a>
+
+                      <p class="quantity_cart">{{product.quantity}}</p>
+
+                      <a class="cart_quantity_up btn btn-success" @click="increment1(product.id)">+</a>
+                      <a
+                        style="margin-top:26px;margin-left:10px"
+                        @click="addToCart(product)"
+                        class="btn btn-default add-to-cart"
+                      >
+                        <i class="fa fa-shopping-cart"></i>
+                      </a>
                     </div>
-                    <button
-                      style="margin-left:10px;"
-                      type="button"
-                      @click="addToCart(product)"
-                      class="btn btn-default add-to-cart"
-                    >
-                      <i class="fa fa-shopping-cart"></i>
-                      Thêm vào giỏ hàng
-                    </button>
                   </div>
                   <div>
                     <span class="font-size-1">
@@ -121,8 +114,7 @@
             <h2 style="margin-top:10px" class="title text-center">Đánh giá sản phẩm</h2>
             <div v-if="user_id">
               <div>
-                <i style="margin-left:20px" class="fas fa-pen"></i>
-                <label style="margin:20px 0 30px 0" for="viet_bai_danh_gia">Đánh giá sản phẩm</label>
+                <label style="margin:20px 0 30px 20px" for="viet_bai_danh_gia">Đánh giá sản phẩm</label>
                 <input
                   class="input_rating"
                   type="text"
@@ -143,42 +135,53 @@
                   @click="handleSubmit"
                 >Comment</b-button>
               </div>
-              <div>
-                <div style="border:1px solid #bfbfbf; margin:15px 5px 0 5px;background:#f9ede5">
-                  <ul class="nav menu" style="margin:30px 0 30px 0">
-                    <li style="margin:0 0 0 50px">
-                      <span v-if="average">{{average}} trên 5</span>
-                      <span v-else>0 trên 5</span>
+              <div v-if="this.comments.length == 0" class="content_comment">Không có bình luận</div>
+              <div v-else>
+                <div>
+                  <div style="border:1px solid #bfbfbf; margin:15px 5px 0 5px;background:#f9ede5">
+                    <ul class="nav menu" style="margin:30px 0 30px 0">
+                      <li style="margin:0 0 0 50px">
+                        <span v-if="!average">0 trên 5</span>
+                        <span v-else>{{average}} trên 5</span>
+                        <star-rating
+                          v-bind:star-size="20"
+                          :read-only="true"
+                          v-model="average"
+                          :show-rating="false"
+                          :increment="0.25"
+                        ></star-rating>
+                      </li>
+                      <li class="rating_2">
+                        <a href="#">Tất cả ({{this.comments.length}})</a>
+                      </li>
+                      <li class="rating_1">
+                        <a href="#" style="padding-left:20px">Bình luận</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div v-for="(comment, index) in comments" :key="index">
+                    <div v-if="comment.productId == product.id">
+                      <h4 style="margin:40px 30px 0 30px">{{comment.name}}</h4>
                       <star-rating
+                        style="margin:10px 0 20px 35px"
                         v-bind:star-size="20"
                         :read-only="true"
-                        v-model="average"
+                        v-model="comment.rating"
                         :show-rating="false"
-                        :increment="0.25"
                       ></star-rating>
-                    </li>
-                    <li class="rating_2">
-                      <a>Tất cả ({{this.comments.length}})</a>
-                    </li>
-                    <li class="rating_1">
-                      <a href="#" style="padding-left:20px">Bình luận</a>
-                    </li>
-                  </ul>
-                </div>
-                <div v-for="(comment, index) in comments" :key="index">
-                  <div v-if="comment.productId == product.id">
-                    <h4 style="margin:40px 30px 0 30px">{{comment.name}}</h4>
-                    <star-rating
-                      style="margin:10px 0 20px 35px"
-                      v-bind:star-size="20"
-                      :read-only="true"
-                      v-model="comment.rating"
-                      :show-rating="false"
-                    ></star-rating>
-                    <h5 style="margin:15px 0 15px 30px">{{comment.comment}}</h5>
-                    <h6 style="margin-left:30px">{{comment.createdAt}}</h6>
-                    <div style="border:1px solid #bfbfbf; margin-top:20px"></div>
+                      <h5 style="margin:15px 0 15px 30px">{{comment.comment}}</h5>
+                      <h6 style="margin-left:30px">{{comment.createdAt}}</h6>
+                      <div style="border:1px solid #bfbfbf; margin-top:20px"></div>
+                    </div>
                   </div>
+                  <b-pagination
+                    style="margin-top:20px"
+                    v-model="pagination.currentPage"
+                    :total-rows="pagination.total"
+                    :per-page="pagination.perPage"
+                    aria-controls="comments_list"
+                    @change="handleChangePage"
+                  ></b-pagination>
                 </div>
               </div>
             </div>
@@ -195,9 +198,26 @@
                     />
                     <h3>{{product.price}} đ</h3>
                     <p>{{product.name}}</p>
-                    <a @click="addToCart(product)" class="btn btn-default add-to-cart">
-                      <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
-                    </a>
+                    <div>
+                      <a
+                        v-if=" 1 < product.quantity"
+                        class="cart_quantity_down btn btn-success"
+                        @click="decrement(product.id)"
+                      >-</a>
+
+                      <a v-else class="cart_quantity_down btn btn-success">-</a>
+
+                      <p class="quantity_cart">{{product.quantity}}</p>
+
+                      <a class="cart_quantity_up btn btn-success" @click="increment(product.id)">+</a>
+                      <a
+                        style="margin-top:26px;margin-left:10px"
+                        @click="addToCart(product)"
+                        class="btn btn-default add-to-cart"
+                      >
+                        <i class="fa fa-shopping-cart"></i>
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -217,6 +237,7 @@ import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
 import chatShop from "~/components/chatShop.vue";
 export default {
+  head: { title: "Chi tiết sản phẩm" },
   mounted() {
     this.getProducts();
     this.getById();
@@ -229,6 +250,7 @@ export default {
   data: function() {
     return {
       user_id: "",
+      comment: "",
       product: [],
       products: [],
       pictures: [],
@@ -247,7 +269,12 @@ export default {
         productId: "",
         rating: 0
       },
-      average: "",
+      average: 0,
+      pagination: {
+        currentPage: 1,
+        perPage: 3,
+        totalPage: ""
+      }
     };
   },
   created() {
@@ -265,7 +292,7 @@ export default {
     shopHeader,
     shopFooter,
     shopNav,
-    chatShop,
+    chatShop
   },
   methods: {
     currency(x) {
@@ -308,6 +335,17 @@ export default {
       localStorage.setItem("cart", JSON.stringify(this.cart));
     },
     addToCart(product) {
+      product = {
+        id: product.id,
+        name: product.name,
+        categoriesId: product.categoriesId,
+        images: product.images,
+        price: product.price,
+        description: product.description,
+        detail: product.detail,
+        quantity: product.quantity,
+        order_time: product.order_time
+      };
       let pro = this.cart.find(element => element.id == product.id);
       if (pro) {
         alert("Đã tồn tại sản phẩm trong giỏ hàng");
@@ -326,19 +364,31 @@ export default {
       let self = this;
       this.$axios.post("/comment", this.form).then(function(res) {});
       this.getCommentProducts();
-      this.form = {};
-    },
-    handleChange(page) {
-      this.pagination.currentPage = page;
-      this.getComments();
+      this.form = "";
     },
     getCommentProducts() {
       let self = this;
       this.$axios
-        .get("/products/comment/" + this.$route.params.id)
+        .post(
+          "/comment/get?currentPage=" +
+            this.pagination.currentPage +
+            "&perPage=" +
+            this.pagination.perPage,
+          {
+            currentPage: this.pagination.currentPage,
+            perPage: this.pagination.perPage,
+            productId: this.$route.params.id
+          }
+        )
         .then(function(res) {
-          self.comments = res.data.data.comments;
+          console.log(res);
+          self.comments = res.data.data;
+          self.pagination = res.data.pagination;
         });
+    },
+    handleChangePage(currentPage) {
+      this.pagination.currentPage = currentPage;
+      this.getCommentProducts();
     },
     totalRating() {
       let total = 0;
@@ -346,6 +396,26 @@ export default {
         total += this.comments[i].rating;
       }
       this.average = total / this.comments.length;
+    },
+    increment(id) {
+      for (let i = 0; i < this.products.length; i++) {
+        if (this.products[i].id === id) this.products[i].quantity++;
+      }
+    },
+    decrement(id) {
+      for (let i = 0; i < this.products.length; i++) {
+        if (this.products[i].id === id) this.products[i].quantity--;
+      }
+    },
+    increment1(id) {
+      for (let i = 0; i < this.product.length; i++) {
+        if (this.product[i].id === id) this.product[i].quantity++;
+      }
+    },
+    decrement1(id) {
+      for (let i = 0; i < this.product.length; i++) {
+        if (this.product[i].id === id) this.product[i].quantity--;
+      }
     }
   }
 };
@@ -390,5 +460,15 @@ export default {
   width: 130px;
   height: 40px;
   margin-left: 100px;
+}
+.quantity_cart {
+  display: inline;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.content_comment {
+  font-size: 20px;
+  margin-top: 30px;
+  margin-left: 20px;
 }
 </style>

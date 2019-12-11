@@ -1,6 +1,10 @@
 <template>
   <div class="container mt-5">
+    <shopHeader />
     <div class="row justify-content-center">
+      <div class="col-md-4">
+        <shopUser />
+      </div>
       <div class="col-md-8">
         <div class="card">
           <div
@@ -46,16 +50,24 @@
         </div>
       </div>
     </div>
+    <shopFooter />
   </div>
 </template>
-
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
+import shopHeader from "~/components/shopHeader.vue";
+import shopFooter from "~/components/shopFooter.vue";
+import shopUser from "~/components/shopUser.vue";
 export default {
-  mounted() {
+  mounted: function() {
     this.getUsers();
   },
-  data() {
+  components: {
+    shopHeader,
+    shopFooter,
+    shopUser,
+  },
+  data: function() {
     return {
       form: {
         id: "",
@@ -69,12 +81,12 @@ export default {
   methods: {
     getUsers() {
       let self = this;
-      this.$axios.get("/users/" + this.$route.params.id).then(function(res) {
+      this.$axios.get("/users/detail/" + this.$route.params.id).then(function(res) {
         self.form = res.data.data;
         self.user_id = res.data.decoded.user_id;
       });
     },
-    handelSubmit(){
+    handelSubmit: function() {
       let self = this;
       this.$axios.put("/users/" + this.form.id, this.form).then(function(res) {
         alert("Cập nhật thông tin thành công");

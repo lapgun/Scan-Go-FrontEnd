@@ -40,7 +40,7 @@
                       </td>
                       <td class="cart_quantity">
                         <div class="cart_quantity_button">
-                          <template v-if=" 1 < item.order_time">
+                          <template v-if=" 1 < item.quantity">
                             <a
                               class="cart_quantity_down btn btn-success"
                               @click="decrement(item.id)"
@@ -54,13 +54,13 @@
                             type="text"
                             autocomplete="off"
                             size="2"
-                          >{{item.order_time}}</div>
+                          >{{item.quantity}}</div>
                           <a class="cart_quantity_up btn btn-success" @click="increment(item.id)">+</a>
                         </div>
                       </td>
                       <td>{{currency(item.price)}}</td>
                       <td class="cart_total">
-                        <p class="cart_total_price">{{currency(item.price * item.order_time)}}</p>
+                        <p class="cart_total_price">{{currency(item.price * item.quantity)}}</p>
                       </td>
                       <td class="cart_delete">
                         <a class="cart_quantity_delete" @click="removeItem(index)">
@@ -115,6 +115,7 @@ import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import chatShop from "~/components/chatShop.vue";
 export default {
+  head: { title: "Giỏ hàng" },
   created() {
     if (process.browser) {
       if (localStorage.getItem("cart")) {
@@ -139,9 +140,6 @@ export default {
   },
   mounted() {
     this.totalPrice();
-    setTimeout(() => {
-      this.quantity();
-    }, 1000);
   },
   methods: {
     currency(x) {
@@ -158,14 +156,14 @@ export default {
     },
     increment(id) {
       for (let i = 0; i < this.cart.length; i++) {
-        if (this.cart[i].id === id) this.cart[i].order_time++;
+        if (this.cart[i].id === id) this.cart[i].quantity++;
       }
       this.totalPrice();
       this.setLocalStorage();
     },
     decrement(id) {
       for (let i = 0; i < this.cart.length; i++) {
-        if (this.cart[i].id === id) this.cart[i].order_time--;
+        if (this.cart[i].id === id) this.cart[i].quantity--;
       }
       this.totalPrice();
       this.setLocalStorage();
@@ -173,15 +171,10 @@ export default {
     totalPrice() {
       let total = 0;
       for (let i = 0; i < this.cart.length; i++) {
-        total += this.cart[i].price * this.cart[i].order_time;
+        total += this.cart[i].price * this.cart[i].quantity;
         this.total = total;
       }
     },
-    quantity() {
-      this.cart.forEach(element => {
-        element.order_time = 1;
-      });
-    }
   }
 };
 </script>

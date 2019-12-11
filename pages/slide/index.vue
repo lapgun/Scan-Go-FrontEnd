@@ -23,10 +23,7 @@
                 <a @click="$router.push('/user/home')">Home</a>
               </li>
               <li>
-                <a @click="$router.push('/user/detail/'+user_id)">Admin</a>
-              </li>
-              <li>
-                <a @click="$router.push('/user/edit/'+user_id)">Profile</a>
+                <a @click="$router.push('/user/detail/'+user_id)">Profile</a>
               </li>
               <li>
                 <a @click="$router.push('/register')">Register</a>
@@ -55,11 +52,9 @@
           <div class="clear"></div>
         </div>
         <div class="divider"></div>
-        <form role="search">
-          <div class="form-group">
-            <input type="text" v-model="search" class="form-control" placeholder="Search" />
-          </div>
-        </form>
+        <div class="form-group">
+          <input type="text" v-model="search" class="form-control" placeholder="Search" />
+        </div>
         <ul class="nav menu" style="display:block">
           <li>
             <a @click="$router.push('/user/home')">Home</a>
@@ -115,13 +110,15 @@
     </div>
   </div>
 </template>
+
 <script>
 export default {
-  mounted: function() {
+  head: { title: "Slide" },
+  mounted() {
     this.getSlides();
     this.getAdmins();
   },
-  data: function() {
+  data() {
     return {
       slides: [],
       search: "",
@@ -131,17 +128,18 @@ export default {
         perPage: 10
       },
       user_id: "",
-      users: []
+      users: [],
+      cancel: false
     };
   },
   methods: {
-    getSlides: function() {
+    getSlides() {
       let self = this;
       this.$axios.get("/slide").then(function(res) {
         self.slides = res.data.rows;
       });
     },
-    handleDelete: function(id) {
+    handleDelete(id) {
       this.$swal
         .fire({
           title: "Bạn chắc chắn muốm xóa?",
@@ -152,7 +150,7 @@ export default {
         })
         .then(result => {
           if (result.value) {
-            this.$swal.fire("Xóa!", "Bạn xóa slide thành công!.", "success");
+            this.$swal.fire("Xóa!", "Bạn xóa sản phẩm thành công!.", "success");
             let self = this;
             this.$axios.delete("/slide/" + id).then(function(res) {
               self.getSlides();
@@ -166,7 +164,7 @@ export default {
           }
         });
     },
-    handleSearch: function() {
+    handleSearch() {
       this.$axios
         .get("/categories/search?search=" + this.search)
         .then(function(res) {
@@ -174,14 +172,13 @@ export default {
           self.tasks = res.data.data;
         });
     },
-    getAdmins: function() {
+    getAdmins() {
       let self = this;
-      this.$axios.get("/users").then(function(res) {
+      this.$axios.get("/users/decoded").then(function(res) {
         self.user_id = res.data.decoded.user_id;
-        self.users = res.data.data;
       });
     },
-    handleLogout: function() {
+    handleLogout() {
       Cookie.remove("token");
       this.$store.commit("setToken", null);
       this.$router.push("/login");

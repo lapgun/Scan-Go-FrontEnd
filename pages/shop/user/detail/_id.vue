@@ -65,6 +65,7 @@ import shopFooter from "~/components/shopFooter.vue";
 import shopUser from "~/components/shopUser.vue";
 import chatShop from "~/components/chatShop.vue";
 export default {
+  head: { title: "Thông tin bản thân" },
   components: {
     shopHeader,
     shopFooter,
@@ -82,8 +83,7 @@ export default {
   methods: {
     getUsers() {
       let self = this;
-      this.$axios.get("/users/" + this.$route.params.id).then(function(res) {
-        console.log('dgfds',res)
+      this.$axios.get("/users/detail/" + this.$route.params.id).then(function(res) {
         self.users = res.data.data;
       });
     }

@@ -93,8 +93,11 @@
               <td>{{task.createdAt}}</td>
               <td>{{task.updatedAt}}</td>
               <td>
-                <b-button variant="info" @click="$router.push('/categories/edit/'+task.id)">Update</b-button>
-                <b-button class="btn btn-info" variant="danger" @click="delTasks(task.id)">Delete</b-button>
+                <b-button
+                  class="btn btn-info"
+                  @click="$router.push('/categories/edit/'+tasks.id)"
+                >Update</b-button>
+                <b-button class="btn btn-info" variant="danger" @click="delTasks(tasks.id)">Delete</b-button>
               </td>
             </tr>
           </tbody>
@@ -105,16 +108,17 @@
 </template>
 <script>
 export default {
-  mounted: function() {
+  head: { title: "Chi tiết thể loại"},
+  mounted() {
     this.getTasks();
   },
-  data: function() {
+  data() {
     return {
       task: []
     };
   },
   methods: {
-    getTasks: function() {
+    getTasks() {
       let self = this;
       this.$axios
         .get("/categories/" + this.$route.params.id)
@@ -122,13 +126,13 @@ export default {
           self.task = res.data.data;
         });
     },
-    delTasks: function(id) {
+    delTasks(id) {
       let self = this;
       this.$axios.delete("/categories/" + id).then(function(res) {
         self.getTasks();
       });
     },
-    handleLogout: function() {
+    handleLogout() {
       Cookie.remove("token");
       this.$store.commit("setToken", null);
       this.$router.push("/login");

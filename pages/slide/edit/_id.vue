@@ -8,10 +8,11 @@
 </template>
 <script>
 export default {
-  mounted: function() {
+  head: { title: "Sửa slide"},
+  mounted() {
     this.getOrders();
   },
-  data: function() {
+  data() {
     return {
       form: {
         customerId: "",

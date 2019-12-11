@@ -52,11 +52,12 @@
 
 <script>
 export default {
-  mounted: function() {
+  head: { title: "Sửa sản phẩm"},
+  mounted() {
     this.getDetail();
     this.getCatProduct();
   },
-  data: function() {
+  data() {
     return {
       form: {
         name: "",

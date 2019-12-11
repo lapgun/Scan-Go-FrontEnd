@@ -128,7 +128,8 @@ import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
 import chatShop from "~/components/chatShop.vue";
 export default {
-  data: function() {},
+  data() {},
+  head: { title: "Blog" },
   components: {
     shopHeader,
     shopFooter,

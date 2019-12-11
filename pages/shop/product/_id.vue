@@ -24,13 +24,33 @@
                       <h2>{{currency(product.price)}}</h2>
                       <p>{{product.name}}</p>
                       <qrcode-vue
-                        :value="'http://localhost:3000/shop/product_detail/'+product.id"
+                        :value="'/shop/product_detail/'+product.id"
                         size="100"
                         level="H"
                       ></qrcode-vue>
-                      <a @click="addToCart(product)" class="btn btn-default add-to-cart">
-                        <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
-                      </a>
+                     <div>
+                          <a
+                            v-if=" 1 < product.quantity"
+                            class="cart_quantity_down btn btn-success"
+                            @click="decrement(product.id)"
+                          >-</a>
+
+                          <a v-else class="cart_quantity_down btn btn-success">-</a>
+
+                          <p class="quantity_cart">{{product.quantity}}</p>
+
+                          <a
+                            class="cart_quantity_up btn btn-success"
+                            @click="increment(product.id)"
+                          >+</a>
+                          <a
+                            style="margin-top:26px;margin-left:10px"
+                            @click="addToCart(product)"
+                            class="btn btn-default add-to-cart"
+                          >
+                            <i class="fa fa-shopping-cart"></i>
+                          </a>
+                        </div>
                     </div>
                   </div>
                 </div>
@@ -49,9 +69,10 @@ const Cookies = process.client ? require("js-cookie") : undefined;
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
-import chatShop from "~/components/chatShop.vue";
 import QrcodeVue from "qrcode.vue";
+import chatShop from "~/components/chatShop.vue";
 export default {
+  head: { title: "Sản phẩm" },
   created() {
     if (process.browser) {
       if (localStorage.getItem("cart")) {
@@ -68,7 +89,7 @@ export default {
     await this.getByCat();
     this.getPicture();
   },
-  data: function() {
+  data() {
     return {
       products: {},
       default_image: [],
@@ -80,7 +101,7 @@ export default {
     shopFooter,
     shopNav,
     QrcodeVue,
-    chatShop
+    chatShop,
   },
   methods: {
     async getByMenu() {
@@ -89,6 +110,7 @@ export default {
         `/products/menu/${this.$route.params.id}`
       );
       self.products = res.data.data;
+      console.log(res)
     },
     async getByCat() {
       let self = this;
@@ -116,6 +138,17 @@ export default {
       });
     },
     addToCart(product) {
+      product = {
+        id: product.id,
+        name: product.name,
+        categoriesId: product.categoriesId,
+        images: product.images,
+        price: product.price,
+        description: product.description,
+        detail: product.detail,
+        quantity: product.quantity,
+        order_time: product.order_time
+      };
       let pro = this.cart.find(element => element.id == product.id);
       if (pro) {
         alert("Đã tồn tại sản phẩm trong giỏ hàng");
@@ -126,7 +159,24 @@ export default {
     currency(x) {
       x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
       return x;
+    },
+    increment(id) {
+      for (let i = 0; i < this.products.length; i++) {
+        if (this.products[i].id === id) this.products[i].quantity++;
+      }
+    },
+    decrement(id) {
+      for (let i = 0; i < this.products.length; i++) {
+        if (this.products[i].id === id) this.products[i].quantity--;
+      }
     }
   }
 };
 </script>
+<style scoped>
+.quantity_cart {
+  display: inline;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+</style>
