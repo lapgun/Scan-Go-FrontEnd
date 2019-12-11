@@ -79,7 +79,7 @@ export default {
   methods: {
     getUsers: function() {
       let self = this;
-      this.$axios.get("/users/" + this.$route.params.id).then(function(res) {
+      this.$axios.get("/users/detail/" + this.$route.params.id).then(function(res) {
         console.log('dgfds',res)
         self.users = res.data.data;
       });

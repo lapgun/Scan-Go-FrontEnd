@@ -40,9 +40,11 @@
                 </div>
               </div>
               <div v-else>
-                <div style="width: 225px;margin-left: 598px;margin-bottom: 20px;">
-                  Sắp xếp theo
-                  <b-form-select v-model="order_by" :options="order" @change="getProductsByOrder"></b-form-select>
+                <div>
+                  <label>
+                    Sắp xếp theo
+                    <b-form-select v-model="order_by" :options="order" @change="getProductsByOrder"></b-form-select>
+                  </label>
                 </div>
                 <div class="col-sm-4" v-for="(product, index) in products" :key="index">
                   <div class="product-image-wrapper">
@@ -79,6 +81,7 @@
     <shopFooter></shopFooter>
   </div>
 </template>
+
 <script>
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
@@ -86,6 +89,9 @@ import shopNav from "~/components/shopNav.vue";
 import InfiniteLoading from "vue-infinite-loading";
 import QrcodeVue from "qrcode.vue";
 export default {
+  head: {
+    title: "Sản phẩm"
+  },
   created() {
     if (process.browser) {
       if (localStorage.getItem("cart")) {
@@ -108,12 +114,30 @@ export default {
     return {
       products: [],
       order: [
-        { value: ["name", "ASC"], text: "Tên từ A-Z" },
-        { value: ["name", "DESC"], text: "Tên từ Z-A" },
-        { value: ["price", "ASC"], text: "Giá tiền tăng dần" },
-        { value: ["price", "DESC"], text: "Giá tiền giảm dần" },
-        { value: ["id", "DESC"], text: "Mới nhất" },
-        { value: ["id", "ASC"], text: "Cũ nhất" }
+        {
+          value: ["name", "ASC"],
+          text: "Tên từ A-Z"
+        },
+        {
+          value: ["name", "DESC"],
+          text: "Tên từ Z-A"
+        },
+        {
+          value: ["price", "ASC"],
+          text: "Giá tiền tăng dần"
+        },
+        {
+          value: ["price", "DESC"],
+          text: "Giá tiền giảm dần"
+        },
+        {
+          value: ["id", "DESC"],
+          text: "Mới nhất"
+        },
+        {
+          value: ["id", "ASC"],
+          text: "Cũ nhất"
+        }
       ],
       order_by: ["name", "ASC"],
       result: "",
@@ -133,7 +157,10 @@ export default {
   },
   methods: {
     currency(x) {
-      x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
+      x = x.toLocaleString("currency", {
+        style: "currency",
+        currency: "VND"
+      });
       return x;
     },
     handleSearch() {

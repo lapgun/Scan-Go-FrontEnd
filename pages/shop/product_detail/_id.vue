@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="loaded">
     <shopHeader @user_id="user_id=$event" />
     <section>
       <div class="container">
@@ -42,39 +42,22 @@
                   <!--/product-information-->
                   <img src="~assets/images/product-details/new.jpg" class="newarrival" alt />
                   <h2>{{product.name}}</h2>
-                  <p>Web ID: 1089772</p>
-                  <star-rating style="margin-top:-15px"
+                  <star-rating
+                    style="margin-top:-15px"
                     v-bind:star-size="20"
                     :read-only="true"
-                    v-model="average"
+                    :rating="average"
                     :show-rating="false"
                     :increment="0.25"
                   ></star-rating>
-                  <h3>{{product.price}}</h3>
+                  <h3>{{currency(product.price)}}</h3>
                   <div>
-                    <h4>Số lượng:</h4>
-                    <div class="cart_quantity">
-                      <div class="cart_quantity_button">
-                        <template v-if=" 1 < product.order_time">
-                          <a
-                            class="cart_quantity_down btn btn-success"
-                            @click="decrement(product.id)"
-                          >-</a>
-                        </template>
-                        <template v-else>
-                          <a class="cart_quantity_down btn btn-success">-</a>
-                        </template>
-                        <div
-                          style="margin-right:10px; margin-left:10px"
-                          class="cart_quantity_input"
-                          type="text"
-                          autocomplete="off"
-                          size="2"
-                        >1</div>
-                        <a class="cart_quantity_up btn btn-success" @click="increment(product.id)">+</a>
-                      </div>
-                    </div>
-                    <button style="margin-left:10px;" type="button" @click="addToCart(product)" class="btn btn-default add-to-cart">
+                    <button
+                      style="margin-left:10px;"
+                      type="button"
+                      @click="addToCart(product)"
+                      class="btn btn-default add-to-cart"
+                    >
                       <i class="fa fa-shopping-cart"></i>
                       Thêm vào giỏ hàng
                     </button>
@@ -116,7 +99,7 @@
               :src="`/${product.images? product.images.image_1 : ''}`"
             />
             <h2 style="margin-top:10px" class="title text-center">Đánh giá sản phẩm</h2>
-            <div v-if="user_id">
+            <div v-if="form.user_id">
               <div>
                 <label style="margin:20px 0 30px 20px" for="viet_bai_danh_gia">Đánh giá sản phẩm</label>
                 <input
@@ -139,44 +122,50 @@
                   @click="handleSubmit"
                 >Comment</b-button>
               </div>
-              <div>
-                <div style="border:1px solid #bfbfbf; margin:15px 5px 0 5px;background:#f9ede5">
-                  <ul class="nav menu" style="margin:30px 0 30px 0">
-                    <li style="margin:0 0 0 50px">
-                      <span>{{average}} trên 5</span>
-                      <star-rating
-                        v-bind:star-size="20"
-                        :read-only="true"
-                        v-model="average"
-                        :show-rating="false"
-                        :increment="0.25"
-                      ></star-rating>
-                    </li>
-                    <li class="rating_2">
-                      <a href="#">Tất cả ({{this.comments.length}})</a>
-                    </li>
-                    <li class="rating_1">
-                      <a href="#" style="padding-left:20px">Bình luận</a>
-                    </li>
-                  </ul>
-                </div>
-                <div v-for="(comment, index) in comments" :key="index">
-                  <div v-if="comment.productId == product.id">
-                    <h4 style="margin:40px 30px 0 30px">{{comment.name}}</h4>
+            </div>
+            <div>
+              <div style="border:1px solid #bfbfbf; margin:15px 5px 0 5px;background:#f9ede5">
+                <ul class="nav menu" style="margin:30px 0 30px 0">
+                  <li style="margin:0 0 0 50px">
+                    <span>{{average}} trên 5</span>
                     <star-rating
-                      style="margin:10px 0 20px 35px"
-                      v-bind:star-size="20"
+                      v-bind:star-size="30"
                       :read-only="true"
-                      v-model="comment.rating"
+                      :rating="average"
                       :show-rating="false"
+                      :increment="0.1"
                     ></star-rating>
-                    <h5 style="margin:15px 0 15px 30px">{{comment.comment}}</h5>
-                    <h6 style="margin-left:30px">{{comment.createdAt}}</h6>
-                    <div style="border:1px solid #bfbfbf; margin-top:20px"></div>
-                  </div>
-                </div>
+                  </li>
+                  <li class="rating_2">
+                    <a href="#">Tất cả {{pagination.total}}</a>
+                  </li>
+                  <li class="rating_1">
+                    <a href="#" style="padding-left:20px">Bình luận</a>
+                  </li>
+                </ul>
+              </div>
+              <div id="comments_list" v-for="(comment, index) in comments" :key="index">
+                <h4 style="margin:40px 30px 0 30px">{{comment.name}}</h4>
+                <star-rating
+                  style="margin:10px 0 20px 35px"
+                  v-bind:star-size="20"
+                  :read-only="true"
+                  :rating="comment.rating"
+                  :show-rating="false"
+                ></star-rating>
+                <h5 style="margin:15px 0 15px 30px">{{comment.comment}}</h5>
+                <h6 style="margin-left:30px">{{comment.createdAt}}</h6>
+                <div style="border:1px solid #bfbfbf; margin-top:20px"></div>
               </div>
             </div>
+            <b-pagination
+              v-model="pagination.currentPage"
+              :total-rows="pagination.total"
+              :per-page="pagination.perPage"
+              aria-controls="comments_list"
+              @change="handleChange"
+            ></b-pagination>
+
             <h2 style="margin-top:100px" class="title text-center">Sản phẩm mới nhất</h2>
             <div class="col-sm-4" v-for="(product,index) in products" :key="index">
               <div class="product-image-wrapper">
@@ -188,7 +177,7 @@
                       @click="$router.push('/shop/product_detail/'+product.id)"
                       alt
                     />
-                    <h3>{{product.price}} đ</h3>
+                    <h3>{{currency(product.price)}}</h3>
                     <p>{{product.name}}</p>
                     <a @click="addToCart(product)" class="btn btn-default add-to-cart">
                       <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
@@ -213,7 +202,10 @@ export default {
   mounted() {
     this.getProducts();
     this.getById();
-    this.getUsers();
+    if (this.$store.state.token) {
+      this.getUsers();
+    }
+
     this.getCommentProducts();
     setTimeout(() => {
       this.totalRating();
@@ -221,7 +213,7 @@ export default {
   },
   data: function() {
     return {
-      user_id: "",
+      loaded: false,
       product: [],
       products: [],
       pictures: [],
@@ -240,7 +232,11 @@ export default {
         productId: "",
         rating: 0
       },
-      average: ""
+      pagination: {
+        currentPage: 1,
+        perPage: 3
+      },
+      average: 0
     };
   },
   created() {
@@ -279,6 +275,7 @@ export default {
             }
           }
         });
+        self.loaded = true;
       });
     },
     getById() {
@@ -309,27 +306,32 @@ export default {
     },
     getUsers() {
       let self = this;
-      this.$axios.get("/users").then(function(res) {
+      this.$axios.get("/users/decoded").then(function(res) {
         self.form.userId = res.data.decoded.user_id;
         self.form.name = res.data.decoded.user_name;
       });
     },
     handleSubmit() {
       let self = this;
-      this.$axios.post("/comment", this.form).then(function(res) {});
+      this.$axios.post("/comment", this.form).then(function(res) {
+        self.form.rating = 0;
+        self.form.comment = "";
+      });
       this.getCommentProducts();
-      this.form = {};
-    },
-    handleChange(page) {
-      this.pagination.currentPage = page;
-      this.getComments();
+      this.totalRating();
     },
     getCommentProducts() {
       let self = this;
       this.$axios
-        .get("/products/comment/" + this.$route.params.id)
+        .post("/comment/get/", {
+          currentPage: this.pagination.currentPage,
+          perPage: this.pagination.perPage,
+          productId: this.$route.params.id
+        })
         .then(function(res) {
-          self.comments = res.data.data.comments;
+          console.log(res);
+          self.comments = res.data.data;
+          self.pagination = res.data.pagination;
         });
     },
     totalRating() {
@@ -337,7 +339,12 @@ export default {
       for (let i = 0; i < this.comments.length; i++) {
         total += this.comments[i].rating;
       }
-      this.average = total / this.comments.length;
+      let a = total / this.comments.length;
+      this.average = a.toPrecision(3);
+    },
+    handleChange(currentPage) {
+      this.pagination.currentPage = currentPage;
+      this.getCommentProducts();
     }
   }
 };

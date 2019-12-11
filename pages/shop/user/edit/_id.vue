@@ -63,15 +63,15 @@ export default {
         email: "",
         address: ""
       },
-      user_id: ""
+     
     };
   },
   methods: {
     getUsers() {
       let self = this;
-      this.$axios.get("/users/" + this.$route.params.id).then(function(res) {
+      this.$axios.get("/users/detail/" + this.$route.params.id).then(function(res) {
         self.form = res.data.data;
-        self.user_id = res.data.decoded.user_id;
+        
       });
     },
     handelSubmit: function() {
@@ -79,7 +79,7 @@ export default {
       this.$axios.put("/users/" + this.form.id, this.form).then(function(res) {
         alert("Cập nhật thông tin thành công");
       });
-      self.$router.push("/shop/user/detail/" + this.user_id);
+      self.$router.push("/shop/user/detail/" + this.form.id);
     }
   }
 };

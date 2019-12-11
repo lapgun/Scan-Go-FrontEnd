@@ -12,10 +12,7 @@
                 <a @click="$router.push('/user/home')">Home</a>
               </li>
               <li>
-                <a @click="$router.push('/user/detail/'+user_id)">Admin</a>
-              </li>
-              <li>
-                <a @click="$router.push('/user/edit/'+user_id)">Profile</a>
+                <a @click="$router.push('/user/detail/'+user_id)">Profile</a>
               </li>
               <li>
                 <a @click="$router.push('/register')">Register</a>
@@ -86,7 +83,7 @@
         <table id="my-table" class="table table-bordered">
           <thead>
             <tr>
-              <th>Number</th>
+              <th>Number || ID</th>
               <th>name</th>
               <th>cat_parent</th>
               <th>Created_at</th>
@@ -96,7 +93,7 @@
           </thead>
           <tbody>
             <tr v-for="(task,index) in tasks" :key="index">
-              <td>{{index+1}}//{{task.id}}</td>
+              <td>{{index+1}} || {{task.id}}</td>
               <td>{{task.name}}</td>
               <td>{{task.cat_parent}}</td>
               <td>{{task.createdAt}}</td>
@@ -123,7 +120,6 @@ export default {
   data: function() {
     return {
       user_id: "",
-      users: [],
       tasks: [],
       search: ""
     };
@@ -155,10 +151,8 @@ export default {
     },
     getAdmins: function() {
       let self = this;
-      this.$axios.get("/users").then(function(res) {
-        console.log(res);
+      this.$axios.get("/users/decoded").then(function(res) {
         self.user_id = res.data.decoded.user_id;
-        self.users = res.data.data;
       });
     },
     handleLogout: function() {

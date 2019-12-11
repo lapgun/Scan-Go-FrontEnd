@@ -1,50 +1,45 @@
 <template>
   <div id="login">
-    <h3 class="text-center text-white pt-5">Login form</h3>
     <div class="container">
-      <b-form @submit.prevent="handleLogin">
-        <div id="login-row" class="row justify-content-center align-items-center">
-          <div id="login-column" class="col-md-6">
-            <div id="login-box" class="col-md-12">
-              <h3 class="text-center text-info">Login</h3>
-              <b-form-group
-                label="Your email:"
-                :class="{ 'form-group--error': $v.user.email.$error }"
-              >
-                <b-form-input v-model.trim="$v.user.email.$model" placeholder="Enter your email"></b-form-input>
-                <div class="error" v-if="!$v.user.email.required">Email is required</div>
-                <div class="error" v-if="!$v.user.email.email">Email is not available</div>
-              </b-form-group>
-              <b-form-group
-                label="Your Password:"
-                :class="{ 'form-group--error': $v.user.password.$error }"
-              >
-                <b-form-input
-                  type="password"
-                  v-model.trim="$v.user.password.$model"
-                  placeholder="Enter your password"
-                ></b-form-input>
-                <div class="error" v-if="!$v.user.password.required">password is required</div>
-                <div
-                  class="error"
-                  v-if="!$v.user.password.minLength"
-                >password must have at least {{$v.user.password.$params.minLength.min}} letters.</div>
-              </b-form-group>
+      <div>
+        <b-form @submit.prevent="handleLogin">
+          <div id="login-row" class="row justify-content-center align-items-center">
+            <div id="login-column" class="col-md-6">
+              <div id="login-box" class="col-md-12">
+                <h3 class="text-center text-info">Login</h3>
+                <b-form-group
+                  label="Your email:"
+                  :class="{ 'form-group--error': $v.user.email.$error }"
+                >
+                  <b-form-input v-model.trim="$v.user.email.$model" placeholder="Enter your email"></b-form-input>
+                  <div class="error" v-if="!$v.user.email.required">Email is required</div>
+                  <div class="error" v-if="!$v.user.email.email">Email is not available</div>
+                </b-form-group>
+                <b-form-group
+                  label="Your Password:"
+                  :class="{ 'form-group--error': $v.user.password.$error }"
+                >
+                  <b-form-input
+                    type="password"
+                    v-model.trim="$v.user.password.$model"
+                    placeholder="Enter your password"
+                  ></b-form-input>
+                  <div class="error" v-if="!$v.user.password.required">password is required</div>
+                  <div
+                    class="error"
+                    v-if="!$v.user.password.minLength"
+                  >password must have at least {{$v.user.password.$params.minLength.min}} letters.</div>
+                </b-form-group>
 
-              <div class="form-group">
-                <label for="remember-me" class="text-info">
-                  <span>Remember me</span>
-                  <span>
-                    <input id="remember-me" name="remember-me" type="checkbox" />
-                  </span>
-                </label>
-                <input type="submit" class="btn btn-info btn-md" value="submit" />
-                <button class="btn btn-success" @click="$router.push('/register')">Register</button>
+                <div class="form-group text-xl-center">
+                  <input type="submit" class="btn btn-info btn-md" value="Submit" />
+                  <b-button variant="success" @click="$router.push('/register')">Register</b-button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </b-form>
+        </b-form>
+      </div>
     </div>
   </div>
 </template>
@@ -83,7 +78,7 @@ export default {
     handleLogin: function(id) {
       let self = this;
       if (this.$v.$invalid) {
-        alert("failled");
+        alert("Please check the form agian");
       } else {
         this.$axios.post("/login", this.user).then(function(res) {
           if (res.data.error) {
@@ -92,7 +87,7 @@ export default {
             alert(res.data.message);
             self.$store.commit("setToken", res.data.token);
             Cookie.set("token", res.data.token);
-            if (res.data.data.role == true) {
+            if (res.data.data.role == 1 || res.data.data.role == 2) {
               self.$router.push("/user/home");
             } else {
               self.$router.push("/");
