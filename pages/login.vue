@@ -1,4 +1,5 @@
 <template>
+
   <div id="login">
     <h3 class="text-center text-white pt-5">Login form</h3>
     <div class="container">
@@ -28,17 +29,18 @@
                 <div
                   class="error"
                   v-if="!$v.user.password.minLength"
-                >password must have at least {{$v.user.password.$params.minLength.min}} letters.</div>
+                >password must have at least {{$v.user.password.$params.minLength.min}} letters.
+                </div>
               </b-form-group>
 
               <div class="form-group">
                 <label for="remember-me" class="text-info">
                   <span>Remember me</span>
                   <span>
-                    <input id="remember-me" name="remember-me" type="checkbox" />
+                    <input id="remember-me" name="remember-me" type="checkbox"/>
                   </span>
                 </label>
-                <input type="submit" class="btn btn-info btn-md" value="submit" />
+                <input type="submit" class="btn btn-info btn-md" value="submit"/>
                 <a @click="handleLoginFb">login face</a>
                 <button class="btn btn-success" @click="$router.push('/register')">Register</button>
               </div>
@@ -51,93 +53,93 @@
 </template>
 
 <script>
-const Cookie = process.client ? require("js-cookie") : undefined;
-import { required, minLength, email } from "vuelidate/lib/validators";
-export default {
-  mounted: function() {
-    console.log("token", this.$store.state.token);
-  },
-  data() {
-    return {
-      user: {
-        email: "",
-        password: "",
-        id: "",
-        role: ""
-      },
-      repassword: ""
-    };
-  },
-  validations: {
-    user: {
-      email: {
-        required,
-        email
-      },
-      password: {
-        required,
-        minLength: minLength(4)
-      }
-    }
-  },
-  methods: {
-    handleLogin: function(id) {
-      let self = this;
-      if (this.$v.$invalid) {
-        alert("failled");
-      } else {
-        this.$axios.post("/login", this.user).then(function(res) {
-          if (res.data.error) {
-            alert(res.data.message);
-          } else {
-            alert(res.data.message);
-            self.$store.commit("setToken", res.data.token);
-            Cookie.set("token", res.data.token);
-            if (res.data.data.role == true) {
-              self.$router.push("/user/home");
-            } else {
-              self.$router.push("/");
+    const Cookie = process.client ? require("js-cookie") : undefined;
+    import {required, minLength, email} from "vuelidate/lib/validators";
+    export default {
+        mounted: function () {
+            console.log("token", this.$store.state.token);
+        },
+        data() {
+            return {
+                user: {
+                    email: "",
+                    password: "",
+                    id: "",
+                    role: ""
+                },
+                repassword: ""
+            };
+        },
+        validations: {
+            user: {
+                email: {
+                    required,
+                    email
+                },
+                password: {
+                    required,
+                    minLength: minLength(4)
+                }
             }
-          }
-        });
-      }
-    },
-      handleLoginFb(){
-        let self = this;
-        this.$axios.get("/social/auth/fb").then(function (res) {
-            console.log("sdaas");
-        })
-      }
-  }
-};
+        },
+        methods: {
+            handleLogin: function (id) {
+                let self = this;
+                if (this.$v.$invalid) {
+                    alert("failled");
+                } else {
+                    this.$axios.post("/login", this.user).then(function (res) {
+                        if (res.data.error) {
+                            alert(res.data.message);
+                        } else {
+                            alert(res.data.message);
+                            self.$store.commit("setToken", res.data.token);
+                            Cookie.set("token", res.data.token);
+                            if (res.data.data.role == true) {
+                                self.$router.push("/user/home");
+                            } else {
+                                self.$router.push("/");
+                            }
+                        }
+                    });
+                }
+            },
+            handleLoginFb() {
+                let self = this;
+                this.$axios.get("/social/auth/fb").then(function (res) {
+                    console.log("sdaas");
+                })
+            }
+        }
+    };
 </script>
 <style scoped>
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #17a2b8;
-  height: 100vh;
-}
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #17a2b8;
+    height: 100vh;
+  }
 
-#login .container #login-row #login-column #login-box {
-  margin-top: 120px;
-  max-width: 600px;
-  height: 450px;
-  border: 1px solid #9c9c9c;
-  background-color: #eaeaea;
-}
+  #login .container #login-row #login-column #login-box {
+    margin-top: 120px;
+    max-width: 600px;
+    height: 450px;
+    border: 1px solid #9c9c9c;
+    background-color: #eaeaea;
+  }
 
-#login .container #login-row #login-column #login-box #login-form {
-  padding: 20px;
-}
+  #login .container #login-row #login-column #login-box #login-form {
+    padding: 20px;
+  }
 
-#login
+  #login
   .container
   #login-row
   #login-column
   #login-box
   #login-form
   #register-link {
-  margin-top: -85px;
-}
+    margin-top: -85px;
+  }
 </style>
