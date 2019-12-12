@@ -91,6 +91,7 @@
 <script>
 import { required, minLength, email } from "vuelidate/lib/validators";
 export default {
+  head: { title: "Đăng kí" },
   data() {
     return {
       form: {
@@ -128,18 +129,14 @@ export default {
       } else {
         if (this.repassword == this.form.password) {
           this.$axios.post("/register", this.form).then(function(res) {
-            if (res.data.error) {
-              alert(res.data.message);
-            } else {
-              alert(res.data.message);
-              self.$router.push("/login");
-            }
+            alert("Đăng kí thành công");
+            self.$router.push("/login");
           });
         } else {
           alert("Repassword is not correct");
         }
       }
-    }
+    },
   }
 };
 </script>

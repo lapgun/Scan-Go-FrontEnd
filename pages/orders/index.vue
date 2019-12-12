@@ -82,10 +82,13 @@
         </ul>
       </div>
       <div class="col-sm-9 col-lg-10 sidebar">
-        <h3>Orders</h3>
+        <div style="margin-top:50px; margin-bottom:30px">
+          <h4 style="display:inline">Orders</h4>
         <label>
           <b-form-select v-model="order_status" :options="options" @change="getOrders"></b-form-select>
         </label>
+        </div>
+        
         <table class="table table-bordered">
           <thead>
             <tr>

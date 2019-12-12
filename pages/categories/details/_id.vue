@@ -108,31 +108,31 @@
 </template>
 <script>
 export default {
-  mounted: function() {
+  head: { title: "Chi tiết thể loại"},
+  mounted() {
     this.getTasks();
   },
-  data: function() {
+  data() {
     return {
       task: []
     };
   },
   methods: {
-    getTasks: function() {
+    getTasks() {
       let self = this;
       this.$axios
         .get("/categories/" + this.$route.params.id)
         .then(function(res) {
-          console.log("aaa", res);
           self.task = res.data.data;
         });
     },
-    delTasks: function(id) {
+    delTasks(id) {
       let self = this;
       this.$axios.delete("/categories/" + id).then(function(res) {
         self.getTasks();
       });
     },
-    handleLogout: function() {
+    handleLogout() {
       Cookie.remove("token");
       this.$store.commit("setToken", null);
       this.$router.push("/login");

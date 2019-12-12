@@ -81,35 +81,37 @@
       </ul>
     </div>
     <div style class="col-sm-9 col-lg-10 sidebar">
-      <h1>state : {{this.$store.state}}</h1>
+      <h1>Xin chào : {{user_name}}</h1>
     </div>
   </div>
 </template>
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
-  mounted: function() {
+  head: { title: "Home"},
+  mounted() {
     this.getDecoded();
   },
-  data: function() {
+  data() {
     return {
       user_id: "",
-      role: ""
+      role: "",
+      user_name:'',
     };
   },
   methods: {
-    getDecoded: function() {
+    getDecoded() {
       let self = this;
       this.$axios.get("/users/decoded").then(function(res) {
-        console.log(res);
         self.user_id = res.data.decoded.user_id;
+        self.user_name = res.data.decoded.user_name;
         self.role = res.data.decoded.user_role;
         if(self.role==0){
           self.$router.push("/")
         }
       });
     },
-    handleLogout: function() {
+    handleLogout() {
       Cookie.remove("token");
       this.$store.commit("setToken", null);
       this.$router.push("/login");

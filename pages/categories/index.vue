@@ -78,7 +78,7 @@
           </li>
         </ul>
       </div>
-      <div class="col-sm-8 col-lg-10 sidebar">
+      <div class="col-sm-8 col-lg-10 sidebar" style="margin-top:50px">
         <b-button variant="success" @click="$router.push('/categories/create')">Create new task</b-button>
         <table id="my-table" class="table table-bordered">
           <thead>
@@ -113,23 +113,23 @@
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
-  mounted: function() {
+  head: { title: "Thể loại"},
+  mounted () {
     this.getAdmins();
     this.getTasks();
   },
-  data: function() {
+  data() {
     return {
       user_id: "",
       tasks: [],
-      search: ""
+      search: "",
+      cancel: false
     };
   },
-
   methods: {
     getTasks() {
       let self = this;
       this.$axios.get("/categories").then(function(res) {
-        console.log(res);
         self.tasks = res.data.data;
       });
     },
@@ -139,23 +139,41 @@ export default {
       this.$axios
         .get("/categories/search?search=" + this.search)
         .then(function(res) {
-          console.log(res);
           self.tasks = res.data.data;
         });
     },
-    delTasks: function(id) {
-      let self = this;
-      this.$axios.delete("/categories/" + id).then(function(res) {
-        self.getTasks();
-      });
+    delTasks (id) {
+      this.$swal
+        .fire({
+          title: "Bạn chắc chắn muốm xóa?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, delete it!",
+          cancelButtonText: "No, keep it"
+        })
+        .then(result => {
+          if (result.value) {
+            this.$swal.fire("Xóa!", "Bạn xóa thể loại thành công!.", "success");
+            let self = this;
+            this.$axios.delete("/categories/" + id).then(function(res) {
+              self.getTasks();
+            });
+          } else if (result.dismiss === this.$swal.DismissReason.cancel) {
+            this.$swal.fire(
+              "Cancelled",
+              "Your imaginary file is safe :)",
+              "error"
+            );
+          }
+        });
     },
-    getAdmins: function() {
+    getAdmins() {
       let self = this;
       this.$axios.get("/users/decoded").then(function(res) {
         self.user_id = res.data.decoded.user_id;
       });
     },
-    handleLogout: function() {
+    handleLogout() {
       Cookie.remove("token");
       this.$store.commit("setToken", null);
       this.$router.push("/login");

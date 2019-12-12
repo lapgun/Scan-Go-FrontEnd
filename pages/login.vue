@@ -48,7 +48,8 @@
 const Cookie = process.client ? require("js-cookie") : undefined;
 import { required, minLength, email } from "vuelidate/lib/validators";
 export default {
-  mounted: function() {
+  head: { title: "Đăng nhập" },
+  mounted() {
     console.log("token", this.$store.state.token);
   },
   data() {
@@ -75,7 +76,7 @@ export default {
     }
   },
   methods: {
-    handleLogin: function(id) {
+    handleLogin(id) {
       let self = this;
       if (this.$v.$invalid) {
         alert("Please check the form agian");
@@ -84,7 +85,7 @@ export default {
           if (res.data.error) {
             alert(res.data.message);
           } else {
-            alert(res.data.message);
+            alert('Đăng nhập thành công');
             self.$store.commit("setToken", res.data.token);
             Cookie.set("token", res.data.token);
             if (res.data.data.role == 1 || res.data.data.role == 2) {

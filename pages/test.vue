@@ -23,90 +23,84 @@
     </div>
   </div>
 </template>
-<script>
-const Cookies = process.client ? require("js-cookie") : undefined;
 
+<script>
+import facebookLogin from 'facebook-login-vuejs'
 export default {
-  mounted() {
-    this.getProducts();
-  },
+  name: 'app',
   data() {
     return {
-      form: {
-        comment: "",
-        userId: "",
-        rate: "",
-        parentId: "",
-        name: "",
-        productId: "",
-        rating: 0,
-        id: ""
-      }
-    };
+      isConnected: false,
+      name: '',
+      email: '',
+      personalID: '',
+      picture: '',
+      FB: undefined
+    }
+  },
+  components: {
+    facebookLogin
   },
   methods: {
-    handleSubmit() {
-      let self = this;
-      this.$axios.post("/comment", this.form).then(function(res) {
-        self.getProducts();
-        self.form.comment = "";
-        self.form.rating = "";
-      });
+    getUserData() {
+      this.FB.api('/me', 'GET', { fields: 'id,name,email,picture' },
+        user => {
+          this.personalID = user.id;
+          this.email = user.email;
+          this.name = user.name;
+          this.picture = user.picture.data.url;
+        }
+      )
     },
-    getProducts() {
-      let self = this;
-      this.$axios.get("/products/" + this.$route.params.id).then(function(res) {
-        self.product = res.data.data;
-        self.form.productId = res.data.data.id;
-      });
+    sdkLoaded(payload) {
+      this.isConnected = payload.isConnected
+      this.FB = payload.FB
+      if (this.isConnected) this.getUserData()
     },
-    setRating() {
-      axios.post("/comment").then(response => {
-        this.rating = 0;
-      });
+    onLogin() {
+      this.isConnected = true
+      this.getUserData()
+    },
+    onLogout() {
+      this.isConnected = false;
     }
   }
-};
+}
 </script>
+
 <style>
-.img_detail {
-  width: 500px;
-  height: 500px;
-  display: block;
-  margin: 0 auto;
+#app {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start
 }
-.img_picture {
-  margin-right: 5px;
-  margin-top: 10px;
-  width: 73px !important;
-  height: 75px !important;
-  display: inline-block !important;
-  border: 1px solid #e6dfdf;
+.information {
+  margin-top: 100px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
 }
-.rating {
-  border: 1px solid #bfbfbf;
-  width: 86px;
-  height: 40px;
-  margin-left: 10px;
-  border-radius: 1em;
+.well {
+  background-color: rgb(191, 238, 229);
+  margin: auto;
+  padding: 50px 50px;
+  ;
+  border-radius: 20px;
+  /* display:inline-block; */
 }
-.rating_1 {
-  border: 1px solid #bfbfbf;
-  width: 130px;
-  height: 40px;
-  margin-left: 100px;
-  border-radius: 1em;
+.login {
+  width: 200px;
+  margin: auto;
 }
-.input_rating {
-  border-radius: 1em;
-  width: 30% !important;
-  height: 40px;
+.list-item:first-child {
+  margin: 0;
 }
-.rating_2 {
-  border: 1px solid #bfbfbf;
-  border-radius: 1em;
-  width: 130px;
-  height: 40px;
-  margin-left: 100px;
+.list-item {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+.button {
+  margin: auto;
 }
 </style>
