@@ -110,7 +110,6 @@ export default {
         `/products/menu/${this.$route.params.id}`
       );
       self.products = res.data.data;
-      console.log(res)
     },
     async getByCat() {
       let self = this;

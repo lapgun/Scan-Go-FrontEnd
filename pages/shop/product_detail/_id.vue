@@ -239,9 +239,11 @@ import chatShop from "~/components/chatShop.vue";
 export default {
   head: { title: "Chi tiết sản phẩm" },
   mounted() {
+    if (this.$store.state.token) {
+      this.getUsers();
+    };
     this.getProducts();
     this.getById();
-    this.getUsers();
     this.getCommentProducts();
     setTimeout(() => {
       this.totalRating();
@@ -267,7 +269,7 @@ export default {
         parentId: "",
         name: "",
         productId: "",
-        rating: 0,
+        rating: 0
       },
       average: 0,
       pagination: {
@@ -381,9 +383,10 @@ export default {
           }
         )
         .then(function(res) {
-          console.log(res)
           self.comments = res.data.data;
           self.pagination = res.data.pagination;
+          let text = res.data.data[0].createdAt + "";
+           let day = text.split("T");
         });
     },
     handleChangePage(currentPage) {
@@ -408,12 +411,12 @@ export default {
       }
     },
     increment1(id) {
-      this.product.quantity += 1 ;
+      this.product.quantity += 1;
     },
     decrement1(id) {
-      this.product.quantity -= 1 ;
-      if(this.product.quantity < 0) {
-        this.product.quantity = 0
+      this.product.quantity -= 1;
+      if (this.product.quantity < 0) {
+        this.product.quantity = 0;
       }
     }
   }
