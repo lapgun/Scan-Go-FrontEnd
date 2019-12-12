@@ -134,6 +134,7 @@
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
+  head: { title:'User'},
   mounted: function() {
     this.getUsers();
   },

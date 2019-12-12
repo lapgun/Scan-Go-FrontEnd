@@ -158,15 +158,6 @@
                             class="d-block font-weight-bold"
                             style="margin-top:80px"
                           >Chưa có sản phẩm</span>
-                          <span class="btn btn-icon btn-soft-primary rounded-circle mb-3">
-                            <span class="fas fa-shopping-basket btn-icon__inner">
-                              <a
-                                class="cart_checkout_1"
-                                href="#"
-                                @click="$router.push('/shop/cart')"
-                              >Đến giỏ hàng</a>
-                            </span>
-                          </span>
                         </div>
                       </template>
                     </b-dropdown-item>

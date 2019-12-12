@@ -76,7 +76,7 @@
           </li>
         </ul>
       </div>
-      <div class="col-sm-9 col-lg-10 sidebar">
+      <div class="col-sm-9 col-lg-10 sidebar" style="margin-top:50px">
         <table class="table table-bordered">
           <thead>
             <tr>
@@ -91,7 +91,7 @@
           <tbody>
             <tr v-for="(comment , index) in comments" :key="index">
               <td>{{index+1}}</td>
-              <td>{{comment.name}}</td>
+              <td>{{comment.user.name}}</td>
               <td>{{comment.comment}}</td>
               <td>{{comment.rating}}</td>
               <td>{{comment.parentId}}</td>
@@ -125,6 +125,7 @@ export default {
     getSlides() {
       let self = this;
       this.$axios.get("/comment").then(function(res) {
+        console.log(res)
         self.comments = res.data.rows;
       });
     },
@@ -132,7 +133,7 @@ export default {
       Cookie.remove("token");
       this.$store.commit("setToken", null);
       this.$router.push("/login");
-    }
+    }, 
   }
 };
 </script>

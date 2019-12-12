@@ -78,7 +78,7 @@
           </li>
         </ul>
       </div>
-      <div class="col-sm-8 col-lg-10 sidebar">
+      <div class="col-sm-8 col-lg-10 sidebar" style="margin-top:50px">
         <b-button variant="success" @click="$router.push('/categories/create')">Create new task</b-button>
         <table id="my-table" class="table table-bordered">
           <thead>

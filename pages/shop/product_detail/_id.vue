@@ -267,7 +267,7 @@ export default {
         parentId: "",
         name: "",
         productId: "",
-        rating: 0
+        rating: 0,
       },
       average: 0,
       pagination: {
@@ -355,7 +355,7 @@ export default {
     },
     getUsers() {
       let self = this;
-      this.$axios.get("/users").then(function(res) {
+      this.$axios.get("/users/decoded").then(function(res) {
         self.form.userId = res.data.decoded.user_id;
         self.form.name = res.data.decoded.user_name;
       });
@@ -381,7 +381,7 @@ export default {
           }
         )
         .then(function(res) {
-          console.log(res);
+          console.log(res)
           self.comments = res.data.data;
           self.pagination = res.data.pagination;
         });
@@ -408,13 +408,12 @@ export default {
       }
     },
     increment1(id) {
-      for (let i = 0; i < this.product.length; i++) {
-        if (this.product[i].id === id) this.product[i].quantity++;
-      }
+      this.product.quantity += 1 ;
     },
     decrement1(id) {
-      for (let i = 0; i < this.product.length; i++) {
-        if (this.product[i].id === id) this.product[i].quantity--;
+      this.product.quantity -= 1 ;
+      if(this.product.quantity < 0) {
+        this.product.quantity = 0
       }
     }
   }

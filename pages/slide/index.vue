@@ -79,7 +79,7 @@
           </li>
         </ul>
       </div>
-      <div class="col-sm-9 col-lg-10 sidebar">
+      <div class="col-sm-9 col-lg-10 sidebar" style="margin-top:50px">
         <b-button @click="$router.push('/slide/create')" variant="info">Create</b-button>
         <table class="table table-bordered">
           <thead>

@@ -75,7 +75,7 @@
           </li>
         </ul>
       </div>
-      <div class="col-sm-8 col-lg-10 sidebar">
+      <div class="col-sm-8 col-lg-10 sidebar" style="margin-top:50px">
         <b-button variant="success" @click="$router.push('/products/create')">Create new task</b-button>
           <label> 
             <b-form-select v-model="order_by" :options="order" @change="getProductsByOrder()"></b-form-select>
