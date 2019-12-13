@@ -83,7 +83,11 @@
             placeholder="Enter your cat name "
           />
           <label>Select category's parent in the select form below :</label>
-          <b-form-select v-model="form.cat_parent" :options="options"></b-form-select>
+          <b-form-select
+            v-model="form.cat_parent"
+            @change="getCatName(form.cat_parent)"
+            :options="options"
+          ></b-form-select>
           <br />
           <label>
             <button class="btn btn-info" @click="handleSubmit">Submit</button>
@@ -95,21 +99,23 @@
 </template>
 <script>
 export default {
-  mounted: function() {
+  head: { title: "Sửa thể loại" },
+  mounted() {
     this.getDetail();
     this.getCategories();
   },
-  data: function() {
+  data() {
     return {
       form: {
         name: "",
-        cat_parent: ""
+        cat_parent: "",
+        cat_parent_name: ""
       },
       options: [{ value: 0, text: "This is parent category " }]
     };
   },
   methods: {
-    getCategories: function() {
+    getCategories() {
       let self = this;
       this.$axios.get("/categories/cat_parent/0").then(function(res) {
         let data = res.data.data.rows;
@@ -121,7 +127,12 @@ export default {
         });
       });
     },
-    getDetail: function() {
+    getCatName(id) {
+      this.$axios.get("/categories/" + id).then(res => {
+        this.form.cat_parent_name = res.data.data.name;
+      });
+    },
+    getDetail() {
       let self = this;
       this.$axios
         .get("/categories/" + this.$route.params.id)
@@ -129,7 +140,8 @@ export default {
           self.form = res.data.data;
         });
     },
-    handleSubmit: function() {
+    handleSubmit() {
+      this.$swal.fire("Yes", "Cập nhật thể loại thành công!", "success");
       let self = this;
       this.$axios
         .put("/categories/" + this.form.id, this.form)
@@ -137,7 +149,7 @@ export default {
           self.$router.push("/categories");
         });
     },
-    handleLogout: function() {
+    handleLogout() {
       Cookie.remove("token");
       this.$store.commit("setToken", null);
       this.$router.push("/login");

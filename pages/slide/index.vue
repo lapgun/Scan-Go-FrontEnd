@@ -79,7 +79,7 @@
           </li>
         </ul>
       </div>
-      <div class="col-sm-9 col-lg-10 sidebar">
+      <div class="col-sm-9 col-lg-10 sidebar" style="margin-top:50px">
         <b-button @click="$router.push('/slide/create')" variant="info">Create</b-button>
         <table class="table table-bordered">
           <thead>
@@ -113,11 +113,12 @@
 
 <script>
 export default {
-  mounted: function() {
+  head: { title: "Slide" },
+  mounted() {
     this.getSlides();
     this.getAdmins();
   },
-  data: function() {
+  data() {
     return {
       slides: [],
       search: "",
@@ -127,23 +128,43 @@ export default {
         perPage: 10
       },
       user_id: "",
-      users: []
+      users: [],
+      cancel: false
     };
   },
   methods: {
-    getSlides: function() {
+    getSlides() {
       let self = this;
       this.$axios.get("/slide").then(function(res) {
         self.slides = res.data.rows;
       });
     },
-    handleDelete: function(id) {
-      let self = this;
-      this.$axios.delete("/slide/" + id).then(function(res) {
-        self.getSlides();
-      });
+    handleDelete(id) {
+      this.$swal
+        .fire({
+          title: "Bạn chắc chắn muốm xóa?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, delete it!",
+          cancelButtonText: "No, keep it"
+        })
+        .then(result => {
+          if (result.value) {
+            this.$swal.fire("Xóa!", "Bạn xóa sản phẩm thành công!.", "success");
+            let self = this;
+            this.$axios.delete("/slide/" + id).then(function(res) {
+              self.getSlides();
+            });
+          } else if (result.dismiss === this.$swal.DismissReason.cancel) {
+            this.$swal.fire(
+              "Cancelled",
+              "Your imaginary file is safe :)",
+              "error"
+            );
+          }
+        });
     },
-    handleSearch: function() {
+    handleSearch() {
       this.$axios
         .get("/categories/search?search=" + this.search)
         .then(function(res) {
@@ -151,13 +172,13 @@ export default {
           self.tasks = res.data.data;
         });
     },
-    getAdmins: function() {
+    getAdmins() {
       let self = this;
       this.$axios.get("/users/decoded").then(function(res) {
         self.user_id = res.data.decoded.user_id;
       });
     },
-    handleLogout: function() {
+    handleLogout() {
       Cookie.remove("token");
       this.$store.commit("setToken", null);
       this.$router.push("/login");

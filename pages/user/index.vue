@@ -82,7 +82,7 @@
         </ul>
       </div>
       <div class="col-sm-9 col-lg-10 sidebar">
-        <div style="width:30%">
+        <div style="width:30%; margin-bottom:30px">
           <label></label>
           <b-form-select v-model="selected" :options="options" @change="getUsers"></b-form-select>
         </div>
@@ -134,6 +134,7 @@
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
+  head: { title:'User'},
   mounted: function() {
     this.getUsers();
   },

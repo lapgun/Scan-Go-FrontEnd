@@ -1,6 +1,10 @@
 <template>
   <div class="container mt-5">
+    <shopHeader />
     <div class="row justify-content-center">
+      <div class="col-md-4">
+        <shopUser />
+      </div>
       <div class="col-md-8">
         <div class="card">
           <div
@@ -46,14 +50,22 @@
         </div>
       </div>
     </div>
+    <shopFooter />
   </div>
 </template>
-
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
+import shopHeader from "~/components/shopHeader.vue";
+import shopFooter from "~/components/shopFooter.vue";
+import shopUser from "~/components/shopUser.vue";
 export default {
   mounted: function() {
     this.getUsers();
+  },
+  components: {
+    shopHeader,
+    shopFooter,
+    shopUser,
   },
   data: function() {
     return {
@@ -63,7 +75,7 @@ export default {
         email: "",
         address: ""
       },
-     
+      user_id: ""
     };
   },
   methods: {
@@ -71,7 +83,7 @@ export default {
       let self = this;
       this.$axios.get("/users/detail/" + this.$route.params.id).then(function(res) {
         self.form = res.data.data;
-        
+        self.user_id = res.data.decoded.user_id;
       });
     },
     handelSubmit: function() {
@@ -79,7 +91,7 @@ export default {
       this.$axios.put("/users/" + this.form.id, this.form).then(function(res) {
         alert("Cập nhật thông tin thành công");
       });
-      self.$router.push("/shop/user/detail/" + this.form.id);
+      self.$router.push("/shop/user/detail/" + this.user_id);
     }
   }
 };

@@ -8,7 +8,7 @@
           <div class="panel-heading">
             <h4 class="panel-title">
               <a
-                data-parent="#accordian"
+                data-parent="#accordian" href="#"
                 @click="$router.push('/shop/product/'+cat.id)"
               >{{cat.name}}</a>
               <span data-toggle="collapse" class="badge pull-right" :href="'#a'+cat.id">
@@ -20,7 +20,7 @@
             <div class="panel-body">
               <ul>
                 <li v-for="(menu,key) in menus" :key="key" v-show="menu.cat_parent == cat.id">
-                  <a @click="$router.push('/shop/product/'+menu.id)">{{menu.name}}</a>
+                  <a href="#" @click="$router.push('/shop/product/'+menu.id)">{{menu.name}}</a>
                 </li>
               </ul>
             </div>

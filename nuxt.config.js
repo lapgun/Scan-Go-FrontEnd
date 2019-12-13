@@ -76,7 +76,15 @@ export default {
             mode: "client"
         },
         {
-            src: "~/plugins/alert.js",
+            src: "~/plugins/vue-flash.js",
+            mode: "client"
+        },
+        {
+            src: "~/plugins/sweetalert2.js",
+            mode: "client"
+        },
+        {
+            src: "~/plugins/chart.js",
             mode: "client"
         }
     ],

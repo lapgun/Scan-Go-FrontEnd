@@ -87,7 +87,11 @@
             placeholder="Enter your cat name "
           />
           <label>Please select your cat's parent</label>
-          <b-form-select v-model="form.cat_parent" :options="options"></b-form-select>
+          <b-form-select
+            v-model="form.cat_parent"
+            @change="getCatName(form.cat_parent)"
+            :options="options"
+          ></b-form-select>
           <br />
           <label>
             <button class="btn btn-info" @click="handleSubmit">Submit</button>
@@ -99,6 +103,7 @@
 </template>
 <script>
 export default {
+  head: { title: "Tạo thể loại" },
   mounted() {
     this.getCategories();
   },
@@ -106,7 +111,8 @@ export default {
     return {
       form: {
         name: "",
-        cat_parent: ""
+        cat_parent: "",
+        cat_parent_name: ""
       },
       options: [{ value: 0, text: "This is parent category " }]
     };
@@ -124,9 +130,14 @@ export default {
           });
         });
       });
-      console.log(self.options);
+    },
+    getCatName(id) {
+      this.$axios.get("/categories/" + id).then(res => {
+        this.form.cat_parent_name = res.data.data.name;
+      });
     },
     handleSubmit() {
+      this.$swal.fire("Yes...", "Tạo thể loại thành công!", "success");
       let self = this;
       this.$axios.post("/categories", this.form).then(function(res) {
         self.$router.push("/categories");

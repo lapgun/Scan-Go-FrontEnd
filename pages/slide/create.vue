@@ -13,12 +13,12 @@
 </template>
 <script>
 import upload_files from "../../components/upload_files";
-
 export default {
+  head: { title: "Tạo slide"},
   components: {
     upload_files
   },
-  data: function() {
+  data() {
     return {
       form: {
         name: "",
@@ -27,7 +27,8 @@ export default {
     };
   },
   methods: {
-    handleSubmit: function() {
+    handleSubmit() {
+      this.$swal.fire('Yes...', 'Tạo slide thành công!', 'success')
       let self = this;
       this.$axios.post("/slide", this.form).then(function(res) {
         console.log(res);

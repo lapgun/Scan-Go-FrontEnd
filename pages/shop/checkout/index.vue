@@ -102,14 +102,17 @@
         </div>
       </div>
     </section>
-    <shopFooter></shopFooter>
+    <shopFooter />
+    <chatShop />
   </div>
 </template>
 <script>
 const Cookies = process.client ? require("js-cookie") : undefined;
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
+import chatShop from "~/components/chatShop.vue";
 export default {
+  head: { title: "Thanh toán" },
   created() {
     if (process.browser) {
       if (localStorage.getItem("cart")) {
@@ -138,7 +141,8 @@ export default {
   },
   components: {
     shopHeader,
-    shopFooter
+    shopFooter,
+    chatShop
   },
   mounted() {
     this.totalPrice();
@@ -195,7 +199,7 @@ export default {
           });
       });
     },
-    setLoaded: function() {
+    setLoaded() {
       this.loaded = true;
       window.paypal
         .Buttons({

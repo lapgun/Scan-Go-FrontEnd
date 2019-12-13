@@ -101,7 +101,7 @@
                     <li>
                       <a
                         @click="$router.push('/register')"
-                        style="margin-left:-70px; margin-top:-20px"
+                        style="margin-left:-70px"
                       >Register</a>
                     </li>
                     <li>
@@ -123,16 +123,16 @@
               <div class="mainmenu pull-left">
                 <ul class="nav navbar-nav collapse navbar-collapse">
                   <li>
-                    <a @click="$router.push('/')" class="active">Trang chủ</a>
+                    <a href="#" @click="$router.push('/')" class="active">Trang chủ</a>
                   </li>
                   <li>
-                    <a @click="$router.push('/shop/products')">Sản Phẩm</a>
+                    <a href="#" @click="$router.push('/shop/products')">Sản Phẩm</a>
                   </li>
                   <li>
-                    <a @click="$router.push('/shop/blog')">Blog</a>
+                    <a href="#" @click="$router.push('/shop/blog')">Blog</a>
                   </li>
                   <li>
-                    <a @click="$router.push('/shop/contact')">Contact</a>
+                    <a href="#" @click="$router.push('/shop/contact')">Contact</a>
                   </li>
                 </ul>
               </div>
@@ -158,15 +158,6 @@
                             class="d-block font-weight-bold"
                             style="margin-top:80px"
                           >Chưa có sản phẩm</span>
-                          <span class="btn btn-icon btn-soft-primary rounded-circle mb-3">
-                            <span class="fas fa-shopping-basket btn-icon__inner">
-                              <a
-                                class="cart_checkout_1"
-                                href="#"
-                                @click="$router.push('/shop/cart')"
-                              >Đến giỏ hàng</a>
-                            </span>
-                          </span>
                         </div>
                       </template>
                     </b-dropdown-item>
@@ -331,7 +322,7 @@ export default {
     totalPrice() {
       let total = 0;
       for (let i = 0; i < this.cart.length; i++) {
-        total += this.cart[i].price * this.cart[i].order_time;
+        total += this.cart[i].price * this.cart[i].quantity;
         this.total = total;
       }
     },

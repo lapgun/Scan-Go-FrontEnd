@@ -30,7 +30,7 @@
                         <td v-if="order.order_status == 0">Đang chờ xử lí</td>
                         <td v-if="order.order_status == 1">Đã thanh toán</td>
                         <td v-if="order.order_status == 2">Đã hủy đơn hàng</td>
-                        <td>{{order.total_price}}</td>
+                        <td>{{order.total_price}} đ</td>
                         <td>
                           <b-button variant="danger" @click="handelCancel(order.id)">Hủy đơn hàng</b-button>
                           <b-button
@@ -62,8 +62,8 @@
                           <td>{{key+1}}</td>
                           <td>{{product.name}}</td>
                           <td>{{product.quantity[key].quantity}}</td>
-                          <td>{{product.price}}</td>
-                          <td>{{product.price * product.quantity[key].quantity}}</td>
+                          <td>{{product.price}} đ</td>
+                          <td>{{product.price * product.quantity[key].quantity}} đ</td>
                         </tr>
                       </tbody>
                     </table>
@@ -76,20 +76,23 @@
       </div>
     </div>
     <shopFooter />
+    <chatShop />
   </div>
 </template>
 <script>
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopUser from "~/components/shopUser.vue";
-
+import chatShop from "~/components/chatShop.vue";
 export default {
+  head: { title: "Chi tiết giỏ hàng" },
   components: {
     shopHeader,
     shopFooter,
-    shopUser
+    shopUser,
+    chatShop
   },
-  mounted: function() {
+  mounted() {
     let self = this;
     socket.on("success-status", function(data) {
       let orderNew = self.orders.find(element => element.id == data.id);
@@ -105,7 +108,7 @@ export default {
     });
     this.getOrders();
   },
-  data: function() {
+  data() {
     return {
       orders: [],
       productId: [],
@@ -114,7 +117,7 @@ export default {
     };
   },
   methods: {
-    getOrders: function() {
+    getOrders() {
       let self = this;
       this.$axios
         .get("/orders/customerId/" + this.$route.params.id)
@@ -156,7 +159,7 @@ export default {
             quantity: self.order_product
           });
         });
-      }); 
+      });
     }
   }
 };

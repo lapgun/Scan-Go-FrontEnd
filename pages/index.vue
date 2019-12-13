@@ -96,6 +96,7 @@
       </div>
     </section>
     <shopFooter />
+    <chatShop />
   </div>
 </template>
 <script>
@@ -103,20 +104,22 @@ import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
 import QrcodeVue from "qrcode.vue";
+import chatShop from "~/components/chatShop.vue"
 export default {
   head: { title: "Trang chủ" },
   data() {
     return {
       products: [],
       cart: [],
-      newests: []
+      newests: [],
     };
   },
   components: {
     shopHeader,
     shopFooter,
     shopNav,
-    QrcodeVue
+    QrcodeVue,
+    chatShop
   },
   created() {
     if (process.browser) {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!--    <shopHeader />-->
+       <shopHeader />
     <FlashMessage :position="'right bottom'" />
     <!-- content -->
     <div class="container">
@@ -68,21 +68,26 @@
     </div>
     <!-- end content -->
     <shopFooter />
+    <chatShop />
   </div>
 </template>
 <script>
 import shopFooter from "~/components/shopFooter.vue";
+import shopHeader from "~/components/shopHeader.vue";
 import shopUser from "~/components/shopUser.vue";
+import chatShop from "~/components/chatShop.vue";
 export default {
+  head: { title: "Thay đổi mật khẩu" },
   components: {
-    // shopHeader,
+    shopHeader,
     shopFooter,
-    shopUser
+    shopUser,
+    chatShop
   },
-  mounted: function() {
+  mounted() {
     this.getUsers();
   },
-  data: function() {
+  data() {
     return {
       users: {
         oldPassword: "",
@@ -92,9 +97,9 @@ export default {
     };
   },
   methods: {
-    getUsers: function() {
+    getUsers() {
       let self = this;
-      this.$axios.get("/users/" + this.$route.params.id).then(function(res) {
+      this.$axios.get("/users/detail/" + this.$route.params.id).then(function(res) {
         self.users = res.data.data;
       });
     },
@@ -108,7 +113,8 @@ export default {
               title: "Success",
               message: "Update Success"
             });
-            self.users = "";
+            self.$router.push('/');
+
           });
       } else
         return self.flashMessage.error({

@@ -24,7 +24,7 @@
                       <h2>{{currency(product.price)}}</h2>
                       <p>{{product.name}}</p>
                       <qrcode-vue
-                        :value="'http://localhost:3000/shop/product_detail/'+product.id"
+                        :value="'/shop/product_detail/'+product.id"
                         size="100"
                         level="H"
                       ></qrcode-vue>
@@ -60,7 +60,8 @@
         </div>
       </div>
     </section>
-    <shopFooter></shopFooter>
+    <shopFooter />
+    <chatShop />
   </div>
 </template>
 <script>
@@ -69,7 +70,9 @@ import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
 import QrcodeVue from "qrcode.vue";
+import chatShop from "~/components/chatShop.vue";
 export default {
+  head: { title: "Sản phẩm" },
   created() {
     if (process.browser) {
       if (localStorage.getItem("cart")) {
@@ -86,7 +89,7 @@ export default {
     await this.getByCat();
     this.getPicture();
   },
-  data: function() {
+  data() {
     return {
       products: {},
       default_image: [],
@@ -97,7 +100,8 @@ export default {
     shopHeader,
     shopFooter,
     shopNav,
-    QrcodeVue
+    QrcodeVue,
+    chatShop,
   },
   methods: {
     async getByMenu() {

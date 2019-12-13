@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="container mt-5">
-      <div class="row justify-content-center">
-        <div class="col-md-8">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-9" style="margin-left:100px; margin-top:100px">
           <div class="card">
             <div
               class="card-header text-md-center"
@@ -34,19 +34,18 @@
                         >Edit Profile</button>
                       </span>
                       <span>
-                        <span>
-                          <button
-                            style="margin-top:15px"
-                            type="button"
-                            class="btn btn-info"
-                            @click="$router.push('/user/home/')"
-                          >Back</button>
-                        </span>
+                        <button
+                          style="margin-top:15px ;display:inline"
+                          type="button"
+                          class="btn btn-info"
+                          @click="$router.push('/user')"
+                        >Back</button>
                       </span>
                     </div>
                   </div>
                 </div>
               </div>
+              <!-- </div> -->
             </div>
           </div>
         </div>
@@ -56,25 +55,23 @@
 </template>
 <script>
 export default {
-  mounted: function() {
+  head: { title: "Thông tin người dùng"},
+  mounted() {
     this.getUsers();
   },
-  data: function() {
+  data() {
     return {
       users: []
     };
   },
   methods: {
-    getUsers: function() {
+    getUsers() {
       let self = this;
       this.$axios.get("/users/detail/" + this.$route.params.id).then(function(res) {
-        console.log(res);
+        console.log(res)
         self.users = res.data.data;
       });
     }
   }
 };
 </script>
-
-<style scoped>
-</style>

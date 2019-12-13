@@ -62,10 +62,15 @@
               <div v-else>
                 <div>
                   <div style="margin-bottom:20px">
-                    <div style="display:inline;margin-left:470px"> Sắp xếp theo</div>
-                 
-                  <b-form-select style="width:30%; margin-left:570px; margin-top:-38px" v-model="order_by" :options="order" @change="getProductsByOrder"></b-form-select>
-                </div>
+                    <div style="display:inline;margin-left:470px">Sắp xếp theo</div>
+
+                    <b-form-select
+                      style="width:30%; margin-left:570px; margin-top:-38px"
+                      v-model="order_by"
+                      :options="order"
+                      @change="getProductsByOrder"
+                    ></b-form-select>
+                  </div>
                 </div>
                 <div class="col-sm-4" v-for="(product, index) in products" :key="index">
                   <div class="product-image-wrapper">
@@ -81,7 +86,7 @@
                         <h2>{{currency(product.price)}}</h2>
                         <p>{{product.name}}</p>
                         <qrcode-vue
-                          :value="'http://localhost:3000/shop/product_detail/'+product.id"
+                          :value="'/shop/product_detail/'+product.id"
                           size="100"
                           level="H"
                         ></qrcode-vue>
@@ -119,7 +124,8 @@
         </div>
       </div>
     </section>
-    <shopFooter></shopFooter>
+    <shopFooter />
+    <chatShop />
   </div>
 </template>
 
@@ -127,6 +133,7 @@
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
+import chatShop from "~/components/chatShop.vue";
 import InfiniteLoading from "vue-infinite-loading";
 import QrcodeVue from "qrcode.vue";
 export default {
@@ -151,7 +158,7 @@ export default {
       this.getProducts();
     }
   },
-  data: function() {
+  data() {
     return {
       products: [],
       order: [
@@ -194,7 +201,8 @@ export default {
     shopFooter,
     shopNav,
     InfiniteLoading,
-    QrcodeVue
+    QrcodeVue,
+    chatShop
   },
   methods: {
     currency(x) {
@@ -209,12 +217,11 @@ export default {
       this.$axios
         .get("/products/search?search=" + this.$route.query.search)
         .then(function(res) {
-          console.log(res);
           self.products = res.data.data;
           self.result = res.data.data.length;
         });
     },
-    getProducts: function() {
+    getProducts() {
       let self = this;
       this.$axios
         .post(
@@ -225,7 +232,6 @@ export default {
           this.order_by
         )
         .then(function(res) {
-          console.log(res);
           let temp = res.data.data;
           self.products = self.products.concat(temp);
           self.pagination.totalPage = res.data.pagination.totalPage;
