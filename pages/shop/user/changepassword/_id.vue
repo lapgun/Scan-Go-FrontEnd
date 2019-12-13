@@ -99,7 +99,7 @@ export default {
   methods: {
     getUsers() {
       let self = this;
-      this.$axios.get("/users/" + this.$route.params.id).then(function(res) {
+      this.$axios.get("/users/detail/" + this.$route.params.id).then(function(res) {
         self.users = res.data.data;
       });
     },

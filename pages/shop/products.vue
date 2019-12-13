@@ -62,10 +62,15 @@
               <div v-else>
                 <div>
                   <div style="margin-bottom:20px">
-                    <div style="display:inline;margin-left:470px"> Sắp xếp theo</div>
-                 
-                  <b-form-select style="width:30%; margin-left:570px; margin-top:-38px" v-model="order_by" :options="order" @change="getProductsByOrder"></b-form-select>
-                </div>
+                    <div style="display:inline;margin-left:470px">Sắp xếp theo</div>
+
+                    <b-form-select
+                      style="width:30%; margin-left:570px; margin-top:-38px"
+                      v-model="order_by"
+                      :options="order"
+                      @change="getProductsByOrder"
+                    ></b-form-select>
+                  </div>
                 </div>
                 <div class="col-sm-4" v-for="(product, index) in products" :key="index">
                   <div class="product-image-wrapper">
@@ -152,7 +157,6 @@ export default {
     } else {
       this.getProducts();
     }
-    this.getProducts();
   },
   data() {
     return {

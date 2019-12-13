@@ -125,7 +125,6 @@ export default {
     getSlides() {
       let self = this;
       this.$axios.get("/comment").then(function(res) {
-        console.log(res)
         self.comments = res.data.rows;
       });
     },

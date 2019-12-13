@@ -82,6 +82,10 @@ export default {
         {
             src: "~/plugins/sweetalert2.js",
             mode: "client"
+        },
+        {
+            src: "~/plugins/chart.js",
+            mode: "client"
         }
     ],
 

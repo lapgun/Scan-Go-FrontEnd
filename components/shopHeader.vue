@@ -101,7 +101,7 @@
                     <li>
                       <a
                         @click="$router.push('/register')"
-                        style="margin-left:-70px; margin-top:-20px"
+                        style="margin-left:-70px"
                       >Register</a>
                     </li>
                     <li>
@@ -322,7 +322,7 @@ export default {
     totalPrice() {
       let total = 0;
       for (let i = 0; i < this.cart.length; i++) {
-        total += this.cart[i].price * this.cart[i].order_time;
+        total += this.cart[i].price * this.cart[i].quantity;
         this.total = total;
       }
     },

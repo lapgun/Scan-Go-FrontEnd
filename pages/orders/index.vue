@@ -82,13 +82,28 @@
         </ul>
       </div>
       <div class="col-sm-9 col-lg-10 sidebar">
+        <h1>Order</h1>
+        <br />
+        <h4>Order theo ngày</h4>
+        <b-form-input
+          style="margin-bottom:30px;margin-top:30px"
+          v-model="date"
+          @change="getByDay"
+          type="date"
+        ></b-form-input>
+        <b-table striped hover :items="days"></b-table>
+        <h3 style="margin-bottom:50px" v-if="total">Tổng số tiền : {{total}} đ</h3>
+        <h4>Order theo tháng</h4>
+        <b-form-input v-model="month" @change="getByMonth" type="month"></b-form-input>
+        <b-table striped hover :items="months"></b-table>
+        <h3 style="margin-bottom:50px" v-if="money">Tổng số tiền : {{money}} đ</h3>
         <div style="margin-top:50px; margin-bottom:30px">
           <h4 style="display:inline">Orders</h4>
-        <label>
-          <b-form-select v-model="order_status" :options="options" @change="getOrders"></b-form-select>
-        </label>
+          <label>
+            <b-form-select v-model="order_status" :options="options" @change="getOrders"></b-form-select>
+          </label>
         </div>
-        
+
         <table class="table table-bordered">
           <thead>
             <tr>
@@ -126,6 +141,7 @@
 </template>
 <script>
 export default {
+  head: { title: "Order" },
   mounted: function() {
     let self = this;
     socket.on("success-status", function(data) {
@@ -146,6 +162,12 @@ export default {
   data: function() {
     return {
       orders: [],
+      month: "",
+      total: 0,
+      money: 0,
+      days: [],
+      date: "",
+      months: [],
       search: "",
       totalResult: 0,
       pagination: {
@@ -212,6 +234,30 @@ export default {
           socket.emit("cancel-order", { order: order.order_status, id: id });
         });
       }
+    },
+    getByDay() {
+      let self = this;
+      this.total = 0;
+      this.$axios
+        .get("/orders/get/by-day?date=" + this.date)
+        .then(function(res) {
+          self.days = res.data.data.rows;
+          self.days.forEach(element => {
+            self.total += parseInt(element.total_price);
+          });
+        });
+    },
+    getByMonth() {
+      let self = this;
+      this.money = 0;
+      this.$axios
+        .get("/orders/get/by-day?date=" + this.month)
+        .then(function(res) {
+          self.months = res.data.data.rows;
+          self.months.forEach(element => {
+            self.money += parseInt(element.total_price);
+          });
+        });
     },
     handleLogout: function() {
       Cookie.remove("token");

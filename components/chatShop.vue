@@ -15,7 +15,7 @@
                     </button>
                   </div>
                   <div class="modal-body">
-                    <p>Hello {{user_name}}</p> 
+                    <p>Hello {{user_name}}</p>
                     <i class="fas fa-envelope envelope_1"></i>
                     <p class="content_modal">
                       Once you start a new conversation, you’ll see
@@ -70,7 +70,9 @@
 <script>
 export default {
   mounted() {
-    this.getUsers();
+    if (this.$store.state.token) {
+      this.getUsers();
+    }
   },
   data() {
     return {
@@ -83,7 +85,7 @@ export default {
   methods: {
     getUsers() {
       let self = this;
-      this.$axios.get("/users").then(function(res) {
+      this.$axios.get("/users/decoded").then(function(res) {
         self.user_id = res.data.decoded.user_id;
         self.user_name = res.data.decoded.user_name;
         self.users = res.data.data;
