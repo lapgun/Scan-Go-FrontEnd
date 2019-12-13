@@ -71,9 +71,6 @@
             <a @click="$router.push('/comment')">Comment</a>
           </li>
           <li>
-            <a @click="$router.push('/slide')">Slide</a>
-          </li>
-          <li>
             <a @click="$router.push('/user')">Users</a>
           </li>
         </ul>
@@ -153,6 +150,10 @@ export default {
       let self = this;
       this.$axios.get("/users/decoded").then(function(res) {
         self.user_id = res.data.decoded.user_id;
+        if(res.data.decoded.user_role==0){
+          self.$router.push("/");
+        
+        }
       });
     },
     handleLogout: function() {

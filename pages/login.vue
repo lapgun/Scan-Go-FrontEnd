@@ -88,6 +88,8 @@ export default {
             self.$store.commit("setToken", res.data.token);
             Cookie.set("token", res.data.token);
             if (res.data.data.role == 1 || res.data.data.role == 2) {
+              self.$store.commit("setRole", "admin");
+              Cookie.set("role", "admin");
               self.$router.push("/user/home");
             } else {
               self.$router.push("/");

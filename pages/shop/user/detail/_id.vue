@@ -37,6 +37,7 @@
                           @click="$router.push('/shop/user/edit/'+users.id)"
                         >Edit Profile</button>
                       </span>
+                      
                       <span>
                         <button
                           style="margin-top:15px ;display:inline"

@@ -51,11 +51,9 @@
         <div class="clear"></div>
       </div>
       <div class="divider"></div>
-      <form role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search" />
-        </div>
-      </form>
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search" />
+      </div>
       <ul class="nav menu" style="display:block">
         <li class="active">
           <a @click="$router.push('/user/home')">Home</a>
@@ -81,11 +79,18 @@
       </ul>
     </div>
     <div style class="col-sm-9 col-lg-10 sidebar">
-      <h1>state : {{this.$store.state}}</h1>
+      <b-form-input v-model="date" @change="getByDay" type="date"></b-form-input>
+      {{date}}
+      <h1>month</h1>
+      <b-form-input v-model="month" @change="getByMonth" type="month"></b-form-input>
+      {{month}}
+      <b-table striped hover :items="days"></b-table>
+      <b-table striped hover :items="array"></b-table>
     </div>
   </div>
 </template>
 <script>
+import { format } from "path";
 const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
   mounted: function() {
@@ -94,18 +99,22 @@ export default {
   data: function() {
     return {
       user_id: "",
-      role: ""
+      days: [],
+      months: [],
+      role: "",
+      date: "",
+      month: "",
+      array: []
     };
   },
   methods: {
     getDecoded: function() {
       let self = this;
       this.$axios.get("/users/decoded").then(function(res) {
-        console.log(res);
         self.user_id = res.data.decoded.user_id;
         self.role = res.data.decoded.user_role;
-        if(self.role==0){
-          self.$router.push("/")
+        if (self.role == 0) {
+          self.$router.push("/");
         }
       });
     },
@@ -113,6 +122,65 @@ export default {
       Cookie.remove("token");
       this.$store.commit("setToken", null);
       this.$router.push("/login");
+    },
+    getByDay() {
+      let self = this;
+      this.$axios
+        .get("/orders/get/by-day?date=" + this.date)
+        .then(function(res) {
+          console.log(res);
+          self.days = res.data.data.rows;
+        });
+    },
+    getByMonth() {
+      let self = this;
+      this.array = [];
+      this.$axios
+        .get("/orders/get/by-day?date=" + this.month)
+        .then(function(res) {
+          console.log(res);
+          self.months = res.data.data.rows;
+          self.handleMonth();
+        });
+    },
+    handleMonth() {
+      let self = this;
+      for (let i = 0; i < 31; i++) {
+        let money = 0;
+        if (i < 10) {
+          let text = this.month + "-0" + i;
+          this.$axios
+            .get("/orders/get/by-day?date=" + text)
+            .then(function(res) {
+              if (res.data.data.rows.length > 0) {
+                console.log("hello", res.data.data.rows);
+                res.data.data.rows.forEach(element => {
+                  money += parseInt(element.total_price);
+                });
+                self.array.push({
+                  day: res.data.data.rows[0].createdAt,
+                  money: money
+                });
+              }
+            });
+        } else {
+          let text = this.month + "-" + i;
+          this.$axios
+            .get("/orders/get/by-day?date=" + text)
+            .then(function(res) {
+              if (res.data.data.rows.length > 0) {
+                console.log("hello", res.data.data.rows);
+                res.data.data.rows.forEach(element => {
+                  money += parseInt(element.total_price);
+                });
+                self.array.push({
+                  day: res.data.data.rows[0].createdAt,
+                  money: money
+                });
+              }
+            });
+        }
+      }
     }
   }
 };

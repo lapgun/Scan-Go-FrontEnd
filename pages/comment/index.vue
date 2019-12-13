@@ -22,7 +22,7 @@
               <li class="active">
                 <a @click="$router.push('/user/home')">Home</a>
               </li>
-             <li>
+              <li>
                 <a @click="$router.push('/user/detail/'+user_id)">Profile</a>
               </li>
               <li>
@@ -52,6 +52,9 @@
           <div class="clear"></div>
         </div>
         <div class="divider"></div>
+        <div class="form-group">
+          <input type="text" v-model="search" class="form-control" placeholder="Search" />
+        </div>
         <ul class="nav menu" style="display:block">
           <li>
             <a @click="$router.push('/user/home')">Home</a>
