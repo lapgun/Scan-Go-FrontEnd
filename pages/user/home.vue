@@ -82,12 +82,12 @@
     </div>
     <div style class="col-sm-9 col-lg-10 sidebar">
       <h1 style="margin-bottom:50px">Xin chào : {{user_name}}</h1>
+      <br />
       <line-chart :data="arr"></line-chart>
-      <b-form-input v-model="date" @change="getByDay" type="date"></b-form-input>
-      {{month}}
+      <h5>Bản đồ Order trong tháng {{month}}</h5>
       <b-form-input v-model="month" @change="getByMonth" type="month"></b-form-input>
-      <b-table striped hover :items="days"></b-table>
       <b-table striped hover :items="arr"></b-table>
+      <b-table striped hover :items="months"></b-table>
     </div>
   </div>
 </template>
@@ -104,8 +104,6 @@ export default {
       role: "",
       user_name: "",
       month: "",
-      days: [],
-      date: "",
       months: [],
       chatData: [],
       arr: []
@@ -123,54 +121,26 @@ export default {
         }
       });
     },
-    getByDay() {
-      let self = this;
-      let total = 0;
-      this.$axios
-        .get("/orders/get/by-day?date=" + this.date)
-        .then(function(res) {
-          self.days = res.data.data.rows;
-          self.days.forEach(function(obj) {
-            total += parseInt(obj["total_price"]);
-          });
-          console.log("aaa", total);
-        });
-    },
     getByMonth() {
       let self = this;
-      let new_date = 0;
+      let total = 0;
       this.arr = [];
-      for (let i = 0; i < 32; i++) {
+      for (let i = 1; i < 32; i++) {
         let money = 0;
+        let new_date = "";
         if (i < 10) {
           new_date = this.month + "-0" + i;
-          this.$axios.get("/orders/get/by-day?date=" + new_date).then(res => {
-            if (res.data.data.rows.length > 0) {
-              res.data.data.rows.forEach(element => {
-                money += parseInt(element.total_price);
-              });
-              let text = res.data.data.rows[0].createdAt + "";
-              let day = text.split("T");
-              self.arr.push({
-                'day': money
-              });
-            }
-          });
         } else {
           new_date = this.month + "-" + i;
-          this.$axios.get("/orders/get/by-day?date=" + new_date).then(res => {
-            if (res.data.data.rows.length > 0) {
-              res.data.data.rows.forEach(element => {
-                money += parseInt(element.total_price);
-              });
-              let text = res.data.data.rows[0].createdAt + "";
-              let day = text.split("T");
-              self.arr.push({
-                'day': revenue
-              });
-            }
-          });
         }
+        this.$axios.get("/orders/get/by-day?date=" + new_date).then(res => {
+          if (res.data.data.rows.length > 0) {
+            res.data.data.rows.forEach(element => {
+              money += parseInt(element.total_price);
+            });
+            self.arr.push([new_date, money]);
+          }
+        });
       }
     },
     handleLogout() {

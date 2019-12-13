@@ -1,6 +1,6 @@
 <template>
   <div>
-    <line-chart :data="chartData"></line-chart>
+    
   </div>
 </template>
 

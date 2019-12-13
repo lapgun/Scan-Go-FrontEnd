@@ -51,7 +51,7 @@
                     :show-rating="false"
                     :increment="0.25"
                   ></star-rating>
-                  <h3>{{product.price}}</h3>
+                  <h3>{{product.price}} đ</h3>
                   <div>
                     <h4>Số lượng:</h4>
                     <div>
@@ -170,7 +170,7 @@
                         :show-rating="false"
                       ></star-rating>
                       <h5 style="margin:15px 0 15px 30px">{{comment.comment}}</h5>
-                      <h6 style="margin-left:30px">{{comment.createdAt}}</h6>
+                      <h6 style="margin-left:30px">{{day[0]}}</h6>
                       <div style="border:1px solid #bfbfbf; margin-top:20px"></div>
                     </div>
                   </div>
@@ -241,7 +241,7 @@ export default {
   mounted() {
     if (this.$store.state.token) {
       this.getUsers();
-    };
+    }
     this.getProducts();
     this.getById();
     this.getCommentProducts();
@@ -252,6 +252,7 @@ export default {
   data: function() {
     return {
       user_id: "",
+      day:[],
       comment: "",
       product: [],
       products: [],
@@ -386,7 +387,7 @@ export default {
           self.comments = res.data.data;
           self.pagination = res.data.pagination;
           let text = res.data.data[0].createdAt + "";
-           let day = text.split("T");
+           self.day = text.split("T");
         });
     },
     handleChangePage(currentPage) {
