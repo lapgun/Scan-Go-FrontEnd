@@ -115,7 +115,7 @@
         </div>
       </div>
       <!--/header-middle-->
-      <div class="header-bottom">
+      <div class="header-bottom" >
         <!--header-bottom-->
         <div class="container">
           <div class="row">
