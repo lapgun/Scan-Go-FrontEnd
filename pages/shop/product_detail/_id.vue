@@ -43,7 +43,9 @@
                   <img src="~assets/images/product-details/new.jpg" class="newarrival" alt />
                   <h2>{{product.name}}</h2>
                   <p>Web ID: 1089772</p>
+                  <p v-if="average == 0">Chưa có đánh giá</p>
                   <star-rating
+                    v-else
                     style="margin-top:-15px"
                     v-bind:star-size="20"
                     :read-only="true"
@@ -252,7 +254,7 @@ export default {
   data: function() {
     return {
       user_id: "",
-      day:[],
+      day: [],
       comment: "",
       product: [],
       products: [],
@@ -387,7 +389,7 @@ export default {
           self.comments = res.data.data;
           self.pagination = res.data.pagination;
           let text = res.data.data[0].createdAt + "";
-           self.day = text.split("T");
+          self.day = text.split("T");
         });
     },
     handleChangePage(currentPage) {

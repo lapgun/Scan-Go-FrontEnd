@@ -27,23 +27,26 @@
             <b-form-select v-model="order_status" :options="options" @change="getOrders"></b-form-select>
           </label>
         </div>
-
         <table class="table table-bordered">
           <thead>
             <tr>
               <th>STT//ID</th>
-              <th>Customer_id</th>
-              <th>Order_status</th>
-              <th>Total_price</th>
+              <th>Customer</th>
+              <th>Order Status</th>
+              <th>Total Price</th>
+              <th>CreatedAt</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(order , index) in orders" :key="index">
               <td>{{index+1}}//{{order.id}}</td>
-              <td>{{order.customer.name}}</td>
-              <td>{{order.order_status}}</td>
-              <td>{{order.total_price}}</td>
+              <td>{{order.user ? order.user.name : ""}}</td>
+              <td v-if="order.order_status == 0">Đang chờ xử lí</td>
+              <td v-if="order.order_status == 1">Đã thanh toán</td>
+              <td v-if="order.order_status == 2">Đã hủy đơn hàng</td>
+              <td>{{currency(order.total_price)}}</td>
+              <td>{{formatDate(order.createdAt)}}</td>
               <td>
                 <b-button variant="success" @click="handelConfirm(order.id)">Confirm</b-button>
                 <b-button @click="$router.push('/orders/detail/'+ order.id)">Detail</b-button>
@@ -181,6 +184,17 @@ export default {
       Cookie.remove("token");
       this.$store.commit("setToken", null);
       this.$router.push("/login");
+    },
+    currency(x) {
+      x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
+      return x;
+    },
+    formatDate(date) {
+      let text = date + "";
+      let test = text.split("T");
+      let day = test[0].split("-");
+      date = "Ngày " + day[2] + " tháng " + day[1] + " năm " + day[0];
+      return date;
     }
   }
 };

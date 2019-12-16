@@ -16,6 +16,7 @@
   </div>
 </template>
 <script>
+import { format } from "path";
 const Cookie = process.client ? require("js-cookie") : undefined;
 import adminNav from "~/components/adminNav.vue";
 import admin from "~/components/admin.vue";
@@ -35,7 +36,6 @@ export default {
       user_name: "",
       month: "",
       months: [],
-      chatData: [],
       arr: []
     };
   },
@@ -77,6 +77,53 @@ export default {
       Cookie.remove("token");
       this.$store.commit("setToken", null);
       this.$router.push("/login");
+    },
+    getByDay() {
+      let self = this;
+      this.$axios
+        .get("/orders/get/by-day?date=" + this.date)
+        .then(function(res) {
+          console.log(res);
+          self.days = res.data.data.rows;
+        });
+    },
+    handleMonth() {
+      let self = this;
+      for (let i = 0; i < 31; i++) {
+        let money = 0;
+        if (i < 10) {
+          let text = this.month + "-0" + i;
+          this.$axios
+            .get("/orders/get/by-day?date=" + text)
+            .then(function(res) {
+              if (res.data.data.rows.length > 0) {
+                res.data.data.rows.forEach(element => {
+                  money += parseInt(element.total_price);
+                });
+                self.array.push({
+                  day: res.data.data.rows[0].createdAt,
+                  money: money
+                });
+              }
+            });
+        } else {
+          let text = this.month + "-" + i;
+          this.$axios
+            .get("/orders/get/by-day?date=" + text)
+            .then(function(res) {
+              if (res.data.data.rows.length > 0) {
+                console.log("hello", res.data.data.rows);
+                res.data.data.rows.forEach(element => {
+                  money += parseInt(element.total_price);
+                });
+                self.array.push({
+                  day: res.data.data.rows[0].createdAt,
+                  money: money
+                });
+              }
+            });
+        }
+      }
     }
   }
 };

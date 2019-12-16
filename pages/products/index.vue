@@ -23,7 +23,7 @@
             <tr>
               <th>STT</th>
               <th>name</th>
-              <th>Categories Id</th>
+              <th>Category</th>
               <th>Price</th>
               <th>Order Times</th>
               <th>Image</th>
@@ -36,8 +36,8 @@
             <tr v-for="(task,index) in tasks" :key="index">
               <td>{{index+1}}</td>
               <td>{{task.name}}</td>
-              <td>{{task.categoriesId}}</td>
-              <td>{{task.price}}</td>
+              <td>{{task.categories ? task.categories.name : '' }}</td>
+              <td>{{currency(task.price)}}</td>
               <td>{{task.order_time}}</td>
               <td>
                 <img
@@ -117,6 +117,7 @@ export default {
     getTasks(){
       let self = this
       this.$axios.get("/products").then(function(res){
+        console.log(res)
         self.tasks = res.data.data
       })
     },
@@ -169,6 +170,10 @@ export default {
     handleChangePage(currentPage) {
       this.pagination.currentPage = currentPage;
       this.getTasks();
+    },
+    currency(x) {
+      x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
+      return x;
     }
   }
 };

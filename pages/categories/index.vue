@@ -32,10 +32,47 @@
             <tr v-for="(task,index) in tasks" :key="index">
               <td>{{index+1}}</td>
               <td>{{task.name}}</td>
-              <td>{{task.cat_parent}}</td>
+              <td v-if="task.cat_parent!=0">{{task.cat_parent_name}}</td>
+              <td v-else>
+                <b-button
+                  variant="success"
+                  v-b-toggle="'a-'+task.id"
+                  @click="getCatChild(task.id)"
+                >Show cat's child</b-button>
+              </td>
+              <b-collapse :id="'a-'+task.id">
+                <table class="table table-bordered">
+                  <thead>
+                    <th>Name</th>
+                    <th>Edit</th>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(child,key) in childs" :key="key">
+                      <td>{{child.name}}</td>
+                      <td>
+                        <b-button
+                          variant="info"
+                          @click="$router.push('/categories/details/'+child.id)"
+                        >Details</b-button>
+                        <b-button
+                          variant="warning"
+                          @click="$router.push('/categories/edit/'+child.id)"
+                        >Update</b-button>
+                        <b-button variant="danger" @click="delTasks(childs.id)">Delete</b-button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </b-collapse>
               <td>
-                <b-button @click="$router.push('/categories/details/'+task.id)">Details</b-button>
-                <b-button variant="info" @click="$router.push('/categories/edit/'+task.id)">Update</b-button>
+                <b-button
+                  variant="info"
+                  @click="$router.push('/categories/details/'+task.id)"
+                >Details</b-button>
+                <b-button
+                  variant="warning"
+                  @click="$router.push('/categories/edit/'+task.id)"
+                >Update</b-button>
                 <b-button variant="danger" @click="delTasks(task.id)">Delete</b-button>
               </td>
             </tr>
@@ -60,16 +97,43 @@ export default {
   },
   data() {
     return {
+      loaded: false,
+      user_id: "",
       tasks: [],
+      childs: [],
       search: "",
-      cancel: false
+      cancel: false,
+      cat_parent: "all",
+      options: [
+        { value: "all", text: "Tất cả" },
+        { value: "0", text: "Danh mục cha" },
+        { value: "1", text: "Danh mục con" }
+      ]
     };
   },
   methods: {
     getTasks() {
       let self = this;
-      this.$axios.get("/categories").then(function(res) {
-        self.tasks = res.data.data;
+      if (this.cat_parent == 0) {
+        this.$axios.get("/categories/cat_parent/" + 0).then(function(res) {
+          self.tasks = res.data.data.rows;
+        });
+      }
+      if (this.cat_parent == "all") {
+        this.$axios.get("/categories").then(function(res) {
+          self.tasks = res.data.data;
+        });
+      }
+      if (this.cat_parent == 1) {
+        this.$axios.get("/categories/cat_product").then(function(res) {
+          self.tasks = res.data.data.rows;
+        });
+      }
+    },
+    getCatChild(id) {
+      let self = this;
+      this.$axios.get("/categories/cat_parent/" + id).then(function(res) {
+        self.childs = res.data.data.rows;
       });
     },
     handleSearch() {
@@ -105,6 +169,20 @@ export default {
             );
           }
         });
+    },
+    getAdmins() {
+      let self = this;
+      this.$axios.get("/users/decoded").then(function(res) {
+        self.user_id = res.data.decoded.user_id;
+        if (res.data.decoded.user_role == 0) {
+          self.$router.push("/");
+        }
+      });
+    },
+    handleLogout() {
+      Cookie.remove("token");
+      this.$store.commit("setToken", null);
+      this.$router.push("/login");
     }
   }
 };

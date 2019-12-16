@@ -1,21 +1,25 @@
 <template>
-  <div>
-    
-  </div>
+  <div>{{arr}}</div>
 </template>
-
 <script>
-import facebookLogin from 'facebook-login-vuejs'
 export default {
-  name: 'app',
+  mounted() {
+    this.setRating();
+  },
   data() {
     return {
-     chartData :{
-       '2019-12-10' : 4,
-       '2019-12-11' : 1,
-       '2019-12-12' : 7,
-     }
+      arr: { index12: "value" }
+    };
+  },
+  methods: {
+    setRating() {
+      for (let i = 1; i < 11; i++) {
+        let value = "value" + i;
+        let index = 0;
+        index++;
+        this.arr.index = value;
+      }
     }
   }
-}
+};
 </script>
