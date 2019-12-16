@@ -85,8 +85,9 @@
           <thead>
             <tr>
               <th>Number</th>
-              <th>name</th>
-              <th>cat_parent</th>
+              <th>Name</th>
+              <th>Product</th>
+              <th>Cat_parent</th>
               <th>Edit</th>
             </tr>
           </thead>
@@ -94,6 +95,12 @@
             <tr v-for="(task,index) in tasks" :key="index">
               <td>{{index+1}}</td>
               <td>{{task.name}}</td>
+              <td>
+                <b-button
+                  variant="info"
+                  @click="$router.push('/categories/product/'+task.id)"
+                >Product</b-button>
+              </td>
               <td v-if="task.cat_parent!=0">{{task.cat_parent_name}}</td>
               <td v-else>
                 <b-button
@@ -102,6 +109,7 @@
                   @click="getCatChild(task.id)"
                 >Show cat's child</b-button>
               </td>
+
               <b-collapse :id="'a-'+task.id">
                 <table class="table table-bordered">
                   <thead>

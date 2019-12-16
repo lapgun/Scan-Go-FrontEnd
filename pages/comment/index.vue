@@ -97,7 +97,7 @@
               <td>{{comment.name}}</td>
               <td>{{comment.comment}}</td>
               <td>{{comment.rating}}</td>
-              <td>{{comment.productId}}</td>
+              <td>{{comment.product ? comment.product.name : ""}}</td>
               <td>
                 <b-button @click="handleDelete(comment.id)" variant="danger">Delete</b-button>
               </td>
@@ -143,6 +143,7 @@ export default {
             this.pagination.perPage
         )
         .then(function(res) {
+          console.log(res);
           self.comments = res.data.data;
           self.pagination = res.data.pagination;
         });
