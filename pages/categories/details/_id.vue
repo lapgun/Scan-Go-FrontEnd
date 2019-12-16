@@ -89,15 +89,15 @@
             <tr>
               <td>{{task.id}}</td>
               <td>{{task.name}}</td>
-              <td>{{task.cat_parent}}</td>
+              <td>{{task.cat_parent_name}}</td>
               <td>{{task.createdAt}}</td>
               <td>{{task.updatedAt}}</td>
               <td>
                 <b-button
                   class="btn btn-info"
-                  @click="$router.push('/categories/edit/'+tasks.id)"
+                  @click="$router.push('/categories/edit/'+task.id)"
                 >Update</b-button>
-                <b-button class="btn btn-info" variant="danger" @click="delTasks(tasks.id)">Delete</b-button>
+                <b-button class="btn btn-info" variant="danger" @click="delTasks(task.id)">Delete</b-button>
               </td>
             </tr>
           </tbody>
@@ -108,7 +108,7 @@
 </template>
 <script>
 export default {
-  head: { title: "Chi tiết thể loại"},
+  head: { title: "Chi tiết danh mục" },
   mounted() {
     this.getTasks();
   },

@@ -36,13 +36,7 @@
       v-model="form.detail"
       class="form-control"
       placeholder="Enter your product description"
-    ></vue-ckeditor>Oder time:
-    <input
-      v-model="form.order_time"
-      type="text"
-      class="form-control"
-      placeholder="Enter your product order_time"
-    />
+    ></vue-ckeditor>
     <br />
     <label>
       <button class="btn btn-info" @click="handleSubmit">Submit</button>
@@ -52,7 +46,7 @@
 
 <script>
 export default {
-  head: { title: "Sửa sản phẩm"},
+  head: { title: "Chỉnh sủa chi tiết sản phẩm" },
   mounted() {
     this.getDetail();
     this.getCatProduct();
@@ -65,8 +59,7 @@ export default {
         picture: "",
         price: "",
         description: "",
-        detail: "",
-        order_time: ""
+        detail: ""
       },
       options: [{ value: 0, text: "This is parent category " }]
     };
@@ -91,12 +84,12 @@ export default {
       });
     },
     handleSubmit() {
-      this.$swal.fire('Yes...', 'Cập nhật sản phẩm thành công!', 'success')
+      this.$swal.fire("Yes...", "Cập nhật sản phẩm thành công!", "success");
       let self = this;
       this.$axios
         .put("/products/" + this.form.id, this.form)
         .then(function(res) {
-            self.$router.push("/products");
+          self.$router.push("/products");
         });
     }
   }

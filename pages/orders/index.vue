@@ -84,42 +84,96 @@
       <div class="col-sm-9 col-lg-10 sidebar">
         <h1>Order</h1>
         <br />
-        <h4>Order theo ngày</h4>
-        <b-form-input
-          style="margin-bottom:30px;margin-top:30px"
-          v-model="date"
-          @change="getByDay"
-          type="date"
-        ></b-form-input>
-        <b-table striped hover :items="days"></b-table>
-        <h3 style="margin-bottom:50px" v-if="total">Tổng số tiền : {{total}} đ</h3>
-        <h4>Order theo tháng</h4>
-        <b-form-input v-model="month" @change="getByMonth" type="month"></b-form-input>
-        <b-table striped hover :items="months"></b-table>
-        <h3 style="margin-bottom:50px" v-if="money">Tổng số tiền : {{money}} đ</h3>
+        <div>
+          <h4>Order theo ngày</h4>
+          <b-form-input style="width:200px" v-model="date" @change="getByDay" type="date"></b-form-input>
+          <h4 v-if="total">Đơn hàng theo ngày</h4>
+          <table v-if="total" class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Customer</th>
+                <th>Order Status</th>
+                <th>Total Price</th>
+                <th>Created At</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(order , index) in days" :key="index">
+                <td>{{order.user ? order.user.name : ""}}</td>
+                <td v-if="order.order_status == 0">Đang chờ xử lí</td>
+                <td v-if="order.order_status == 1">Đã thanh toán</td>
+                <td v-if="order.order_status == 2">Đã hủy đơn hàng</td>
+                <td>{{currency(order.total_price)}}</td>
+                <td>{{formatDate(order.createdAt)}}</td>
+                <td>
+                  <b-button variant="success" @click="handelConfirm(order.id)">Confirm</b-button>
+                  <b-button @click="$router.push('/orders/detail/'+ order.id)">Detail</b-button>
+                  <b-button @click="handleCancel(order.id)" variant="danger">Cancel</b-button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <h3 style="margin-bottom:50px" v-if="total">Tổng số tiền : {{currency(total)}}</h3>
+        </div>
+        <div>
+          <h4>Order theo tháng</h4>
+          <b-form-input style="width:250px" v-model="month" @change="getByMonth" type="month"></b-form-input>
+          <h4 v-if="money">Đơn hàng trong tháng</h4>
+          <table v-if="money" class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Customer</th>
+                <th>Order Status</th>
+                <th>Total Price</th>
+                <th>Created At</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(order , index) in months" :key="index">
+                <td>{{order.user ? order.user.name : ""}}</td>
+                <td v-if="order.order_status == 0">Đang chờ xử lí</td>
+                <td v-if="order.order_status == 1">Đã thanh toán</td>
+                <td v-if="order.order_status == 2">Đã hủy đơn hàng</td>
+                <td>{{currency(order.total_price)}}</td>
+                <td>{{formatDate(order.createdAt)}}</td>
+                <td>
+                  <b-button variant="success" @click="handelConfirm(order.id)">Confirm</b-button>
+                  <b-button @click="$router.push('/orders/detail/'+ order.id)">Detail</b-button>
+                  <b-button @click="handleCancel(order.id)" variant="danger">Cancel</b-button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <h3 style="margin-bottom:50px" v-if="money">Tổng số tiền : {{currency(money)}}</h3>
+        </div>
         <div style="margin-top:50px; margin-bottom:30px">
           <h4 style="display:inline">Orders</h4>
           <label>
             <b-form-select v-model="order_status" :options="options" @change="getOrders"></b-form-select>
           </label>
         </div>
-
         <table class="table table-bordered">
           <thead>
             <tr>
               <th>STT//ID</th>
-              <th>Customer_id</th>
-              <th>Order_status</th>
-              <th>Total_price</th>
+              <th>Customer</th>
+              <th>Order Status</th>
+              <th>Total Price</th>
+              <th>CreatedAt</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(order , index) in orders" :key="index">
               <td>{{index+1}}//{{order.id}}</td>
-              <td>{{order.customerId}}</td>
-              <td>{{order.order_status}}</td>
-              <td>{{order.total_price}}</td>
+              <td>{{order.user ? order.user.name : ""}}</td>
+              <td v-if="order.order_status == 0">Đang chờ xử lí</td>
+              <td v-if="order.order_status == 1">Đã thanh toán</td>
+              <td v-if="order.order_status == 2">Đã hủy đơn hàng</td>
+              <td>{{currency(order.total_price)}}</td>
+              <td>{{formatDate(order.createdAt)}}</td>
               <td>
                 <b-button variant="success" @click="handelConfirm(order.id)">Confirm</b-button>
                 <b-button @click="$router.push('/orders/detail/'+ order.id)">Detail</b-button>
@@ -263,6 +317,17 @@ export default {
       Cookie.remove("token");
       this.$store.commit("setToken", null);
       this.$router.push("/login");
+    },
+    currency(x) {
+      x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
+      return x;
+    },
+    formatDate(date) {
+      let text = date + "";
+      let test = text.split("T");
+      let day = test[0].split("-");
+      date = "Ngày " + day[2] + " tháng " + day[1] + " năm " + day[0];
+      return date;
     }
   }
 };
