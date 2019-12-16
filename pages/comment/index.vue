@@ -80,28 +80,37 @@
         </ul>
       </div>
       <div class="col-sm-9 col-lg-10 sidebar" style="margin-top:50px">
-        <table class="table table-bordered">
+        <table id="my-table" class="table table-bordered">
           <thead>
             <tr>
               <th>STT</th>
               <th>Name</th>
               <th>Comment</th>
               <th>Rating</th>
-              <th>ParentId</th>
               <th>ProductId</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(comment , index) in comments" :key="index">
               <td>{{index+1}}</td>
-              <td>{{comment.user.name}}</td>
+              <td>{{comment.name}}</td>
               <td>{{comment.comment}}</td>
               <td>{{comment.rating}}</td>
-              <td>{{comment.parentId}}</td>
               <td>{{comment.productId}}</td>
+              <td>
+                <b-button @click="handleDelete(comment.id)" variant="danger">Delete</b-button>
+              </td>
             </tr>
           </tbody>
         </table>
+        <b-pagination
+          v-model="pagination.currentPage"
+          :total-rows="pagination.total"
+          :per-page="pagination.perPage"
+          aria-controls="my-table"
+          @change="handleChangePage"
+        ></b-pagination>
       </div>
     </div>
   </div>
@@ -109,15 +118,14 @@
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
-  head: { title: "Comment"},
+  head: { title: "Comment" },
   mounted() {
-    this.getSlides();
+    this.getComment();
   },
   data() {
     return {
       comments: [],
       search: "",
-      totalResult: 0,
       pagination: {
         currentPage: 1,
         perPage: 10
@@ -125,17 +133,35 @@ export default {
     };
   },
   methods: {
-    getSlides() {
+    getComment() {
       let self = this;
-      this.$axios.get("/comment").then(function(res) {
-        self.comments = res.data.rows;
+      this.$axios
+        .get(
+          "/comment?currentPage=" +
+            this.pagination.currentPage +
+            "&perPage=" +
+            this.pagination.perPage
+        )
+        .then(function(res) {
+          self.comments = res.data.data;
+          self.pagination = res.data.pagination;
+        });
+    },
+    handleDelete(id) {
+      let self = this;
+      this.$axios.delete("/comment/" + id).then(function(res) {
+        self.getComment();
       });
     },
     handleLogout() {
       Cookie.remove("token");
       this.$store.commit("setToken", null);
       this.$router.push("/login");
-    }, 
+    },
+    handleChangePage(currentPage) {
+      this.pagination.currentPage = currentPage;
+      this.getComment();
+    }
   }
 };
 </script>

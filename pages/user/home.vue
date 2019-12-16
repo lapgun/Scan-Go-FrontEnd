@@ -81,7 +81,7 @@
     <div style class="col-sm-9 col-lg-10 sidebar">
       <h1 style="margin-bottom:50px">Xin chào : {{user_name}}</h1>
       <br />
-      <line-chart :data="arr"></line-chart>
+      <!-- <line-chart :data="arr"></line-chart> -->
       <h5>Bản đồ Order trong tháng {{month}}</h5>
       <b-form-input v-model="month" @change="getByMonth" type="month"></b-form-input>
       <b-table striped hover :items="arr"></b-table>
