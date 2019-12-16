@@ -1,48 +1,17 @@
 <template>
   <div>
-    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#">
-            <span>Scan & Go</span>Admin
-          </a>
-          <li>
-            <ul class="nav menu" style="color:#30a5ff">
-              <li class="active">
-                <a @click="$router.push('/user/home')">Home</a>
-              </li>
-              <li>
-                <a @click="$router.push('/user/detail/'+user_id)">Profile</a>
-              </li>
-              <li>
-                <a @click="$router.push('/register')">Register</a>
-              </li>
-              <li>
-                <a @click="handleLogout">Logout</a>
-              </li>
-            </ul>
-          </li>
-        </div>
-      </div>
-    </nav>
+    <adminNav />
     <div>
-      <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar" style="margin-top:-30px">
-        <div class="profile-sidebar">
-          <div class="profile-userpic">
-            <img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt />
-          </div>
-          <div class="profile-usertitle">
-            <div class="profile-usertitle-name">Admin</div>
-            <div class="profile-usertitle-status">
-              <span class="indicator label-success"></span>Online
-            </div>
-          </div>
-          <div class="clear"></div>
-        </div>
-        <div class="divider"></div>
-
-        <div class="form-group">
+      <admin />
+      <div class="col-sm-8 col-lg-10 sidebar" style="margin-top:50px">
+        <b-button
+          style="display:inline"
+          variant="success"
+          @click="$router.push('/categories/create')"
+        >Create new task</b-button>
+        <div style="display:inline" class="form-group">
           <input
+            style="width:30%; display:inherit;margin-bottom:50px; float:right"
             type="text"
             @change="handleSearch"
             v-model="search"
@@ -50,54 +19,20 @@
             placeholder="Search"
           />
         </div>
-
-        <ul class="nav menu" style="display:block">
-          <li>
-            <a @click="$router.push('/user/home')">Home</a>
-          </li>
-          <li class="active">
-            <a @click="$router.push('/categories')">Categories</a>
-          </li>
-          <li>
-            <a @click="$router.push('/products')">Products</a>
-          </li>
-          <li>
-            <a @click="$router.push('/orders')">Orders</a>
-          </li>
-          <li>
-            <a @click="$router.push('/slide')">Slide</a>
-          </li>
-          <li>
-            <a @click="$router.push('/comment')">Comment</a>
-          </li>
-          <li>
-            <a @click="$router.push('/slide')">Slide</a>
-          </li>
-          <li>
-            <a @click="$router.push('/user')">Users</a>
-          </li>
-        </ul>
-      </div>
-      <div class="col-sm-8 col-lg-10 sidebar" style="margin-top:50px">
-        <b-button variant="success" @click="$router.push('/categories/create')">Create new task</b-button>
         <table id="my-table" class="table table-bordered">
           <thead>
             <tr>
-              <th>Number || ID</th>
+              <th>STT</th>
               <th>name</th>
-              <th>cat_parent</th>
-              <th>Created_at</th>
-              <th>Updated_at</th>
+              <th style="width:300px">cat_parent</th>
               <th>Edit</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(task,index) in tasks" :key="index">
-              <td>{{index+1}} || {{task.id}}</td>
+              <td>{{index+1}}</td>
               <td>{{task.name}}</td>
               <td>{{task.cat_parent}}</td>
-              <td>{{task.createdAt}}</td>
-              <td>{{task.updatedAt}}</td>
               <td>
                 <b-button @click="$router.push('/categories/details/'+task.id)">Details</b-button>
                 <b-button variant="info" @click="$router.push('/categories/edit/'+task.id)">Update</b-button>
@@ -112,15 +47,19 @@
 </template>
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
+import adminNav from "~/components/adminNav.vue";
+import admin from "~/components/admin.vue";
 export default {
-  head: { title: "Thể loại"},
-  mounted () {
-    this.getAdmins();
+  head: { title: "Thể loại" },
+  components: {
+    adminNav,
+    admin
+  },
+  mounted() {
     this.getTasks();
   },
   data() {
     return {
-      user_id: "",
       tasks: [],
       search: "",
       cancel: false
@@ -142,7 +81,7 @@ export default {
           self.tasks = res.data.data;
         });
     },
-    delTasks (id) {
+    delTasks(id) {
       this.$swal
         .fire({
           title: "Bạn chắc chắn muốm xóa?",
@@ -166,17 +105,6 @@ export default {
             );
           }
         });
-    },
-    getAdmins() {
-      let self = this;
-      this.$axios.get("/users/decoded").then(function(res) {
-        self.user_id = res.data.decoded.user_id;
-      });
-    },
-    handleLogout() {
-      Cookie.remove("token");
-      this.$store.commit("setToken", null);
-      this.$router.push("/login");
     }
   }
 };

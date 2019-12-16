@@ -38,7 +38,7 @@
                           style="margin-top:15px ;display:inline"
                           type="button"
                           class="btn btn-info"
-                          @click="$router.push('/user')"
+                          @click="$router.push('/user/home')"
                         >Back</button>
                       </span>
                     </div>
@@ -68,7 +68,6 @@ export default {
     getUsers() {
       let self = this;
       this.$axios.get("/users/detail/" + this.$route.params.id).then(function(res) {
-        console.log(res)
         self.users = res.data.data;
       });
     }
