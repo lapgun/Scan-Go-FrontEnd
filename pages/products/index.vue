@@ -12,10 +12,7 @@
                 <a @click="$router.push('/user/home')">Home</a>
               </li>
               <li>
-                <a @click="$router.push('/user/detail/'+user_id)">Admin</a>
-              </li>
-              <li>
-                <a @click="$router.push('/user/edit/'+user_id)">Profile</a>
+                <a @click="$router.push('/user/detail/'+user_id)">Profile</a>
               </li>
               <li>
                 <a @click="$router.push('/register')">Register</a>
@@ -70,7 +67,7 @@
           <li>
             <a @click="$router.push('/slide')">Slide</a>
           </li>
-           <li>
+          <li>
             <a @click="$router.push('/comment')">Comment</a>
           </li>
           <li>
@@ -78,21 +75,19 @@
           </li>
         </ul>
       </div>
-      <div class="col-sm-8 col-lg-10 sidebar">
+      <div class="col-sm-8 col-lg-10 sidebar" style="margin-top:50px">
         <b-button variant="success" @click="$router.push('/products/create')">Create new task</b-button>
-        <div style="margin-left:1300px">
           <label>
-            Sắp xếp theo
             <b-form-select v-model="order_by" :options="order" @change="getProductsByOrder()"></b-form-select>
           </label>
-        </div>
         <table id="my-table" class="table table-bordered">
           <thead>
             <tr>
-              <th>Number</th>
+              <th>Number // Id</th>
               <th>name</th>
               <th>Categories Id</th>
               <th>Price</th>
+              <th>Order Times</th>
               <th>Image</th>
               <th>Detail</th>
               <th>Description</th>
@@ -101,10 +96,11 @@
           </thead>
           <tbody>
             <tr v-for="(task,index) in tasks" :key="index">
-              <td>{{index+1}}//{{task.id}}</td>
+              <td>{{index+1}} // {{task.id}}</td>
               <td>{{task.name}}</td>
               <td>{{task.categoriesId}}</td>
               <td>{{task.price}}</td>
+              <td>{{task.order_time}}</td>
               <td>
                 <img
                   style="width:50px; height:50px"
@@ -138,7 +134,7 @@
           :total-rows="pagination.total"
           :per-page="pagination.perPage"
           aria-controls="my-table"
-          @change="getProductsByOrder"
+          @change="handleChangePage"
         ></b-pagination>
       </div>
     </div>
@@ -146,15 +142,13 @@
 </template>
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
-import InfiniteLoading from "vue-infinite-loading";
 export default {
-  mounted: function() {
+  head: { title: "Sản phẩm"},
+  mounted() {
     this.getTasks();
   },
-  components: {
-    InfiniteLoading
-  },
-  data: function() {
+
+  data() {
     return {
       tasks: [],
       search: "",
@@ -167,29 +161,18 @@ export default {
         { value: ["price", "ASC"], text: "Giá tiền tăng dần" },
         { value: ["price", "DESC"], text: "Giá tiền giảm dần" },
         { value: ["id", "DESC"], text: "Mới nhất" },
-        { value: ["id", "ASC"], text: "Cũ nhất" }
+        { value: ["id", "ASC"], text: "Cũ nhất" },
+        { value: ["order_time", "DESC"], text: "Đặt hàng nhiều nhất" }
       ],
       pagination: {
         currentPage: 1,
         perPage: 10,
         totalPage: ""
-      }
+      },
+      cancel: false
     };
   },
   methods: {
-    infiniteHandler($state) {
-      setTimeout(() => {
-        this.pagination.currentPage++;
-        if (this.pagination.currentPage <= this.pagination.totalPage) {
-          this.getTasks();
-          setTimeout(() => {
-            $state.loaded();
-          }, 1000);
-        } else {
-          console.log("no more data");
-        }
-      }, 1000);
-    },
     getTasks() {
       let self = this;
       this.$axios
@@ -201,9 +184,8 @@ export default {
           this.order_by
         )
         .then(function(res) {
-          let temp = res.data.data;
-          self.tasks = self.tasks.concat(temp);
-          self.pagination.totalPage = res.data.pagination.totalPage;
+          self.tasks = res.data.data;
+          self.pagination = res.data.pagination;
         });
     },
     getProductsByOrder() {
@@ -212,7 +194,7 @@ export default {
       self.pagination.currentPage = 1;
       this.getTasks();
     },
-    delTasks: function(id) {
+    delTasks(id) {
       let self = this;
       this.$axios.delete("/products/" + id).then(function(res) {
         self.getTasks();
@@ -227,17 +209,40 @@ export default {
           self.tasks = res.data.data;
         });
     },
-    handleLogout: function() {
+    handleLogout() {
       Cookie.remove("token");
       localStorage.removeItem("cart");
       this.$store.commit("setToken", null);
       this.$router.push("/login");
     },
-    delTasks: function(id) {
-      let self = this;
-      this.$axios.delete("/products/" + id).then(function(res) {
-        self.getTasks();
-      });
+    delTasks(id) {
+      this.$swal
+        .fire({
+          title: "Bạn chắc chắn muốm xóa?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, delete it!",
+          cancelButtonText: "No, keep it"
+        })
+        .then(result => {
+          if (result.value) {
+            this.$swal.fire("Xóa!", "Bạn xóa sản phẩm thành công!.", "success");
+            let self = this;
+            this.$axios.delete("/products/" + id).then(function(res) {
+              self.getTasks();
+            });
+          } else if (result.dismiss === this.$swal.DismissReason.cancel) {
+            this.$swal.fire(
+              "Cancelled",
+              "Your imaginary file is safe :)",
+              "error"
+            );
+          }
+        });
+    },
+    handleChangePage(currentPage) {
+      this.pagination.currentPage = currentPage;
+      this.getTasks();
     }
   }
 };

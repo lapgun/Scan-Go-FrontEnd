@@ -8,10 +8,11 @@
 </template>
 <script>
 export default {
-  mounted: function() {
+  head: { title: "Sửa slide"},
+  mounted() {
     this.getOrders();
   },
-  data: function() {
+  data() {
     return {
       form: {
         customerId: "",
@@ -21,14 +22,15 @@ export default {
     };
   },
   methods: {
-    getOrders: function() {
+    getOrders() {
       let self = this;
       this.$axios.get("/orders/" + this.$route.params.id).then(function(res) {
         console.log(res);
         self.form = res.data;
       });
     },
-    handleCreate: function() {
+    handleCreate() {
+      this.$swal.fire('Yes...', 'Cập nhật thành công!', 'success')
       let self = this;
       this.$axios.put("/orders/" + this.form.id, this.form).then(function(res) {
         console.log(res);

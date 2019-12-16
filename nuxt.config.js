@@ -4,10 +4,10 @@ export default {
    ** Headers of the page
    */
   head: {
-    title: process.env.npm_package_name || "",
+    title: "Scan And Go",
     meta: [
-      {charset: "utf-8"},
-      {name: "viewport", content: "width=device-width, initial-scale=1"},
+      { charset: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
       {
         hid: "description",
         name: "description",
@@ -15,7 +15,7 @@ export default {
       }
     ],
 
-    link: [{rel: "icon", type: "image/x-icon", href: "/favicon.ico"}],
+    link: [{ rel: "icon", type: "image/x-icon", href: "/browser.png" }],
     script: [{
       src: [
         "~/assets/js/contact.js",
@@ -45,11 +45,11 @@ export default {
   /*
    ** Customize the progress-bar color
    */
-  loading: {color: "#fff"},
+  loading: { color: "#fff" },
   /*
 
-   ** Global CSS
-   */
+     ** Global CSS
+     */
   css: [
     "~/assets/css/style.css",
     "~/assets/css/all.min.css",
@@ -57,7 +57,7 @@ export default {
     "~/assets/css/animate.css",
     "~/assets/css/main.css",
     "~/assets/css/price-range.css",
-    "~/assets/css/responsive.css",
+    "~/assets/css/responsive.css"
   ],
   /*
    ** Plugins to load before mounting the App
@@ -69,26 +69,20 @@ export default {
       src: "~/plugins/vue-ckeditor5.js",
       mode: "client"
     },
-    {
-      src: "~/plugins/paypal.js",
-      ssr: false
-    },
-    {
-      src: "~/plugins/vue-socket",
-      mode: "client"
-    },
+    { src: "~/plugins/paypal.js", ssr: false },
+    { src: "~/plugins/vue-socket", mode: "client" },
     {
       src: "~/plugins/star-rating.js",
       mode: "client"
     },
     {
-      src: "~/plugins/alert.js",
+      src: "~/plugins/vue-flash.js",
       mode: "client"
     },
     {
-      src: "~/plugins/vue-flash.js",
+      src: "~/plugins/sweetalert2.js",
       mode: "client"
-    }
+    },
   ],
 
   /*
@@ -138,7 +132,6 @@ export default {
     /*
      ** Build configuration
      */
-    extend(config, ctx) {
-    }
+    extend(config, ctx) {}
   }
 };

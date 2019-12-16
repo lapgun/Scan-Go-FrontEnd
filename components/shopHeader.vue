@@ -123,16 +123,16 @@
               <div class="mainmenu pull-left">
                 <ul class="nav navbar-nav collapse navbar-collapse">
                   <li>
-                    <a @click="$router.push('/')" class="active">Trang chủ</a>
+                    <a href="#" @click="$router.push('/')" class="active">Trang chủ</a>
                   </li>
                   <li>
-                    <a @click="$router.push('/shop/products')">Sản Phẩm</a>
+                    <a href="#" @click="$router.push('/shop/products')">Sản Phẩm</a>
                   </li>
                   <li>
-                    <a @click="$router.push('/shop/blog')">Blog</a>
+                    <a href="#" @click="$router.push('/shop/blog')">Blog</a>
                   </li>
                   <li>
-                    <a @click="$router.push('/shop/contact')">Contact</a>
+                    <a href="#" @click="$router.push('/shop/contact')">Contact</a>
                   </li>
                 </ul>
               </div>
@@ -158,9 +158,6 @@
                             class="d-block font-weight-bold"
                             style="margin-top:80px"
                           >Chưa có sản phẩm</span>
-                          <span class="btn btn-icon btn-soft-primary rounded-circle mb-3">
-                            <span class="fas fa-shopping-basket btn-icon__inner"></span>
-                          </span>
                         </div>
                       </template>
                     </b-dropdown-item>
@@ -186,9 +183,6 @@
                           <span style="font-size:20px">Tạm tính</span>
                           <span style="float:right">{{total}} đ</span>
                         </div>
-                        <div
-                          style="font-size:12px; margin-top:10px"
-                        >(Phí vận chuyển và thuế sẽ được tính lúc thanh toán.)</div>
                         <div
                           style="border: 1px solid #c1bbbb ; margin-top:15px; margin-bottom:15px"
                         ></div>
@@ -266,7 +260,9 @@ export default {
       this.$router.push("/");
     }
     this.getSlides();
-    this.totalPrice();
+    setTimeout(() => {
+      this.totalPrice();
+    }, 1000);
   },
   data() {
     return {
@@ -298,7 +294,7 @@ export default {
   methods: {
     getUsers() {
       let self = this;
-      this.$axios.get("/users").then(function(res) {
+      this.$axios.get("/users/decoded").then(function(res) {
         self.user_id = res.data.decoded.user_id;
         self.user_name = res.data.decoded.user_name;
         self.users = res.data.data;
@@ -325,7 +321,7 @@ export default {
     totalPrice() {
       let total = 0;
       for (let i = 0; i < this.cart.length; i++) {
-        total += this.cart[i].price * this.cart[i].order_time;
+        total += this.cart[i].price * this.cart[i].quantity;
         this.total = total;
       }
     },
@@ -348,7 +344,8 @@ export default {
 .cart_dropdown:hover {
   background: #fff;
 }
-.cart_checkout_1 , .cart_checkout_2 {
+.cart_checkout_1,
+.cart_checkout_2 {
   border: 1px solid #c1bbbb;
   padding: 15px 15px;
   width: 100px;
@@ -359,6 +356,6 @@ export default {
   float: right;
 }
 .cart_checkout_2 {
-  margin-left: 40px
+  margin-left: 40px;
 }
 </style>

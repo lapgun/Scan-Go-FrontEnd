@@ -52,10 +52,11 @@
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
-  mounted: function() {
+  head: { title: "Sửa user"},
+  mounted() {
     this.getUsers();
   },
-  data: function() {
+  data() {
     return {
       form: {
         id: "",
@@ -67,14 +68,15 @@ export default {
     };
   },
   methods: {
-    getUsers: function() {
+    getUsers() {
       let self = this;
-      this.$axios.get("/users/" + this.$route.params.id).then(function(res) {
+      this.$axios.get("/users/detail/" + this.$route.params.id).then(function(res) {
         self.form = res.data.data;
         self.form.userId = res.data.decoded.user_id;
       });
     },
-    handelSubmit: function() {
+    handelSubmit() {
+      this.$swal.fire('Yes...', 'Cập nhật user thành công!', 'success')
       let self = this;
       this.$axios
         .put("/users/" + this.form.id, this.form)

@@ -22,11 +22,8 @@
               <li class="active">
                 <a @click="$router.push('/user/home')">Home</a>
               </li>
-              <li>
-                <a @click="$router.push('/user/detail/'+user_id)">Admin</a>
-              </li>
-              <li>
-                <a @click="$router.push('/user/edit/'+user_id)">Profile</a>
+             <li>
+                <a @click="$router.push('/user/detail/'+user_id)">Profile</a>
               </li>
               <li>
                 <a @click="$router.push('/register')">Register</a>
@@ -79,14 +76,14 @@
           </li>
         </ul>
       </div>
-      <div class="col-sm-9 col-lg-10 sidebar">
+      <div class="col-sm-9 col-lg-10 sidebar" style="margin-top:50px">
         <table class="table table-bordered">
           <thead>
             <tr>
               <th>STT</th>
               <th>Name</th>
               <th>Comment</th>
-              <th>Rate</th>
+              <th>Rating</th>
               <th>ParentId</th>
               <th>ProductId</th>
             </tr>
@@ -94,9 +91,9 @@
           <tbody>
             <tr v-for="(comment , index) in comments" :key="index">
               <td>{{index+1}}</td>
-              <td>{{comment.name}}</td>
+              <td>{{comment.user.name}}</td>
               <td>{{comment.comment}}</td>
-              <td>{{comment.rate}}</td>
+              <td>{{comment.rating}}</td>
               <td>{{comment.parentId}}</td>
               <td>{{comment.productId}}</td>
             </tr>
@@ -107,11 +104,13 @@
   </div>
 </template>
 <script>
+const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
-  mounted: function() {
+  head: { title: "Comment"},
+  mounted() {
     this.getSlides();
   },
-  data: function() {
+  data() {
     return {
       comments: [],
       search: "",
@@ -126,15 +125,15 @@ export default {
     getSlides() {
       let self = this;
       this.$axios.get("/comment").then(function(res) {
-        console.log(res);
-        self.comments = res.data.data;
+        console.log(res)
+        self.comments = res.data.rows;
       });
     },
     handleLogout() {
       Cookie.remove("token");
       this.$store.commit("setToken", null);
       this.$router.push("/login");
-    }
+    }, 
   }
 };
 </script>

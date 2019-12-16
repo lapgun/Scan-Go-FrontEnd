@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!--    <shopHeader />-->
+    <shopHeader/>
     <FlashMessage :position="'right bottom'"/>
     <!-- content -->
     <div class="container">
@@ -70,56 +70,57 @@
     </div>
     <!-- end content -->
     <shopFooter/>
+    <chatShop/>
   </div>
 </template>
 <script>
     import shopFooter from "~/components/shopFooter.vue";
+    import shopHeader from "~/components/shopHeader.vue";
     import shopUser from "~/components/shopUser.vue";
-    // import shopHeader from "~/component/shopHeader.vue"
+    import chatShop from "~/components/chatShop.vue";
+
     export default {
+        head: {title: "Thay đổi mật khẩu"},
         components: {
-            // shopHeader,
+            shopHeader,
             shopFooter,
             shopUser,
-
+            chatShop
         },
-        mounted: function () {
+        mounted() {
             this.getUsers();
         },
-        data: function () {
+        data() {
             return {
                 users: {
-                    oldPassword: '',
-                    newPassword: '',
-                    confirmPassword: ''
-                },
-
+                    oldPassword: "",
+                    newPassword: "",
+                    confirmPassword: ""
+                }
             };
         },
         methods: {
-            getUsers: function () {
+            getUsers() {
                 let self = this;
-                this.$axios.get("/users/" + this.$route.params.id).then(function (res) {
+                this.$axios.get("/users/detail/" + this.$route.params.id).then(function (res) {
                     self.users = res.data.data;
                 });
             },
             handelSubmit() {
                 let self = this;
                 if (this.users.newPassword == this.users.confirmPassword) {
-                    this.$axios.put("/users/changePassword/" + this.users.id, this.users).then(function (res) {
-                        self.flashMessage.success({
-                            title: 'Success',
-                            message: 'Update Success'
+                    this.$axios
+                        .put("/users/changePassword/" + this.users.id, this.users)
+                        .then(function (res) {
+                            alert("cập nhật thông tin thành công");
+                            self.$router.push('/');
                         });
-                        self.users = '';
-                    });
                 } else
                     return self.flashMessage.error({
-                        title: 'Error',
-                        message: 'password fail'
-                    })
-            },
+                        title: "Error",
+                        message: "password fail"
+                    });
+            }
         }
     }
-
 </script>

@@ -23,10 +23,7 @@
                 <a @click="$router.push('/user/home')">Home</a>
               </li>
               <li>
-                <a @click="$router.push('/user/detail/'+user_id)">Admin</a>
-              </li>
-              <li>
-                <a @click="$router.push('/user/edit/'+user_id)">Profile</a>
+                <a @click="$router.push('/user/detail/'+user_id)">Profile</a>
               </li>
               <li>
                 <a @click="$router.push('/register')">Register</a>
@@ -85,11 +82,16 @@
         </ul>
       </div>
       <div class="col-sm-9 col-lg-10 sidebar">
+        <div style="width:30%; margin-bottom:30px">
+          <label></label>
+          <b-form-select v-model="selected" :options="options" @change="getUsers"></b-form-select>
+        </div>
         <table class="table table-bordered">
           <thead>
             <tr>
               <th>id</th>
               <th>Name</th>
+              <th>Role</th>
               <th>Email</th>
               <th>Address</th>
               <th>Action</th>
@@ -99,17 +101,26 @@
             <tr v-for="(user, index) in users" :key="index">
               <td>{{user.id}}</td>
               <td>{{user.name}}</td>
+              <td>
+                {{user.role}}
+                <b-button
+                  v-if="user.role == 0"
+                  variant="warning"
+                  @click="admin(user.id,user.role)"
+                >Admin</b-button>
+                <b-button
+                  v-if="user.role == 1"
+                  variant="warning"
+                  @click="admin(user.id,user.role)"
+                >Is not an admin?</b-button>
+              </td>
               <td>{{user.email}}</td>
               <td>{{user.address}}</td>
               <td>
-                <button
-                  class="btn btn-danger"
-                  v-show="user_id == user.id "
-                  @click="handelDelete(user.id)"
-                >Delete</button>
+                <button class="btn btn-danger" @click="handelDelete(user.id)">Delete</button>
                 <button
                   class="btn btn-secondary"
-                  @click="$router.push('/user/detail/'+user_id)"
+                  @click="$router.push('/user/detail/'+user.id)"
                 >Detail</button>
               </td>
             </tr>
@@ -119,10 +130,11 @@
     </div>
   </div>
 </template>
+
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
-  middleware: "authenticated",
+  head: { title:'User'},
   mounted: function() {
     this.getUsers();
   },
@@ -130,14 +142,24 @@ export default {
     return {
       users: [],
       user_id: "",
-      search: ""
+      search: "",
+      selected: "0",
+      options: [
+        {
+          value: "1",
+          text: "Admin"
+        },
+        {
+          value: "0",
+          text: "Customer"
+        }
+      ]
     };
   },
   methods: {
     getUsers: function() {
       let self = this;
-      this.$axios.get("/users").then(function(res) {
-        console.log("dfgf", res);
+      this.$axios.get("/users/" + this.selected).then(function(res) {
         self.user_id = res.data.decoded.user_id;
         self.users = res.data.data;
       });
@@ -152,19 +174,34 @@ export default {
     },
     handelDelete(id) {
       let self = this;
-      this.$axios.delete("/users/" + id).then(function(res) {
-        if (res.data.error) {
-          alert(res.data.message);
-        } else {
-          alert(res.data.message);
-          self.getUsers();
-        }
-      });
+      if (confirm("Are you sure?")) {
+        this.$axios.delete("/users/" + id).then(function(res) {
+          if (res.data.error) {
+            alert(res.data.message);
+          } else {
+            alert(res.data.message);
+            self.getUsers();
+          }
+        });
+      }
     },
     handleLogout: function() {
       Cookie.remove("token");
       this.$store.commit("setToken", null);
       this.$router.push("/login");
+    },
+    admin(id, role) {
+      let self = this;
+      this.$axios
+        .put("/users/admin/" + id, {
+          role: role
+        })
+        .then(function(res) {
+          if (res.data.error) {
+            alert(res.data.message);
+          }
+          self.getUsers();
+        });
     }
   }
 };

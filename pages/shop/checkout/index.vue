@@ -48,11 +48,11 @@
                 </td>
                 <td class="cart_quantity">
                   <div class="cart_quantity_button">
-                    <p>{{item.order_time}}</p>
+                    <p>{{item.quantity}}</p>
                   </div>
                 </td>
                 <td class="cart_total">
-                  <p class="cart_total_price">{{currency(item.price * item.order_time)}}</p>
+                  <p class="cart_total_price">{{currency(item.price * item.quantity)}}</p>
                 </td>
               </tr>
               <tr>
@@ -93,14 +93,17 @@
         </div>
       </div>
     </section>
-    <shopFooter></shopFooter>
+    <shopFooter />
+    <chatShop />
   </div>
 </template>
 <script>
 const Cookies = process.client ? require("js-cookie") : undefined;
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
+import chatShop from "~/components/chatShop.vue";
 export default {
+  head: { title: "Thanh toán" },
   created() {
     if (process.browser) {
       if (localStorage.getItem("cart")) {
@@ -129,13 +132,12 @@ export default {
   },
   components: {
     shopHeader,
-    shopFooter
+    shopFooter,
+    chatShop
   },
   mounted() {
     this.totalPrice();
     this.getUsers();
-    this.updateOrderTime();
-    console.log(this.cart);
     const script = document.createElement("script");
     script.src =
       "https://www.paypal.com/sdk/js?client-id=AfNZOlnY_KmQuNqPDXQp7ZxW5YKIn1C0jLk79D2HCkaTpU0W6g13y0G_RMI2573ePjvsN_MU9eSXHVLG";
@@ -149,7 +151,7 @@ export default {
     },
     getUsers() {
       let self = this;
-      this.$axios.get("/users").then(function(res) {
+      this.$axios.get("/users/decoded").then(function(res) {
         self.user_id = res.data.decoded.user_id;
         self.user_name = res.data.decoded.user_name;
         self.user_email = res.data.decoded.user_email;
@@ -158,7 +160,7 @@ export default {
     totalPrice() {
       let total = 0;
       for (let i = 0; i < this.cart.length; i++) {
-        total += this.cart[i].price * this.cart[i].order_time;
+        total += this.cart[i].price * this.cart[i].quantity;
         this.total = total;
       }
     },
@@ -173,6 +175,7 @@ export default {
         .then(function(res) {
           console.log(res);
         });
+      this.updateOrderTime();
       alert("Đã thanh toán thành công");
       self.$router.push("/");
       localStorage.removeItem("cart");
@@ -180,16 +183,14 @@ export default {
     },
     updateOrderTime() {
       this.cart.forEach(element => {
-        this.myItems.push({
-          name: element.name,
-          description: element.detail,
-          quantity: element.order_time,
-          price: element.price,
-          currency: "USD"
-        });
+        this.$axios
+          .put("/products/" + element.id, { quantity: element.quantity })
+          .then(function(res) {
+            console.log("update order time")
+          });
       });
     },
-    setLoaded: function() {
+    setLoaded() {
       this.loaded = true;
       window.paypal
         .Buttons({
@@ -202,9 +203,9 @@ export default {
                     currency_code: "USD",
                     value: this.total
                   }
-                  // items: this.myItems
                 }
-              ]
+              ],
+              items: this.myItems
             });
           },
           onApprove: async (data, actions) => {

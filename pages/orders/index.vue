@@ -23,10 +23,7 @@
                 <a @click="$router.push('/user/home')">Home</a>
               </li>
               <li>
-                <a @click="$router.push('/user/detail/'+user_id)">Admin</a>
-              </li>
-              <li>
-                <a @click="$router.push('/user/edit/'+user_id)">Profile</a>
+                <a @click="$router.push('/user/detail/'+user_id)">Profile</a>
               </li>
               <li>
                 <a @click="$router.push('/register')">Register</a>
@@ -55,16 +52,11 @@
           <div class="clear"></div>
         </div>
         <div class="divider"></div>
-       
-          <div class="form-group">
-            <input
-              type="text"
-              v-model="search"
-              class="form-control"
-              placeholder="Search"
-            />
-          </div>
-      
+
+        <div class="form-group">
+          <input type="text" v-model="search" class="form-control" placeholder="Search" />
+        </div>
+
         <ul class="nav menu" style="display:block">
           <li>
             <a @click="$router.push('/user/home')">Home</a>
@@ -81,7 +73,7 @@
           <li>
             <a @click="$router.push('/slide')">Slide</a>
           </li>
-           <li>
+          <li>
             <a @click="$router.push('/comment')">Comment</a>
           </li>
           <li>
@@ -90,22 +82,30 @@
         </ul>
       </div>
       <div class="col-sm-9 col-lg-10 sidebar">
-        <h3>Orders Processing</h3>
+        <div style="margin-top:50px; margin-bottom:30px">
+          <h4 style="display:inline">Orders</h4>
+        <label>
+          <b-form-select v-model="order_status" :options="options" @change="getOrders"></b-form-select>
+        </label>
+        </div>
+
         <table class="table table-bordered">
           <thead>
             <tr>
-              <th>STT//ID</th>
-              <th>Customer_id</th>
-              <th>Order_status</th>
-              <th>Total_price</th>
+              <th>STT</th>
+              <th>Customer Name</th>
+              <th>Order Status</th>
+              <th>Total Price</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(order , index) in orders" :key="index">
-              <td>{{index+1}}//{{order.id}}</td>
-              <td>{{order.customerId}}</td>
-              <td>{{order.order_status}}</td>
+              <td>{{index+1}}</td>
+              <td>{{order.user.name}}</td>
+              <td v-if="order.order_status == 0">Đang chờ xử lí</td>
+              <td v-if="order.order_status == 1">Đã thanh toán</td>
+              <td v-if="order.order_status == 2">Đã hủy đơn hàng</td>
               <td>{{order.total_price}}</td>
               <td>
                 <b-button variant="success" @click="handelConfirm(order.id)">Confirm</b-button>
@@ -147,20 +147,22 @@ export default {
   },
   data: function() {
     return {
-      orders: {
-        index: "",
-        customerId: "",
-        order_status: "",
-        total_price: ""
-      },
+      orders: [],
       search: "",
       totalResult: 0,
       pagination: {
         currentPage: 1,
-        perPage: 3
+        perPage: 10
       },
       user_id: "",
-      users: []
+      users: [],
+      order_status: "",
+      options: [
+        { value: "", text: "Order's status" },
+        { value: 0, text: "Processing" },
+        { value: 1, text: "Paid" },
+        { value: 2, text: "Canceled" }
+      ]
     };
   },
   methods: {
@@ -173,10 +175,12 @@ export default {
             "&currentPage=" +
             this.pagination.currentPage +
             "&perPage=" +
-            this.pagination.perPage
+            this.pagination.perPage +
+            "&order_status=" +
+            this.order_status
         )
         .then(function(res) {
-          self.orders = res.data.data;
+            self.orders = res.data.data;
           self.pagination = res.data.pagination;
         });
     },
@@ -189,9 +193,8 @@ export default {
     },
     getAdmins: function() {
       let self = this;
-      this.$axios.get("/users").then(function(res) {
-        self.user_id = res.data.decoded.user_id;
-        self.users = res.data.data;
+      this.$axios.get("/users/decoded").then(function(res) {
+          self.user_id = res.data.decoded.user_id;
       });
     },
     handelConfirm(id) {
@@ -204,11 +207,13 @@ export default {
     },
     handleCancel: function(id) {
       let self = this;
-      this.$axios.put("/orders/cancel/" + id).then(function(res) {
-        let order = self.orders.find(element => element.id == id);
-        if (order) order.order_status = 2;
-        socket.emit("cancel-order", { order: order.order_status, id: id });
-      });
+      if (confirm("Are you sure?")) {
+        this.$axios.put("/orders/cancel/" + id).then(function(res) {
+          let order = self.orders.find(element => element.id == id);
+          if (order) order.order_status = 2;
+          socket.emit("cancel-order", { order: order.order_status, id: id });
+        });
+      }
     },
     handleLogout: function() {
       Cookie.remove("token");

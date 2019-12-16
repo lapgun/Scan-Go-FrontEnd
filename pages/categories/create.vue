@@ -99,6 +99,7 @@
 </template>
 <script>
 export default {
+  head: { title: "Tạo thể loại"},
   mounted() {
     this.getCategories();
   },
@@ -127,6 +128,7 @@ export default {
       console.log(self.options);
     },
     handleSubmit() {
+      this.$swal.fire('Yes...', 'Tạo thể loại thành công!', 'success')
       let self = this;
       this.$axios.post("/categories", this.form).then(function(res) {
         self.$router.push("/categories");

@@ -77,8 +77,10 @@
                 <input type="checkbox" v-model="form.role" value="1" /> Are you admin?
               </b-form-group>
               <div class="form-group text-xl-center">
-                <input type="submit" class="btn btn-info btn-md" value="submit" @click="showAlert" />
+                <input type="submit" class="btn btn-info btn-md" value="Submit" />
+                <b-button variant="success" @click="$router.push('/login')">Login</b-button>
               </div>
+              
             </b-form>
           </div>
         </div>
@@ -89,6 +91,7 @@
 <script>
 import { required, minLength, email } from "vuelidate/lib/validators";
 export default {
+  head: { title: "Đăng kí" },
   data() {
     return {
       form: {
@@ -126,7 +129,7 @@ export default {
       } else {
         if (this.repassword == this.form.password) {
           this.$axios.post("/register", this.form).then(function(res) {
-            console.log(res);
+            alert("Đăng kí thành công");
             self.$router.push("/login");
           });
         } else {
@@ -134,13 +137,6 @@ export default {
         }
       }
     },
-    showAlert() {
-      this.$fire({
-        title: "Đăng kí thành công!",
-        type: "success",
-        timer: 3000
-      }).then(r => {});
-    }
   }
 };
 </script>

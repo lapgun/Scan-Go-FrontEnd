@@ -22,17 +22,18 @@
 </template>
 <script>
 export default {
-  mounted: function() {
+  head: { title: "Slide"},
+  mounted() {
     this.getOrders();
   },
-  data: function() {
+  data() {
     return {
       orders: [],
       order_products: []
     };
   },
   methods: {
-    getOrders: function() {
+    getOrders() {
       let self = this;
       this.$axios.get("/slide/" + this.$route.params.id).then(function(res) {
         console.log(res);
