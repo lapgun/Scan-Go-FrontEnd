@@ -35,11 +35,6 @@
               <td>
                 {{user.role}}
                 <b-button
-                  v-if="user.role == 0"
-                  variant="warning"
-                  @click="admin(user.id,user.role)"
-                >Admin</b-button>
-                <b-button
                   v-if="user.role == 1"
                   variant="warning"
                   @click="admin(user.id,user.role)"

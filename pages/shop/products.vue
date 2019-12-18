@@ -12,7 +12,13 @@
               <!--features_items-->
               <h2 class="title text-center">Sản phẩm</h2>
               <div v-if="this.$route.query.search">
-                <h4>Có {{this.products.length}} kết quả với từ khóa '{{this.$route.query.search}}'</h4>
+                <div v-if="this.products.length == 0">
+                  <h3>Có {{this.products.length}} kết quả với từ khóa '{{this.$route.query.search}}'</h3>
+                  <p style="margin-top:20px; font-size:15px">Xin lỗi, không có kết quả nào tương ứng với tìm kiếm của bạn.</p>
+                  <p style="font-size:15px">Vui lòng thử lại.</p>
+                </div>
+                <div v-else>
+                  <h3>Có {{this.products.length}} kết quả với từ khóa '{{this.$route.query.search}}'</h3>
                 <div class="col-sm-4" v-for="(product, index) in products" :key="index">
                   <div class="product-image-wrapper">
                     <div class="single-products">
@@ -57,6 +63,7 @@
                       </div>
                     </div>
                   </div>
+                </div>
                 </div>
               </div>
               <div v-else>
@@ -218,7 +225,6 @@ export default {
       this.$axios
         .get("/products/search?search=" + this.$route.query.search)
         .then(function(res) {
-          console.log(res)
           self.products = res.data.data;
         });
     },

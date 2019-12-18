@@ -18,55 +18,109 @@
             placeholder="Search"
           />
         </div>
-        <table id="my-table" class="table table-bordered">
-          <thead>
-            <tr>
-              <th>STT</th>
-              <th>name</th>
-              <th>Category</th>
-              <th>Price</th>
-              <th>Order Times</th>
-              <th>Image</th>
-              <th>Detail</th>
-              <th>Description</th>
-              <th>Edit</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(task,index) in tasks" :key="index">
-              <td>{{index+1}}</td>
-              <td>{{task.name}}</td>
-              <td>{{task.categories ? task.categories.name : '' }}</td>
-              <td>{{currency(task.price)}}</td>
-              <td>{{task.order_time}}</td>
-              <td>
-                <img
-                  style="width:50px; height:50px"
-                  :src="`/${task.images ? task.images.default_image: ''}`"
-                />
-              </td>
-              <td>
-                <b-button v-b-toggle="'a-'+task.id" class="m-1">Show</b-button>
-                <b-collapse :id="'a-'+task.id">
-                  <div v-html="task.description"></div>
-                </b-collapse>
-              </td>
-              <td>
-                <b-button v-b-toggle="'b-'+task.id" class="m-1">show</b-button>
-                <b-collapse :id="'b-'+task.id">
-                  <b-card>
-                    <div v-html="task.detail"></div>
-                  </b-card>
-                </b-collapse>
-              </td>
-              <td>
-                <b-button @click="$router.push('/products/details/'+task.id)">Details</b-button>
-                <b-button variant="info" @click="$router.push('/products/edit/'+task.id)">Update</b-button>
-                <b-button variant="danger" @click="delTasks(task.id)">Delete</b-button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div v-if="this.search">
+          <h4>Có {{this.tasks.length}} kết quả với từ khóa '{{this.search}}'</h4>
+          <table id="my-table" class="table table-bordered">
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Order Times</th>
+                <th>Image</th>
+                <th>Detail</th>
+                <th>Description</th>
+                <th>Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(task,index) in tasks" :key="index">
+                <td>{{index+1}}</td>
+                <td>{{task.name}}</td>
+                <td>{{task.categories ? task.categories.name : '' }}</td>
+                <td>{{currency(task.price)}}</td>
+                <td>{{task.order_time}}</td>
+                <td>
+                  <img
+                    style="width:50px; height:50px"
+                    :src="`/${task.images ? task.images.default_image: ''}`"
+                  />
+                </td>
+                <td>
+                  <b-button v-b-toggle="'a-'+task.id" class="m-1">Show</b-button>
+                  <b-collapse :id="'a-'+task.id">
+                    <div v-html="task.description"></div>
+                  </b-collapse>
+                </td>
+                <td>
+                  <b-button v-b-toggle="'b-'+task.id" class="m-1">show</b-button>
+                  <b-collapse :id="'b-'+task.id">
+                    <b-card>
+                      <div v-html="task.detail"></div>
+                    </b-card>
+                  </b-collapse>
+                </td>
+                <td>
+                  <b-button @click="$router.push('/products/details/'+task.id)">Details</b-button>
+                  <b-button variant="info" @click="$router.push('/products/edit/'+task.id)">Update</b-button>
+                  <b-button variant="danger" @click="delTasks(task.id)">Delete</b-button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div v-else>
+          <table id="my-table" class="table table-bordered">
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Order Times</th>
+                <th>Image</th>
+                <th>Detail</th>
+                <th>Description</th>
+                <th>Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(task,index) in tasks" :key="index">
+                <td>{{index+1}}</td>
+                <td>{{task.name}}</td>
+                <td>{{task.categories ? task.categories.name : '' }}</td>
+                <td>{{currency(task.price)}}</td>
+                <td>{{task.order_time}}</td>
+                <td>
+                  <img
+                    style="width:50px; height:50px"
+                    :src="`/${task.images ? task.images.default_image: ''}`"
+                  />
+                </td>
+                <td>
+                  <b-button v-b-toggle="'a-'+task.id" class="m-1">Show</b-button>
+                  <b-collapse :id="'a-'+task.id">
+                    <div v-html="task.description"></div>
+                  </b-collapse>
+                </td>
+                <td>
+                  <b-button v-b-toggle="'b-'+task.id" class="m-1">show</b-button>
+                  <b-collapse :id="'b-'+task.id">
+                    <b-card>
+                      <div v-html="task.detail"></div>
+                    </b-card>
+                  </b-collapse>
+                </td>
+                <td>
+                  <b-button @click="$router.push('/products/details/'+task.id)">Details</b-button>
+                  <b-button variant="info" @click="$router.push('/products/edit/'+task.id)">Update</b-button>
+                  <b-button variant="danger" @click="delTasks(task.id)">Delete</b-button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <b-pagination
           v-model="pagination.currentPage"
           :total-rows="pagination.total"
@@ -89,7 +143,7 @@ export default {
     admin
   },
   mounted() {
-    this.getTasks()
+    this.getTasks();
   },
   data() {
     return {
@@ -107,31 +161,33 @@ export default {
       ],
       pagination: {
         currentPage: 1,
-        perPage: 10,
-        totalPage: ""
+        perPage: 10
       },
       cancel: false
     };
   },
   methods: {
-    getTasks(){
-      let self = this
-      this.$axios.get("/products").then(function(res){
-        console.log(res)
-        self.tasks = res.data.data
-      })
+    getTasks() {
+      let self = this;
+      this.$axios
+        .post(
+          "/products/sort?currentPage=" +
+            this.pagination.currentPage +
+            "&perPage=" +
+            this.pagination.perPage,
+          this.order_by
+        )
+        .then(function(res) {
+          console.log(res);
+          self.tasks = res.data.data;
+          self.pagination = res.data.pagination;
+        });
     },
     getProductsByOrder() {
       let self = this;
       self.tasks = [];
       self.pagination.currentPage = 1;
       this.getTasks();
-    },
-    delTasks(id) {
-      let self = this;
-      this.$axios.delete("/products/" + id).then(function(res) {
-        self.getTasks();
-      });
     },
     handleSearch() {
       let self = this;
@@ -143,6 +199,7 @@ export default {
         });
     },
     delTasks(id) {
+      let self = this;
       this.$swal
         .fire({
           title: "Bạn chắc chắn muốm xóa?",
@@ -153,17 +210,13 @@ export default {
         })
         .then(result => {
           if (result.value) {
-            this.$swal.fire("Xóa!", "Bạn xóa sản phẩm thành công!.", "success");
             let self = this;
             this.$axios.delete("/products/" + id).then(function(res) {
+              self.$swal.fire("Success", res.data.message, "success");
               self.getTasks();
             });
-          } else if (result.dismiss === this.$swal.DismissReason.cancel) {
-            this.$swal.fire(
-              "Cancelled",
-              "Your imaginary file is safe :)",
-              "error"
-            );
+          } else {
+            this.$swal.fire("Cancelled", "Your file is safe", "error");
           }
         });
     },

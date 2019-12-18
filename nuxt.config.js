@@ -86,6 +86,10 @@ export default {
         {
             src: "~/plugins/chart.js",
             mode: "client"
+        },
+        {
+            src: "~/plugins/qrcode.js",
+            mode: "client"
         }
     ],
 

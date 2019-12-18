@@ -17,28 +17,28 @@
 
       <ul class="nav menu" style="display:block">
         <li>
-          <a @click="$router.push('/user/home')">Home</a>
+          <a href="#" @click="$router.push('/user/home')">Home</a>
         </li>
         <li>
-          <a @click="$router.push('/categories')">Categories</a>
+          <a href="#" @click="$router.push('/categories')">Categories</a>
         </li>
         <li>
-          <a @click="$router.push('/products')">Products</a>
+          <a href="#" @click="$router.push('/products')">Products</a>
         </li>
         <li>
-          <a @click="$router.push('/orders')">Orders</a>
+          <a href="#" @click="$router.push('/orders')">Orders</a>
         </li>
         <li>
-          <a @click="$router.push('/slide')">Slide</a>
+          <a href="#" @click="$router.push('/slide')">Slide</a>
         </li>
         <li>
-          <a @click="$router.push('/comment')">Comment</a>
+          <a href="#" @click="$router.push('/comment')">Comment</a>
         </li>
         <li>
-          <a @click="$router.push('/slide')">Slide</a>
+          <a href="#" @click="$router.push('/slide')">Slide</a>
         </li>
         <li>
-          <a @click="$router.push('/user')">Users</a>
+          <a href="#" @click="$router.push('/user')">Users</a>
         </li>
       </ul>
     </div>

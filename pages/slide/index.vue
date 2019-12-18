@@ -76,15 +76,15 @@ export default {
         })
         .then(result => {
           if (result.value) {
-            this.$swal.fire("Xóa!", "Bạn xóa sản phẩm thành công!.", "success");
+            this.$swal.fire("Xóa!", "Bạn xóa slide thành công!.", "success");
             let self = this;
             this.$axios.delete("/slide/" + id).then(function(res) {
               self.getSlides();
             });
-          } else if (result.dismiss === this.$swal.DismissReason.cancel) {
+          } else{
             this.$swal.fire(
               "Cancelled",
-              "Your imaginary file is safe :)",
+              "Your file is safe :)",
               "error"
             );
           }

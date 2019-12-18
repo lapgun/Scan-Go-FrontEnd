@@ -1,121 +1,7 @@
 <template>
   <div>
     <header id="header">
-      <div class="header_top">
-        <!--header_top-->
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="contactinfo">
-                <ul class="nav nav-pills">
-                  <li>
-                    <a href="#">
-                      <i class="fas fa-phone"></i> +2 95 01 88 821
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fas fa-envelope"></i> ScanAndGo@gmail.com
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="social-icons pull-right">
-                <ul style="display:inline; margin-top:15px" class="nav navbar-nav">
-                  <li style="display:inline">
-                    <a href="#">
-                      <i class="fab fa-facebook"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fab fa-twitter"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fab fa-linkedin"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fab fa-dribbble"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fab fa-google-plus"></i>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="header-middle">
-        <!--header-middle-->
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-4">
-              <div class="logo pull-left">
-                <a href="#" @click="$router.push('/')">
-                  <img src="~assets/images/home/logo.png" alt />
-                </a>
-              </div>
-            </div>
-            <div class="col-sm-8">
-              <div class="shop-menu pull-right">
-                <ul class="nav navbar-nav">
-                  <template v-if="user_id">
-                    <li>
-                      <a style="margin-left:-71px" class="dropdown">
-                        <div
-                          class="dropdown-toggle"
-                          id="dropdownMenuButton"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        >
-                          <i class="fas fa-user">&nbsp;{{user_name}}</i>
-                        </div>
-                        <div
-                          class="dropdown-menu text-sm-center"
-                          aria-labelledby="dropdownMenuButton"
-                        >
-                          <a class="dropdown-item" @click="handelLogout">
-                            <i class="fas fa-sign-out-alt">&nbsp;Đăng xuất</i>
-                          </a>
-                          <a
-                            class="dropdown-item"
-                            href="#"
-                            @click="$router.push('/shop/user/detail/'+user_id)"
-                          >Trang cá nhân</a>
-                        </div>
-                      </a>
-                    </li>
-                  </template>
-                  <template v-else>
-                    <li>
-                      <a
-                        @click="$router.push('/register')"
-                        style="margin-left:-70px"
-                      >Register</a>
-                    </li>
-                    <li>
-                      <a @click="$router.push('/login')" style=" margin-top:-20px">Login</a>
-                    </li>
-                  </template>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!--/header-middle-->
-      <div class="header-bottom" >
+      <div class="header-bottom">
         <!--header-bottom-->
         <div class="container">
           <div class="row">
@@ -208,6 +94,64 @@
           </div>
         </div>
       </div>
+      <div class="header-middle" style="margin-top:100px">
+        <!--header-middle-->
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="logo pull-left">
+                <a href="#" @click="$router.push('/')">
+                  <img src="~assets/images/home/logo.png" alt />
+                </a>
+              </div>
+            </div>
+            <div class="col-sm-8">
+              <div class="shop-menu pull-right">
+                <ul class="nav navbar-nav">
+                  <template v-if="user_id">
+                    <li>
+                      <a href="#" style="margin-left:-71px" class="dropdown">
+                        <div
+                          class="dropdown-toggle"
+                          id="dropdownMenuButton"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          <i class="fas fa-user">&nbsp;{{user_name}}</i>
+                        </div>
+                        <div
+                          class="dropdown-menu text-sm-center"
+                          aria-labelledby="dropdownMenuButton"
+                        >
+                          <a class="dropdown-item" @click="handelLogout">
+                            <i class="fas fa-sign-out-alt">&nbsp;Đăng xuất</i>
+                          </a>
+                          <a
+                            class="dropdown-item"
+                            href="#"
+                            @click="$router.push('/shop/user/detail/'+user_id)"
+                          >Trang cá nhân</a>
+                        </div>
+                      </a>
+                    </li>
+                  </template>
+                  <template v-else>
+                    <li>
+                      <a @click="$router.push('/register')" style="margin-left:-70px">Register</a>
+                    </li>
+                    <li>
+                      <a @click="$router.push('/login')" style=" margin-top:-20px">Login</a>
+                    </li>
+                  </template>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--/header-middle-->
+
       <!--/header-bottom-->
     </header>
     <!--/header-->
@@ -242,18 +186,6 @@
 <script>
 const Cookies = process.client ? require("js-cookie") : undefined;
 export default {
-  created() {
-    if (process.browser) {
-      if (localStorage.getItem("cart")) {
-        let cart = JSON.parse(localStorage.getItem("cart"));
-        return (this.cart = cart);
-      } else {
-        let cart = this.$store.getters.cart;
-        return (this.cart = cart);
-        console.log(this.cart);
-      }
-    }
-  },
   mounted() {
     if (this.$store.state.token) {
       this.getUsers();
@@ -358,5 +290,14 @@ export default {
 }
 .cart_checkout_2 {
   margin-left: 40px;
+}
+.header-bottom {
+  display: flex;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+  background-color: #fafafa;
+  top: 0;
+  border-bottom: solid 1px #ddd;
 }
 </style>

@@ -3,16 +3,16 @@
     <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">
+          <a class="navbar-brand" href="#" @click="$router.push('/user/home')">
             <span>Scan & Go</span>Admin
           </a>
           <li>
             <ul class="nav menu" style="color:#30a5ff">
               <li>
-                <a style="margin-top:-10px" @click="$router.push('/user/detail/'+user_id)">Profile</a>
+                <a href="#" style="margin-top:-9px" @click="$router.push('/user/detail/'+user_id)">Profile</a>
               </li>
               <li>
-                <a style="margin-top:-10px" @click="handleLogout">Logout</a>
+                <a href="#" style="margin-top:-9px" @click="handleLogout">Logout</a>
               </li>
             </ul>
           </li>
@@ -23,6 +23,7 @@
   </div>
 </template>
 <script>
+const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
   mounted() {
     this.getAdmins();

@@ -19,65 +19,129 @@
             placeholder="Search"
           />
         </div>
-        <table id="my-table" class="table table-bordered">
-          <thead>
-            <tr>
-              <th>STT</th>
-              <th>name</th>
-              <th style="width:300px">cat_parent</th>
-              <th>Edit</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(task,index) in tasks" :key="index">
-              <td>{{index+1}}</td>
-              <td>{{task.name}}</td>
-              <td v-if="task.cat_parent!=0">{{task.cat_parent_name}}</td>
-              <td v-else>
-                <b-button
-                  variant="success"
-                  v-b-toggle="'a-'+task.id"
-                  @click="getCatChild(task.id)"
-                >Show cat's child</b-button>
-              </td>
-              <b-collapse :id="'a-'+task.id">
-                <table class="table table-bordered">
-                  <thead>
-                    <th>Name</th>
-                    <th>Edit</th>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(child,key) in childs" :key="key">
-                      <td>{{child.name}}</td>
-                      <td>
-                        <b-button
-                          variant="info"
-                          @click="$router.push('/categories/details/'+child.id)"
-                        >Details</b-button>
-                        <b-button
-                          variant="warning"
-                          @click="$router.push('/categories/edit/'+child.id)"
-                        >Update</b-button>
-                        <b-button variant="danger" @click="delTasks(childs.id)">Delete</b-button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </b-collapse>
-              <td>
-                <b-button
-                  variant="info"
-                  @click="$router.push('/categories/details/'+task.id)"
-                >Details</b-button>
-                <b-button
-                  variant="warning"
-                  @click="$router.push('/categories/edit/'+task.id)"
-                >Update</b-button>
-                <b-button variant="danger" @click="delTasks(task.id)">Delete</b-button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div v-if="this.search">
+          <h4>Có {{this.tasks.length}} kết quả với từ khóa '{{this.search}}'</h4>
+          <table id="my-table" class="table table-bordered">
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>name</th>
+                <th style="width:300px">cat_parent</th>
+                <th>Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(task,index) in tasks" :key="index">
+                <td>{{index+1}}</td>
+                <td>{{task.name}}</td>
+                <td v-if="task.cat_parent!=0">{{task.cat_parent_name}}</td>
+                <td v-else>
+                  <b-button
+                    variant="success"
+                    v-b-toggle="'a-'+task.id"
+                    @click="getCatChild(task.id)"
+                  >Show cat's child</b-button>
+                </td>
+                <b-collapse :id="'a-'+task.id">
+                  <table class="table table-bordered">
+                    <thead>
+                      <th>Name</th>
+                      <th>Edit</th>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(child,key) in childs" :key="key">
+                        <td>{{child.name}}</td>
+                        <td>
+                          <b-button
+                            variant="info"
+                            @click="$router.push('/categories/details/'+child.id)"
+                          >Details</b-button>
+                          <b-button
+                            variant="warning"
+                            @click="$router.push('/categories/edit/'+child.id)"
+                          >Update</b-button>
+                          <b-button variant="danger" @click="delTasks(childs.id)">Delete</b-button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </b-collapse>
+                <td>
+                  <b-button
+                    variant="info"
+                    @click="$router.push('/categories/details/'+task.id)"
+                  >Details</b-button>
+                  <b-button
+                    variant="warning"
+                    @click="$router.push('/categories/edit/'+task.id)"
+                  >Update</b-button>
+                  <b-button variant="danger" @click="delTasks(task.id)">Delete</b-button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div v-else>
+          <table id="my-table" class="table table-bordered">
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>name</th>
+                <th style="width:300px">cat_parent</th>
+                <th>Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(task,index) in tasks" :key="index">
+                <td>{{index+1}}</td>
+                <td>{{task.name}}</td>
+                <td v-if="task.cat_parent!=0">{{task.cat_parent_name}}</td>
+                <td v-else>
+                  <b-button
+                    variant="success"
+                    v-b-toggle="'a-'+task.id"
+                    @click="getCatChild(task.id)"
+                  >Show cat's child</b-button>
+                </td>
+                <b-collapse :id="'a-'+task.id">
+                  <table class="table table-bordered">
+                    <thead>
+                      <th>Name</th>
+                      <th>Edit</th>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(child,key) in childs" :key="key">
+                        <td>{{child.name}}</td>
+                        <td>
+                          <b-button
+                            variant="info"
+                            @click="$router.push('/categories/details/'+child.id)"
+                          >Details</b-button>
+                          <b-button
+                            variant="warning"
+                            @click="$router.push('/categories/edit/'+child.id)"
+                          >Update</b-button>
+                          <b-button variant="danger" @click="delTasks(childs.id)">Delete</b-button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </b-collapse>
+                <td>
+                  <b-button
+                    variant="info"
+                    @click="$router.push('/categories/details/'+task.id)"
+                  >Details</b-button>
+                  <b-button
+                    variant="warning"
+                    @click="$router.push('/categories/edit/'+task.id)"
+                  >Update</b-button>
+                  <b-button variant="danger" @click="delTasks(task.id)">Delete</b-button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -156,17 +220,13 @@ export default {
         })
         .then(result => {
           if (result.value) {
-            this.$swal.fire("Xóa!", "Bạn xóa thể loại thành công!.", "success");
             let self = this;
             this.$axios.delete("/categories/" + id).then(function(res) {
+              self.$swal.fire("Xóa!", res.data.message, "success");
               self.getTasks();
             });
-          } else if (result.dismiss === this.$swal.DismissReason.cancel) {
-            this.$swal.fire(
-              "Cancelled",
-              "Your imaginary file is safe :)",
-              "error"
-            );
+          } else {
+            this.$swal.fire("Cancelled", "Your file is safe", "error");
           }
         });
     },

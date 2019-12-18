@@ -12,56 +12,128 @@
               <!--features_items-->
               <h2 class="title text-center">Sản phẩm</h2>
               <div v-if="this.products.length == 0">
-                <h3>Không có sản phẩm nào.</h3>
+                <div v-if="this.rows.length > 0">
+                   <h3
+                  style="display:inline;"
+                >{{this.rows[0].cat_parent_name ? this.rows[0].cat_parent_name : ''}}</h3>
                 <p
                   style="margin-top:30px; font-size:16px"
                 >Xin lỗi, không có kết quả nào tương ứng với tìm kiếm của bạn.</p>
                 <p style="font-size:16px">Vui lòng thử lại.</p>
+                </div>
+                <div v-else>
+                  <h3
+                  style="display:inline;"
+                >Không có sản phẩm nào.</h3>
+                <p
+                  style="margin-top:30px; font-size:16px"
+                >Xin lỗi, không có kết quả nào tương ứng với tìm kiếm của bạn.</p>
+                <p style="font-size:16px">Vui lòng thử lại.</p>
+                </div>
+                
               </div>
               <div v-else>
-                <!-- <h3 style="display:inline">{{this.products[0].category.name}}</h3> -->
-                <p style="display:inline; font-size:15px">({{this.products.length}} sản phẩm)</p>
-                <div v-for="(product, index) in products" :key="index">
-                  <div class="col-sm-4">
-                    <div>
-                      <div class="product-image-wrapper">
-                        <div class="single-products">
-                          <div class="productinfo text-center">
-                            <a @click="$router.push('/shop/product_detail/'+product.id)">
-                              <img
-                                style="width:250px; height:250px"
-                                :src="`/${default_image ? default_image[index]: ''}`"
-                              />
-                            </a>
-                            <h2>{{currency(product.price)}}</h2>
-                            <p>{{product.name}}</p>
-                            <qrcode-vue
-                              :value="'/shop/product_detail/'+product.id"
-                              size="100"
-                              level="H"
-                            ></qrcode-vue>
-                            <div>
-                              <a
-                                v-if=" 1 < product.quantity"
-                                class="cart_quantity_down btn btn-success"
-                                @click="decrement(product.id)"
-                              >-</a>
-
-                              <a v-else class="cart_quantity_down btn btn-success">-</a>
-
-                              <p class="quantity_cart">{{product.quantity}}</p>
-
-                              <a
-                                class="cart_quantity_up btn btn-success"
-                                @click="increment(product.id)"
-                              >+</a>
-                              <a
-                                style="margin-top:26px;margin-left:10px"
-                                @click="addToCart(product)"
-                                class="btn btn-default add-to-cart"
-                              >
-                                <i class="fa fa-shopping-cart"></i>
+                <div v-if="!this.products[0].categories">
+                  <h3
+                    style="display:inline;"
+                  >{{this.rows[0].cat_parent_name ? this.rows[0].cat_parent_name : ''}}</h3>
+                  <p style="display:inline; font-size:15px">({{this.products.length}} sản phẩm)</p>
+                  <div style="margin-top:20px" v-for="(product, index) in products" :key="index">
+                    <div class="col-sm-4">
+                      <div>
+                        <div class="product-image-wrapper">
+                          <div class="single-products">
+                            <div class="productinfo text-center">
+                              <a @click="$router.push('/shop/product_detail/'+product.id)">
+                                <img
+                                  style="width:250px; height:250px"
+                                  :src="`/${default_image ? default_image[index]: ''}`"
+                                />
                               </a>
+                              <h2>{{currency(product.price)}}</h2>
+                              <p>{{product.name}}</p>
+                              <qrcode-vue
+                                :value="'/shop/product_detail/'+product.id"
+                                size="100"
+                                level="H"
+                              ></qrcode-vue>
+                              <div>
+                                <a
+                                  v-if=" 1 < product.quantity"
+                                  class="cart_quantity_down btn btn-success"
+                                  @click="decrement(product.id)"
+                                >-</a>
+
+                                <a v-else class="cart_quantity_down btn btn-success">-</a>
+
+                                <p class="quantity_cart">{{product.quantity}}</p>
+
+                                <a
+                                  class="cart_quantity_up btn btn-success"
+                                  @click="increment(product.id)"
+                                >+</a>
+                                <a
+                                  style="margin-top:26px;margin-left:10px"
+                                  @click="addToCart(product)"
+                                  class="btn btn-default add-to-cart"
+                                >
+                                  <i class="fa fa-shopping-cart"></i>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div v-else>
+                  <h3
+                    style="display:inline"
+                  >{{this.products[0].categories.name ? this.products[0].categories.name : ''}}</h3>
+                  <p style="display:inline; font-size:15px">({{this.products.length}} sản phẩm)</p>
+                  <div style="margin-top:20px" v-for="(product, index) in products" :key="index">
+                    <div class="col-sm-4">
+                      <div>
+                        <div class="product-image-wrapper">
+                          <div class="single-products">
+                            <div class="productinfo text-center">
+                              <a @click="$router.push('/shop/product_detail/'+product.id)">
+                                <img
+                                  style="width:250px; height:250px"
+                                  :src="`/${default_image ? default_image[index]: ''}`"
+                                />
+                              </a>
+                              <h2>{{currency(product.price)}}</h2>
+                              <p>{{product.name}}</p>
+                              <qrcode-vue
+                                :value="'/shop/product_detail/'+product.id"
+                                size="100"
+                                level="H"
+                              ></qrcode-vue>
+                              <div>
+                                <a
+                                  v-if=" 1 < product.quantity"
+                                  class="cart_quantity_down btn btn-success"
+                                  @click="decrement(product.id)"
+                                >-</a>
+
+                                <a v-else class="cart_quantity_down btn btn-success">-</a>
+
+                                <p class="quantity_cart">{{product.quantity}}</p>
+
+                                <a
+                                  class="cart_quantity_up btn btn-success"
+                                  @click="increment(product.id)"
+                                >+</a>
+                                <a
+                                  style="margin-top:26px;margin-left:10px"
+                                  @click="addToCart(product)"
+                                  class="btn btn-default add-to-cart"
+                                >
+                                  <i class="fa fa-shopping-cart"></i>
+                                </a>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -106,10 +178,12 @@ export default {
   },
   data() {
     return {
-      products: {},
+      products: [],
       default_image: [],
       array: [],
-      length: ""
+      length: "",
+      categories: [],
+      rows: []
     };
   },
   components: {
@@ -125,7 +199,6 @@ export default {
       const res = await this.$axios.get(
         `/products/menu/${this.$route.params.id}`
       );
-      console.log(res);
       self.products = res.data.data;
     },
     async getByCat() {
@@ -133,8 +206,8 @@ export default {
       const res = await this.$axios.get(
         `/categories/cat_parent/${this.$route.params.id}`
       );
-      console.log("by cat", res); 
-      let data = res.data.data.rows;
+      self.rows = res.data.data.rows;
+      let data = self.rows;
       data.forEach(element => {
         element.products.forEach(e => {
           self.products.push(e);

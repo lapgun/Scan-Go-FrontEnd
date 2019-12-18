@@ -1,7 +1,9 @@
 <template>
-  <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-8">
+  <div>
+    <adminNav />
+    <div>
+      <admin />
+      <div class="col-sm-8 col-lg-10 sidebar" style="margin-top:40px">
         <div class="card">
           <div
             class="card-header text-md-center"
@@ -51,8 +53,14 @@
 
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
+import adminNav from "~/components/adminNav.vue";
+import admin from "~/components/admin.vue";
 export default {
-  head: { title: "Sửa user"},
+  head: { title: "Sửa user" },
+  components: {
+    adminNav,
+    admin
+  },
   mounted() {
     this.getUsers();
   },
@@ -70,13 +78,15 @@ export default {
   methods: {
     getUsers() {
       let self = this;
-      this.$axios.get("/users/detail/" + this.$route.params.id).then(function(res) {
-        self.form = res.data.data;
-        self.form.userId = res.data.decoded.user_id;
-      });
+      this.$axios
+        .get("/users/detail/" + this.$route.params.id)
+        .then(function(res) {
+          self.form = res.data.data;
+          self.form.userId = res.data.decoded.user_id;
+        });
     },
     handelSubmit() {
-      this.$swal.fire('Yes...', 'Cập nhật user thành công!', 'success')
+      this.$swal.fire("Yes...", "Cập nhật user thành công!", "success");
       let self = this;
       this.$axios
         .put("/users/" + this.form.id, this.form)

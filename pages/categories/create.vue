@@ -1,81 +1,8 @@
 <template>
   <div>
-    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button
-            type="button"
-            class="navbar-toggle collapsed"
-            data-toggle="collapse"
-            data-target="#sidebar-collapse"
-          >
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">
-            <span>Scan & Go</span>Admin
-          </a>
-          <li>
-            <ul class="nav menu" style="color:#30a5ff">
-              <li class="active">
-                <a @click="$router.push('/user/home')">Home</a>
-              </li>
-              <li>
-                <a @click="$router.push('/user/detail/'+user_id)">Admin</a>
-              </li>
-              <li>
-                <a @click="$router.push('/user/edit/'+user_id)">Profile</a>
-              </li>
-              <li>
-                <a @click="$router.push('/user/register')">Register</a>
-              </li>
-              <li>
-                <a @click="handleLogout">Logout</a>
-              </li>
-            </ul>
-          </li>
-        </div>
-      </div>
-      <!-- /.container-fluid -->
-    </nav>
+    <adminNav />
     <div>
-      <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar" style="margin-top:-30px">
-        <div class="profile-sidebar">
-          <div class="profile-userpic">
-            <img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt />
-          </div>
-          <div class="profile-usertitle">
-            <div class="profile-usertitle-name">Admin</div>
-            <div class="profile-usertitle-status">
-              <span class="indicator label-success"></span>Online
-            </div>
-          </div>
-          <div class="clear"></div>
-        </div>
-        <div class="divider"></div>
-        <ul class="nav menu" style="display:block">
-          <li>
-            <a @click="$router.push('/user/home')">Home</a>
-          </li>
-          <li class="active">
-            <a @click="$router.push('/categories')">Categories</a>
-          </li>
-          <li>
-            <a @click="$router.push('/products')">Products</a>
-          </li>
-          <li>
-            <a @click="$router.push('/orders')">Orders</a>
-          </li>
-          <li>
-            <a @click="$router.push('/slide')">Slide</a>
-          </li>
-          <li>
-            <a @click="$router.push('/user')">Users</a>
-          </li>
-        </ul>
-      </div>
+      <admin />
       <div class="col-sm-8 col-lg-10 sidebar">
         <div class="create-form">
           <br />
@@ -102,8 +29,14 @@
   </div>
 </template>
 <script>
+import adminNav from "~/components/adminNav.vue";
+import admin from "~/components/admin.vue";
 export default {
   head: { title: "Tạo thể loại" },
+  components: {
+    adminNav,
+    admin
+  },
   mounted() {
     this.getCategories();
   },
@@ -137,16 +70,17 @@ export default {
       });
     },
     handleSubmit() {
-      this.$swal.fire("Yes...", "Tạo thể loại thành công!", "success");
+      // this.$swal.fire("Yes...", "Tạo thể loại thành công!", "success");
       let self = this;
+
       this.$axios.post("/categories", this.form).then(function(res) {
-        self.$router.push("/categories");
+        if (res.data.error) {
+          self.$swal.fire("Failled", res.data.message, "error");
+        } else {
+          self.$swal.fire("Success", res.data.message, "true");
+          self.$router.push("/categories");
+        }
       });
-    },
-    handleLogout() {
-      Cookie.remove("token");
-      this.$store.commit("setToken", null);
-      this.$router.push("/login");
     }
   }
 };

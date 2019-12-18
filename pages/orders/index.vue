@@ -13,12 +13,44 @@
           @change="getByDay"
           type="date"
         ></b-form-input>
-        <b-table striped hover :items="days"></b-table>
+        <table class="table table-bordered" v-if="this.date">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>User</th>
+              <th>Total Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(day , index) in days" :key="index">
+              <td>{{index+1}}</td>
+              <td>{{day.user.name}}</td>
+              <td>{{day.total_price}} đ</td>
+            </tr>
+          </tbody>
+        </table>
         <h3 style="margin-bottom:30px;" v-if="total">Tổng số tiền : {{total}} đ</h3>
         <h4 style="margin-top:-10px" v-else>Không có order nào.</h4>
         <h3>Order theo tháng</h3>
         <b-form-input style="width:30%" v-model="month" @change="getByMonth" type="month"></b-form-input>
-        <b-table striped hover :items="months"></b-table>
+        <table class="table table-bordered" v-if="this.month">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>User</th>
+              <th>Total Price</th>
+              <th>CreatedAt</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(month , index) in months" :key="index">
+              <td>{{index+1}}</td>
+              <td>{{month.user.name}}</td>
+              <td>{{month.total_price}} đ</td>
+              <td>{{formatDate(month.createdAt)}}</td>
+            </tr>
+          </tbody>
+        </table>
         <h3 style="margin-bottom:30px;" v-if="money">Tổng số tiền : {{money}} đ</h3>
         <h4 v-else>Không có order nào.</h4>
         <div style="margin-top:50px; margin-bottom:30px">
@@ -30,7 +62,7 @@
         <table class="table table-bordered">
           <thead>
             <tr>
-              <th>STT//ID</th>
+              <th>STT</th>
               <th>Customer</th>
               <th>Order Status</th>
               <th>Total Price</th>
@@ -40,7 +72,7 @@
           </thead>
           <tbody>
             <tr v-for="(order , index) in orders" :key="index">
-              <td>{{index+1}}//{{order.id}}</td>
+              <td>{{index+1}}</td>
               <td>{{order.user ? order.user.name : ""}}</td>
               <td v-if="order.order_status == 0">Đang chờ xử lí</td>
               <td v-if="order.order_status == 1">Đã thanh toán</td>
@@ -188,6 +220,13 @@ export default {
     currency(x) {
       x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
       return x;
+    },
+    formatMonth(month) {
+      let text = month + "";
+      let test = text.split("T");
+      let months = test[0].split("-");
+      month = day[2] + "-" + day[1] + "-" + day[0];
+      return month;
     },
     formatDate(date) {
       let text = date + "";

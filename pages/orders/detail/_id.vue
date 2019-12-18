@@ -1,54 +1,65 @@
 <template>
-  <div class="container">
-    <h3>Order Detail Processing</h3>
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>STT</th>
-          <th>Customer_id</th>
-          <th>Order_status</th>
-          <th>Total_price</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>{{orders.id}}</td>
-          <td>{{orders.customerId}}</td>
-          <td>{{orders.order_status}}</td>
-          <td>{{orders.total_price}}</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h3>Danh sách sản phẩm</h3>
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>STT</th>
-          <th>Product ID</th>
-          <th>Name</th>
-          <th>Quantity</th>
-          <th>Price</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(product,key) in products" :key="key">
-          <td>{{key}}</td>
-          <td>{{product.id}}</td>
-          <td>{{product.name}}</td>
-          <td>{{order_products[key].quantity}}</td>
-          <td>{{product.price}}</td>
-          <td>{{order_products[key].quantity * product.price}}</td>
-        </tr>
-      </tbody>
-    </table>
-    <b-button variant="dark" @click="$router.push('/orders')">Trở lại</b-button>
+  <div>
+    <adminNav />
+    <div>
+      <admin />
+      <div class="col-sm-8 col-lg-10 sidebar" style="margin-top:40px">
+        <h3>Order Detail Processing</h3>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Customer_id</th>
+              <th>Order_status</th>
+              <th>Total_price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{orders.id}}</td>
+              <td>{{orders.customerId}}</td>
+              <td>{{orders.order_status}}</td>
+              <td>{{orders.total_price}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Danh sách sản phẩm</h3>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Product ID</th>
+              <th>Name</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(product,key) in products" :key="key">
+              <td>{{key}}</td>
+              <td>{{product.id}}</td>
+              <td>{{product.name}}</td>
+              <td>{{order_products[key].quantity}}</td>
+              <td>{{product.price}}</td>
+              <td>{{order_products[key].quantity * product.price}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <b-button variant="dark" @click="$router.push('/orders')">Trở lại</b-button>
+      </div>
+    </div>
   </div>
 </template>
 <script>
+import adminNav from "~/components/adminNav.vue";
+import admin from "~/components/admin.vue";
 export default {
-  head: { title: "Chi tiết order"},
+  head: { title: "Chi tiết order" },
+  components: {
+    adminNav,
+    admin
+  },
   mounted() {
     this.getOrders();
     setTimeout(() => {
