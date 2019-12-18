@@ -43,7 +43,9 @@
                   <img src="~assets/images/product-details/new.jpg" class="newarrival" alt />
                   <h2>{{product.name}}</h2>
                   <p>Web ID: 1089772</p>
+                  <p v-if="average == 0">Chưa có đánh giá</p>
                   <star-rating
+                    v-else
                     style="margin-top:-15px"
                     v-bind:star-size="20"
                     :read-only="true"
@@ -51,7 +53,7 @@
                     :show-rating="false"
                     :increment="0.25"
                   ></star-rating>
-                  <h3>{{product.price}}</h3>
+                  <h3>{{product.price}} đ</h3>
                   <div>
                     <h4>Số lượng:</h4>
                     <div>
@@ -170,7 +172,7 @@
                         :show-rating="false"
                       ></star-rating>
                       <h5 style="margin:15px 0 15px 30px">{{comment.comment}}</h5>
-                      <h6 style="margin-left:30px">{{comment.createdAt}}</h6>
+                      <h6 style="margin-left:30px">{{day[0]}}</h6>
                       <div style="border:1px solid #bfbfbf; margin-top:20px"></div>
                     </div>
                   </div>
@@ -239,9 +241,11 @@ import chatShop from "~/components/chatShop.vue";
 export default {
   head: { title: "Chi tiết sản phẩm" },
   mounted() {
+    if (this.$store.state.token) {
+      this.getUsers();
+    }
     this.getProducts();
     this.getById();
-    this.getUsers();
     this.getCommentProducts();
     setTimeout(() => {
       this.totalRating();
@@ -250,6 +254,7 @@ export default {
   data: function() {
     return {
       user_id: "",
+      day: [],
       comment: "",
       product: [],
       products: [],
@@ -267,7 +272,7 @@ export default {
         parentId: "",
         name: "",
         productId: "",
-        rating: 0,
+        rating: 0
       },
       average: 0,
       pagination: {
@@ -381,9 +386,10 @@ export default {
           }
         )
         .then(function(res) {
-          console.log(res)
           self.comments = res.data.data;
           self.pagination = res.data.pagination;
+          let text = res.data.data[0].createdAt + "";
+          self.day = text.split("T");
         });
     },
     handleChangePage(currentPage) {
@@ -408,12 +414,12 @@ export default {
       }
     },
     increment1(id) {
-      this.product.quantity += 1 ;
+      this.product.quantity += 1;
     },
     decrement1(id) {
-      this.product.quantity -= 1 ;
-      if(this.product.quantity < 0) {
-        this.product.quantity = 0
+      this.product.quantity -= 1;
+      if (this.product.quantity < 0) {
+        this.product.quantity = 0;
       }
     }
   }

@@ -35,7 +35,6 @@
 
                 <div class="form-group text-xl-center">
                   <input type="submit" class="btn btn-info btn-md" value="Submit"/>
-                  <b-button variant="success" @click="handleLoginFb">Login FaceBook</b-button>
                   <b-button variant="success" @click="$router.push('/register')">Register</b-button>
                 </div>
               </div>
@@ -80,35 +79,32 @@
             }
         },
         methods: {
-            handleLogin: function (id) {
+            handleLogin(id) {
                 let self = this;
                 if (this.$v.$invalid) {
-                    alert("failled");
+                    alert("Please check the form agian");
                 } else {
                     this.$axios.post("/login", this.user).then(function (res) {
                         if (res.data.error) {
                             alert(res.data.message);
                         } else {
-                            alert(res.data.message);
+                            alert('Đăng nhập thành công');
                             self.$store.commit("setToken", res.data.token);
                             Cookie.set("token", res.data.token);
-                            if (res.data.data.role == true) {
+                            if (res.data.data.role == 1 || res.data.data.role == 2) {
+                                self.$store.commit("setRole", "admin");
+                                Cookie.set("role", "admin");
                                 self.$router.push("/user/home");
                             } else {
                                 self.$router.push("/");
+
                             }
                         }
-                    });
+                    })
                 }
-            },
-            handleLoginFb() {
-                let self = this;
-                this.$axios.get("/social/auth/fb").then(function (res) {
-                    console.log("sdaas");
-                })
             }
         }
-    };
+    }
 </script>
 <style scoped>
   body {

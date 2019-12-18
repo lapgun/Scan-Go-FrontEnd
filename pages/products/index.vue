@@ -83,9 +83,9 @@
         <table id="my-table" class="table table-bordered">
           <thead>
             <tr>
-              <th>Number // Id</th>
+              <th>Number</th>
               <th>name</th>
-              <th>Categories Id</th>
+              <th>Category</th>
               <th>Price</th>
               <th>Order Times</th>
               <th>Image</th>
@@ -96,10 +96,10 @@
           </thead>
           <tbody>
             <tr v-for="(task,index) in tasks" :key="index">
-              <td>{{index+1}} // {{task.id}}</td>
+              <td>{{index+1}}</td>
               <td>{{task.name}}</td>
-              <td>{{task.categoriesId}}</td>
-              <td>{{task.price}}</td>
+              <td>{{task.categories ? task.categories.name : '' }}</td>
+              <td>{{currency(task.price)}}</td>
               <td>{{task.order_time}}</td>
               <td>
                 <img
@@ -143,7 +143,7 @@
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
-  head: { title: "Sản phẩm"},
+  head: { title: "Sản phẩm" },
   mounted() {
     this.getTasks();
   },
@@ -243,6 +243,10 @@ export default {
     handleChangePage(currentPage) {
       this.pagination.currentPage = currentPage;
       this.getTasks();
+    },
+    currency(x) {
+      x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
+      return x;
     }
   }
 };

@@ -112,14 +112,13 @@
                     this.$axios
                         .put("/users/changePassword/" + this.users.id, this.users)
                         .then(function (res) {
-                            alert("cập nhật thông tin thành công");
+                            self.flashMessage.success({
+                                title: "Success",
+                                message: "Update Success"
+                            });
                             self.$router.push('/');
-                        });
-                } else
-                    return self.flashMessage.error({
-                        title: "Error",
-                        message: "password fail"
-                    });
+                        })
+                }
             }
         }
     }

@@ -101,7 +101,7 @@
                     <li style="margin-top: 30px;" >
                       <a
                         @click="$router.push('/register')"
-                        style="margin-left:-70px; margin-top:-20px"
+                        style="margin-left:-70px"
                       >Register</a>
                     </li>
                     <li>
