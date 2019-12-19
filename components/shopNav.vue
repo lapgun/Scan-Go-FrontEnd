@@ -2,56 +2,45 @@
   <div>
     <div class="left-sidebar">
       <h2>DANH MỤC SẢN PHẨM</h2>
-      <div class="panel-group category-products" id="accordian">
-        <!--category-productsr-->
-        <div v-for="(cat,index) in cats" :key="index" class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">
-              <a
-                data-parent="#accordian" href="#"
-                @click="$router.push('/shop/product/'+cat.id)"
-              >{{cat.name}}</a>
-              <span data-toggle="collapse" class="badge pull-right" :href="'#a'+cat.id">
-                <i class="fa fa-plus"></i>
-              </span>
-            </h4>
-          </div>
-          <div :id="'a'+cat.id" class="panel-collapse collapse">
-            <div class="panel-body">
-              <ul>
-                <li v-for="(menu,key) in menus" :key="key" v-show="menu.cat_parent == cat.id">
-                  <a href="#" @click="$router.push('/shop/product/'+menu.id)">{{menu.name}}</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
+      <div class="mainmenu pull-left" v-for="(cat,index) in cats" :key="index">
+        <ul class="nav navbar-nav collapse navbar-collapse">
+          <li style="display:block" class="dropdown">
+            <a href="#" @click="$router.push('/shop/product/'+cat.id)">
+              {{cat.name}}
+              <i class="fa fa-angle-down"></i>
+            </a>
+            <ul role="menu" class="sub-menu">
+              <li li v-for="(menu,key) in menus" :key="key" v-show="menu.cat_parent == cat.id">
+                <a href="#" @click="$router.push('/shop/product/'+menu.id)">{{menu.name}}</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </div>
-      <!--/category-products-->
     </div>
   </div>
 </template>
 <script>
 export default {
-  data: function() {
+  data() {
     return {
       cats: [],
       menus: []
     };
   },
-  mounted: function() {
+  mounted() {
     this.getCatParent();
     this.getCatProduct();
   },
   methods: {
-    getCatParent: function() {
+    getCatParent() {
       let self = this;
       let id = 0;
       this.$axios.get("/categories/cat_parent/" + id).then(function(res) {
         self.cats = res.data.data.rows;
       });
     },
-    getCatProduct: function() {
+    getCatProduct() {
       let self = this;
       this.$axios.get("/categories/cat_product").then(function(res) {
         self.menus = res.data.data.rows;

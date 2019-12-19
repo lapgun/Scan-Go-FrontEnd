@@ -11,46 +11,61 @@
             <div class="features_items">
               <!--features_items-->
               <h2 class="title text-center">Sản phẩm</h2>
-              <div class="col-sm-4" v-for="(product, index) in products" :key="index">
-                <div class="product-image-wrapper">
-                  <div class="single-products">
-                    <div class="productinfo text-center">
-                      <a @click="$router.push('/shop/product_detail/'+product.id)">
-                        <img
-                          style="width:250px; height:250px"
-                          :src="`/${default_image ? default_image[index]: ''}`"
-                        />
-                      </a>
-                      <h2>{{currency(product.price)}}</h2>
-                      <p>{{product.name}}</p>
-                      <qrcode-vue
-                        :value="'/shop/product_detail/'+product.id"
-                        size="100"
-                        level="H"
-                      ></qrcode-vue>
-                     <div>
-                          <a
-                            v-if=" 1 < product.quantity"
-                            class="cart_quantity_down btn btn-success"
-                            @click="decrement(product.id)"
-                          >-</a>
+              <div v-if="this.products.length == 0">
+                <h3>Không có sản phẩm nào.</h3>
+                <p
+                  style="margin-top:30px; font-size:16px"
+                >Xin lỗi, không có kết quả nào tương ứng với tìm kiếm của bạn.</p>
+                <p style="font-size:16px">Vui lòng thử lại.</p>
+              </div>
+              <div v-else>
+                <h3 style="display:inline">{{cat_name}}</h3>
+                <p style="display:inline; font-size:15px">({{this.products.length}} sản phẩm)</p>
+                <div v-for="(product, index) in products" :key="index">
+                  <div class="col-sm-4">
+                    <div>
+                      <div class="product-image-wrapper">
+                        <div class="single-products">
+                          <div class="productinfo text-center">
+                            <a @click="$router.push('/shop/product_detail/'+product.id)">
+                              <img
+                                style="width:250px; height:250px"
+                                :src="`/${default_image ? default_image[index]: ''}`"
+                              />
+                            </a>
+                            <h2>{{currency(product.price)}}</h2>
+                            <p>{{product.name}}</p>
+                            <qrcode-vue
+                              :value="'/shop/product_detail/'+product.id"
+                              size="100"
+                              level="H"
+                            ></qrcode-vue>
+                            <div>
+                              <a
+                                v-if=" 1 < product.quantity"
+                                class="cart_quantity_down btn btn-success"
+                                @click="decrement(product.id)"
+                              >-</a>
 
-                          <a v-else class="cart_quantity_down btn btn-success">-</a>
+                              <a v-else class="cart_quantity_down btn btn-success">-</a>
 
-                          <p class="quantity_cart">{{product.quantity}}</p>
+                              <p class="quantity_cart">{{product.quantity}}</p>
 
-                          <a
-                            class="cart_quantity_up btn btn-success"
-                            @click="increment(product.id)"
-                          >+</a>
-                          <a
-                            style="margin-top:26px;margin-left:10px"
-                            @click="addToCart(product)"
-                            class="btn btn-default add-to-cart"
-                          >
-                            <i class="fa fa-shopping-cart"></i>
-                          </a>
+                              <a
+                                class="cart_quantity_up btn btn-success"
+                                @click="increment(product.id)"
+                              >+</a>
+                              <a
+                                style="margin-top:26px;margin-left:10px"
+                                @click="addToCart(product)"
+                                class="btn btn-default add-to-cart"
+                              >
+                                <i class="fa fa-shopping-cart"></i>
+                              </a>
+                            </div>
+                          </div>
                         </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -88,12 +103,15 @@ export default {
     await this.getByMenu();
     await this.getByCat();
     this.getPicture();
+    this.getCatName();
   },
   data() {
     return {
       products: {},
       default_image: [],
-      array: []
+      array: [],
+      length: "",
+      cat_name: ""
     };
   },
   components: {
@@ -101,7 +119,7 @@ export default {
     shopFooter,
     shopNav,
     QrcodeVue,
-    chatShop,
+    chatShop
   },
   methods: {
     async getByMenu() {
@@ -135,6 +153,14 @@ export default {
           self.default_image.push(default_image);
         });
       });
+    },
+    getCatName() {
+      let self = this;
+      this.$axios
+        .get("/categories/" + this.$route.params.id)
+        .then(function(res) {
+          self.cat_name = res.data.data.name;
+        });
     },
     addToCart(product) {
       product = {

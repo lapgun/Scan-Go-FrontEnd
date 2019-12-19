@@ -97,7 +97,8 @@
                   class="btn btn-info"
                   @click="$router.push('/categories/edit/'+task.id)"
                 >Update</b-button>
-                <b-button class="btn btn-info" variant="danger" @click="delTasks(task.id)">Delete</b-button>
+                <b-button variant="danger" @click="delTasks(task.id)">Delete</b-button>
+                <b-button @click="$router.push('/categories')">Back</b-button>
               </td>
             </tr>
           </tbody>

@@ -42,7 +42,7 @@
                   <!--/product-information-->
                   <img src="~assets/images/product-details/new.jpg" class="newarrival" alt />
                   <h2>{{product.name}}</h2>
-                  <p>Web ID: 1089772</p>
+                  <h4>{{product.categories.name}}</h4>
                   <p v-if="average == 0">Chưa có đánh giá</p>
                   <star-rating
                     v-else
@@ -92,13 +92,6 @@
                   <p>
                     <b>Brand:</b> Scan & go
                   </p>
-                  <a href>
-                    <img
-                      src="~assets/images/product-details/share.png"
-                      class="share img-responsive"
-                      alt
-                    />
-                  </a>
                 </div>
                 <!--/product-information-->
               </div>
@@ -307,6 +300,7 @@ export default {
     getProducts() {
       let self = this;
       this.$axios.get("/products/" + this.$route.params.id).then(function(res) {
+        console.log(res);
         self.product = res.data.data;
         self.form.productId = res.data.data.id;
         Object.keys(self.product.images).forEach(function(key) {
