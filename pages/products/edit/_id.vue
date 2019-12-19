@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <h1>Chỉnh Sửa thông tin</h1>
-
     <br />Name:
     <input
       v-model="form.name"

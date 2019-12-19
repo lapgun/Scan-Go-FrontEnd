@@ -23,6 +23,7 @@
   </div>
 </template>
 <script>
+const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
   mounted() {
     this.getAdmins();

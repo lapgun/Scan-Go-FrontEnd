@@ -5,7 +5,8 @@
       <admin />
       <div class="col-sm-9 col-lg-10 sidebar" style="margin-top:50px">
         <div style="display:inline" class="form-group">
-          <input style="width:30%; display:inherit;margin-bottom:50px; float:right; margin-top:20px"
+          <input
+            style="width:30%; display:inherit;margin-bottom:50px; float:right; margin-top:20px"
             type="text"
             class="form-control"
             placeholder="Search"
@@ -28,7 +29,7 @@
               <td>{{comment.name}}</td>
               <td>{{comment.comment}}</td>
               <td>{{comment.rating}}</td>
-              <td>{{comment.productId}}</td>
+              <td>{{comment.product ? comment.product.name : ""}}</td>
               <td>
                 <b-button @click="handleCancel(comment.id)" variant="danger">Delete</b-button>
               </td>
@@ -51,12 +52,12 @@ const Cookie = process.client ? require("js-cookie") : undefined;
 import adminNav from "~/components/adminNav.vue";
 import admin from "~/components/admin.vue";
 export default {
-  components :{
+  components: {
     adminNav,
     admin
   },
   mounted() {
-    this.getComment()
+    this.getComment();
   },
   data() {
     return {
@@ -79,13 +80,13 @@ export default {
             this.pagination.perPage
         )
         .then(function(res) {
-          console.log(res)
+          console.log(res);
           self.comments = res.data.data;
           self.pagination = res.data.pagination;
         });
     },
     handleChangePage(currentPage) {
-       this.pagination.currentPage = currentPage;
+      this.pagination.currentPage = currentPage;
       this.getComment();
     },
     handleDelete(id) {

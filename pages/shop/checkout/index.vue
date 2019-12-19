@@ -184,9 +184,11 @@ export default {
     updateOrderTime() {
       this.cart.forEach(element => {
         this.$axios
-          .put("/products/" + element.id, { quantity: element.quantity })
+          .put("/products/update/order_time/" + element.id, {
+            quantity: element.quantity
+          })
           .then(function(res) {
-            console.log("update order time")
+            console.log("update order time");
           });
       });
     },

@@ -4,7 +4,11 @@
     <div>
       <admin />
       <div class="col-sm-9 col-lg-10 sidebar" style="margin-top:50px">
-        <b-button style="margin-bottom:20px" @click="$router.push('/slide/create')" variant="info">Create</b-button>
+        <b-button
+          style="margin-bottom:20px"
+          @click="$router.push('/slide/create')"
+          variant="info"
+        >Create</b-button>
         <table class="table table-bordered">
           <thead>
             <tr>
@@ -34,13 +38,12 @@
     </div>
   </div>
 </template>
-
 <script>
 import adminNav from "~/components/adminNav.vue";
 import admin from "~/components/admin.vue";
 export default {
   head: { title: "Slide" },
-  components :{
+  components: {
     adminNav,
     admin
   },
@@ -62,6 +65,7 @@ export default {
     getSlides() {
       let self = this;
       this.$axios.get("/slide").then(function(res) {
+        console.log(res);
         self.slides = res.data.rows;
       });
     },

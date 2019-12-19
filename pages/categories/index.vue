@@ -19,12 +19,17 @@
             placeholder="Search"
           />
         </div>
+        <label>
+          <h5>Hiện thị theo:</h5>
+          <b-form-select v-model="cat_parent" :options="options" @change="getTasks"></b-form-select>
+        </label>
         <table id="my-table" class="table table-bordered">
           <thead>
             <tr>
-              <th>STT</th>
-              <th>name</th>
-              <th style="width:300px">cat_parent</th>
+              <th>Number</th>
+              <th>Name</th>
+              <th>Product</th>
+              <th>Cat_parent</th>
               <th>Edit</th>
             </tr>
           </thead>
@@ -32,38 +37,44 @@
             <tr v-for="(task,index) in tasks" :key="index">
               <td>{{index+1}}</td>
               <td>{{task.name}}</td>
+              <td>
+                <b-button
+                  variant="info"
+                  @click="$router.push('/categories/product/'+task.id)"
+                >Product</b-button>
+              </td>
               <td v-if="task.cat_parent!=0">{{task.cat_parent_name}}</td>
               <td v-else>
                 <b-button
-                  variant="success"
-                  v-b-toggle="'a-'+task.id"
+                  :id="'a-'+task.id"
                   @click="getCatChild(task.id)"
+                  variant="success"
                 >Show cat's child</b-button>
+                <b-popover :target="'a-'+task.id" triggers="click">
+                  <table class="table table-bordered" style="width:500px">
+                    <thead>
+                      <th>Name</th>
+                      <th>Edit</th>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(child,key) in childs" :key="key">
+                        <td>{{child.name}}</td>
+                        <td>
+                          <b-button
+                            variant="info"
+                            @click="$router.push('/categories/details/'+child.id)"
+                          >Details</b-button>
+                          <b-button
+                            variant="warning"
+                            @click="$router.push('/categories/edit/'+child.id)"
+                          >Update</b-button>
+                          <b-button variant="danger" @click="delTasks(child.id)">Delete</b-button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </b-popover>
               </td>
-              <b-collapse :id="'a-'+task.id">
-                <table class="table table-bordered">
-                  <thead>
-                    <th>Name</th>
-                    <th>Edit</th>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(child,key) in childs" :key="key">
-                      <td>{{child.name}}</td>
-                      <td>
-                        <b-button
-                          variant="info"
-                          @click="$router.push('/categories/details/'+child.id)"
-                        >Details</b-button>
-                        <b-button
-                          variant="warning"
-                          @click="$router.push('/categories/edit/'+child.id)"
-                        >Update</b-button>
-                        <b-button variant="danger" @click="delTasks(childs.id)">Delete</b-button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </b-collapse>
               <td>
                 <b-button
                   variant="info"
@@ -94,6 +105,7 @@ export default {
   },
   mounted() {
     this.getTasks();
+    this.checkAdmin();
   },
   data() {
     return {
@@ -105,9 +117,9 @@ export default {
       cancel: false,
       cat_parent: "all",
       options: [
-        { value: "all", text: "Tất cả" },
-        { value: "0", text: "Danh mục cha" },
-        { value: "1", text: "Danh mục con" }
+        { value: "all", text: "All" },
+        { value: "0", text: "Parent Categories" },
+        { value: "1", text: "Child Categories" }
       ]
     };
   },
@@ -148,29 +160,24 @@ export default {
     delTasks(id) {
       this.$swal
         .fire({
-          title: "Bạn chắc chắn muốm xóa?",
-          icon: "warning",
+          title: "Are you sure?",
           showCancelButton: true,
           confirmButtonText: "Yes, delete it!",
           cancelButtonText: "No, keep it"
         })
         .then(result => {
           if (result.value) {
-            this.$swal.fire("Xóa!", "Bạn xóa thể loại thành công!.", "success");
             let self = this;
             this.$axios.delete("/categories/" + id).then(function(res) {
+              self.$swal.fire("Success", res.data.message, "success");
               self.getTasks();
             });
-          } else if (result.dismiss === this.$swal.DismissReason.cancel) {
-            this.$swal.fire(
-              "Cancelled",
-              "Your imaginary file is safe :)",
-              "error"
-            );
+          } else {
+            this.$swal.fire("Cancelled", "Your file is safe", "error");
           }
         });
     },
-    getAdmins() {
+    checkAdmin() {
       let self = this;
       this.$axios.get("/users/decoded").then(function(res) {
         self.user_id = res.data.decoded.user_id;
@@ -178,11 +185,6 @@ export default {
           self.$router.push("/");
         }
       });
-    },
-    handleLogout() {
-      Cookie.remove("token");
-      this.$store.commit("setToken", null);
-      this.$router.push("/login");
     }
   }
 };

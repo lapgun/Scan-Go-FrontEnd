@@ -5,7 +5,8 @@
       <admin />
       <div class="col-sm-9 col-lg-10 sidebar">
         <div style="display:inline" class="form-group">
-          <input style="width:30%; display:inherit;margin-bottom:50px; float:right; margin-top:20px"
+          <input
+            style="width:30%; display:inherit;margin-bottom:50px; float:right; margin-top:20px"
             type="text"
             @change="handleSearch"
             v-model="search"
@@ -32,19 +33,9 @@
             <tr v-for="(user, index) in users" :key="index">
               <td>{{user.id}}</td>
               <td>{{user.name}}</td>
-              <td>
-                {{user.role}}
-                <b-button
-                  v-if="user.role == 0"
-                  variant="warning"
-                  @click="admin(user.id,user.role)"
-                >Admin</b-button>
-                <b-button
-                  v-if="user.role == 1"
-                  variant="warning"
-                  @click="admin(user.id,user.role)"
-                >Is not an admin?</b-button>
-              </td>
+              <td v-if="user.role==0">Custormer</td>
+              <td v-if="user.role==1">Admin</td>
+              <td v-if="user.role==2">Super Admin</td>
               <td>{{user.email}}</td>
               <td>{{user.address}}</td>
               <td>
@@ -68,7 +59,7 @@ import adminNav from "~/components/adminNav.vue";
 import admin from "~/components/admin.vue";
 export default {
   head: { title: "User" },
-  components :{
+  components: {
     adminNav,
     admin
   },

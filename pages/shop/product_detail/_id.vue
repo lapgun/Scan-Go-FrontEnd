@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="loaded">
     <shopHeader @user_id="user_id=$event" />
     <section>
       <div class="container">
@@ -53,7 +53,7 @@
                     :show-rating="false"
                     :increment="0.25"
                   ></star-rating>
-                  <h3>{{product.price}} đ</h3>
+                  <h3>{{currency(product.price)}}</h3>
                   <div>
                     <h4>Số lượng:</h4>
                     <div>
@@ -198,7 +198,7 @@
                       @click="$router.push('/shop/product_detail/'+product.id)"
                       alt
                     />
-                    <h3>{{product.price}} đ</h3>
+                    <h3>{{currency(product.price)}}</h3>
                     <p>{{product.name}}</p>
                     <div>
                       <a
@@ -253,6 +253,7 @@ export default {
   },
   data: function() {
     return {
+      loaded: false,
       user_id: "",
       day: [],
       comment: "",
@@ -319,6 +320,7 @@ export default {
             }
           }
         });
+        self.loaded = true;
       });
     },
     getById() {
@@ -367,9 +369,11 @@ export default {
     },
     handleSubmit() {
       let self = this;
-      this.$axios.post("/comment", this.form).then(function(res) {});
-      this.getCommentProducts();
-      this.form = "";
+      this.$axios.post("/comment", this.form).then(function(res) {
+        self.getCommentProducts();
+        self.form.comment = "";
+        self.form.rating = 0;
+      });
     },
     getCommentProducts() {
       let self = this;

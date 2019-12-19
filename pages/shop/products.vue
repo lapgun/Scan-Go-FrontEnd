@@ -161,7 +161,7 @@ export default {
   data() {
     return {
       products: [],
-      length:'',
+      length: "",
       order: [
         {
           value: ["name", "ASC"],
@@ -218,7 +218,7 @@ export default {
       this.$axios
         .get("/products/search?search=" + this.$route.query.search)
         .then(function(res) {
-          console.log(res)
+          console.log(res);
           self.products = res.data.data;
         });
     },

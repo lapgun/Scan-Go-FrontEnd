@@ -89,7 +89,7 @@ export default {
     admin
   },
   mounted() {
-    this.getTasks()
+    this.getTasks();
   },
   data() {
     return {
@@ -114,24 +114,26 @@ export default {
     };
   },
   methods: {
-    getTasks(){
-      let self = this
-      this.$axios.get("/products").then(function(res){
-        console.log(res)
-        self.tasks = res.data.data
-      })
+    getTasks() {
+      let self = this;
+      this.$axios
+        .post(
+          "/products/sort?currentPage=" +
+            this.pagination.currentPage +
+            "&perPage=" +
+            this.pagination.perPage,
+          this.order_by
+        )
+        .then(function(res) {
+          self.tasks = res.data.data;
+          self.pagination = res.data.pagination;
+        });
     },
     getProductsByOrder() {
       let self = this;
       self.tasks = [];
       self.pagination.currentPage = 1;
       this.getTasks();
-    },
-    delTasks(id) {
-      let self = this;
-      this.$axios.delete("/products/" + id).then(function(res) {
-        self.getTasks();
-      });
     },
     handleSearch() {
       let self = this;
@@ -143,6 +145,7 @@ export default {
         });
     },
     delTasks(id) {
+      let self = this;
       this.$swal
         .fire({
           title: "Bạn chắc chắn muốm xóa?",
@@ -153,17 +156,13 @@ export default {
         })
         .then(result => {
           if (result.value) {
-            this.$swal.fire("Xóa!", "Bạn xóa sản phẩm thành công!.", "success");
             let self = this;
             this.$axios.delete("/products/" + id).then(function(res) {
+              self.$swal.fire("Success", res.data.message, "success");
               self.getTasks();
             });
-          } else if (result.dismiss === this.$swal.DismissReason.cancel) {
-            this.$swal.fire(
-              "Cancelled",
-              "Your imaginary file is safe :)",
-              "error"
-            );
+          } else {
+            this.$swal.fire("Cancelled", "Your file is safe", "error");
           }
         });
     },

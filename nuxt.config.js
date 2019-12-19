@@ -29,18 +29,18 @@ export default {
         "~/assets/js/qrCodeReader.js"
       ]
     },
-      {
-        src: "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js",
-        type: "text/javascript"
-      },
-      {
-        src: "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js",
-        type: "text/javascript"
-      },
-      {
-        src: "https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js",
-        type: "text/javascript"
-      }
+    {
+      src: "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js",
+      type: "text/javascript"
+    },
+    {
+      src: "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js",
+      type: "text/javascript"
+    },
+    {
+      src: "https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js",
+      type: "text/javascript"
+    }
     ]
   },
   /*
@@ -143,6 +143,6 @@ export default {
     /*
      ** Build configuration
      */
-    extend(config, ctx) {}
+    extend(config, ctx) { }
   }
 };

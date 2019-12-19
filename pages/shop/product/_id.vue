@@ -19,7 +19,7 @@
                 <p style="font-size:16px">Vui lòng thử lại.</p>
               </div>
               <div v-else>
-                <!-- <h3 style="display:inline">{{this.products[0].category.name}}</h3> -->
+                <h3 style="display:inline">{{cat_name}}</h3>
                 <p style="display:inline; font-size:15px">({{this.products.length}} sản phẩm)</p>
                 <div v-for="(product, index) in products" :key="index">
                   <div class="col-sm-4">
@@ -103,13 +103,15 @@ export default {
     await this.getByMenu();
     await this.getByCat();
     this.getPicture();
+    this.getCatName();
   },
   data() {
     return {
       products: {},
       default_image: [],
       array: [],
-      length: ""
+      length: "",
+      cat_name: ""
     };
   },
   components: {
@@ -125,7 +127,6 @@ export default {
       const res = await this.$axios.get(
         `/products/menu/${this.$route.params.id}`
       );
-      console.log(res);
       self.products = res.data.data;
     },
     async getByCat() {
@@ -133,7 +134,6 @@ export default {
       const res = await this.$axios.get(
         `/categories/cat_parent/${this.$route.params.id}`
       );
-      console.log("by cat", res); 
       let data = res.data.data.rows;
       data.forEach(element => {
         element.products.forEach(e => {
@@ -153,6 +153,14 @@ export default {
           self.default_image.push(default_image);
         });
       });
+    },
+    getCatName() {
+      let self = this;
+      this.$axios
+        .get("/categories/" + this.$route.params.id)
+        .then(function(res) {
+          self.cat_name = res.data.data.name;
+        });
     },
     addToCart(product) {
       product = {
