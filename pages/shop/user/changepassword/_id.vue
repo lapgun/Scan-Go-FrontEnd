@@ -1,19 +1,20 @@
 <template>
   <div>
-       <shopHeader />
-    <FlashMessage :position="'right bottom'" />
+    <shopHeader/>
+    <FlashMessage :position="'right bottom'"/>
     <!-- content -->
     <div class="container">
       <div class="row">
         <div class="col-sm-3">
-          <shopUser />
+          <shopUser/>
         </div>
         <div class="col-sm-9" style="margin-bottom:100px">
           <div class="card">
             <div
               class="card-header text-md-center"
               style="font-size: 20px;font-weight: bold"
-            >Thay đổi mật khẩu truy cập</div>
+            >Thay đổi mật khẩu truy cập
+            </div>
             <div class="card-body" style="font-style: italic">
               <div class="row">
                 <div class="col-12 col-md-8">
@@ -55,7 +56,8 @@
                           style="margin-top:15px"
                           class="btn btn-dark"
                           @click="$router.push('/')"
-                        >Back</button>
+                        >Back
+                        </button>
                       </a>
                     </div>
                   </div>
@@ -67,61 +69,57 @@
       </div>
     </div>
     <!-- end content -->
-    <shopFooter />
-    <chatShop />
+    <shopFooter/>
+    <chatShop/>
   </div>
 </template>
 <script>
-import shopFooter from "~/components/shopFooter.vue";
-import shopHeader from "~/components/shopHeader.vue";
-import shopUser from "~/components/shopUser.vue";
-import chatShop from "~/components/chatShop.vue";
-export default {
-  head: { title: "Thay đổi mật khẩu" },
-  components: {
-    shopHeader,
-    shopFooter,
-    shopUser,
-    chatShop
-  },
-  mounted() {
-    this.getUsers();
-  },
-  data() {
-    return {
-      users: {
-        oldPassword: "",
-        newPassword: "",
-        confirmPassword: ""
-      }
-    };
-  },
-  methods: {
-    getUsers() {
-      let self = this;
-      this.$axios.get("/users/detail/" + this.$route.params.id).then(function(res) {
-        self.users = res.data.data;
-      });
-    },
-    handelSubmit() {
-      let self = this;
-      if (this.users.newPassword == this.users.confirmPassword) {
-        this.$axios
-          .put("/users/changePassword/" + this.users.id, this.users)
-          .then(function(res) {
-            self.flashMessage.success({
-              title: "Success",
-              message: "Update Success"
-            });
-            self.$router.push('/');
+    import shopFooter from "~/components/shopFooter.vue";
+    import shopHeader from "~/components/shopHeader.vue";
+    import shopUser from "~/components/shopUser.vue";
+    import chatShop from "~/components/chatShop.vue";
 
-          });
-      } else
-        return self.flashMessage.error({
-          title: "Error",
-          message: "password fail"
-        });
+    export default {
+        head: {title: "Thay đổi mật khẩu"},
+        components: {
+            shopHeader,
+            shopFooter,
+            shopUser,
+            chatShop
+        },
+        mounted() {
+            this.getUsers();
+        },
+        data() {
+            return {
+                users: {
+                    oldPassword: "",
+                    newPassword: "",
+                    confirmPassword: ""
+                }
+            };
+        },
+        methods: {
+            getUsers() {
+                let self = this;
+                this.$axios.get("/users/detail/" + this.$route.params.id).then(function (res) {
+                    self.users = res.data.data;
+                });
+            },
+            handelSubmit() {
+                let self = this;
+                if (this.users.newPassword == this.users.confirmPassword) {
+                    this.$axios
+                        .put("/users/changePassword/" + this.users.id, this.users)
+                        .then(function (res) {
+                            self.flashMessage.success({
+                                title: "Success",
+                                message: "Update Success"
+                            });
+                            self.$router.push('/');
+                        })
+                }
+            }
+        }
     }
-  }
-};
 </script>

@@ -1,4 +1,5 @@
 <template>
+
   <div id="login">
     <div class="container">
       <div>
@@ -28,11 +29,12 @@
                   <div
                     class="error"
                     v-if="!$v.user.password.minLength"
-                  >password must have at least {{$v.user.password.$params.minLength.min}} letters.</div>
+                  >password must have at least {{$v.user.password.$params.minLength.min}} letters.
+                  </div>
                 </b-form-group>
 
                 <div class="form-group text-xl-center">
-                  <input type="submit" class="btn btn-info btn-md" value="Submit" />
+                  <input type="submit" class="btn btn-info btn-md" value="Submit"/>
                   <b-button variant="success" @click="$router.push('/register')">Register</b-button>
                 </div>
               </div>
@@ -45,90 +47,92 @@
 </template>
 
 <script>
-const Cookie = process.client ? require("js-cookie") : undefined;
-import { required, minLength, email } from "vuelidate/lib/validators";
-export default {
-  head: { title: "Đăng nhập" },
-  mounted() {
-    console.log("token", this.$store.state.token);
-  },
-  data() {
-    return {
-      user: {
-        email: "",
-        password: "",
-        id: "",
-        role: ""
-      },
-      repassword: ""
-    };
-  },
-  validations: {
-    user: {
-      email: {
-        required,
-        email
-      },
-      password: {
-        required,
-        minLength: minLength(4)
-      }
-    }
-  },
-  methods: {
-    handleLogin(id) {
-      let self = this;
-      if (this.$v.$invalid) {
-        alert("Please check the form agian");
-      } else {
-        this.$axios.post("/login", this.user).then(function(res) {
-          if (res.data.error) {
-            alert(res.data.message);
-          } else {
-            alert('Đăng nhập thành công');
-            self.$store.commit("setToken", res.data.token);
-            Cookie.set("token", res.data.token);
-            if (res.data.data.role == 1 || res.data.data.role == 2) {
-              self.$store.commit("setRole", "admin");
-              Cookie.set("role", "admin");
-              self.$router.push("/user/home");
-            } else {
-              self.$router.push("/");
+    const Cookie = process.client ? require("js-cookie") : undefined;
+    import {required, minLength, email} from "vuelidate/lib/validators";
+
+    export default {
+        head: {title: "Đăng nhập"},
+        mounted() {
+            console.log("token", this.$store.state.token);
+        },
+        data() {
+            return {
+                user: {
+                    email: "",
+                    password: "",
+                    id: "",
+                    role: ""
+                },
+                repassword: ""
+            };
+        },
+        validations: {
+            user: {
+                email: {
+                    required,
+                    email
+                },
+                password: {
+                    required,
+                    minLength: minLength(4)
+                }
             }
-          }
-        });
-      }
+        },
+        methods: {
+            handleLogin(id) {
+                let self = this;
+                if (this.$v.$invalid) {
+                    alert("Please check the form agian");
+                } else {
+                    this.$axios.post("/login", this.user).then(function (res) {
+                        if (res.data.error) {
+                            alert(res.data.message);
+                        } else {
+                            alert('Đăng nhập thành công');
+                            self.$store.commit("setToken", res.data.token);
+                            Cookie.set("token", res.data.token);
+                            if (res.data.data.role == 1 || res.data.data.role == 2) {
+                                self.$store.commit("setRole", "admin");
+                                Cookie.set("role", "admin");
+                                self.$router.push("/user/home");
+                            } else {
+                                self.$router.push("/");
+
+                            }
+                        }
+                    })
+                }
+            }
+        }
     }
-  }
-};
 </script>
 <style scoped>
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #17a2b8;
-  height: 100vh;
-}
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #17a2b8;
+    height: 100vh;
+  }
 
-#login .container #login-row #login-column #login-box {
-  margin-top: 120px;
-  max-width: 600px;
-  height: 450px;
-  border: 1px solid #9c9c9c;
-  background-color: #eaeaea;
-}
+  #login .container #login-row #login-column #login-box {
+    margin-top: 120px;
+    max-width: 600px;
+    height: 450px;
+    border: 1px solid #9c9c9c;
+    background-color: #eaeaea;
+  }
 
-#login .container #login-row #login-column #login-box #login-form {
-  padding: 20px;
-}
+  #login .container #login-row #login-column #login-box #login-form {
+    padding: 20px;
+  }
 
-#login
+  #login
   .container
   #login-row
   #login-column
   #login-box
   #login-form
   #register-link {
-  margin-top: -85px;
-}
+    margin-top: -85px;
+  }
 </style>

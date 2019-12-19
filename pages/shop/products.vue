@@ -86,7 +86,7 @@
                         <h2>{{currency(product.price)}}</h2>
                         <p>{{product.name}}</p>
                         <qrcode-vue
-                          :value="'/shop/product_detail/'+product.id"
+                          :value="`https://localhost:3000/shop/product_detail/${product.id}`"
                           size="100"
                           level="H"
                         ></qrcode-vue>
@@ -258,7 +258,7 @@ export default {
       };
       let pro = this.cart.find(element => element.id == product.id);
       if (pro) {
-        alert("Đã tồn tại sản phẩm trong giỏ hàng");
+        this.flashMessage.warning({title : "warning", message: "Đã tồn tại sản phẩm trong giỏ hàng"});
       } else this.$store.dispatch("addToCart", product);
       this.$store.dispatch("setCart", this.cart);
       localStorage.setItem("cart", JSON.stringify(this.cart));
