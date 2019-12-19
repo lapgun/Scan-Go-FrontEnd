@@ -1,5 +1,7 @@
 <template>
+
   <div class="container mt-5">
+    <FlashMessage :position="'right bottom'"/>
     <shopHeader />
     <div class="row justify-content-center">
       <div class="col-md-4">
@@ -89,7 +91,7 @@ export default {
     handelSubmit: function() {
       let self = this;
       this.$axios.put("/users/" + this.form.id, this.form).then(function(res) {
-        alert("Cập nhật thông tin thành công");
+          self.flashMessage.success({title : "success", message: "Cập nhật thành công!"});
       });
       self.$router.push("/shop/user/detail/" + this.user_id);
     }

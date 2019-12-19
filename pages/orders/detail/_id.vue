@@ -59,7 +59,6 @@
 export default {
   head: { title: "Chi tiết order" },
   mounted() {
-    let self = this;
     this.getOrders();
     setTimeout(() => {
       this.getProducts();

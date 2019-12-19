@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="loaded">
     <shopHeader @user_id="user_id=$event" />
     <section>
       <div class="container">
@@ -42,7 +42,7 @@
                   <!--/product-information-->
                   <img src="~assets/images/product-details/new.jpg" class="newarrival" alt />
                   <h2>{{product.name}}</h2>
-                  <h4>{{product.categories.name}}</h4>
+                  <p>Web ID: 1089772</p>
                   <p v-if="average == 0">Chưa có đánh giá</p>
                   <star-rating
                     v-else
@@ -53,7 +53,7 @@
                     :show-rating="false"
                     :increment="0.25"
                   ></star-rating>
-                  <h3>{{product.price}} đ</h3>
+                  <h3>{{currency(product.price)}}</h3>
                   <div>
                     <h4>Số lượng:</h4>
                     <div>
@@ -92,6 +92,13 @@
                   <p>
                     <b>Brand:</b> Scan & go
                   </p>
+                  <a href>
+                    <img
+                      src="~assets/images/product-details/share.png"
+                      class="share img-responsive"
+                      alt
+                    />
+                  </a>
                 </div>
                 <!--/product-information-->
               </div>
@@ -191,7 +198,7 @@
                       @click="$router.push('/shop/product_detail/'+product.id)"
                       alt
                     />
-                    <h3>{{product.price}} đ</h3>
+                    <h3>{{currency(product.price)}}</h3>
                     <p>{{product.name}}</p>
                     <div>
                       <a
@@ -246,6 +253,7 @@ export default {
   },
   data: function() {
     return {
+      loaded: false,
       user_id: "",
       day: [],
       comment: "",
@@ -300,7 +308,6 @@ export default {
     getProducts() {
       let self = this;
       this.$axios.get("/products/" + this.$route.params.id).then(function(res) {
-        console.log(res);
         self.product = res.data.data;
         self.form.productId = res.data.data.id;
         Object.keys(self.product.images).forEach(function(key) {
@@ -313,6 +320,7 @@ export default {
             }
           }
         });
+        self.loaded = true;
       });
     },
     getById() {
@@ -361,9 +369,11 @@ export default {
     },
     handleSubmit() {
       let self = this;
-      this.$axios.post("/comment", this.form).then(function(res) {});
-      this.getCommentProducts();
-      this.form = "";
+      this.$axios.post("/comment", this.form).then(function(res) {
+        self.getCommentProducts();
+        self.form.comment = "";
+        self.form.rating = 0;
+      });
     },
     getCommentProducts() {
       let self = this;

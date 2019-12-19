@@ -40,6 +40,7 @@ export default {
   methods: {
     getDecoded() {
       let self = this;
+
       this.$axios.get("/users/decoded").then(function(res) {
         self.user_name = res.data.decoded.user_name;
         self.role = res.data.decoded.user_role;

@@ -62,7 +62,7 @@
                     <tr>
                       <td>Tổng giá tiền</td>
                       <span>
-                        <td>{{currency(total)}}</td>
+                        <td>{{currency(total)}}đ</td>
                       </span>
                     </tr>
                   </table>
