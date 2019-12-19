@@ -40,7 +40,11 @@
                         <p class="quantity_cart" type="number">{{product.quantity}}</p>
 
                         <a class="cart_quantity_up btn btn-success" @click="increment(product.id)">+</a>
-                        <a style="margin-top:26px;margin-left:10px" @click="addToCart(product)" class="btn btn-default add-to-cart">
+                        <a
+                          style="margin-top:26px;margin-left:10px"
+                          @click="addToCart(product)"
+                          class="btn btn-default add-to-cart"
+                        >
                           <i class="fa fa-shopping-cart"></i>
                         </a>
                       </div>
@@ -81,8 +85,15 @@
 
                         <p class="quantity_cart">{{product.quantity}}</p>
 
-                        <a class="cart_quantity_up btn btn-success" @click="increment1(product.id)">+</a>
-                        <a style="margin-top:26px;margin-left:10px" @click="addToCart(product)" class="btn btn-default add-to-cart">
+                        <a
+                          class="cart_quantity_up btn btn-success"
+                          @click="increment1(product.id)"
+                        >+</a>
+                        <a
+                          style="margin-top:26px;margin-left:10px"
+                          @click="addToCart(product)"
+                          class="btn btn-default add-to-cart"
+                        >
                           <i class="fa fa-shopping-cart"></i>
                         </a>
                       </div>
@@ -104,14 +115,14 @@ import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
 import QrcodeVue from "qrcode.vue";
-import chatShop from "~/components/chatShop.vue"
+import chatShop from "~/components/chatShop.vue";
 export default {
   head: { title: "Trang chủ" },
   data() {
     return {
       products: [],
       cart: [],
-      newests: [],
+      newests: []
     };
   },
   components: {
@@ -141,13 +152,13 @@ export default {
       x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
       return x;
     },
-    getByOrderTime () {
+    getByOrderTime() {
       let self = this;
       this.$axios.get("/products/order_time").then(function(res) {
         self.products = res.data.data;
       });
     },
-    getById () {
+    getById() {
       let self = this;
       this.$axios.get("/products/newest").then(function(res) {
         self.newests = res.data.data;

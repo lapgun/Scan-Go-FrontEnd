@@ -70,9 +70,7 @@ export default {
       });
     },
     handleSubmit() {
-      // this.$swal.fire("Yes...", "Tạo thể loại thành công!", "success");
       let self = this;
-
       this.$axios.post("/categories", this.form).then(function(res) {
         if (res.data.error) {
           self.$swal.fire("Failled", res.data.message, "error");
