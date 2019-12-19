@@ -8,7 +8,7 @@
           style="display:inline"
           variant="success"
           @click="$router.push('/categories/create')"
-        >Create new task</b-button>
+        >Create category</b-button>
         <div style="display:inline" class="form-group">
           <input
             style="width:30%; display:inherit;margin-bottom:50px; float:right"
@@ -19,75 +19,103 @@
             placeholder="Search"
           />
         </div>
+        <div style="display:inline">
+          <h5 style="display:inline;margin-top:10px; margin-left:10px">Hiện thị theo:</h5>
+          <b-form-select
+            style="width:20%"
+            v-model="cat_parent"
+            :options="options"
+            @change="getTasks"
+          ></b-form-select>
+        </div>
         <div v-if="this.search">
-          <h4>Có {{this.tasks.length}} kết quả với từ khóa '{{this.search}}'</h4>
-          <table id="my-table" class="table table-bordered">
-            <thead>
-              <tr>
-                <th>STT</th>
-                <th>name</th>
-                <th style="width:300px">cat_parent</th>
-                <th>Edit</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(task,index) in tasks" :key="index">
-                <td>{{index+1}}</td>
-                <td>{{task.name}}</td>
-                <td v-if="task.cat_parent!=0">{{task.cat_parent_name}}</td>
-                <td v-else>
-                  <b-button
-                    variant="success"
-                    v-b-toggle="'a-'+task.id"
-                    @click="getCatChild(task.id)"
-                  >Show cat's child</b-button>
-                </td>
-                <b-collapse :id="'a-'+task.id">
-                  <table class="table table-bordered">
-                    <thead>
-                      <th>Name</th>
-                      <th>Edit</th>
-                    </thead>
-                    <tbody>
-                      <tr v-for="(child,key) in childs" :key="key">
-                        <td>{{child.name}}</td>
-                        <td>
-                          <b-button
-                            variant="info"
-                            @click="$router.push('/categories/details/'+child.id)"
-                          >Details</b-button>
-                          <b-button
-                            variant="warning"
-                            @click="$router.push('/categories/edit/'+child.id)"
-                          >Update</b-button>
-                          <b-button variant="danger" @click="delTasks(childs.id)">Delete</b-button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </b-collapse>
-                <td>
-                  <b-button
-                    variant="info"
-                    @click="$router.push('/categories/details/'+task.id)"
-                  >Details</b-button>
-                  <b-button
-                    variant="warning"
-                    @click="$router.push('/categories/edit/'+task.id)"
-                  >Update</b-button>
-                  <b-button variant="danger" @click="delTasks(task.id)">Delete</b-button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <div v-if="this.tasks.length > 0">
+            <h3>Có {{this.tasks.length}} kết quả với từ khóa '{{this.search}}'</h3>
+            <table id="my-table" class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Number</th>
+                  <th>Name</th>
+                  <th>Product</th>
+                  <th>Cat_parent</th>
+                  <th>Edit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(task,index) in tasks" :key="index">
+                  <td>{{index+1}}</td>
+                  <td>{{task.name}}</td>
+                  <td>
+                    <b-button
+                      variant="info"
+                      @click="$router.push('/categories/product/'+task.id)"
+                    >Product</b-button>
+                  </td>
+                  <td v-if="task.cat_parent!=0">{{task.cat_parent_name}}</td>
+                  <td v-else>
+                    <b-button
+                      :id="'a-'+task.id"
+                      @click="getCatChild(task.id)"
+                      variant="success"
+                    >Show cat's child</b-button>
+                    <b-popover :target="'a-'+task.id" triggers="click">
+                      <table class="table table-bordered" style="width:500px">
+                        <thead>
+                          <th>Name</th>
+                          <th>Edit</th>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(child,key) in childs" :key="key">
+                            <td>{{child.name}}</td>
+                            <td>
+                              <b-button
+                                variant="info"
+                                @click="$router.push('/categories/details/'+child.id)"
+                              >Details</b-button>
+                              <b-button
+                                variant="warning"
+                                @click="$router.push('/categories/edit/'+child.id)"
+                              >Update</b-button>
+                              <b-button variant="danger" @click="delTasks(child.id)">Delete</b-button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </b-popover>
+                  </td>
+                  <td>
+                    <b-button
+                      variant="info"
+                      @click="$router.push('/categories/details/'+task.id)"
+                    >Details</b-button>
+                    <b-button
+                      variant="warning"
+                      @click="$router.push('/categories/edit/'+task.id)"
+                    >Update</b-button>
+                    <b-button variant="danger" @click="delTasks(task.id)">Delete</b-button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div v-else>
+            <div v-if="this.tasks.length == 0">
+              <h3>Có {{this.tasks.length}} kết quả với từ khóa '{{this.search}}'</h3>
+              <p
+                style="margin-top:20px; font-size:15px"
+              >Xin lỗi, không có kết quả nào tương ứng với tìm kiếm của bạn.</p>
+              <p style="font-size:15px">Vui lòng thử lại.</p>
+            </div>
+          </div>
         </div>
         <div v-else>
           <table id="my-table" class="table table-bordered">
             <thead>
               <tr>
-                <th>STT</th>
-                <th>name</th>
-                <th style="width:300px">cat_parent</th>
+                <th>Number</th>
+                <th>Name</th>
+                <th>Product</th>
+                <th>Cat_parent</th>
                 <th>Edit</th>
               </tr>
             </thead>
@@ -95,38 +123,44 @@
               <tr v-for="(task,index) in tasks" :key="index">
                 <td>{{index+1}}</td>
                 <td>{{task.name}}</td>
+                <td>
+                  <b-button
+                    variant="info"
+                    @click="$router.push('/categories/product/'+task.id)"
+                  >Product</b-button>
+                </td>
                 <td v-if="task.cat_parent!=0">{{task.cat_parent_name}}</td>
                 <td v-else>
                   <b-button
-                    variant="success"
-                    v-b-toggle="'a-'+task.id"
+                    :id="'a-'+task.id"
                     @click="getCatChild(task.id)"
+                    variant="success"
                   >Show cat's child</b-button>
+                  <b-popover :target="'a-'+task.id" triggers="click">
+                    <table class="table table-bordered" style="width:500px">
+                      <thead>
+                        <th>Name</th>
+                        <th>Edit</th>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(child,key) in childs" :key="key">
+                          <td>{{child.name}}</td>
+                          <td>
+                            <b-button
+                              variant="info"
+                              @click="$router.push('/categories/details/'+child.id)"
+                            >Details</b-button>
+                            <b-button
+                              variant="warning"
+                              @click="$router.push('/categories/edit/'+child.id)"
+                            >Update</b-button>
+                            <b-button variant="danger" @click="delTasks(child.id)">Delete</b-button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </b-popover>
                 </td>
-                <b-collapse :id="'a-'+task.id">
-                  <table class="table table-bordered">
-                    <thead>
-                      <th>Name</th>
-                      <th>Edit</th>
-                    </thead>
-                    <tbody>
-                      <tr v-for="(child,key) in childs" :key="key">
-                        <td>{{child.name}}</td>
-                        <td>
-                          <b-button
-                            variant="info"
-                            @click="$router.push('/categories/details/'+child.id)"
-                          >Details</b-button>
-                          <b-button
-                            variant="warning"
-                            @click="$router.push('/categories/edit/'+child.id)"
-                          >Update</b-button>
-                          <b-button variant="danger" @click="delTasks(childs.id)">Delete</b-button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </b-collapse>
                 <td>
                   <b-button
                     variant="info"
@@ -158,6 +192,7 @@ export default {
   },
   mounted() {
     this.getTasks();
+    this.checkAdmin();
   },
   data() {
     return {
@@ -165,13 +200,14 @@ export default {
       user_id: "",
       tasks: [],
       childs: [],
+      length: "",
       search: "",
       cancel: false,
       cat_parent: "all",
       options: [
-        { value: "all", text: "Tất cả" },
-        { value: "0", text: "Danh mục cha" },
-        { value: "1", text: "Danh mục con" }
+        { value: "all", text: "All" },
+        { value: "0", text: "Parent Categories" },
+        { value: "1", text: "Child Categories" }
       ]
     };
   },
@@ -212,8 +248,7 @@ export default {
     delTasks(id) {
       this.$swal
         .fire({
-          title: "Bạn chắc chắn muốm xóa?",
-          icon: "warning",
+          title: "Are you sure?",
           showCancelButton: true,
           confirmButtonText: "Yes, delete it!",
           cancelButtonText: "No, keep it"
@@ -222,7 +257,7 @@ export default {
           if (result.value) {
             let self = this;
             this.$axios.delete("/categories/" + id).then(function(res) {
-              self.$swal.fire("Xóa!", res.data.message, "success");
+              self.$swal.fire("Success", res.data.message, "success");
               self.getTasks();
             });
           } else {
@@ -230,7 +265,7 @@ export default {
           }
         });
     },
-    getAdmins() {
+    checkAdmin() {
       let self = this;
       this.$axios.get("/users/decoded").then(function(res) {
         self.user_id = res.data.decoded.user_id;
@@ -238,11 +273,6 @@ export default {
           self.$router.push("/");
         }
       });
-    },
-    handleLogout() {
-      Cookie.remove("token");
-      this.$store.commit("setToken", null);
-      this.$router.push("/login");
     }
   }
 };

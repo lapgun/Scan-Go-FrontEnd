@@ -62,7 +62,7 @@
                     <tr>
                       <td>Tổng giá tiền</td>
                       <span>
-                        <td>{{currency(total)}}</td>
+                        <td>{{currency(total)}}đ</td>
                       </span>
                     </tr>
                   </table>
@@ -86,15 +86,6 @@
                   <input type="text" placeholder="Email của bạn" :value="user_email" />
                 </form>
               </div>
-              <!-- <no-ssr>
-                <paypal-checkout
-                  env="sandbox"
-                  :amount="total"
-                  currency="USD"
-                  :client="paypal"
-                  :items="myItems"
-                ></paypal-checkout>
-              </no-ssr>-->
               <div ref="paypal"></div>
               <a class="btn btn-primary" @click="$router.push('/shop/cart')">Trở lại</a>
             </div>
@@ -103,14 +94,14 @@
       </div>
     </section>
     <shopFooter />
-    <chatShop />
+    <qrCodeReader />
   </div>
 </template>
 <script>
 const Cookies = process.client ? require("js-cookie") : undefined;
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
-import chatShop from "~/components/chatShop.vue";
+import qrCodeReader from "~/components/qrCodeReader.vue";
 export default {
   head: { title: "Thanh toán" },
   created() {
@@ -142,7 +133,7 @@ export default {
   components: {
     shopHeader,
     shopFooter,
-    chatShop
+    qrCodeReader
   },
   mounted() {
     this.totalPrice();
@@ -193,9 +184,11 @@ export default {
     updateOrderTime() {
       this.cart.forEach(element => {
         this.$axios
-          .put("/products/" + element.id, { quantity: element.quantity })
+          .put("/products/update/order_time/" + element.id, {
+            quantity: element.quantity
+          })
           .then(function(res) {
-            console.log("update order time")
+            console.log("update order time");
           });
       });
     },

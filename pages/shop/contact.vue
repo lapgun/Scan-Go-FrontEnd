@@ -112,19 +112,19 @@
       </div>
     </div>
     <shopFooter />
-    <chatShop />
+    <qrCodeReader />
   </div>
 </template>
 <script>
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
-import chatShop from "~/components/chatShop.vue";
+import qrCodeReader from "~/components/qrCodeReader.vue";
 export default {
   head: { title: "Liên hệ" },
   components: {
     shopHeader,
     shopFooter,
-    chatShop
+    qrCodeReader
   }
 };
 </script>

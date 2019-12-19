@@ -162,7 +162,7 @@ export default {
             this.order_status
         )
         .then(function(res) {
-          self.orders = res.data.data;
+            self.orders = res.data.data;
           self.pagination = res.data.pagination;
         });
     },

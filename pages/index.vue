@@ -1,11 +1,11 @@
 <template>
   <div>
-    <shopHeader />
+    <shopHeader/>
     <section>
       <div class="container">
         <div class="row">
           <div class="col-sm-3">
-            <shopNav />
+            <shopNav/>
           </div>
           <div class="col-sm-9 padding-right">
             <div class="features_items">
@@ -70,7 +70,7 @@
                       <h2>{{currency(product.price)}}</h2>
                       <p>{{product.name}}</p>
                       <qrcode-vue
-                        :value="'http://localhost:3000/shop/product_detail/'+product.id"
+                        :value="`https://localhost:3000/shop/product_detail/${product.id}`"
                         size="100"
                         level="H"
                       ></qrcode-vue>
@@ -106,8 +106,8 @@
         </div>
       </div>
     </section>
-    <shopFooter />
-    <chatShop />
+    <qrCodeReader />
+    <shopFooter/>
   </div>
 </template>
 <script>
@@ -115,7 +115,7 @@ import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
 import QrcodeVue from "qrcode.vue";
-import chatShop from "~/components/chatShop.vue";
+import qrCodeReader from "~/components/qrCodeReader.vue";
 export default {
   head: { title: "Trang chủ" },
   data() {
@@ -130,7 +130,7 @@ export default {
     shopFooter,
     shopNav,
     QrcodeVue,
-    chatShop
+    qrCodeReader
   },
   created() {
     if (process.browser) {
@@ -207,15 +207,15 @@ export default {
 };
 </script>
 <style scoped>
-#default_image {
-  width: 248px;
-  height: 270px;
-  object-fit: cover;
-}
-.quantity_cart {
-  display: inline;
-  margin-left: 10px;
-  margin-right: 10px;
-}
-</style>
+  #default_image {
+    width: 248px;
+    height: 270px;
+    object-fit: cover;
+  }
 
+  .quantity_cart {
+    display: inline;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+</style>

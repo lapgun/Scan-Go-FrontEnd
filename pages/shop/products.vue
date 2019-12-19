@@ -93,7 +93,7 @@
                         <h2>{{currency(product.price)}}</h2>
                         <p>{{product.name}}</p>
                         <qrcode-vue
-                          :value="'/shop/product_detail/'+product.id"
+                          :value="`https://localhost:3000/shop/product_detail/${product.id}`"
                           size="100"
                           level="H"
                         ></qrcode-vue>
@@ -132,7 +132,7 @@
       </div>
     </section>
     <shopFooter />
-    <chatShop />
+    <qrCodeReader />
   </div>
 </template>
 
@@ -140,7 +140,7 @@
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
-import chatShop from "~/components/chatShop.vue";
+import qrCodeReader from "~/components/qrCodeReader.vue";
 import InfiniteLoading from "vue-infinite-loading";
 import QrcodeVue from "qrcode.vue";
 export default {
@@ -168,7 +168,7 @@ export default {
   data() {
     return {
       products: [],
-      length:'',
+      length: "",
       order: [
         {
           value: ["name", "ASC"],
@@ -210,7 +210,7 @@ export default {
     shopNav,
     InfiniteLoading,
     QrcodeVue,
-    chatShop
+    qrCodeReader
   },
   methods: {
     currency(x) {
@@ -264,7 +264,7 @@ export default {
       };
       let pro = this.cart.find(element => element.id == product.id);
       if (pro) {
-        alert("Đã tồn tại sản phẩm trong giỏ hàng");
+        this.flashMessage.warning({title : "warning", message: "Đã tồn tại sản phẩm trong giỏ hàng"});
       } else this.$store.dispatch("addToCart", product);
       this.$store.dispatch("setCart", this.cart);
       localStorage.setItem("cart", JSON.stringify(this.cart));

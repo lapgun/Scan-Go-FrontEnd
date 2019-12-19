@@ -25,7 +25,8 @@ export default {
                     "~/assets/js/main.js",
                     "~/assets/js/price-range.js",
                     "~/assets/js/jquery.prettyPhoto.js",
-                    "~/assets/js/jquery.scrollUp.min.js"
+                    "~/assets/js/jquery.scrollUp.min.js",
+                    "~/assets/js/qrCodeReader.js"
                 ]
             },
             {
@@ -57,7 +58,9 @@ export default {
         "~/assets/css/animate.css",
         "~/assets/css/main.css",
         "~/assets/css/price-range.css",
-        "~/assets/css/responsive.css"
+        "~/assets/css/responsive.css",
+        "~/assets/css/qrCodeReader.css"
+
     ],
     /*
      ** Plugins to load before mounting the App
@@ -88,7 +91,19 @@ export default {
             mode: "client"
         },
         {
+            src: "~/plugins/vue-qrCodeReader.js",
+            mode: "client"
+        },
+        {
+            src: "~/plugins/alert.js",
+            mode: "client"
+        },
+        {
             src: "~/plugins/qrcode.js",
+            mode: "client"
+        },
+        {
+            src: "~/plugins/vue-infinite-loading.js",
             mode: "client"
         }
     ],

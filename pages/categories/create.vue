@@ -8,6 +8,7 @@
           <br />
           <label>Please select your cat's name</label>
           <input
+            style="width:50%"
             v-model="form.name"
             type="text"
             class="form-control"
@@ -15,6 +16,8 @@
           />
           <label>Please select your cat's parent</label>
           <b-form-select
+            style="width: 50%;
+    display: block"
             v-model="form.cat_parent"
             @change="getCatName(form.cat_parent)"
             :options="options"
@@ -40,12 +43,16 @@ export default {
   mounted() {
     this.getCategories();
   },
+  components: {
+    adminNav,
+    admin
+  },
   data() {
     return {
       form: {
         name: "",
         cat_parent: "",
-        cat_parent_name: ""
+        cat_parent_name: 0
       },
       options: [{ value: 0, text: "This is parent category " }]
     };
@@ -71,6 +78,7 @@ export default {
     },
     handleSubmit() {
       let self = this;
+      console.log(this.form);
       this.$axios.post("/categories", this.form).then(function(res) {
         if (res.data.error) {
           self.$swal.fire("Failled", res.data.message, "error");

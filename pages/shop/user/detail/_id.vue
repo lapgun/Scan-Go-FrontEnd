@@ -57,21 +57,21 @@
       </div>
     </div>
     <shopFooter />
-    <chatShop />
+    <qrCodeReader />
   </div>
 </template>
 <script>
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopUser from "~/components/shopUser.vue";
-import chatShop from "~/components/chatShop.vue";
+import qrCodeReader from "~/components/qrCodeReader.vue";
 export default {
   head: { title: "Thông tin bản thân" },
   components: {
     shopHeader,
     shopFooter,
     shopUser,
-    chatShop
+    qrCodeReader
   },
   mounted() {
     this.getUsers();

@@ -1,5 +1,7 @@
 <template>
-  <div>
+
+  <div class="container mt-5">
+    <FlashMessage :position="'right bottom'"/>
     <shopHeader />
     <div class="container">
       <div class="row">
@@ -52,14 +54,14 @@
         </div>
       </div>
     </div>
-    <shopFooter />
+    <qrCodeReader />
   </div>
 </template>
 <script>
 const Cookie = process.client ? require("js-cookie") : undefined;
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
-import shopUser from "~/components/shopUser.vue";
+import qrCodeReader from "~/components/qrCodeReader.vue";
 export default {
   mounted: function() {
     this.getUsers();
@@ -67,7 +69,7 @@ export default {
   components: {
     shopHeader,
     shopFooter,
-    shopUser
+    qrCodeReader
   },
   data: function() {
     return {
@@ -93,7 +95,7 @@ export default {
     handelSubmit: function() {
       let self = this;
       this.$axios.put("/users/" + this.form.id, this.form).then(function(res) {
-        alert("Cập nhật thông tin thành công");
+          self.flashMessage.success({title : "success", message: "Cập nhật thành công!"});
       });
       self.$router.push("/shop/user/detail/" + this.user_id);
     }

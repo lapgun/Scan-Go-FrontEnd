@@ -119,14 +119,14 @@
       </div>
     </section>
     <shopFooter />
-    <chatShop />
+    <qrCodeReader />
   </div>
 </template>
 <script>
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
-import chatShop from "~/components/chatShop.vue";
+import qrCodeReader from "~/components/qrCodeReader.vue";
 export default {
   data() {},
   head: { title: "Blog" },
@@ -134,7 +134,7 @@ export default {
     shopHeader,
     shopFooter,
     shopNav,
-    chatShop
+    qrCodeReader
   }
 };
 </script>

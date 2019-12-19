@@ -157,7 +157,7 @@ import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
 import shopNav from "~/components/shopNav.vue";
 import QrcodeVue from "qrcode.vue";
-import chatShop from "~/components/chatShop.vue";
+import qrCodeReader from "~/components/qrCodeReader.vue";
 export default {
   head: { title: "Sản phẩm" },
   created() {
@@ -175,6 +175,7 @@ export default {
     await this.getByMenu();
     await this.getByCat();
     this.getPicture();
+    this.getCatName();
   },
   data() {
     return {
@@ -191,7 +192,7 @@ export default {
     shopFooter,
     shopNav,
     QrcodeVue,
-    chatShop
+    qrCodeReader
   },
   methods: {
     async getByMenu() {
@@ -226,6 +227,14 @@ export default {
           self.default_image.push(default_image);
         });
       });
+    },
+    getCatName() {
+      let self = this;
+      this.$axios
+        .get("/categories/" + this.$route.params.id)
+        .then(function(res) {
+          self.cat_name = res.data.data.name;
+        });
     },
     addToCart(product) {
       product = {

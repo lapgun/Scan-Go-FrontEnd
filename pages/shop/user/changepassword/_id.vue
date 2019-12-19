@@ -1,6 +1,6 @@
 <template>
   <div>
-       <shopHeader />
+    <shopHeader />
     <FlashMessage :position="'right bottom'" />
     <!-- content -->
     <div class="container">
@@ -68,21 +68,22 @@
     </div>
     <!-- end content -->
     <shopFooter />
-    <chatShop />
+    <qrCodeReader />
   </div>
 </template>
 <script>
 import shopFooter from "~/components/shopFooter.vue";
 import shopHeader from "~/components/shopHeader.vue";
 import shopUser from "~/components/shopUser.vue";
-import chatShop from "~/components/chatShop.vue";
+import qrCodeReader from "~/components/qrCodeReader.vue";
+
 export default {
   head: { title: "Thay đổi mật khẩu" },
   components: {
     shopHeader,
     shopFooter,
     shopUser,
-    chatShop
+    qrCodeReader
   },
   mounted() {
     this.getUsers();
@@ -99,9 +100,11 @@ export default {
   methods: {
     getUsers() {
       let self = this;
-      this.$axios.get("/users/detail/" + this.$route.params.id).then(function(res) {
-        self.users = res.data.data;
-      });
+      this.$axios
+        .get("/users/detail/" + this.$route.params.id)
+        .then(function(res) {
+          self.users = res.data.data;
+        });
     },
     handelSubmit() {
       let self = this;
@@ -113,14 +116,14 @@ export default {
               title: "Success",
               message: "Update Success"
             });
-            self.$router.push('/');
-
+            self.$router.push("/");
           });
-      } else
-        return self.flashMessage.error({
-          title: "Error",
-          message: "password fail"
-        });
+      }else {
+        self.flashMessage.error({
+          title:'Error',
+          message:'Update error'
+        })
+      }
     }
   }
 };

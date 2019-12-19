@@ -49,6 +49,11 @@
         <b-button variant="dark" @click="$router.push('/orders')">Trở lại</b-button>
       </div>
     </div>
+    <div class="text-center">
+      <b-button variant="success" disabled>
+        <b-spinner type="grow"></b-spinner>Loading...
+      </b-button>
+    </div>
   </div>
 </template>
 <script>
@@ -70,13 +75,15 @@ export default {
     return {
       orders: [],
       order_products: [],
-      products: []
+      products: [],
+      loaded: false
     };
   },
   methods: {
     getOrders() {
       let self = this;
       this.$axios.get("/orders/" + this.$route.params.id).then(function(res) {
+        console.log(res);
         self.orders = res.data;
         self.order_products = res.data.order_products;
       });
@@ -89,6 +96,11 @@ export default {
           self.products.push(pro);
         });
       });
+      this.loaded = true;
+    },
+    currency(x) {
+      x = x.toLocaleString("currency", { style: "currency", currency: "VND" });
+      return x;
     }
   }
 };

@@ -126,7 +126,6 @@ export default {
       this.$axios
         .get("/comment/search?search=" + this.search)
         .then(function(res) {
-          console.log(res);
           self.comments = res.data.data;
         });
     },

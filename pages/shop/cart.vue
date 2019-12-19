@@ -86,7 +86,7 @@
                   <ul>
                     <li>
                       Tổng tiền
-                      <span>{{currency(total)}}</span>
+                      <span>{{currency(total)}}đ</span>
                     </li>
                   </ul>
                   <a class="btn btn-default update" @click="$router.push('/')">Trở lại</a>
@@ -106,14 +106,14 @@
       </div>
     </section>
     <shopFooter />
-    <chatShop />
+    <qrCodeReader />
   </div>
 </template>
 <script>
 const Cookies = process.client ? require("js-cookie") : undefined;
 import shopHeader from "~/components/shopHeader.vue";
 import shopFooter from "~/components/shopFooter.vue";
-import chatShop from "~/components/chatShop.vue";
+import qrCodeReader from "~/components/qrCodeReader.vue";
 export default {
   head: { title: "Giỏ hàng" },
   created() {
@@ -136,7 +136,7 @@ export default {
   components: {
     shopHeader,
     shopFooter,
-    chatShop,
+    qrCodeReader,
   },
   mounted() {
     this.totalPrice();

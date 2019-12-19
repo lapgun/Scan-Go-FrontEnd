@@ -4,7 +4,7 @@
     <div>
       <admin />
       <div class="col-sm-8 col-lg-10 sidebar" style="margin-top:50px">
-        <b-button variant="success" @click="$router.push('/products/create')">Create new task</b-button>
+        <b-button variant="success" @click="$router.push('/products/create')">Create product</b-button>
         <label>
           <b-form-select v-model="order_by" :options="order" @change="getProductsByOrder()"></b-form-select>
         </label>
@@ -19,7 +19,8 @@
           />
         </div>
         <div v-if="this.search">
-          <h4>Có {{this.tasks.length}} kết quả với từ khóa '{{this.search}}'</h4>
+          <div v-if="this.tasks.length > 0">
+            <h4>Có {{this.tasks.length}} kết quả với từ khóa '{{this.search}}'</h4>
           <table id="my-table" class="table table-bordered">
             <thead>
               <tr>
@@ -69,6 +70,16 @@
               </tr>
             </tbody>
           </table>
+          </div>
+          <div v-else>
+            <div v-if="this.tasks.length == 0">
+              <h3>Có {{this.tasks.length}} kết quả với từ khóa '{{this.search}}'</h3>
+              <p
+                style="margin-top:20px; font-size:15px"
+              >Xin lỗi, không có kết quả nào tương ứng với tìm kiếm của bạn.</p>
+              <p style="font-size:15px">Vui lòng thử lại.</p>
+            </div>
+          </div>
         </div>
         <div v-else>
           <table id="my-table" class="table table-bordered">
@@ -120,14 +131,14 @@
               </tr>
             </tbody>
           </table>
+          <b-pagination
+            v-model="pagination.currentPage"
+            :total-rows="pagination.total"
+            :per-page="pagination.perPage"
+            aria-controls="my-table"
+            @change="handleChangePage"
+          ></b-pagination>
         </div>
-        <b-pagination
-          v-model="pagination.currentPage"
-          :total-rows="pagination.total"
-          :per-page="pagination.perPage"
-          aria-controls="my-table"
-          @change="handleChangePage"
-        ></b-pagination>
       </div>
     </div>
   </div>
@@ -178,7 +189,6 @@ export default {
           this.order_by
         )
         .then(function(res) {
-          console.log(res);
           self.tasks = res.data.data;
           self.pagination = res.data.pagination;
         });
