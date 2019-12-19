@@ -25,7 +25,8 @@ export default {
         "~/assets/js/main.js",
         "~/assets/js/price-range.js",
         "~/assets/js/jquery.prettyPhoto.js",
-        "~/assets/js/jquery.scrollUp.min.js"
+        "~/assets/js/jquery.scrollUp.min.js",
+        "~/assets/js/qrCodeReader.js"
       ]
     },
       {
@@ -50,32 +51,50 @@ export default {
 
      ** Global CSS
      */
-    plugins: [
-        "~/plugins/axios",
-        "~/plugins/v-validate",
-        {
-            src: "~/plugins/vue-ckeditor5.js",
-            mode: "client"
-        },
-        { src: "~/plugins/paypal.js", ssr: false },
-        { src: "~/plugins/vue-socket", mode: "client" },
-        {
-            src: "~/plugins/star-rating.js",
-            mode: "client"
-        },
-        {
-            src: "~/plugins/vue-flash.js",
-            mode: "client"
-        },
-        {
-            src: "~/plugins/sweetalert2.js",
-            mode: "client"
-        },
-        {
-            src: "~/plugins/chart.js",
-            mode: "client"
-        }
-    ],
+  css: [
+    "~/assets/css/style.css",
+    "~/assets/css/all.min.css",
+    "~/assets/css/bootstrap.min.css",
+    "~/assets/css/animate.css",
+    "~/assets/css/main.css",
+    "~/assets/css/price-range.css",
+    "~/assets/css/responsive.css",
+    "~/assets/css/qrCodeReader.css"
+
+  ],
+  /*
+   ** Plugins to load before mounting the App
+   */
+  plugins: [
+    "~/plugins/axios",
+    "~/plugins/v-validate",
+    {
+      src: "~/plugins/vue-ckeditor5.js",
+      mode: "client"
+    },
+    { src: "~/plugins/paypal.js", ssr: false },
+    { src: "~/plugins/vue-socket", mode: "client" },
+    {
+      src: "~/plugins/star-rating.js",
+      mode: "client"
+    },
+    {
+      src: "~/plugins/vue-flash.js",
+      mode: "client"
+    },
+    {
+      src: "~/plugins/sweetalert2.js",
+      mode: "client"
+    },
+    {
+      src: "~/plugins/chart.js",
+      mode: "client"
+    },
+    {
+      src: "~/plugins/vue-qrCodeReader.js",
+      mode: "client"
+    }
+  ],
 
   /*
    ** Nuxt.js dev-modules

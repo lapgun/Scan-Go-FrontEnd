@@ -62,7 +62,7 @@
             <div class="col-sm-4">
               <div class="logo pull-left">
                 <a href="#" @click="$router.push('/')">
-                  <img src="~assets/images/home/logo.png" alt />
+                  <img src="~assets/images/home/logo.png" alt/>
                 </a>
               </div>
             </div>
@@ -97,8 +97,8 @@
                       </a>
                     </li>
                   </template>
-                  <template v-else >
-                    <li style="margin-top: 30px;" >
+                  <template v-else>
+                    <li style="margin-top: 30px;">
                       <a
                         @click="$router.push('/register')"
                         style="margin-left:-70px"
@@ -139,7 +139,7 @@
             </div>
             <div class="col-sm-3" style="margin-top:-20px">
               <div class="search_box" style="display:inline">
-                <input v-model="search" @change="handleSearch" placeholder="Search" />
+                <input v-model="search" @change="handleSearch" placeholder="Search"/>
               </div>
               <div style="display:inline-block; font-size:25px;margin-bottom:-28px" v-if="user_id">
                 <div>
@@ -240,122 +240,114 @@
   </div>
 </template>
 <script>
-const Cookies = process.client ? require("js-cookie") : undefined;
-export default {
-  created() {
-    if (process.browser) {
-      if (localStorage.getItem("cart")) {
-        let cart = JSON.parse(localStorage.getItem("cart"));
-        return (this.cart = cart);
-      } else {
-        let cart = this.$store.getters.cart;
-        return (this.cart = cart);
-      }
-    }
-  },
-  mounted() {
-    if (this.$store.state.token) {
-      this.getUsers();
-    } else {
-      this.$router.push("/");
-    }
-    this.getSlides();
-    setTimeout(() => {
-      this.totalPrice();
-    }, 1000);
-  },
-  data() {
-    return {
-      cart: [],
-      users: [],
-      user_id: "",
-      user_name: "",
-      search: "",
-      slide: 0,
-      sliding: null,
-      infinite: true,
-      slidesToShow: 2,
-      slidesToScroll: 2,
-      slides: [],
-      total: 0
+    const Cookies = process.client ? require("js-cookie") : undefined;
+    export default {
+        created() {
+            if (process.browser) {
+                if (localStorage.getItem("cart")) {
+                    let cart = JSON.parse(localStorage.getItem("cart"));
+                    return (this.cart = cart);
+                } else {
+                    let cart = this.$store.getters.cart;
+                    return (this.cart = cart);
+                }
+            }
+        },
+        mounted() {
+            if (this.$store.state.token) {
+                this.getUsers();
+            } else {
+                this.$router.push("/");
+            }
+            this.getSlides();
+            setTimeout(() => {
+                this.totalPrice();
+            }, 1000);
+        },
+        data() {
+            return {
+                cart: [],
+                users: [],
+                user_id: "",
+                user_name: "",
+                search: "",
+                slide: 0,
+                sliding: null,
+                infinite: true,
+                slidesToShow: 2,
+                slidesToScroll: 2,
+                slides: [],
+                total: 0,
+            };
+        },
+        methods: {
+            getUsers() {
+                let self = this;
+                this.$axios.get("/users/decoded").then(function (res) {
+                    self.user_id = res.data.decoded.user_id;
+                    self.user_name = res.data.decoded.user_name;
+                    self.users = res.data.data;
+                    self.$emit("user_id", self.user_id);
+                });
+            },
+            handelLogout() {
+                Cookies.remove("token");
+                localStorage.removeItem("cart");
+                this.$store.commit("setToken", null);
+                this.$store.commit("setCart", []);
+                this.$router.push("/login");
+            },
+            handleSearch() {
+                let self = this;
+                this.$axios
+                    .get("/products/search?search=" + this.search)
+                    .then(function (res) {
+                        self.products = res.data.data;
+                        self.$emit("products", self.products);
+                        self.$router.push("/shop/products?search=" + self.search);
+                    });
+            },
+            totalPrice() {
+                let total = 0;
+                for (let i = 0; i < this.cart.length; i++) {
+                    total += this.cart[i].price * this.cart[i].quantity;
+                    this.total = total;
+                }
+            },
+            onSlileStart(slide) {
+                this.sliding = true;
+            },
+            onSlileEnd(slide) {
+                this.sliding = false;
+            },
+            getSlides() {
+                let self = this;
+                this.$axios.get("/slide").then(function (res) {
+                    self.slides = res.data.rows;
+                });
+            }
+        }
     };
-  },
-  created() {
-    if (process.browser) {
-      if (localStorage.getItem("cart")) {
-        let cart = JSON.parse(localStorage.getItem("cart"));
-        return (this.cart = cart);
-      } else {
-        let cart = this.$store.getters.cart;
-        return (this.cart = cart);
-      }
-    }
-  },
-  methods: {
-    getUsers() {
-      let self = this;
-      this.$axios.get("/users/decoded").then(function(res) {
-        self.user_id = res.data.decoded.user_id;
-        self.user_name = res.data.decoded.user_name;
-        self.users = res.data.data;
-        self.$emit("user_id", self.user_id);
-      });
-    },
-    handelLogout() {
-      Cookies.remove("token");
-      localStorage.removeItem("cart");
-      this.$store.commit("setToken", null);
-      this.$store.commit("setCart", []);
-      this.$router.push("/login");
-    },
-    handleSearch() {
-      let self = this;
-      this.$axios
-        .get("/products/search?search=" + this.search)
-        .then(function(res) {
-          self.products = res.data.data;
-          self.$emit("products", self.products);
-          self.$router.push("/shop/products?search=" + self.search);
-        });
-    },
-    totalPrice() {
-      let total = 0;
-      for (let i = 0; i < this.cart.length; i++) {
-        total += this.cart[i].price * this.cart[i].quantity;
-        this.total = total;
-      }
-    },
-    onSlileStart(slide) {
-      this.sliding = true;
-    },
-    onSlileEnd(slide) {
-      this.sliding = false;
-    },
-    getSlides() {
-      let self = this;
-      this.$axios.get("/slide").then(function(res) {
-        self.slides = res.data.rows;
-      });
-    }
-  }
-};
 </script>
 <style scoped>
-.cart_dropdown:hover {
-  background: #fff;
-}
-.cart_checkout_1,
-.cart_checkout_2 {
-  border: 1px solid #c1bbbb;
-  padding: 15px 15px;
-  width: 100px;
-  height: 40px;
-}
-.cart_checkout_1 {
-  margin-left: 30px;
-  float: right;
-}
-.cart_checkout_2 {
-  margin-left: 40px;
-}
+  .cart_dropdown:hover {
+    background: #fff;
+  }
+
+  .cart_checkout_1,
+  .cart_checkout_2 {
+    border: 1px solid #c1bbbb;
+    padding: 15px 15px;
+    width: 100px;
+    height: 40px;
+  }
+
+  .cart_checkout_1 {
+    margin-left: 30px;
+    float: right;
+  }
+
+  .cart_checkout_2 {
+    margin-left: 40px;
+  }
 </style>

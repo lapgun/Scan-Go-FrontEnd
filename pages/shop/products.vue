@@ -12,7 +12,7 @@
               <!--features_items-->
               <h2 class="title text-center">Sản phẩm</h2>
               <div v-if="this.$route.query.search">
-                <h4>Có {{result}} kết quả với từ khóa '{{this.$route.query.search}}'</h4>
+                <h4>Có {{this.products.length}} kết quả với từ khóa '{{this.$route.query.search}}'</h4>
                 <div class="col-sm-4" v-for="(product, index) in products" :key="index">
                   <div class="product-image-wrapper">
                     <div class="single-products">
@@ -86,7 +86,7 @@
                         <h2>{{currency(product.price)}}</h2>
                         <p>{{product.name}}</p>
                         <qrcode-vue
-                          :value="'/shop/product_detail/'+product.id"
+                          :value="`https://localhost:3000/shop/product_detail/${product.id}`"
                           size="100"
                           level="H"
                         ></qrcode-vue>
@@ -161,6 +161,7 @@ export default {
   data() {
     return {
       products: [],
+      length:'',
       order: [
         {
           value: ["name", "ASC"],
@@ -217,8 +218,8 @@ export default {
       this.$axios
         .get("/products/search?search=" + this.$route.query.search)
         .then(function(res) {
+          console.log(res)
           self.products = res.data.data;
-          self.result = res.data.data.length;
         });
     },
     getProducts() {

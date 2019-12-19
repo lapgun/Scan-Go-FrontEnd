@@ -38,7 +38,7 @@
                           style="margin-top:15px ;display:inline"
                           type="button"
                           class="btn btn-info"
-                          @click="$router.push('/user')"
+                          @click="$router.push('/user/home')"
                         >Back</button>
                       </span>
                     </div>
