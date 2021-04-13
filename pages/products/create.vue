@@ -81,6 +81,7 @@ export default {
     handleSubmit() {
       let self = this;
       this.$axios.post("/products", this.form).then(res => {
+        console.log(res);
         this.$router.push("/products");
       });
     },

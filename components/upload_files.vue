@@ -36,7 +36,6 @@ export default {
         for (let i = 0; i < this.files.length; i++) {
           formData.append("files", this.files[i]);
         }
-
         this.$axios
           .post("/gallery/upload", formData, {
             headers: { "Content-Type": "multipart/form-data" }

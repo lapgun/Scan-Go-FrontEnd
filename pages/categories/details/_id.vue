@@ -95,9 +95,9 @@
               <td>
                 <b-button
                   class="btn btn-info"
-                  @click="$router.push('/categories/edit/'+tasks.id)"
+                  @click="$router.push('/categories/edit/'+task.id)"
                 >Update</b-button>
-                <b-button class="btn btn-info" variant="danger" @click="delTasks(tasks.id)">Delete</b-button>
+                <b-button class="btn btn-info" variant="danger" @click="delTasks(task.id)">Delete</b-button>
               </td>
             </tr>
           </tbody>
@@ -122,7 +122,6 @@ export default {
       this.$axios
         .get("/categories/" + this.$route.params.id)
         .then(function(res) {
-          console.log("aaa", res);
           self.task = res.data.data;
         });
     },

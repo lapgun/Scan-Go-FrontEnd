@@ -133,7 +133,6 @@ export default {
     getTasks() {
       let self = this;
       this.$axios.get("/categories").then(function(res) {
-        console.log(res);
         self.tasks = res.data.data;
       });
     },
@@ -143,7 +142,6 @@ export default {
       this.$axios
         .get("/categories/search?search=" + this.search)
         .then(function(res) {
-          console.log(res);
           self.tasks = res.data.data;
         });
     },
@@ -156,7 +154,6 @@ export default {
     getAdmins: function() {
       let self = this;
       this.$axios.get("/users").then(function(res) {
-        console.log(res);
         self.user_id = res.data.decoded.user_id;
         self.users = res.data.data;
       });

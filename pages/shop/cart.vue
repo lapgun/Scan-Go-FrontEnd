@@ -1,6 +1,6 @@
 <template>
   <div>
-    <shopHeader></shopHeader>
+    <shopHeader v-bind:cart="cart" v-bind:total="total"/>
     <section>
       <div class="container">
         <section id="cart_items">
@@ -170,10 +170,11 @@ export default {
     },
     totalPrice() {
       let total = 0;
-      for (let i = 0; i < this.cart.length; i++) {
-        total += this.cart[i].price * this.cart[i].order_time;
-        this.total = total;
-      }
+      this.cart.forEach(function (value, index, array) {
+          total += value.price * value.order_time;
+      });
+
+      this.total = total;
     },
     quantity() {
       this.cart.forEach(element => {

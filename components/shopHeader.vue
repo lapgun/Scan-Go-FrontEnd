@@ -248,17 +248,6 @@
 <script>
 const Cookies = process.client ? require("js-cookie") : undefined;
 export default {
-  created() {
-    if (process.browser) {
-      if (localStorage.getItem("cart")) {
-        let cart = JSON.parse(localStorage.getItem("cart"));
-        return (this.cart = cart);
-      } else {
-        let cart = this.$store.getters.cart;
-        return (this.cart = cart);
-      }
-    }
-  },
   mounted() {
     if (this.$store.state.token) {
       this.getUsers();
@@ -268,6 +257,7 @@ export default {
     this.getSlides();
     this.totalPrice();
   },
+  props : ['cart','total'],
   data() {
     return {
       cart: [],
@@ -281,7 +271,7 @@ export default {
       slidesToShow: 2,
       slidesToScroll: 2,
       slides: [],
-      total: 0
+      total: 0,
     };
   },
   created() {
@@ -324,10 +314,11 @@ export default {
     },
     totalPrice() {
       let total = 0;
-      for (let i = 0; i < this.cart.length; i++) {
-        total += this.cart[i].price * this.cart[i].order_time;
-        this.total = total;
-      }
+      this.cart.forEach(function (value, index, array) {
+        total += value.price + value.order_time;
+      });
+
+      this.total = total;
     },
     onSlileStart(slide) {
       this.sliding = true;
