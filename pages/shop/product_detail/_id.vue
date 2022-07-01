@@ -1,6 +1,6 @@
 <template>
   <div>
-    <shopHeader @user_id="user_id=$event" />
+    <shopHeader @user_id="user_id=$event" v-bind:cart="cart" v-bind:total="total"/>
     <section>
       <div class="container">
         <div class="row">
@@ -70,7 +70,9 @@
                           type="text"
                           autocomplete="off"
                           size="2"
-                        >1</div>
+                        >
+                          {{ i }}
+                        </div>
                         <a class="cart_quantity_up btn btn-success" @click="increment(product.id)">+</a>
                       </div>
                     </div>
@@ -240,7 +242,8 @@ export default {
         productId: "",
         rating: 0
       },
-      average: ""
+      average: 0,
+      i : 1,
     };
   },
   created() {
@@ -300,12 +303,19 @@ export default {
       localStorage.setItem("cart", JSON.stringify(this.cart));
     },
     addToCart(product) {
+      let total = 0;
+      this.$store.dispatch("setCart", this.cart);
       let pro = this.cart.find(element => element.id == product.id);
       if (pro) {
         alert("Đã tồn tại sản phẩm trong giỏ hàng");
       } else this.$store.dispatch("addToCart", product);
-      this.$store.dispatch("setCart", this.cart);
+
       localStorage.setItem("cart", JSON.stringify(this.cart));
+      this.cart.forEach(function (value, index, array) {
+          total += value.price;
+      });
+
+      this.total = total;
     },
     getUsers() {
       let self = this;
@@ -337,8 +347,12 @@ export default {
       for (let i = 0; i < this.comments.length; i++) {
         total += this.comments[i].rating;
       }
+
       this.average = total / this.comments.length;
-    }
+    },
+    increment(){
+      console.log('aaa');
+    },
   }
 };
 </script>

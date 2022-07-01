@@ -1,6 +1,6 @@
 <template>
   <div>
-    <shopHeader v-bind:cart="cart" v-bind:total="total"/>
+    <shopHeader v-bind:cart="cart" v-bind:total="total" />
     <section>
       <div class="container">
         <div class="row">
@@ -97,13 +97,19 @@ export default {
   },
   created() {
     if (process.browser) {
+      let total = 0;
+      let cart = [];
       if (localStorage.getItem("cart")) {
-        let cart = JSON.parse(localStorage.getItem("cart"));
-        return (this.cart = cart);
+        cart = JSON.parse(localStorage.getItem("cart"));
       } else {
-        let cart = this.$store.getters.cart;
-        return (this.cart = cart);
+        cart = this.$store.getters.cart;
       }
+
+      cart.forEach(function (value, index, array) {
+        total += (value.price * value.count);
+      });
+
+      return [this.cart = cart, this.total = total];
     }
   },
   mounted() {
@@ -132,14 +138,15 @@ export default {
       this.$store.dispatch("setCart", this.cart);
       let pro = this.cart.find(element => element.id == product.id);
       if (pro) {
-        alert("Đã tồn tại sản phẩm trong giỏ hàng");
+        pro['count'] += 1;
       } else {
+        product['count'] = 1;
         this.$store.dispatch("addToCart", product);
       }
 
       localStorage.setItem("cart", JSON.stringify(this.cart));
       this.cart.forEach(function (value, index, array) {
-        total += value.price + value.order_time;
+        total += (value.price * value.count);
       });
 
       this.total = total;

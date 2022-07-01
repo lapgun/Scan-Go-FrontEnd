@@ -1,11 +1,11 @@
 <template>
   <div>
-    <shop-header @products="products=$event" />
+    <shopHeader v-bind:cart="cart" v-bind:total="total" @products="products=$event" />
     <section>
       <div class="container">
         <div class="row">
           <div class="col-sm-3">
-            <shopNav></shopNav>
+            <shopNav />
           </div>
           <div class="col-sm-9 padding-right">
             <div class="features_items">
@@ -42,7 +42,7 @@
               <div v-else>
                 <div style="width: 225px;margin-left: 598px;margin-bottom: 20px;">
                   Sắp xếp theo
-                  <b-form-select v-model="order_by" :options="order" @change="getProductsByOrder"></b-form-select>
+                  <b-form-select v-model="order_by" :options="order" @change="getProductsByOrder" />
                 </div>
                 <div class="col-sm-4" v-for="(product, index) in products" :key="index">
                   <div class="product-image-wrapper">
@@ -69,14 +69,14 @@
                     </div>
                   </div>
                 </div>
-                <infinite-loading @infinite="infiniteHandler"></infinite-loading>
+                <infinite-loading @infinite="infiniteHandler" />
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-    <shopFooter></shopFooter>
+    <shopFooter />
   </div>
 </template>
 <script>
@@ -86,17 +86,6 @@ import shopNav from "~/components/shopNav.vue";
 import InfiniteLoading from "vue-infinite-loading";
 import QrcodeVue from "qrcode.vue";
 export default {
-  created() {
-    if (process.browser) {
-      if (localStorage.getItem("cart")) {
-        let cart = JSON.parse(localStorage.getItem("cart"));
-        return (this.cart = cart);
-      } else {
-        let cart = this.$store.getters.cart;
-        return (this.cart = cart);
-      }
-    }
-  },
   mounted: function() {
     if (this.$route.query.search) {
       this.handleSearch();
@@ -106,7 +95,10 @@ export default {
   },
   data: function() {
     return {
+      cart : [],
+      total : 0,
       products: [],
+      count_pro : 0,
       order: [
         { value: ["name", "ASC"], text: "Tên từ A-Z" },
         { value: ["name", "DESC"], text: "Tên từ Z-A" },
@@ -130,6 +122,23 @@ export default {
     shopNav,
     InfiniteLoading,
     QrcodeVue
+  },
+  created() {
+    if (process.browser) {
+      let total = 0;
+      let cart = [];
+      if (localStorage.getItem("cart")) {
+        cart = JSON.parse(localStorage.getItem("cart"));
+      } else {
+        cart = this.$store.getters.cart;
+      }
+
+      cart.forEach(function (value, index, array) {
+        total += (value.price * value.count);
+      });
+
+      return [this.cart = cart, this.total = total];
+    }
   },
   methods: {
     currency(x) {
@@ -169,12 +178,22 @@ export default {
       this.getProducts();
     },
     addToCart(product) {
+      let total = 0;
+      this.$store.dispatch("setCart", this.cart);
       let pro = this.cart.find(element => element.id == product.id);
       if (pro) {
-        this.flashMessage.warning({title : "warning", message: "Đã tồn tại sản phẩm trong giỏ hàng"});
-      } else this.$store.dispatch("addToCart", product);
-      this.$store.dispatch("setCart", this.cart);
+        pro['count'] += 1;
+      } else {
+        product['count'] = 1;
+        this.$store.dispatch("addToCart", product);
+      }
+
       localStorage.setItem("cart", JSON.stringify(this.cart));
+      this.cart.forEach(function (value, index, array) {
+        total += (value.price * value.count);
+      });
+
+      this.total = total;
     },
     infiniteHandler($state) {
       setTimeout(() => {

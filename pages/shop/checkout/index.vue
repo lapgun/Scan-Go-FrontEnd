@@ -1,6 +1,6 @@
 <template>
   <div>
-    <shopHeader></shopHeader>
+    <shopHeader v-bind:cart="cart" v-bind:total="total" @products="products=$event" />
     <section id="cart_items">
       <div class="container">
         <div class="breadcrumbs">
@@ -48,11 +48,11 @@
                 </td>
                 <td class="cart_quantity">
                   <div class="cart_quantity_button">
-                    <p>{{item.order_time}}</p>
+                    <p>{{item.count}}</p>
                   </div>
                 </td>
                 <td class="cart_total">
-                  <p class="cart_total_price">{{currency(item.price * item.order_time)}}</p>
+                  <p class="cart_total_price">{{currency(item.price * item.count)}}</p>
                 </td>
               </tr>
               <tr>
@@ -103,13 +103,19 @@ import shopFooter from "~/components/shopFooter.vue";
 export default {
   created() {
     if (process.browser) {
+      let total = 0;
+      let cart = [];
       if (localStorage.getItem("cart")) {
-        let cart = JSON.parse(localStorage.getItem("cart"));
-        return (this.cart = cart);
+        cart = JSON.parse(localStorage.getItem("cart"));
       } else {
-        let cart = this.$store.getters.cart;
-        return (this.cart = cart);
+        cart = this.$store.getters.cart;
       }
+
+      cart.forEach(function (value, index, array) {
+        total += (value.price * value.count);
+      });
+
+      return [this.cart = cart, this.total = total];
     }
   },
   data() {
@@ -135,7 +141,6 @@ export default {
     this.totalPrice();
     this.getUsers();
     this.updateOrderTime();
-    console.log(this.cart);
     const script = document.createElement("script");
     script.src =
       "https://www.paypal.com/sdk/js?client-id=AfNZOlnY_KmQuNqPDXQp7ZxW5YKIn1C0jLk79D2HCkaTpU0W6g13y0G_RMI2573ePjvsN_MU9eSXHVLG";
@@ -157,10 +162,11 @@ export default {
     },
     totalPrice() {
       let total = 0;
-      for (let i = 0; i < this.cart.length; i++) {
-        total += this.cart[i].price * this.cart[i].order_time;
-        this.total = total;
-      }
+      this.cart.forEach(function (value, index, array) {
+        total += (value.price * value.count);
+      });
+
+      this.total = total;
     },
     handelSubmit() {
       let self = this;

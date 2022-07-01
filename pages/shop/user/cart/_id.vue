@@ -1,6 +1,6 @@
 <template>
   <div>
-    <shopHeader/>
+    <shopHeader v-bind:cart="cart" v-bind:total="total"/>
     <div class="container">
       <div class="row">
         <div class="col-sm-3">

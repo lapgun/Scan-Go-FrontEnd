@@ -40,7 +40,7 @@
                       </td>
                       <td class="cart_quantity">
                         <div class="cart_quantity_button">
-                          <template v-if=" 1 < item.order_time">
+                          <template v-if=" 1 < item.count">
                             <a
                               class="cart_quantity_down btn btn-success"
                               @click="decrement(item.id)"
@@ -54,13 +54,13 @@
                             type="text"
                             autocomplete="off"
                             size="2"
-                          >{{item.order_time}}</div>
+                          >{{item.count}}</div>
                           <a class="cart_quantity_up btn btn-success" @click="increment(item.id)">+</a>
                         </div>
                       </td>
                       <td>{{currency(item.price)}}</td>
                       <td class="cart_total">
-                        <p class="cart_total_price">{{currency(item.price * item.order_time)}}</p>
+                        <p class="cart_total_price">{{currency(item.price * item.count)}}</p>
                       </td>
                       <td class="cart_delete">
                         <a class="cart_quantity_delete" @click="removeItem(index)">
@@ -116,13 +116,20 @@ import shopFooter from "~/components/shopFooter.vue";
 export default {
   created() {
     if (process.browser) {
+      let total = 0;
+      let cart = [];
       if (localStorage.getItem("cart")) {
-        let cart = JSON.parse(localStorage.getItem("cart"));
-        return (this.cart = cart);
+        cart = JSON.parse(localStorage.getItem("cart"));
       } else {
-        let cart = this.$store.getters.cart;
-        return (this.cart = cart);
+        cart = this.$store.getters.cart;
       }
+
+      cart.forEach(function (value, index, array) {
+        total += (value.price * value.count);
+      });
+
+      console.log(cart);
+      return [this.cart = cart, this.total = total];
     }
   },
   data() {
@@ -156,14 +163,14 @@ export default {
     },
     increment(id) {
       for (let i = 0; i < this.cart.length; i++) {
-        if (this.cart[i].id === id) this.cart[i].order_time++;
+        if (this.cart[i].id === id) this.cart[i].count++;
       }
       this.totalPrice();
       this.setLocalStorage();
     },
     decrement(id) {
       for (let i = 0; i < this.cart.length; i++) {
-        if (this.cart[i].id === id) this.cart[i].order_time--;
+        if (this.cart[i].id === id) this.cart[i].count--;
       }
       this.totalPrice();
       this.setLocalStorage();
@@ -171,7 +178,7 @@ export default {
     totalPrice() {
       let total = 0;
       this.cart.forEach(function (value, index, array) {
-          total += value.price * value.order_time;
+        total += (value.price * value.count);
       });
 
       this.total = total;

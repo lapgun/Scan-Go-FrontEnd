@@ -1,11 +1,11 @@
 <template>
   <div>
-    <shopHeader @products="products=$event"></shopHeader>
+    <shopHeader @products="products=$event" />
     <section>
       <div class="container">
         <div class="row">
           <div class="col-sm-3">
-            <shopNav></shopNav>
+            <shopNav />
           </div>
           <div class="col-sm-9 padding-right">
             <div class="features_items">
@@ -27,9 +27,9 @@
                         :value="'http://localhost:3000/shop/product_detail/'+product.id"
                         size="100"
                         level="H"
-                      ></qrcode-vue>
+                      />
                       <a @click="addToCart(product)" class="btn btn-default add-to-cart">
-                        <i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng
+                        <i class="fa fa-shopping-cart" />Thêm vào giỏ hàng
                       </a>
                     </div>
                   </div>
@@ -40,7 +40,7 @@
         </div>
       </div>
     </section>
-    <shopFooter></shopFooter>
+    <shopFooter />
   </div>
 </template>
 <script>
@@ -70,7 +70,9 @@ export default {
     return {
       products: {},
       default_image: [],
-      array: []
+      array: [],
+      total : 0,
+      cart : [],
     };
   },
   components: {
@@ -113,12 +115,23 @@ export default {
       });
     },
     addToCart(product) {
+      console.log('aaa');
+      let total = 0;
+      this.$store.dispatch("setCart", this.cart);
       let pro = this.cart.find(element => element.id == product.id);
       if (pro) {
         alert("Đã tồn tại sản phẩm trong giỏ hàng");
-      } else this.$store.dispatch("addToCart", product);
-      this.$store.dispatch("setCart", this.cart);
+      }
+      else {this.$store.dispatch("addToCart", product);
+      }
+
       localStorage.setItem("cart", JSON.stringify(this.cart));
+      this.cart.forEach(function (value, index, array) {
+        total += value.price;
+      });
+
+      this.total = total;
+      console.log(this.cart, this.total);
     },
     currency(x) {
       x = x.toLocaleString("currency", { style: "currency", currency: "VND" });

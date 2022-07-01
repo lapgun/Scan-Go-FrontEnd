@@ -10,12 +10,12 @@
                 <ul class="nav nav-pills">
                   <li>
                     <a href="#">
-                      <i class="fas fa-phone"></i> +2 95 01 88 821
+                      <i class="fas fa-phone" /> +2 95 01 88 821
                     </a>
                   </li>
                   <li>
                     <a href="#">
-                      <i class="fas fa-envelope"></i> ScanAndGo@gmail.com
+                      <i class="fas fa-envelope" /> ScanAndGo@gmail.com
                     </a>
                   </li>
                 </ul>
@@ -26,27 +26,27 @@
                 <ul style="display:inline; margin-top:15px" class="nav navbar-nav">
                   <li style="display:inline">
                     <a href="#">
-                      <i class="fab fa-facebook"></i>
+                      <i class="fab fa-facebook" />
                     </a>
                   </li>
                   <li>
                     <a href="#">
-                      <i class="fab fa-twitter"></i>
+                      <i class="fab fa-twitter" />
                     </a>
                   </li>
                   <li>
                     <a href="#">
-                      <i class="fab fa-linkedin"></i>
+                      <i class="fab fa-linkedin" />
                     </a>
                   </li>
                   <li>
                     <a href="#">
-                      <i class="fab fa-dribbble"></i>
+                      <i class="fab fa-dribbble" />
                     </a>
                   </li>
                   <li>
                     <a href="#">
-                      <i class="fab fa-google-plus"></i>
+                      <i class="fab fa-google-plus" />
                     </a>
                   </li>
                 </ul>
@@ -177,7 +177,9 @@
                             :src="`/${item.images? item.images.default_image: ''}`"
                           />
                           <span class="item_name">{{item.name}}</span>
-                          <span class="item_price">{{item.price}} đ</span>
+                          <span class="item_price">{{item.count}} sản phẩm</span>
+                          <br>
+                          <span style="float: right;margin-top: -20px">{{item.price}} đ</span>
                         </div>
                         <div
                           style="border: 1px solid #c1bbbb ; margin-top:15px; margin-bottom:15px"
@@ -235,7 +237,7 @@
               <div v-for="slide in slides" :key="slide.id">
                 <b-carousel-slide
                   :img-src="`/${slide.slide_images ? slide.slide_images.default_image : ''}`"
-                ></b-carousel-slide>
+                />
               </div>
             </b-carousel>
           </div>
@@ -255,12 +257,10 @@ export default {
       this.$router.push("/");
     }
     this.getSlides();
-    this.totalPrice();
   },
-  props : ['cart','total'],
+  props : ['cart','total','count_pro'],
   data() {
     return {
-      cart: [],
       users: [],
       user_id: "",
       user_name: "",
@@ -271,19 +271,7 @@ export default {
       slidesToShow: 2,
       slidesToScroll: 2,
       slides: [],
-      total: 0,
     };
-  },
-  created() {
-    if (process.browser) {
-      if (localStorage.getItem("cart")) {
-        let cart = JSON.parse(localStorage.getItem("cart"));
-        return (this.cart = cart);
-      } else {
-        let cart = this.$store.getters.cart;
-        return (this.cart = cart);
-      }
-    }
   },
   methods: {
     getUsers() {
@@ -312,14 +300,6 @@ export default {
           self.$router.push("/shop/products?search=" + self.search);
         });
     },
-    totalPrice() {
-      let total = 0;
-      this.cart.forEach(function (value, index, array) {
-        total += value.price + value.order_time;
-      });
-
-      this.total = total;
-    },
     onSlileStart(slide) {
       this.sliding = true;
     },
@@ -336,9 +316,6 @@ export default {
 };
 </script>
 <style scoped>
-.cart_dropdown:hover {
-  background: #fff;
-}
 .cart_checkout_1 , .cart_checkout_2 {
   border: 1px solid #c1bbbb;
   padding: 15px 15px;
